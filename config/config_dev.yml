@@ -16,7 +16,7 @@ KAFKA:
   cache_ttl: 3601
   topics:
     alerts: alertmgr-alerts
-    case: socd-soar-prod-issue-v1
+    cases: socd-soar-prod-issue-v1
 DATABASESTORAGE:
   host: 192.168.9.208
   port: 9200

@@ -17,7 +17,7 @@ import (
 
 func TestKafkaApi(t *testing.T) {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill, syscall.SIGINT)
-
+ 
 	go func() {
 		<-ctx.Done()
 

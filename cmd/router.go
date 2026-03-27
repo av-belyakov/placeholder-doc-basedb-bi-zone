@@ -80,14 +80,14 @@ func (r *ApplicationRouter) Router(ctx context.Context) {
 						}
 					}()
 
-				case "case":
+				case "cases":
 					// *************
 					// Здесь нужны разные обработчики
 					// *************
 
 					//soaralert_raw_fields
 
-					fmt.Println("\treceived message from topic: 'soar-alerts'")
+					fmt.Println("\treceived message from topic: 'socd-soar-prod-issue-v1' (case)")
 
 					if str, err := supportingfunctions.NewReadReflectJSONSprint(msg.Data); err == nil {
 						if str != "" {
