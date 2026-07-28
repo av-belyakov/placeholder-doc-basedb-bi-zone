@@ -1,28 +1,14 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"net/http"
 	_ "net/http/pprof"
-	"os"
-
-	"github.com/av-belyakov/simplelogger"
-
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/confighandler"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/countermessage"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/elasticsearchapi"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/kafkaapi"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/logginghandler"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/natsapi"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/wrappers"
 )
 
+//
+// это всё можно удалить
+//
+
+/*
 func server(ctx context.Context) {
 	rootPath, err := supportingfunctions.GetPathRoot(constants.Root_Dir)
 	if err != nil {
@@ -210,3 +196,4 @@ func server(ctx context.Context) {
 
 	<-ctx.Done()
 }
+*/
