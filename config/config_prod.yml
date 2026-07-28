@@ -31,3 +31,7 @@ DATABASEWRITELOG: # хранилище логов работы модуля
   user: log_writer
   namedb: ""
   storage_name_db: module_placeholderdb_bizone
+DebugServer:
+  enable: false
+  host: localhost
+  port: 6565

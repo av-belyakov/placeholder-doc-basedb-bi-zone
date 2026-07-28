@@ -31,3 +31,7 @@ DATABASEWRITELOG:
   user: placeholder-docbase-db
   namedb: ""
   storage_name_db: module_placeholderdb_bizone
+DebugServer:
+  enable: true
+  host: localhost
+  port: 6565

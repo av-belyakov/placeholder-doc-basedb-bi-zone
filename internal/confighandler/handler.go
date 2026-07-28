@@ -16,7 +16,7 @@ import (
 )
 
 func New(rootDir string) (*Config, error) {
-	conf := &Config{}
+	cfg := &Config{}
 
 	var (
 		validate *validator.Validate
@@ -78,7 +78,7 @@ func New(rootDir string) (*Config, error) {
 				return err
 			}
 
-			conf.Common.Logs = ls.Logging
+			cfg.Common.Logs = ls.Logging
 		}
 
 		z := ZabbixSet{}
@@ -92,7 +92,7 @@ func New(rootDir string) (*Config, error) {
 				np = z.Zabbix.NetworkPort
 			}
 
-			conf.Common.Zabbix = ZabbixOptions{
+			cfg.Common.Zabbix = ZabbixOptions{
 				NetworkPort: np,
 				NetworkHost: z.Zabbix.NetworkHost,
 				ZabbixHost:  z.Zabbix.ZabbixHost,
@@ -106,7 +106,7 @@ func New(rootDir string) (*Config, error) {
 				return err
 			}
 
-			conf.Common.Profiling = ProfilingOptions{
+			cfg.Common.Profiling = ProfilingOptions{
 				Host: p.Profiling.Host,
 				Port: p.Profiling.Port,
 			}
@@ -124,72 +124,83 @@ func New(rootDir string) (*Config, error) {
 
 		//Настройка наименования регионального объекта
 		if viper.IsSet("COMMONINFO.regional_object") {
-			conf.Common.RegionalObject = viper.GetString("COMMONINFO.regional_object")
+			cfg.Common.RegionalObject = viper.GetString("COMMONINFO.regional_object")
 		}
 
 		//Настройки для модуля подключения к NATS
 		if viper.IsSet("NATS.host") {
-			conf.NATS.Host = viper.GetString("NATS.host")
+			cfg.NATS.Host = viper.GetString("NATS.host")
 		}
 		if viper.IsSet("NATS.port") {
-			conf.NATS.Port = viper.GetInt("NATS.port")
+			cfg.NATS.Port = viper.GetInt("NATS.port")
 		}
 		if viper.IsSet("NATS.cache_ttl") {
-			conf.NATS.CacheTTL = viper.GetInt("NATS.cache_ttl")
+			cfg.NATS.CacheTTL = viper.GetInt("NATS.cache_ttl")
 		}
 		if viper.IsSet("NATS.subscriptions") {
-			conf.NATS.Subscriptions = viper.GetStringMapString("NATS.subscriptions")
+			cfg.NATS.Subscriptions = viper.GetStringMapString("NATS.subscriptions")
 		}
 		if viper.IsSet("NATS.enriching_queries") {
-			conf.NATS.EnrichingQueries = viper.GetStringMapString("NATS.enriching_queries")
+			cfg.NATS.EnrichingQueries = viper.GetStringMapString("NATS.enriching_queries")
 		}
 
 		//Настройки для модуля подключения к Kafka
 		if viper.IsSet("KAFKA.host") {
-			conf.Kafka.Host = viper.GetString("KAFKA.host")
+			cfg.Kafka.Host = viper.GetString("KAFKA.host")
 		}
 		if viper.IsSet("KAFKA.port") {
-			conf.Kafka.Port = viper.GetInt("KAFKA.port")
+			cfg.Kafka.Port = viper.GetInt("KAFKA.port")
 		}
 		if viper.IsSet("KAFKA.cache_ttl") {
-			conf.Kafka.CacheTTL = viper.GetInt("KAFKA.cache_ttl")
+			cfg.Kafka.CacheTTL = viper.GetInt("KAFKA.cache_ttl")
 		}
 		if viper.IsSet("KAFKA.topics") {
-			conf.Kafka.Topics = viper.GetStringMapString("KAFKA.topics")
+			cfg.Kafka.Topics = viper.GetStringMapString("KAFKA.topics")
 		}
 
 		// Настройки доступа к БД в которую будет записыватся основная информация
 		if viper.IsSet("DATABASESTORAGE.host") {
-			conf.StorageDB.Host = viper.GetString("DATABASESTORAGE.host")
+			cfg.StorageDB.Host = viper.GetString("DATABASESTORAGE.host")
 		}
 		if viper.IsSet("DATABASESTORAGE.port") {
-			conf.StorageDB.Port = viper.GetInt("DATABASESTORAGE.port")
+			cfg.StorageDB.Port = viper.GetInt("DATABASESTORAGE.port")
 		}
 		if viper.IsSet("DATABASESTORAGE.user") {
-			conf.StorageDB.User = viper.GetString("DATABASESTORAGE.user")
+			cfg.StorageDB.User = viper.GetString("DATABASESTORAGE.user")
 		}
 		if viper.IsSet("DATABASESTORAGE.namedb") {
-			conf.StorageDB.NameDB = viper.GetString("DATABASESTORAGE.namedb")
+			cfg.StorageDB.NameDB = viper.GetString("DATABASESTORAGE.namedb")
 		}
 		if viper.IsSet("DATABASESTORAGE.storage_name_db") {
-			conf.StorageDB.Storage = viper.GetStringMapString("DATABASESTORAGE.storage_name_db")
+			cfg.StorageDB.Storage = viper.GetStringMapString("DATABASESTORAGE.storage_name_db")
 		}
 
 		// Настройки доступа к БД в которую будут записыватся логи
 		if viper.IsSet("DATABASEWRITELOG.host") {
-			conf.LogDB.Host = viper.GetString("DATABASEWRITELOG.host")
+			cfg.LogDB.Host = viper.GetString("DATABASEWRITELOG.host")
 		}
 		if viper.IsSet("DATABASEWRITELOG.port") {
-			conf.LogDB.Port = viper.GetInt("DATABASEWRITELOG.port")
+			cfg.LogDB.Port = viper.GetInt("DATABASEWRITELOG.port")
 		}
 		if viper.IsSet("DATABASEWRITELOG.user") {
-			conf.LogDB.User = viper.GetString("DATABASEWRITELOG.user")
+			cfg.LogDB.User = viper.GetString("DATABASEWRITELOG.user")
 		}
 		if viper.IsSet("DATABASEWRITELOG.namedb") {
-			conf.LogDB.NameDB = viper.GetString("DATABASEWRITELOG.namedb")
+			cfg.LogDB.NameDB = viper.GetString("DATABASEWRITELOG.namedb")
 		}
 		if viper.IsSet("DATABASEWRITELOG.storage_name_db") {
-			conf.LogDB.StorageNameDB = viper.GetString("DATABASEWRITELOG.storage_name_db")
+			cfg.LogDB.StorageNameDB = viper.GetString("DATABASEWRITELOG.storage_name_db")
+		}
+
+		// Настройки для отладочного сервера
+		if viper.IsSet("DebugServer.enable") {
+			cfg.DebugServer.Enable = viper.GetBool("DebugServer.enable")
+		}
+		if viper.IsSet("DebugServer.host") {
+			cfg.DebugServer.Host = viper.GetString("DebugServer.host")
+		}
+		if viper.IsSet("DebugServer.port") {
+			cfg.DebugServer.Port = viper.GetInt("DebugServer.port")
 		}
 
 		return nil
@@ -205,23 +216,23 @@ func New(rootDir string) (*Config, error) {
 
 	rootPath, err := supportingfunctions.GetPathRoot(rootDir)
 	if err != nil {
-		return conf, err
+		return cfg, err
 	}
 
 	confPath := filepath.Join(rootPath, "config")
 	list, err := os.ReadDir(confPath)
 	if err != nil {
-		return conf, err
+		return cfg, err
 	}
 
 	fileNameCommon, err := getFileName("config.yml", confPath, list)
 	if err != nil {
-		return conf, err
+		return cfg, err
 	}
 
 	//читаем общий конфигурационный файл
 	if err := setCommonSettings(fileNameCommon); err != nil {
-		return conf, err
+		return cfg, err
 	}
 
 	var fn string
@@ -229,53 +240,53 @@ func New(rootDir string) (*Config, error) {
 	case "development":
 		fn, err = getFileName("config_dev.yml", confPath, list)
 		if err != nil {
-			return conf, err
+			return cfg, err
 		}
 	case "test":
 		fn, err = getFileName("config_test.yml", confPath, list)
 		if err != nil {
-			return conf, err
+			return cfg, err
 		}
 	default:
 		fn, err = getFileName("config_prod.yml", confPath, list)
 		if err != nil {
-			return conf, err
+			return cfg, err
 		}
 	}
 
 	if err := setSpecial(fn); err != nil {
-		return conf, err
+		return cfg, err
 	}
 
 	//Настройка наименования регионального объекта
 	if envList["GO_PHDOCBASEDBBZ_REGIONALOBJECT"] != "" {
-		conf.Common.RegionalObject = envList["GO_PHDOCBASEDBBZ_REGIONALOBJECT"]
+		cfg.Common.RegionalObject = envList["GO_PHDOCBASEDBBZ_REGIONALOBJECT"]
 	}
 
 	//Настройки для модуля подключения к NATS
 	if envList["GO_PHDOCBASEDBBZ_NHOST"] != "" {
-		conf.NATS.Host = envList["GO_PHDOCBASEDBBZ_NHOST"]
+		cfg.NATS.Host = envList["GO_PHDOCBASEDBBZ_NHOST"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_NPORT"] != "" {
 		if p, err := strconv.Atoi(envList["GO_PHDOCBASEDBBZ_NPORT"]); err == nil {
-			conf.NATS.Port = p
+			cfg.NATS.Port = p
 		}
 	}
 	if envList["GO_PHDOCBASEDBBZ_NCACHETTL"] != "" {
 		if ttl, err := strconv.Atoi(envList["GO_PHDOCBASEDBBZ_NCACHETTL"]); err == nil {
-			conf.NATS.CacheTTL = ttl
+			cfg.NATS.CacheTTL = ttl
 		}
 	}
 	if envList["GO_PHDOCBASEDBBZ_NSUBLISTENER"] != "" {
 		sublistener := envList["GO_PHDOCBASEDBBZ_NSUBLISTENER"]
 		if !strings.Contains(sublistener, ";") {
 			if tmp := strings.Split(sublistener, ":"); len(tmp) == 2 {
-				conf.NATS.Subscriptions[tmp[0]] = tmp[1]
+				cfg.NATS.Subscriptions[tmp[0]] = tmp[1]
 			}
 		} else {
 			for sl := range strings.SplitSeq(sublistener, ";") {
 				if tmp := strings.Split(sl, ":"); len(tmp) == 2 {
-					conf.NATS.Subscriptions[tmp[0]] = tmp[1]
+					cfg.NATS.Subscriptions[tmp[0]] = tmp[1]
 				}
 			}
 		}
@@ -284,12 +295,12 @@ func New(rootDir string) (*Config, error) {
 		reqlistener := envList["GO_PHDOCBASEDBBZ_NENRICHINGQUER"]
 		if !strings.Contains(reqlistener, ";") {
 			if tmp := strings.Split(reqlistener, ":"); len(tmp) == 2 {
-				conf.NATS.EnrichingQueries[tmp[0]] = tmp[1]
+				cfg.NATS.EnrichingQueries[tmp[0]] = tmp[1]
 			}
 		} else {
 			for sl := range strings.SplitSeq(reqlistener, ";") {
 				if tmp := strings.Split(sl, ":"); len(tmp) == 2 {
-					conf.NATS.EnrichingQueries[tmp[0]] = tmp[1]
+					cfg.NATS.EnrichingQueries[tmp[0]] = tmp[1]
 				}
 			}
 		}
@@ -297,28 +308,28 @@ func New(rootDir string) (*Config, error) {
 
 	//Настройки для модуля подключения к Kafka
 	if envList["GO_PHDOCBASEDBBZ_KHOST"] != "" {
-		conf.Kafka.Host = envList["GO_PHDOCBASEDBBZ_KHOST"]
+		cfg.Kafka.Host = envList["GO_PHDOCBASEDBBZ_KHOST"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_KPORT"] != "" {
 		if p, err := strconv.Atoi(envList["GO_PHDOCBASEDBBZ_KPORT"]); err == nil {
-			conf.Kafka.Port = p
+			cfg.Kafka.Port = p
 		}
 	}
 	if envList["GO_PHDOCBASEDBBZ_KCACHETTL"] != "" {
 		if ttl, err := strconv.Atoi(envList["GO_PHDOCBASEDBBZ_KCACHETTL"]); err == nil {
-			conf.Kafka.CacheTTL = ttl
+			cfg.Kafka.CacheTTL = ttl
 		}
 	}
 	if envList["GO_PHDOCBASEDBBZ_KTOPICS"] != "" {
 		sublistener := envList["GO_PHDOCBASEDBBZ_KTOPICS"]
 		if !strings.Contains(sublistener, ";") {
 			if tmp := strings.Split(sublistener, ":"); len(tmp) == 2 {
-				conf.Kafka.Topics[tmp[0]] = tmp[1]
+				cfg.Kafka.Topics[tmp[0]] = tmp[1]
 			}
 		} else {
 			for sl := range strings.SplitSeq(sublistener, ";") {
 				if tmp := strings.Split(sl, ":"); len(tmp) == 2 {
-					conf.Kafka.Topics[tmp[0]] = tmp[1]
+					cfg.Kafka.Topics[tmp[0]] = tmp[1]
 				}
 			}
 		}
@@ -326,32 +337,32 @@ func New(rootDir string) (*Config, error) {
 
 	//Настройки доступа к БД в которую будет добавлятся информация по alert и case
 	if envList["GO_PHDOCBASEDBBZ_DBSTORAGEHOST"] != "" {
-		conf.StorageDB.Host = envList["GO_PHDOCBASEDBBZ_DBSTORAGEHOST"]
+		cfg.StorageDB.Host = envList["GO_PHDOCBASEDBBZ_DBSTORAGEHOST"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_DBSTORAGEPORT"] != "" {
 		if p, err := strconv.Atoi(envList["GO_PHDOCBASEDBBZ_DBSTORAGEPORT"]); err == nil {
-			conf.StorageDB.Port = p
+			cfg.StorageDB.Port = p
 		}
 	}
 	if envList["GO_PHDOCBASEDBBZ_DBSTORAGENAME"] != "" {
-		conf.StorageDB.NameDB = envList["GO_PHDOCBASEDBBZ_DBSTORAGENAME"]
+		cfg.StorageDB.NameDB = envList["GO_PHDOCBASEDBBZ_DBSTORAGENAME"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_DBSTORAGEUSER"] != "" {
-		conf.StorageDB.User = envList["GO_PHDOCBASEDBBZ_DBSTORAGEUSER"]
+		cfg.StorageDB.User = envList["GO_PHDOCBASEDBBZ_DBSTORAGEUSER"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD"] != "" {
-		conf.StorageDB.Passwd = envList["GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD"]
+		cfg.StorageDB.Passwd = envList["GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_DBSTORAGEN"] != "" {
 		sublistener := envList["GO_PHDOCBASEDBBZ_DBSTORAGEN"]
 		if !strings.Contains(sublistener, ";") {
 			if tmp := strings.Split(sublistener, ":"); len(tmp) == 2 {
-				conf.StorageDB.Storage[tmp[0]] = tmp[1]
+				cfg.StorageDB.Storage[tmp[0]] = tmp[1]
 			}
 		} else {
 			for _, sl := range strings.Split(sublistener, ";") {
 				if tmp := strings.Split(sl, ":"); len(tmp) == 2 {
-					conf.StorageDB.Storage[tmp[0]] = tmp[1]
+					cfg.StorageDB.Storage[tmp[0]] = tmp[1]
 				}
 			}
 		}
@@ -359,30 +370,30 @@ func New(rootDir string) (*Config, error) {
 
 	//Настройки доступа к БД в которую будут записыватся логи
 	if envList["GO_PHDOCBASEDBBZ_DBWLOGHOST"] != "" {
-		conf.LogDB.Host = envList["GO_PHDOCBASEDBBZ_DBWLOGHOST"]
+		cfg.LogDB.Host = envList["GO_PHDOCBASEDBBZ_DBWLOGHOST"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_DBWLOGPORT"] != "" {
 		if p, err := strconv.Atoi(envList["GO_PHDOCBASEDBBZ_DBWLOGPORT"]); err == nil {
-			conf.LogDB.Port = p
+			cfg.LogDB.Port = p
 		}
 	}
 	if envList["GO_PHDOCBASEDBBZ_DBWLOGNAME"] != "" {
-		conf.LogDB.NameDB = envList["GO_PHDOCBASEDBBZ_DBWLOGNAME"]
+		cfg.LogDB.NameDB = envList["GO_PHDOCBASEDBBZ_DBWLOGNAME"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_DBWLOGUSER"] != "" {
-		conf.LogDB.User = envList["GO_PHDOCBASEDBBZ_DBWLOGUSER"]
+		cfg.LogDB.User = envList["GO_PHDOCBASEDBBZ_DBWLOGUSER"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_DBWLOGPASSWD"] != "" {
-		conf.LogDB.Passwd = envList["GO_PHDOCBASEDBBZ_DBWLOGPASSWD"]
+		cfg.LogDB.Passwd = envList["GO_PHDOCBASEDBBZ_DBWLOGPASSWD"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME"] != "" {
-		conf.LogDB.StorageNameDB = envList["GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME"]
+		cfg.LogDB.StorageNameDB = envList["GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME"]
 	}
 
 	//выполняем проверку заполненой структуры
-	if err = validate.Struct(conf); err != nil {
-		return conf, err
+	if err = validate.Struct(cfg); err != nil {
+		return cfg, err
 	}
 
-	return conf, nil
+	return cfg, nil
 }

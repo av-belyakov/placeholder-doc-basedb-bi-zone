@@ -41,6 +41,11 @@ func (c *Config) GetZabbix() ZabbixOptions {
 	return c.Common.Zabbix
 }
 
+// GetDebugServer настройки доступа к БД для логирования данных
+func (cfg *Config) GetDebugServer() CfgDebugServer {
+	return cfg.DebugServer
+}
+
 // SetNameMessageType наименование типа логирования
 func (l *LogSet) SetNameMessageType(v string) error {
 	if v == "" {

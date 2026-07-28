@@ -1,11 +1,12 @@
 package confighandler
 
 type Config struct {
-	Common    Common
-	NATS      CfgNats
-	Kafka     CfgKafka
-	LogDB     CfgWriteLogDB
-	StorageDB CfgStorageDB
+	Common      Common
+	NATS        CfgNats
+	Kafka       CfgKafka
+	LogDB       CfgWriteLogDB
+	StorageDB   CfgStorageDB
+	DebugServer CfgDebugServer
 }
 
 type Common struct {
@@ -91,4 +92,10 @@ type CfgWriteLogDB struct {
 	NameDB        string `yaml:"namedb"`
 	StorageNameDB string `yaml:"storage_name_db"`
 	Port          int    `validate:"gt=0,lte=65535" yaml:"port"`
+}
+
+type CfgDebugServer struct {
+	Host   string `yaml:"host"`
+	Port   int    `validate:"gt=0,lte=65535" yaml:"port"`
+	Enable bool   `yaml:"enabled"`
 }
