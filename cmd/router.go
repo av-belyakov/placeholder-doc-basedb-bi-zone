@@ -5,19 +5,19 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/decoderjsondocuments"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/natsapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/natsapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 // NewRouter маршрутизатор сообщений внутри приложения
-func NewRouter(counter interfaces.Counter, logger interfaces.Logger, settings ApplicationRouterSettings) *ApplicationRouter {
+func NewRouter(logger interfaces.Logger, counter interfaces.Counter, settings ApplicationRouterSettings) *ApplicationRouter {
 	return &ApplicationRouter{
-		counter:        counter,
 		logger:         logger,
+		counter:        counter,
 		chToNatsApi:    settings.ChanToNats,
 		chFromNatsApi:  settings.ChanFromNats,
 		chToKafkaApi:   settings.ChanToKafka,

@@ -2,29 +2,33 @@ package confighandler
 
 import "errors"
 
+func (c *Config) Get() Config {
+	return *c
+}
+
 // GetCommon общие настройки
-func (c *Config) GetCommon() *Common {
-	return &c.Common
+func (c *Config) GetCommon() Common {
+	return c.Common
 }
 
 // GetNATS настройки брокера сообщений NATS
-func (c *Config) GetNATS() *CfgNats {
-	return &c.NATS
+func (c *Config) GetNATS() CfgNats {
+	return c.NATS
 }
 
 // GetKafka настройки для брокера сообщений Kafka
-func (c *Config) GetKafka() *CfgKafka {
-	return &c.Kafka
+func (c *Config) GetKafka() CfgKafka {
+	return c.Kafka
 }
 
 // GetStorageDB настройки для БД отвечающей за хранение данных
-func (c *Config) GetStorageDB() *CfgStorageDB {
-	return &c.StorageDB
+func (c *Config) GetStorageDB() CfgStorageDB {
+	return c.StorageDB
 }
 
 // GetLogDB настройки для БД обеспечивающей логирование данных
-func (c *Config) GetLogDB() *CfgWriteLogDB {
-	return &c.LogDB
+func (c *Config) GetLogDB() CfgWriteLogDB {
+	return c.LogDB
 }
 
 // GetListLogs список типов логирования (error, info и т.д.)
@@ -33,8 +37,8 @@ func (c *Config) GetListLogs() []*LogSet {
 }
 
 // GetZabbix настройки взаимодействия с Zabbix
-func (c *Config) GetZabbix() *ZabbixOptions {
-	return &c.Common.Zabbix
+func (c *Config) GetZabbix() ZabbixOptions {
+	return c.Common.Zabbix
 }
 
 // SetNameMessageType наименование типа логирования

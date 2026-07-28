@@ -47,12 +47,12 @@ func (api *kafkaApiModule) Start(ctx context.Context) error {
 	return nil
 }
 
-// GetChanDataToModule канал для передачи данных в модуль
-func (api *kafkaApiModule) GetChanDataToModule() chan SettingsChanInput {
-	return api.chToModule
+// GetChannelFromModule канал для приёма данных из модуля
+func (api *kafkaApiModule) GetChannelFromModule() <-chan SettingsChanOutput {
+	return api.chFromModule
 }
 
-// GetChanDataFromModule канал для приёма данных из модуля
-func (api *kafkaApiModule) GetChanDataFromModule() chan SettingsChanOutput {
-	return api.chFromModule
+// GetChannelToModule канал для передачи данных в модуль
+func (api *kafkaApiModule) GetChannelToModule() chan<- SettingsChanInput {
+	return api.chToModule
 }

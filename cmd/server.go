@@ -10,21 +10,21 @@ import (
 
 	"github.com/av-belyakov/simplelogger"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/databasestorageapi"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/elasticsearchapi"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/kafkaapi"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/natsapi"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/wrappers"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/confighandler"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/countermessage"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/elasticsearchapi"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/kafkaapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/logginghandler"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/natsapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/wrappers"
 )
 
 func server(ctx context.Context) {
-	rootPath, err := supportingfunctions.GetRootPath(constants.Root_Dir)
+	rootPath, err := supportingfunctions.GetPathRoot(constants.Root_Dir)
 	if err != nil {
 		log.Fatalf("error, it is impossible to form root path (%s)", err.Error())
 	}
@@ -105,8 +105,8 @@ func server(ctx context.Context) {
 	// в данном случае это основной источник получения информации о КА/КИ
 	cfgKafka := cfg.Kafka
 	apiKafka, err := kafkaapi.New(
-		counting,
 		logging,
+		counting,
 		kafkaapi.WithNameRegionalObject(cfg.Common.RegionalObject),
 		kafkaapi.WithHost(cfgKafka.Host),
 		kafkaapi.WithPort(cfgKafka.Port),
@@ -132,8 +132,8 @@ func server(ctx context.Context) {
 	// - enricher_sensor_information (обогащение информаций о сенсорах)
 	cfgNats := cfg.NATS
 	apiNats, err := natsapi.New(
-		counting,
 		logging,
+		counting,
 		natsapi.WithHost(cfgNats.Host),
 		natsapi.WithPort(cfgNats.Port),
 		natsapi.WithCacheTTL(cfgNats.CacheTTL),
@@ -155,8 +155,8 @@ func server(ctx context.Context) {
 	// ************** инициализация модуля взаимодействия с БД *************
 	cfgStorageDB := cfg.GetStorageDB()
 	apiDBS, err := databasestorageapi.New(
-		counting,
 		logging,
+		counting,
 		databasestorageapi.WithHost(cfgStorageDB.Host),
 		databasestorageapi.WithPort(cfgStorageDB.Port),
 		databasestorageapi.WithNameDB(cfgStorageDB.NameDB),
@@ -179,15 +179,15 @@ func server(ctx context.Context) {
 	// *********************************************************
 	// ************** инициализация маршрутизатора *************
 	r := NewRouter(
-		counting,
 		logging,
+		counting,
 		ApplicationRouterSettings{
-			ChanToNats:    apiNats.GetChanDataToModule(),
-			ChanFromNats:  apiNats.GetChanDataFromModule(),
-			ChanToKafka:   apiKafka.GetChanDataToModule(),
-			ChanFromKafka: apiKafka.GetChanDataFromModule(),
-			ChanToDBS:     apiDBS.GetChanDataToModule(),
-			ChanFromDBS:   apiDBS.GetChanDataFromModule(),
+			ChanToNats:    apiNats.GetChannelToModule(),
+			ChanFromNats:  apiNats.GetChannelFromModule(),
+			ChanToKafka:   apiKafka.GetChannelToModule(),
+			ChanFromKafka: apiKafka.GetChannelFromModule(),
+			ChanToDBS:     apiDBS.GetChannelToModule(),
+			ChanFromDBS:   apiDBS.GetChannelFromModule(),
 		})
 	r.Router(ctx)
 

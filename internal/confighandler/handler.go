@@ -203,7 +203,7 @@ func New(rootDir string) (*Config, error) {
 		}
 	}
 
-	rootPath, err := supportingfunctions.GetRootPath(rootDir)
+	rootPath, err := supportingfunctions.GetPathRoot(rootDir)
 	if err != nil {
 		return conf, err
 	}
