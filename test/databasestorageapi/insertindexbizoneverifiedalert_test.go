@@ -13,10 +13,10 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/decoderjsondocuments"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/test/helpers"
 )

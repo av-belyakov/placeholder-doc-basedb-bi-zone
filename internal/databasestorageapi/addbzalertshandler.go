@@ -70,7 +70,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 		if ok {
 			logger.Send("info", fmt.Sprintf("we are sending a request to search for information on the following list of sensors: %#v", listSensor))
 		}
-	}(newDocument, dbs.GetChanDataFromModule, dbs.logger)
+	}(newDocument, dbs.GetChannelFromModule, dbs.logger)
 
 	//формируем наименование индекса
 	currentIndex := fmt.Sprintf("%s_%d_%d", indexName, t.Year(), int(t.Month()))

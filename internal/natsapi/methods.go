@@ -1,4 +1,3 @@
-// Модуль для взаимодействия с API NATS
 package natsapi
 
 import (
@@ -6,36 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/nats-io/nats.go"
-
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
+	"github.com/nats-io/nats.go"
 )
-
-// New настраивает новый модуль взаимодействия с API NATS
-func New(counter interfaces.Counter, logger interfaces.Logger, opts ...NatsApiOptions) (*apiNatsModule, error) {
-	api := &apiNatsModule{
-		settings: apiNatsSettings{
-			cachettl: 10,
-		},
-		//для подсчёта
-		counter: counter,
-		//для логирования
-		logger: logger,
-		//запросы в модуль
-		chFromModule: make(chan SettingsChanOutput),
-		//события из модуля
-		chToModule: make(chan SettingsChanInput),
-	}
-
-	for _, opt := range opts {
-		if err := opt(api); err != nil {
-			return api, err
-		}
-	}
-
-	return api, nil
-}
 
 // Start инициализирует новый модуль взаимодействия с API NATS,
 // при инициализации возращается канал для взаимодействия с модулем,
@@ -91,4 +63,14 @@ func (api *apiNatsModule) Start(ctx context.Context) error {
 	})
 
 	return nil
+}
+
+// GetChannelFromModule канал для приёма данных из модуля
+func (api *apiNatsModule) GetChannelFromModule() <-chan SettingsChanOutput {
+	return api.chFromModule
+}
+
+// GetChannelToModule канал для передачи данных в модуль
+func (api *apiNatsModule) GetChannelToModule() chan<- SettingsChanInput {
+	return api.chToModule
 }

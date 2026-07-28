@@ -13,10 +13,10 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/decoderjsondocuments"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/test/helpers"
 )
@@ -172,17 +172,17 @@ func TestUpdateIndexCaseGeoIp(t *testing.T) {
 
 	//обновление информации в БД
 	bodyUpdate := strings.NewReader(fmt.Sprintf("{\"doc\": %s}", string(request)))
-	res, err := apiDBS.Update(Index_Test, underlineId, bodyUpdate)
+	data, statusCode, err := apiDBS.Update(Index_Test, underlineId, bodyUpdate)
 	assert.NoError(t, err)
-	assert.Equal(t, res.StatusCode, 200)
+	assert.Equal(t, statusCode, 200)
+
+	fmt.Println("DATA:", data)
 
 	t.Cleanup(func() {
 		os.Unsetenv("GO_PHDOCBASEDB_DBWLOGPASSWD")
 		os.Unsetenv("GO_PHDOCBASEDB_DBSTORAGEPASSWD")
 
 		cancel()
-
-		res.Body.Close()
 	})
 }
 

@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
 )
 
 // *** для счётчика ***
@@ -88,7 +88,7 @@ func DataBaseConnectionInitialization(
 		err    error
 	)
 
-	apiDBS, err = databasestorageapi.New(counting, logging, opts...)
+	apiDBS, err = databasestorageapi.New(logging, counting, opts...)
 	if err != nil {
 		return apiDBS, err
 	}
@@ -110,7 +110,7 @@ func DataBaseConnectionInitialization(
 
 			}
 		}
-	}(ctx, apiDBS.GetChanDataFromModule())
+	}(ctx, apiDBS.GetChannelFromModule())
 
 	return apiDBS, err
 }

@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func GetRootPath(rootDir string) (string, error) {
+func GetPathRoot(rootDir string) (string, error) {
 	currentDir, err := os.Getwd()
 	if err != nil {
 		return "", err
