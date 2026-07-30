@@ -91,7 +91,7 @@ func (d *DiContainer) DbLogger() DbLogger {
 			nameRegionalObject = "gcm-test"
 		}
 
-		conn, err := elasticsearchapi.NewElasticsearchConnect(elasticsearchapi.Settings{
+		conn, err := elasticsearchapi.New(elasticsearchapi.Settings{
 			Port:               d.Configer().GetLogDB().Port,
 			Host:               d.Configer().GetLogDB().Host,
 			User:               d.Configer().GetLogDB().User,

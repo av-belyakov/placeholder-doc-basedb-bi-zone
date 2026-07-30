@@ -11,6 +11,10 @@ func (api *kafkaApiModule) Start(ctx context.Context) error {
 	if ctx.Err() != nil {
 		return ctx.Err()
 	}
+
+	//
+	// сделать настроку для kafka с сертификатом и авторизацией
+	//
 }
 
 // GetChannelFromModule канал для приёма данных из модуля
