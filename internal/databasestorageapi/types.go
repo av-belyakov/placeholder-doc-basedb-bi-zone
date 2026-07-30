@@ -1,7 +1,7 @@
 package databasestorageapi
 
 import (
-	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/elastic/go-elasticsearch/v9"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
@@ -59,7 +59,7 @@ type ResponseVerifiedBiZoneAlertsOptions struct {
 
 // PatternVerifiedBiZoneAlert шаблон
 type PatternVerifiedBiZoneAlert struct {
-	Source datamodels.VerifiedBiZoneAlert `json:"_source"`
+	Source datamodels.VerifiedBiZoneIRPAlert `json:"_source"`
 	ServiseOption
 }
 

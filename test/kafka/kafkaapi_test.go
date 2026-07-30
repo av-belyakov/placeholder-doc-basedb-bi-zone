@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	kafkaapi "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/kafkaapi"
+	kafkaapi "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/kafkaapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supporting"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
@@ -55,14 +55,14 @@ func TestKafkaApi(t *testing.T) {
 
 	//инициализация модуля
 	kafkaApiModule, err := kafkaapi.New(
-		counting,
 		logging,
+		counting,
 		kafkaapi.WithNameRegionalObject("GCM-TEST"),
 		kafkaapi.WithHost("192.168.9.71"),
 		kafkaapi.WithPort(31792),
 		kafkaapi.WithTopicsSubscription(map[string]string{
-			"alerts":      "alertmgr-alerts",
-			"soar-alerts": "soar-alertmgr-alerts-default-topic",
+			"alerts": "alertmgr-alerts",
+			"case":   "socd-soar-prod-issue-v1",
 		}),
 		kafkaapi.WithCacheTTL(3600),
 	)
@@ -75,7 +75,7 @@ func TestKafkaApi(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	for msg := range kafkaApiModule.GetChanDataFromModule() {
+	for msg := range kafkaApiModule.GetChannelFromModule() {
 		//t.Logf("Received message:%s\n\n", string(msg.Data))
 		str, err := supportingfunctions.NewReadReflectJSONSprint(msg.Data)
 		if err != nil {

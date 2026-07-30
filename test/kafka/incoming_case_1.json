@@ -1,0 +1,144 @@
+{
+    "id": 336,
+    "key": "INC-2336",
+    "issue_type": "Incident",
+    "issue_type_ref": {
+        "id": "Incident",
+        "title": "Инцидентик",
+        "description": ""
+    },
+    "service": null,
+    "system": 23,
+    "priority": "Medium",
+    "summary": "Признаки ВПО. Сенсор 8030002. Зарженный IP - 95.173.136.71 -  IOC -104.152.222.104",
+    "description": "<p>Зафиксированы Зафиксирована подозрительная активность по признакам НКЦКИ, INFO Controlled FGS с 104.152.222.104 на объекте 8030002</p>\n<p>Техническая информация:</p>\n<p>Начало ПКИ: <br>\nОкончание ПКИ:</p>",
+    "rendered_description": "<p>Зафиксированы Зафиксирована подозрительная активность по признакам НКЦКИ, INFO Controlled FGS с 104.152.222.104 на объекте 8030002</p>\n<p>Техническая информация:</p>\n<p>Начало ПКИ: <br>\nОкончание ПКИ:</p>",
+    "status": "Без ответа",
+    "status_description": "gfhdhfgj",
+    "assignee": null,
+    "tags": [],
+    "assignee_displayName": null,
+    "reporter_displayName": "Андрей Егоров (803.a.egorov@avz-center.ru)",
+    "creator_displayName": "Андрей Егоров (803.a.egorov@avz-center.ru)",
+    "reporter_emailAddress": "803.a.egorov@avz-center.ru",
+    "primary_category": "Zarajenie-VPO",
+    "primary_category_ref": {
+        "id": "Zarajenie-VPO",
+        "title": "Заражение ВПО",
+        "description": ""
+    },
+    "secondary_category": [
+        "Zarajenie-VPO",
+        "Komprometazia-ucetnoj-zapisi"
+    ],
+    "secondary_category_ref": [
+        {
+            "id": "Zarajenie-VPO",
+            "title": "Заражение ВПО",
+            "description": ""
+        },
+        {
+            "id": "Komprometazia-ucetnoj-zapisi",
+            "title": "Компрометация учетной записи",
+            "description": ""
+        }
+    ],
+    "created": "2026-02-19T16:33:03.108913+03:00",
+    "updated": "2026-03-05T15:45:19.636172+03:00",
+    "timestamp": "2026-03-05T15:45:19.636172+03:00",
+    "resolutiondate": null,
+    "resolution_name": null,
+    "resolution_name_ref": null,
+    "resolution_detailed": "",
+    "activity_detected": [],
+    "platform_url": "",
+    "attack_type": "",
+    "gossopka_id": null,
+    "gossopka_send_time": null,
+    "gti_id": null,
+    "gti_send_time": null,
+    "customer_star_rating": null,
+    "customer_star_rating_comment": "",
+    "detection_date": "2025-02-21T20:22:46.031534+03:00",
+    "recommendations": "<p>Оценка опасности КА для ОА.<br>\nЗлоумышленник получает информацию о наличии уязвимостей и/или ошибок в функционирующем веб-ресурсе. Полученная информация может быть использована для компрометации ОА. Возможны несанкционированный доступ к информации, распространение ВПО.<br>\nОбщие рекомендации:<br>\n−   заблокировать на межсетевом экране IP-адрес узла, с которого производится сканирование;<br>\n−   провести анализ журнальных файлов (при их отсутствии организовать запись и архивное хранение журнальных файлов) веб-сервера, БД, файлов веб-приложения и их содержимого на наличие признаков несанкционированного доступа;<br>\n−   организовать использование и тонкую настройку Web Application Firewall для защиты веб-приложения;<br>\n−   организовать своевременную установку обновлений безопасности ОС, системы управления содержимым (CMS) и используемого ПО;<br>\n−   разделить среду «боевого» веб-приложения от среды разработки, организовать ограниченный доступ к среде разработки;<br>\n−   предоставить минимально возможные привилегии службе веб-сервера;<br>\n−   установить минимально возможные права доступа к файлам веб-приложения.</p>",
+    "platform_hostname": [
+        "DFL"
+    ],
+    "keyfield": [],
+    "observed_iocs": [
+        {
+            "ioc_type": "ipv4",
+            "category": [
+                "Malware",
+                "Mobile"
+            ],
+            "ioc": "1.1.1.1"
+        },
+        {
+            "ioc_type": "ipv4",
+            "category": [
+                "Malware"
+            ],
+            "ioc": "104.152.222.104"
+        },
+        {
+            "ioc_type": "ipv4",
+            "category": [],
+            "ioc": "5.5.5.5"
+        },
+        {
+            "ioc_type": "fqdn",
+            "category": [],
+            "ioc": "fg.ty"
+        }
+    ],
+    "parsed_activity_detected": [],
+    "affected_service": "",
+    "fake_as_path": "",
+    "fake_prefix": "",
+    "fp_type": "Tech",
+    "looking_glass": "",
+    "spam_recipients": "",
+    "tlp": "green",
+    "usual_prefix": "",
+    "usual_as_path": "",
+    "attachments": [],
+    "source": "SIEM",
+    "is_visible_for_customer": true,
+    "external_id": "",
+    "emls": [],
+    "slas": [],
+    "detection_rules": [
+        16
+    ],
+    "first_sent_notification_time": null,
+    "_source": "https://irp.cloud.gcm/api/v0/irp/issue/INC-2336/",
+    "mitre_cov": {
+        "persistence": [
+            "T1001.001"
+        ]
+    },
+    "badges": [],
+    "response_team": null,
+    "watchers": [
+        {
+            "id": 14,
+            "username": "vpa@avz-center.ru",
+            "email": "vpa@avz-center.ru",
+            "first_name": "Павел",
+            "last_name": "Вишницкий",
+            "patronimic": "",
+            "is_active": true
+        }
+    ],
+    "watchers_id": [
+        14
+    ],
+    "updated_all": "2026-03-05T15:45:19.636000+03:00",
+    "gossopka_key": "",
+    "gossopka_errors": {},
+    "gossopka_key_link": null,
+    "show_gossopka_button": false,
+    "cancel_gossopka_send_button": false,
+    "show_gti_button": false
+}

@@ -7,7 +7,7 @@ import (
 )
 
 // ReplacingOldBiZoneData заменяет старые значения типа BiZoneData новыми
-func (d *BiZoneData) ReplacingOldBiZoneData(incomingType BiZoneData) int {
+func (d *BiZoneIRPData) ReplacingOldBiZoneData(incomingType BiZoneIRPData) int {
 	var countReplacingFields int
 
 	currentStruct := reflect.ValueOf(d).Elem()

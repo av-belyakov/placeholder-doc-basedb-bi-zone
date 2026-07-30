@@ -1,6 +1,6 @@
 package elasticsearchapi
 
-import "github.com/elastic/go-elasticsearch/v8"
+import "github.com/elastic/go-elasticsearch/v9"
 
 type Settings struct {
 	NameRegionalObject string

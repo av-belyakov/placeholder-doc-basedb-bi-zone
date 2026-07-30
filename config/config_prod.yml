@@ -16,7 +16,7 @@ KAFKA: # приём информации для её последующей об
   cache_ttl: 3600
   topics:
     alerts: alertmgr-alerts
-    soar-alerts: soar-alertmgr-alerts-default-topic
+    cases: socd-soar-prod-issue-v1
 DATABASESTORAGE: # хранилище принятой информации
   host: datahook.cloud.gcm
   port: 9200
@@ -24,10 +24,14 @@ DATABASESTORAGE: # хранилище принятой информации
   namedb: ""
   storage_name_db:
     alerts: module_placeholderdb_bizone_alerts
-    soar-alerts: module_placeholderdb_bizone_soar-alerts
+    case: module_placeholderdb_bizone_case
 DATABASEWRITELOG: # хранилище логов работы модуля
   host: datahook.cloud.gcm
   port: 9200
   user: log_writer
   namedb: ""
   storage_name_db: module_placeholderdb_bizone
+DebugServer:
+  enable: false
+  host: localhost
+  port: 6565

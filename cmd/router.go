@@ -5,19 +5,19 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/decoderjsondocuments"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/natsapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/natsapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 // NewRouter маршрутизатор сообщений внутри приложения
-func NewRouter(counter interfaces.Counter, logger interfaces.Logger, settings ApplicationRouterSettings) *ApplicationRouter {
+func NewRouter(logger interfaces.Logger, counter interfaces.Counter, settings ApplicationRouterSettings) *ApplicationRouter {
 	return &ApplicationRouter{
-		counter:        counter,
 		logger:         logger,
+		counter:        counter,
 		chToNatsApi:    settings.ChanToNats,
 		chFromNatsApi:  settings.ChanFromNats,
 		chToKafkaApi:   settings.ChanToKafka,
@@ -80,14 +80,14 @@ func (r *ApplicationRouter) Router(ctx context.Context) {
 						}
 					}()
 
-				case "soar-alerts":
+				case "cases":
 					// *************
 					// Здесь нужны разные обработчики
 					// *************
 
 					//soaralert_raw_fields
 
-					fmt.Println("\treceived message from topic: 'soar-alerts'")
+					fmt.Println("\treceived message from topic: 'socd-soar-prod-issue-v1' (case)")
 
 					if str, err := supportingfunctions.NewReadReflectJSONSprint(msg.Data); err == nil {
 						if str != "" {

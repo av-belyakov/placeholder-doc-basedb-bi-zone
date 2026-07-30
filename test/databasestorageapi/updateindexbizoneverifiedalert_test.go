@@ -17,10 +17,10 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/decoderjsondocuments"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/test/helpers"
 )
@@ -29,7 +29,7 @@ func TestUpdateIndexBiZoneVerifiedAlert(t *testing.T) {
 	const Index_ID = "eb62b40e-067a-4261-824f-56c3ff280db3"
 
 	var (
-		verifedBiZoneAlert *datamodels.VerifiedBiZoneAlert
+		verifedBiZoneAlert *datamodels.VerifiedBiZoneIRPAlert
 		apiDBS             *databasestorageapi.DatabaseStorage
 		fb                 []byte
 		id                 string
@@ -156,7 +156,7 @@ func TestUpdateIndexBiZoneVerifiedAlert(t *testing.T) {
 		//выполняем замену искомого документа
 		var countReplacingFields int
 		listDeleting := []databasestorageapi.ServiseOption(nil)
-		updateVerified := datamodels.NewVerifiedBiZoneAlert()
+		updateVerified := datamodels.NewVerifiedBiZoneIRPAlert()
 		//заполняем новый объект информацией из базы данных
 		for _, v := range response.Options.Hits {
 			countReplacingFields += updateVerified.RepalcingOldBiZoneAlert(*v.Source.Get())

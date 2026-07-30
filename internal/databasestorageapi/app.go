@@ -2,27 +2,30 @@ package databasestorageapi
 
 import (
 	"errors"
-	"strings"
 
-	"github.com/elastic/go-elasticsearch/v8/esapi"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 )
 
-// GetChanDataToModule канал для передачи данных в модуль
-func (dbs *DatabaseStorage) GetChanDataToModule() chan SettingsChanInput {
-	return dbs.chInput
-}
+// New настраивает новый модуль взаимодействия с API Database
+func New(logger interfaces.Logger, counter interfaces.Counter, opts ...DatabaseStorageOptions) (*DatabaseStorage, error) {
+	dbs := &DatabaseStorage{
+		counter:  counter,
+		logger:   logger,
+		chInput:  make(chan SettingsChanInput),
+		chOutput: make(chan SettingsChanOutput),
+		settings: settingsDatabaseStorage{
+			maxGetDocumentsSize: 10,
+		},
+	}
 
-// GetChanDataFromModule канал для приёма данных из модуля
-func (dbs *DatabaseStorage) GetChanDataFromModule() chan SettingsChanOutput {
-	return dbs.chOutput
-}
+	for _, opt := range opts {
+		if err := opt(dbs); err != nil {
+			return dbs, err
+		}
+	}
 
-// Update обёртка для обновления документа
-func (dbs *DatabaseStorage) Update(index, underlineId string, bodyUpdate *strings.Reader) (*esapi.Response, error) {
-	return dbs.client.Update(index, underlineId, bodyUpdate)
+	return dbs, nil
 }
-
-//******************* функции настройки опций databasestorageapi ***********************
 
 // WithHost имя или ip адрес хоста API
 func WithHost(v string) DatabaseStorageOptions {

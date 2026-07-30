@@ -1,4 +1,4 @@
-# Placeholder_doc_basedb-bi-zone
+# Placeholder-doc-basedb-bi-zone
 
 [![Go Version](https://img.shields.io/badge/Go-1.24.5+-00ADD8?style=flat&logo=go)](https://golang.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker)](https://www.docker.com/)
@@ -87,3 +87,13 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 Настройки логирования данных в БД не являются обязательными и необходимы только если пользователь приложения желает хранить логи в базе данных.
 
 Приоритет значений заданных через переменные окружения выше чем значений полученных из конфигурационных файлов. Таким образом можно осуществлять гибкую временную настройку приложения.
+
+#### Доступ к kafka ГЦМ
+
+Для доступа к kafka ГЦМ выполните
+
+```bash
+docker run -e xeotek_kadeck_free="my.email@mail.ru" -e xeotek_kadeck_port=8080 -p 8383:8080 -v kadeck_data:/home/.kadeck/ xeotek/kadeck7:7.0.4
+```
+
+Дефолтный логин и пароль для доступа к kadeck admin:admin

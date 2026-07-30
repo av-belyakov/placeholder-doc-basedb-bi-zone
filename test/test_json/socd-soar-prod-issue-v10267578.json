@@ -1,0 +1,155 @@
+{
+    "id": "socd-soar-prod-issue-v10267578",
+    "headers": [
+        {
+            "key": "content-type",
+            "value": "[97, 112, 112, 108, 105, 99, 97, 116, 105, 111, 110, 47, 106, 115, 111, 110]"
+        }
+    ],
+    "offset": 267578,
+    "timestamp": 1774346255756,
+    "timestampType": {
+        "id": "CreateTime",
+        "name": "CreateTime"
+    },
+    "topic": "socd-soar-prod-issue-v1",
+    "partition": 0,
+    "value": {
+        "source": "soar.core",
+        "id": "516d7e1b-8e10-4d3b-960a-87099a45bb41",
+        "type": "soar.core.incident.changed.v1",
+        "specversion": "1.0",
+        "time": "2026-03-24T09:57:28.791931+00:00",
+        "subject": null,
+        "dataschema": null,
+        "data": {
+            "id": "INC-2344",
+            "type": {
+                "id": "Incident",
+                "title": [
+                    {
+                        "value": "Инцидентик",
+                        "language": "ru"
+                    }
+                ]
+            },
+            "tenant": {
+                "id": "8030054",
+                "name": "8030054_НИЦ КИ"
+            },
+            "priority": {
+                "id": "Medium",
+                "title": [
+                    {
+                        "value": "Medium",
+                        "language": "ru"
+                    },
+                    {
+                        "value": "Medium",
+                        "language": "en"
+                    }
+                ]
+            },
+            "assignee": null,
+            "status": {
+                "id": "Передано в поддержку",
+                "title": [
+                    {
+                        "value": "Передано в поддержку",
+                        "language": "ru"
+                    },
+                    {
+                        "value": "Передано в поддержку",
+                        "language": "en"
+                    }
+                ]
+            },
+            "is_public": true,
+            "summary": "Признаки ВПО. Сенсор 8030054. Зарженный IP - 144.206.11.19 -  IOC -147.93.179.130",
+            "description": "<p>Зафиксированы Большое количество подозрительной активности с одного IP-адреса, Зафиксирована подозрительная активность по признакам НКЦКИ, PHP - Injection attempts, Exploit attempts с 147.93.179.130 на объекте 8030054</p>\n<p>Техническая информация:</p>\n<p>Начало ПКИ: <br>\nОкончание ПКИ:</p>",
+            "recommendations": "",
+            "external_id": "",
+            "primary_category": {
+                "id": "Zarajenie-VPO",
+                "title": [
+                    {
+                        "value": "Заражение ВПО",
+                        "language": "ru"
+                    }
+                ]
+            },
+            "created_by": {
+                "id": 45,
+                "username": "803.a.egorov@avz-center.ru"
+            },
+            "created": "2026-03-17T12:33:03.716622Z",
+            "updated": "2026-03-24T09:57:28.724958Z",
+            "resolutiondate": null,
+            "resolution_detailed": "",
+            "customer_star_rating": null,
+            "customer_star_rating_comment": "",
+            "status_description": "",
+            "customer_assignee": null,
+            "detection_date": "2025-02-21T17:22:46.031534Z",
+            "platform_hostname": [
+                "DFL"
+            ],
+            "fp_type": "",
+            "tlp": "amber",
+            "mitre_cov": null,
+            "response_team": null,
+            "resolution": null,
+            "activity_detected": [],
+            "tags": [
+                {
+                    "name": "processed:2026-03-17",
+                    "color": "#2196F3",
+                    "is_visible_for_customer": false
+                },
+                {
+                    "name": "rule:snort_alert_incident",
+                    "color": "#FF6B6B",
+                    "is_visible_for_customer": false
+                },
+                {
+                    "name": "sensor:8030054",
+                    "color": "#9C27B0",
+                    "is_visible_for_customer": false
+                },
+                {
+                    "name": "source:siem",
+                    "color": "#4CAF50",
+                    "is_visible_for_customer": false
+                }
+            ],
+            "detection_rules": [
+                16
+            ],
+            "secondary_category": [
+                {
+                    "id": "Zarajenie-VPO",
+                    "title": [
+                        {
+                            "value": "Заражение ВПО",
+                            "language": "ru"
+                        }
+                    ]
+                },
+                {
+                    "id": "Komprometazia-ucetnoj-zapisi",
+                    "title": [
+                        {
+                            "value": "Компрометация учетной записи",
+                            "language": "ru"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "key": null,
+    "keyMeta": null,
+    "valueMeta": {},
+    "valueDecoder": "Json",
+    "keyDecoder": null
+}

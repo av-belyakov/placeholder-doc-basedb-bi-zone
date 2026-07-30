@@ -68,7 +68,7 @@ func SliceJoinUniq[T comparable](sliceOne, sliceTwo []T) []T {
 	newList := make([]T, 0, numOne+numTwo)
 
 	for _, v := range append(sliceOne, sliceTwo...) {
-		if SliceElemIsExist[T](v, newList) {
+		if SliceElemIsExist(v, newList) {
 			continue
 		}
 
@@ -81,4 +81,19 @@ func SliceJoinUniq[T comparable](sliceOne, sliceTwo []T) []T {
 // SliceElemIsExist проверяет наличие элемента в срезе
 func SliceElemIsExist[T comparable](item T, list []T) bool {
 	return slices.Contains(list, item)
+}
+
+// SliceUniqueValues возвращает срез содержащий только уникальные значения
+func SliceUniqueValues[T comparable](list []T) []T {
+	newList := make([]T, 0, len(list))
+
+	for _, v := range list {
+		if slices.Contains(list, v) {
+			continue
+		}
+
+		newList = append(newList, v)
+	}
+
+	return newList
 }

@@ -40,8 +40,8 @@ var (
 func NewSupportingStructureForTags() *SupportingStructureForTags {
 	return &SupportingStructureForTags{
 		listAcceptedFields: []string(nil),
-		tagTmp:             *NewBiZoneTag(),
-		tags:               []BiZoneTag(nil),
+		tagTmp:             *NewBiZoneIRPTag(),
+		tags:               []BiZoneIRPTag(nil),
 	}
 }
 
@@ -50,7 +50,7 @@ func NewSupportingStructureForTags() *SupportingStructureForTags {
 // список stag.tags, так как ttps автоматически пополняется только при
 // совпадении значений в listAcceptedFields. Соответственно при завершении
 // JSON объекта, последние добавленные значения остаются stags.tagTmp
-func (stags *SupportingStructureForTags) GetTags() []BiZoneTag {
+func (stags *SupportingStructureForTags) GetTags() []BiZoneIRPTag {
 	stags.listAcceptedFields = []string(nil)
 	if stags.tagTmp.Name != "" {
 		stags.tags = append(stags.tags, stags.tagTmp)
@@ -60,7 +60,7 @@ func (stags *SupportingStructureForTags) GetTags() []BiZoneTag {
 }
 
 // GetTagTmp возвращает временный объект tagTmp
-func (stags *SupportingStructureForTags) GetTagTmp() *BiZoneTag {
+func (stags *SupportingStructureForTags) GetTagTmp() *BiZoneIRPTag {
 	return &stags.tagTmp
 }
 
@@ -72,7 +72,7 @@ func (stags *SupportingStructureForTags) HandlerValue(fieldBranch string, a any,
 	if !isExist && stags.isExistFieldBranch(fieldBranch) {
 		stags.listAcceptedFields = []string(nil)
 		stags.tags = append(stags.tags, stags.tagTmp)
-		stags.tagTmp = *NewBiZoneTag()
+		stags.tagTmp = *NewBiZoneIRPTag()
 	}
 
 	stags.listAcceptedFields = append(stags.listAcceptedFields, fieldBranch)
@@ -94,8 +94,8 @@ func (stags *SupportingStructureForTags) isExistFieldBranch(v string) bool {
 func NewSupportingStructureForSnapshots() *SupportingStructureForSnapshots {
 	return &SupportingStructureForSnapshots{
 		listAcceptedFields: []string(nil),
-		snapshotTmp:        *NewBiZneSnapshot(),
-		snapshots:          []BiZoneSnapshot(nil),
+		snapshotTmp:        *NewBiZoneIRPSnapshot(),
+		snapshots:          []BiZoneIRPSnapshot(nil),
 	}
 }
 
@@ -104,7 +104,7 @@ func NewSupportingStructureForSnapshots() *SupportingStructureForSnapshots {
 // список ssnap.snapshots, так как snapshots автоматически пополняется только при
 // совпадении значений в listAcceptedFields. Соответственно при завершении
 // JSON объекта, последние добавленные значения остаются ssnap.snapshotTmp
-func (ssnap *SupportingStructureForSnapshots) GetSnapshots() []BiZoneSnapshot {
+func (ssnap *SupportingStructureForSnapshots) GetSnapshots() []BiZoneIRPSnapshot {
 	ssnap.listAcceptedFields = []string(nil)
 	if ssnap.snapshotTmp.CMDBID != "" {
 		ssnap.snapshots = append(ssnap.snapshots, ssnap.snapshotTmp)
@@ -114,7 +114,7 @@ func (ssnap *SupportingStructureForSnapshots) GetSnapshots() []BiZoneSnapshot {
 }
 
 // GetSnapshotTmp возвращает временный объект snapshotTmp
-func (ssnap *SupportingStructureForSnapshots) GetSnapshotTmp() *BiZoneSnapshot {
+func (ssnap *SupportingStructureForSnapshots) GetSnapshotTmp() *BiZoneIRPSnapshot {
 	return &ssnap.snapshotTmp
 }
 
@@ -126,7 +126,7 @@ func (ssnap *SupportingStructureForSnapshots) HandlerValue(fieldBranch string, a
 	if !isExist && ssnap.isExistFieldBranch(fieldBranch) {
 		ssnap.listAcceptedFields = []string(nil)
 		ssnap.snapshots = append(ssnap.snapshots, ssnap.snapshotTmp)
-		ssnap.snapshotTmp = *NewBiZneSnapshot()
+		ssnap.snapshotTmp = *NewBiZoneIRPSnapshot()
 	}
 
 	ssnap.listAcceptedFields = append(ssnap.listAcceptedFields, fieldBranch)

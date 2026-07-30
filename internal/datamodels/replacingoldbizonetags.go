@@ -1,7 +1,7 @@
 package datamodels
 
 // ReplacingOldBiZoneTags заменяет или добавляет значения свойства VerifiedBiZoneAlert.Tags
-func (va *VerifiedBiZoneAlert) ReplacingOldBiZoneTags(incomingTypes []BiZoneTag) int {
+func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneTags(incomingTypes []BiZoneIRPTag) int {
 	var countReplacingFields int
 
 	for _, incomingType := range incomingTypes {
@@ -19,7 +19,7 @@ func (va *VerifiedBiZoneAlert) ReplacingOldBiZoneTags(incomingTypes []BiZoneTag)
 	return countReplacingFields
 }
 
-func compareTag(currentValue BiZoneTag, incomingValue []BiZoneTag) (int, bool) {
+func compareTag(currentValue BiZoneIRPTag, incomingValue []BiZoneIRPTag) (int, bool) {
 	for k, v := range incomingValue {
 		if v.Name == currentValue.Name {
 			return k, true

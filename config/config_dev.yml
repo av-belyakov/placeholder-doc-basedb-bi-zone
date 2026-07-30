@@ -16,7 +16,7 @@ KAFKA:
   cache_ttl: 3601
   topics:
     alerts: alertmgr-alerts
-    soar-alerts: soar-alertmgr-alerts-default-topic
+    cases: socd-soar-prod-issue-v1
 DATABASESTORAGE:
   host: 192.168.9.208
   port: 9200
@@ -24,10 +24,14 @@ DATABASESTORAGE:
   namedb: ""
   storage_name_db:
     alerts: module_placeholderdb_bizone_alerts
-    soar-alerts: module_placeholderdb_bizone_soar-alerts
+    case: module_placeholderdb_bizone_case
 DATABASEWRITELOG:
   host: 192.168.9.208
   port: 9200
   user: placeholder-docbase-db
   namedb: ""
   storage_name_db: module_placeholderdb_bizone
+DebugServer:
+  enable: true
+  host: localhost
+  port: 6565

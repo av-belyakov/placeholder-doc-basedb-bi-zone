@@ -12,12 +12,12 @@ import (
 // Вернет первым элементом основной уникальный идентификатор события (UUID).
 // Вторым, проверенный объект типа 'alerts'. Третьим список полей которые не были
 // обработаны
-func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, *datamodels.VerifiedBiZoneAlert, map[string]string) {
+func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, *datamodels.VerifiedBiZoneIRPAlert, map[string]string) {
 	// список не обработанных полей
 	var listRawFields map[string]string = make(map[string]string)
 
-	verifiedMainObject := datamodels.NewVerifiedBiZoneAlert()
-	verifiedData := datamodels.NewBiZoneData()
+	verifiedMainObject := datamodels.NewVerifiedBiZoneIRPAlert()
+	verifiedData := datamodels.NewBiZoneIRPData()
 
 	//********* основные обработчики **********
 	//--- alerts ---

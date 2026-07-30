@@ -2,182 +2,179 @@ package datamodels
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
-// ********** Структура Snapshot ***********
-// *****************************************
-
-// NewBiZneSnapshot новый объект
-func NewBiZneSnapshot() *BiZoneSnapshot {
-	return &BiZoneSnapshot{}
+func NewBiZoneIRPSnapshot() *BiZoneIRPSnapshot {
+	return &BiZoneIRPSnapshot{}
 }
 
 // GetIPAddresses для поля IPAddresses
-func (s *BiZoneSnapshot) GetIPAddresses() []string {
+func (s *BiZoneIRPSnapshot) GetIPAddresses() []string {
 	return s.IPAddresses
 }
 
 // SetIPAddresses для поля IPAddresses
-func (s *BiZoneSnapshot) SetIPAddresses(ipAddress []string) {
+func (s *BiZoneIRPSnapshot) SetIPAddresses(ipAddress []string) {
 	s.IPAddresses = ipAddress
 }
 
-// SetIPAddresse добавляет ip адрес в поле IPAddresses
-func (s *BiZoneSnapshot) SetIPAddresse(ipAddress string) {
+// SetIPAddresse добавляет IP адрес в поле IPAddresses
+func (s *BiZoneIRPSnapshot) SetIPAddresse(ipAddress string) {
 	if s.IPAddresses == nil {
 		s.IPAddresses = []string(nil)
+	}
+
+	if slices.Contains(s.IPAddresses, ipAddress) {
+		return
 	}
 
 	s.IPAddresses = append(s.IPAddresses, ipAddress)
 }
 
-// SetAnyIPAddresse добавляет ip адрес в поле IPAddresses
-func (s *BiZoneSnapshot) SetAnyIPAddresse(a any) {
-	if s.IPAddresses == nil {
-		s.IPAddresses = []string(nil)
-	}
-
-	s.IPAddresses = append(s.IPAddresses, fmt.Sprint(a))
+// SetAnyIPAddresse добавляет IP адрес в поле IPAddresses
+func (s *BiZoneIRPSnapshot) SetAnyIPAddresse(a any) {
+	s.SetIPAddresse(fmt.Sprint(a))
 }
 
 // GetMACAddresses для поля MACAddresses
-func (s *BiZoneSnapshot) GetMACAddresses() []string {
-	return s.IPAddresses
+func (s *BiZoneIRPSnapshot) GetMACAddresses() []string {
+	return s.MACAddresses
 }
 
 // SetMACAddresses для поля MACAddresses
-func (s *BiZoneSnapshot) SetMACAddresses(macAddress []string) {
+func (s *BiZoneIRPSnapshot) SetMACAddresses(macAddress []string) {
 	s.MACAddresses = macAddress
 }
 
-// SetMACAddresse добавляет mac адрес в поле MACAddresses
-func (s *BiZoneSnapshot) SetMACAddresse(macAddress string) {
+// SetMACAddresse добавляет MAC адрес в поле MACAddresses
+func (s *BiZoneIRPSnapshot) SetMACAddresse(macAddress string) {
 	if s.MACAddresses == nil {
 		s.MACAddresses = []string(nil)
+	}
+
+	if slices.Contains(s.MACAddresses, macAddress) {
+		return
 	}
 
 	s.MACAddresses = append(s.MACAddresses, macAddress)
 }
 
-// SetAnyMACAddresse добавляет mac адрес в поле MACAddresses
-func (s *BiZoneSnapshot) SetAnyMACAddresse(a any) {
-	if s.MACAddresses == nil {
-		s.MACAddresses = []string(nil)
-	}
-
-	s.MACAddresses = append(s.MACAddresses, fmt.Sprint(a))
+// SetAnyMACAddresse добавляет MAC адрес в поле MACAddresses
+func (s *BiZoneIRPSnapshot) SetAnyMACAddresse(a any) {
+	s.SetMACAddresse(fmt.Sprint(a))
 }
 
 // GetDomain для поля Domain
-func (s *BiZoneSnapshot) GetDomain() string {
+func (s *BiZoneIRPSnapshot) GetDomain() string {
 	return s.Domain
 }
 
 // SetDomain для поля Domain
-func (s *BiZoneSnapshot) SetDomain(domain string) {
+func (s *BiZoneIRPSnapshot) SetDomain(domain string) {
 	s.Domain = domain
 }
 
 // SetAnyDomain для поля Domain
-func (s *BiZoneSnapshot) SetAnyDomain(a any) {
+func (s *BiZoneIRPSnapshot) SetAnyDomain(a any) {
 	s.Domain = fmt.Sprint(a)
 }
 
 // GetFqdn для поля Fqdn
-func (s *BiZoneSnapshot) GetFqdn() string {
+func (s *BiZoneIRPSnapshot) GetFqdn() string {
 	return s.Fqdn
 }
 
 // SetFqdn для поля Fqdn
-func (s *BiZoneSnapshot) SetFqdn(fqdn string) {
+func (s *BiZoneIRPSnapshot) SetFqdn(fqdn string) {
 	s.Fqdn = fqdn
 }
 
 // SetAnyFqdn для поля Fqdn
-func (s *BiZoneSnapshot) SetAnyFqdn(a any) {
+func (s *BiZoneIRPSnapshot) SetAnyFqdn(a any) {
 	s.Fqdn = fmt.Sprint(a)
 }
 
 // GetOS для поля OS
-func (s *BiZoneSnapshot) GetOS() string {
+func (s *BiZoneIRPSnapshot) GetOS() string {
 	return s.OS
 }
 
 // SetOS для поля OS
-func (s *BiZoneSnapshot) SetOS(value string) {
+func (s *BiZoneIRPSnapshot) SetOS(value string) {
 	s.OS = value
 }
 
 // SetAnyOS для поля OS
-func (s *BiZoneSnapshot) SetAnyOS(a any) {
+func (s *BiZoneIRPSnapshot) SetAnyOS(a any) {
 	s.OS = fmt.Sprint(a)
 }
 
 // GetUserCMDBName для поля UserCMDBName
-func (s *BiZoneSnapshot) GetUserCMDBName() string {
+func (s *BiZoneIRPSnapshot) GetUserCMDBName() string {
 	return s.UserCMDBName
 }
 
 // SetUserCMDBName для поля UserCMDBName
-func (s *BiZoneSnapshot) SetUserCMDBName(value string) {
+func (s *BiZoneIRPSnapshot) SetUserCMDBName(value string) {
 	s.UserCMDBName = value
 }
 
 // SetAnyUserCMDBName для поля UserCMDBName
-func (s *BiZoneSnapshot) SetAnyUserCMDBName(a any) {
+func (s *BiZoneIRPSnapshot) SetAnyUserCMDBName(a any) {
 	s.UserCMDBName = fmt.Sprint(a)
 }
 
 // GetCMDBID для поля CMDBID
-func (s *BiZoneSnapshot) GetCMDBID() string {
+func (s *BiZoneIRPSnapshot) GetCMDBID() string {
 	return s.CMDBID
 }
 
 // SetCMDBID для поля CMDBID
-func (s *BiZoneSnapshot) SetCMDBID(value string) {
+func (s *BiZoneIRPSnapshot) SetCMDBID(value string) {
 	s.CMDBID = value
 }
 
 // SetAnyCMDBID для поля CMDBID
-func (s *BiZoneSnapshot) SetAnyCMDBID(a any) {
+func (s *BiZoneIRPSnapshot) SetAnyCMDBID(a any) {
 	s.CMDBID = fmt.Sprint(a)
 }
 
 // GetHostname для поля Hostname
-func (s *BiZoneSnapshot) GetHostname() string {
+func (s *BiZoneIRPSnapshot) GetHostname() string {
 	return s.Hostname
 }
 
 // SetHostname для поля Hostname
-func (s *BiZoneSnapshot) SetHostname(hostname string) {
+func (s *BiZoneIRPSnapshot) SetHostname(hostname string) {
 	s.Hostname = hostname
 }
 
 // SetAnyHostname для поля Hostname
-func (s *BiZoneSnapshot) SetAnyHostname(a any) {
+func (s *BiZoneIRPSnapshot) SetAnyHostname(a any) {
 	s.Hostname = fmt.Sprint(a)
 }
 
 // GetOSType для поля OSType
-func (s *BiZoneSnapshot) GetOSType() string {
+func (s *BiZoneIRPSnapshot) GetOSType() string {
 	return s.OSType
 }
 
 // SetOSType для поля OSType
-func (s *BiZoneSnapshot) SetOSType(osType string) {
+func (s *BiZoneIRPSnapshot) SetOSType(osType string) {
 	s.OSType = osType
 }
 
 // SetAnyOSType для поля OSType
-func (s *BiZoneSnapshot) SetAnyOSType(a any) {
+func (s *BiZoneIRPSnapshot) SetAnyOSType(a any) {
 	s.OSType = fmt.Sprint(a)
 }
 
 // ToStringBeautiful форматированный вывод
-func (s *BiZoneSnapshot) ToStringBeautiful(num int) string {
+func (s *BiZoneIRPSnapshot) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)

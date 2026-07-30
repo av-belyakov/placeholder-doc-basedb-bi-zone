@@ -1,6 +1,7 @@
 package datamodels
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -8,75 +9,80 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
-// ************* Структура BiZoneTag *************
-// ***********************************************
-
-// NewBiZoneTag новый объект
-func NewBiZoneTag() *BiZoneTag {
-	return &BiZoneTag{
+func NewBiZoneIRPTag() *BiZoneIRPTag {
+	return &BiZoneIRPTag{
 		Created: time.Now().Format(time.RFC3339),
 	}
 }
 
 // GetCreated для поля Created (формат RFC3339)
-func (t *BiZoneTag) GetCreated() string {
+func (t *BiZoneIRPTag) GetCreated() string {
 	return t.Created
 }
 
-// SetCreated для поля Created (формат RFC3339)
-func (t *BiZoneTag) SetCreated(created string) {
-	t.Created = created
+// SetCreated для поля Created (преобразует в формат времени RFC3339)
+func (t *BiZoneIRPTag) SetCreated(v string) error {
+	timeStr, err := supportingfunctions.SmartConvertToRFC3339(v)
+	if err != nil {
+		return err
+	}
+
+	t.Created = timeStr
+
+	return nil
 }
 
-// SetAnyCreated для поля Created (формат RFC3339)
-func (t *BiZoneTag) SetAnyCreated(a any) {
-	//tmp := supportingfunctions.ConversionAnyToInt(a)
-	//t.Created = supportingfunctions.GetDateTimeFormatRFC3339(int64(tmp))
-	t.Created = fmt.Sprint(a)
+// SetAnyCreated для поля Created
+func (t *BiZoneIRPTag) SetAnyCreated(a any) error {
+	if v, ok := a.(string); ok {
+		return t.SetCreated(v)
+	}
+
+	return errors.New("type conversion error")
 }
 
 // GetName для поля Name
-func (t *BiZoneTag) GetName() string {
+func (t *BiZoneIRPTag) GetName() string {
 	return t.Name
 }
 
 // SetName для поля Name
-func (t *BiZoneTag) SetName(name string) {
+func (t *BiZoneIRPTag) SetName(name string) {
 	t.Name = name
 }
 
 // SetAnyName для поля Name
-func (t *BiZoneTag) SetAnyName(a any) {
+func (t *BiZoneIRPTag) SetAnyName(a any) {
 	t.Name = fmt.Sprint(a)
 }
 
 // GetColor для поля Color
-func (t *BiZoneTag) GetColor() string {
+func (t *BiZoneIRPTag) GetColor() string {
 	return t.Color
 }
 
 // SetColor для поля Color
-func (t *BiZoneTag) SetColor(color string) {
+func (t *BiZoneIRPTag) SetColor(color string) {
 	t.Color = color
 }
 
 // SetAnyColor для поля Color
-func (t *BiZoneTag) SetAnyColor(a any) {
+func (t *BiZoneIRPTag) SetAnyColor(a any) {
 	t.Color = fmt.Sprint(a)
 }
 
 // GetCreatedByID для поля CreatedBy.ID
-func (t *BiZoneTag) GetCreatedByID() uint64 {
+func (t *BiZoneIRPTag) GetCreatedByID() uint64 {
 	return t.CreatedBy.ID
 }
 
 // SetCreatedByID для поля CreatedBy.ID
-func (t *BiZoneTag) SetCreatedByID(id uint64) {
+func (t *BiZoneIRPTag) SetCreatedByID(id uint64) {
 	t.CreatedBy.ID = id
 }
 
 // SetAnyCreatedByID для поля CreatedBy.ID
-func (t *BiZoneTag) SetAnyCreatedByID(a any) {
+func (t *BiZoneIRPTag) SetAnyCreatedByID(a any) {
 	if v, ok := a.(float32); ok {
 		t.CreatedBy.ID = uint64(v)
 
@@ -95,22 +101,22 @@ func (t *BiZoneTag) SetAnyCreatedByID(a any) {
 }
 
 // GetCreatedByUsername для поля CreatedBy.Username
-func (t *BiZoneTag) GetCreatedByUsername() string {
+func (t *BiZoneIRPTag) GetCreatedByUsername() string {
 	return t.CreatedBy.Username
 }
 
 // SetCreatedByUsername для поля CreatedBy.Username
-func (t *BiZoneTag) SetCreatedByUsername(username string) {
+func (t *BiZoneIRPTag) SetCreatedByUsername(username string) {
 	t.CreatedBy.Username = username
 }
 
 // SetAnyCreatedByUsername для поля CreatedBy.Username
-func (t *BiZoneTag) SetAnyCreatedByUsername(a any) {
+func (t *BiZoneIRPTag) SetAnyCreatedByUsername(a any) {
 	t.CreatedBy.Username = fmt.Sprint(a)
 }
 
 // ToStringBeautiful форматированный вывод
-func (t *BiZoneTag) ToStringBeautiful(num int) string {
+func (t *BiZoneIRPTag) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)

@@ -7,7 +7,7 @@ import (
 )
 
 // ReplacingOldBiZOneSnapshot заменяет старые значения типа BiZoneSnapshot новыми
-func (s *BiZoneSnapshot) ReplacingOldBiZOneSnapshot(incomingType BiZoneSnapshot) int {
+func (s *BiZoneIRPSnapshot) ReplacingOldBiZOneSnapshot(incomingType BiZoneIRPSnapshot) int {
 	var countReplacingFields int
 
 	currentStruct := reflect.ValueOf(s).Elem()

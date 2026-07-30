@@ -26,24 +26,24 @@ LOGGING:
     writingFile: true
     pathDirectory: logs
     maxFileSize: 10000000
-  - msgTypeName: alert_raw_fields,
+  - msgTypeName: alert_raw_fields
     writingDB: false
     writingStdout: false
     writingFile: true
     pathDirectory: logs
-    maxFileSize: 10000000
+    maxFileSize: 100000000
   - msgTypeName: soaralert_raw_fields
     writingDB: false
     writingStdout: false
     writingFile: true
     pathDirectory: logs
-    maxFileSize: 10000000
+    maxFileSize: 100000000
   - msgTypeName: events
     writingDB: false
     writingStdout: false
     writingFile: true
     pathDirectory: logs
-    maxFileSize: 10000000
+    maxFileSize: 100000000
 
 #****   ZABBIX настройки подключения к серверу Zabbix ****
 #

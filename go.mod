@@ -1,12 +1,13 @@
 module github.com/av-belyakov/placeholder_doc-basedb_bi.zone
 
-go 1.24.5
+go 1.25
 
 require (
 	github.com/av-belyakov/simplelogger v0.0.0-20250708122117-e5df57013a70
 	github.com/av-belyakov/zabbixapicommunicator v0.0.0-20250618124251-10a4a23cd7ca
+	github.com/brianvoe/gofakeit/v7 v7.14.1
 	github.com/confluentinc/confluent-kafka-go/v2 v2.11.1
-	github.com/elastic/go-elasticsearch/v8 v8.19.0
+	github.com/elastic/go-elasticsearch/v9 v9.4.2
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/goforj/godump v1.6.0
 	github.com/google/uuid v1.6.0
@@ -18,7 +19,7 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/elastic/elastic-transport-go/v8 v8.7.0 // indirect
+	github.com/elastic/elastic-transport-go/v8 v8.9.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.9 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect

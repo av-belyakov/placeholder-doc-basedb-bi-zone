@@ -1,18 +1,31 @@
 package kafkaapi
 
-import "errors"
+import (
+	"errors"
 
-// GetChanDataToModule канал для передачи данных в модуль
-func (api *kafkaApiModule) GetChanDataToModule() chan SettingsChanInput {
-	return api.chToModule
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
+)
+
+// New настраивает модуль взаимодействия с API Kafka
+func New(logger interfaces.Logger, counter interfaces.Counter, opts ...KafkaApiOptions) (*kafkaApiModule, error) {
+	api := &kafkaApiModule{
+		counter: counter,
+		logger:  logger,
+		settings: kafkaApiSettings{
+			cachettl: 15,
+		},
+		chFromModule: make(chan SettingsChanOutput),
+		chToModule:   make(chan SettingsChanInput),
+	}
+
+	for _, opt := range opts {
+		if err := opt(api); err != nil {
+			return api, err
+		}
+	}
+
+	return api, nil
 }
-
-// GetChanDataFromModule канал для приёма данных из модуля
-func (api *kafkaApiModule) GetChanDataFromModule() chan SettingsChanOutput {
-	return api.chFromModule
-}
-
-//******************* функции настройки опций kafkaapi ***********************
 
 // WithHost имя или ip адрес хоста API
 func WithHost(v string) KafkaApiOptions {

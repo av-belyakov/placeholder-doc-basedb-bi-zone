@@ -1,7 +1,7 @@
 package datamodels
 
 // ReplacingOldBiZoneSnapshots заменяет или добавляет значения свойства VerifiedBiZoneAlert.Snapshots
-func (va *VerifiedBiZoneAlert) ReplacingOldBiZoneSnapshots(incomingTypes []BiZoneSnapshot) int {
+func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneSnapshots(incomingTypes []BiZoneIRPSnapshot) int {
 	var countReplacingFields int
 
 	for _, incomingType := range incomingTypes {
@@ -19,7 +19,7 @@ func (va *VerifiedBiZoneAlert) ReplacingOldBiZoneSnapshots(incomingTypes []BiZon
 	return countReplacingFields
 }
 
-func compareSnapshot(currentValue BiZoneSnapshot, incomingValue []BiZoneSnapshot) (int, bool) {
+func compareSnapshot(currentValue BiZoneIRPSnapshot, incomingValue []BiZoneIRPSnapshot) (int, bool) {
 	for k, v := range incomingValue {
 		if v.CMDBID == currentValue.CMDBID {
 			return k, true

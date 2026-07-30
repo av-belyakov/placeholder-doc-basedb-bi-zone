@@ -1,18 +1,36 @@
+// Модуль для взаимодействия с API NATS
 package natsapi
 
-import "errors"
+import (
+	"errors"
 
-// GetChanDataToModule канал для передачи данных в модуль
-func (api *apiNatsModule) GetChanDataToModule() chan SettingsChanInput {
-	return api.chToModule
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
+)
+
+// New настраивает новый модуль взаимодействия с API NATS
+func New(logger interfaces.Logger, counter interfaces.Counter, opts ...NatsApiOptions) (*apiNatsModule, error) {
+	api := &apiNatsModule{
+		settings: apiNatsSettings{
+			cachettl: 10,
+		},
+		//для подсчёта
+		counter: counter,
+		//для логирования
+		logger: logger,
+		//запросы в модуль
+		chFromModule: make(chan SettingsChanOutput),
+		//события из модуля
+		chToModule: make(chan SettingsChanInput),
+	}
+
+	for _, opt := range opts {
+		if err := opt(api); err != nil {
+			return api, err
+		}
+	}
+
+	return api, nil
 }
-
-// GetChanDataFromModule канал для приёма данных из модуля
-func (api *apiNatsModule) GetChanDataFromModule() chan SettingsChanOutput {
-	return api.chFromModule
-}
-
-//******************* функции настройки опций natsapi ***********************
 
 // WithHost имя или ip адрес хоста API
 func WithHost(v string) NatsApiOptions {

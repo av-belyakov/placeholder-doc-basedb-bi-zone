@@ -43,7 +43,7 @@ func GetListSensorId(objects []datamodels.SensorInformation) []string {
 }
 
 // CreateListSensors список с идентификаторами сенсоров
-func CreateListSensors(verifiedData *datamodels.BiZoneData) *datamodels.AdditionalInformation {
+func CreateListSensors(verifiedData *datamodels.BiZoneIRPData) *datamodels.AdditionalInformation {
 	information := &datamodels.AdditionalInformation{
 		Sensors: []datamodels.SensorInformation(nil),
 	}
@@ -77,7 +77,7 @@ func CreateListSensors(verifiedData *datamodels.BiZoneData) *datamodels.Addition
 }
 
 // CreateListIpAddreses список с ip адресами
-func CreateListIpAddreses(verifiedMainObject *datamodels.VerifiedBiZoneAlert) *datamodels.AdditionalInformation {
+func CreateListIpAddreses(verifiedMainObject *datamodels.VerifiedBiZoneIRPAlert) *datamodels.AdditionalInformation {
 	information := &datamodels.AdditionalInformation{
 		IpAddresses: []datamodels.IpAddressInformation(nil),
 	}

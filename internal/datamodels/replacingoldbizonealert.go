@@ -5,7 +5,7 @@ import (
 )
 
 // RepalcingOldBiZoneAlert заменяет старые значения типа VerifiedBiZoneAlert новыми
-func (va *VerifiedBiZoneAlert) RepalcingOldBiZoneAlert(incomingType VerifiedBiZoneAlert) int {
+func (va *VerifiedBiZoneIRPAlert) RepalcingOldBiZoneAlert(incomingType VerifiedBiZoneIRPAlert) int {
 	var countReplacingFields int
 
 	currentStruct := reflect.ValueOf(va).Elem()
@@ -21,7 +21,7 @@ func (va *VerifiedBiZoneAlert) RepalcingOldBiZoneAlert(incomingType VerifiedBiZo
 			}
 
 			if typeOfCurrentStruct.Field(i).Name == "Snapshots" {
-				if snapshots, ok := newStruct.Field(j).Interface().([]BiZoneSnapshot); ok {
+				if snapshots, ok := newStruct.Field(j).Interface().([]BiZoneIRPSnapshot); ok {
 					countReplacingFields += va.ReplacingOldBiZoneSnapshots(snapshots)
 				}
 
@@ -29,7 +29,7 @@ func (va *VerifiedBiZoneAlert) RepalcingOldBiZoneAlert(incomingType VerifiedBiZo
 			}
 
 			if typeOfCurrentStruct.Field(i).Name == "Tags" {
-				if tags, ok := newStruct.Field(j).Interface().([]BiZoneTag); ok {
+				if tags, ok := newStruct.Field(j).Interface().([]BiZoneIRPTag); ok {
 					countReplacingFields += va.ReplacingOldBiZoneTags(tags)
 				}
 
@@ -37,7 +37,7 @@ func (va *VerifiedBiZoneAlert) RepalcingOldBiZoneAlert(incomingType VerifiedBiZo
 			}
 
 			if typeOfCurrentStruct.Field(i).Name == "Data" {
-				if data, ok := newStruct.Field(j).Interface().(BiZoneData); ok {
+				if data, ok := newStruct.Field(j).Interface().(BiZoneIRPData); ok {
 					countReplacingFields += va.Data.ReplacingOldBiZoneData(data)
 				}
 

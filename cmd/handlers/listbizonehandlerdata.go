@@ -3,7 +3,7 @@ package handlers
 import "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 
 // NewListBiZoneHandlerData начальный обработчик событий топика 'data.*'
-func NewListBiZoneHandlerData(data *datamodels.BiZoneData) map[string][]func(any) {
+func NewListBiZoneHandlerData(data *datamodels.BiZoneIRPData) map[string][]func(any) {
 	return map[string][]func(any){
 		"data._id":           {data.SetAnyID},
 		"data.title":         {data.SetAnyTitle},

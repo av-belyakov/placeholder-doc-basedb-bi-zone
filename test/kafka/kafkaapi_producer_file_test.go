@@ -24,7 +24,7 @@ func TestKafkaProducerFile(t *testing.T) {
 		id                 string
 		fb                 []byte
 		producer           *kafka.Producer
-		verifedBiZoneAlert *datamodels.VerifiedBiZoneAlert
+		verifedBiZoneAlert *datamodels.VerifiedBiZoneIRPAlert
 
 		topic string = "object.topicalerttype.test"
 

@@ -15,7 +15,10 @@ func NewListBiZoneHandlerTags(sst *datamodels.SupportingStructureForTags) map[st
 		}},
 		//--- created ---
 		"tags.created": {func(a any) {
-			sst.HandlerValue("data.tags.created", a, sst.GetTagTmp().SetAnyCreated)
+			sst.HandlerValue("data.tags.created", a, func(a any) {
+				//sst.GetTagTmp().SetAnyCreated может возвращать ошибку, которая пока не как бы обрабатывается
+				_ = sst.GetTagTmp().SetAnyCreated(a)
+			})
 		}},
 		//--- created_by.id ---
 		"tags.created_by.id": {func(a any) {
