@@ -17,6 +17,8 @@ KAFKA: # приём информации для её последующей об
   topics:
     alerts: alertmgr-alerts
     cases: socd-soar-prod-issue-v1
+  cert_path: "/certs/ca.crt"
+  trust_store_path: "/certs/truststore.jks"
 DATABASESTORAGE: # хранилище принятой информации
   host: datahook.cloud.gcm
   port: 9200

@@ -13,7 +13,6 @@ type Common struct {
 	RegionalObject string
 	Logs           []*LogSet
 	Zabbix         ZabbixOptions
-	Profiling      ProfilingOptions
 }
 
 type Logs struct {
@@ -52,15 +51,6 @@ type Handshake struct {
 	TimeInterval int    `yaml:"timeInterval"`
 }
 
-type ProfilingSet struct {
-	Profiling ProfilingOptions
-}
-
-type ProfilingOptions struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
-}
-
 type CfgNats struct {
 	EnrichingQueries map[string]string `yaml:"enriching_queries"`
 	Subscriptions    map[string]string `yaml:"subscriptions"`
@@ -70,10 +60,14 @@ type CfgNats struct {
 }
 
 type CfgKafka struct {
-	Topics   map[string]string `yaml:"topics"`
-	Host     string            `validate:"required" yaml:"host"`
-	Port     int               `validate:"gt=0,lte=65535" yaml:"port"`
-	CacheTTL int               `validate:"gt=10,lte=86400" yaml:"cache_ttl"`
+	Topics         map[string]string `yaml:"topics"`
+	Login          string            `yaml:"login"`
+	Passwd         string            `yaml:"passwd"`
+	CertPath       string            `yaml:"cert_path"`
+	TrustStorePath string            `yaml:"trust_store_path"`
+	Host           string            `validate:"required" yaml:"host"`
+	Port           int               `validate:"gt=0,lte=65535" yaml:"port"`
+	CacheTTL       int               `validate:"gt=10,lte=86400" yaml:"cache_ttl"`
 }
 
 type CfgStorageDB struct {

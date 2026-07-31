@@ -1,0 +1,30 @@
+version: "3.4"
+
+services:
+  kafka-ui:
+    image: kafbat/kafka-ui:main
+    container_name: kafka-ui
+    restart: unless-stopped
+    networks:
+      - soc-network
+    ports:
+      - 8181:8080
+    env_file: .env
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-kafka
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:39093
+      KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL: SSL
+      KAFKA_CLUSTERS_0_PROPERTIES_SSL_KEY_PASSWORD: $KAFKA_SSL_KEY_PASSWORD
+      KAFKA_CLUSTERS_0_PROPERTIES_SSL_KEYSTORE_PASSWORD: $KAFKA_SSL_KEY_PASSWORD
+      KAFKA_CLUSTERS_0_SSL_TRUSTSTOREPASSWORD: $KAFKA_SSL_KEY_PASSWORD
+      KAFKA_CLUSTERS_0_PROPERTIES_SSL_KEYSTORE_LOCATION: /certs/client.keystore.jks
+      KAFKA_CLUSTERS_0_SSL_TRUSTSTORELOCATION: /certs/client.truststore.jks
+      # KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: "" отключает проверку hostname для SSL
+      KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: ""
+    volumes:
+      - $PWD/$CERT_DIR/client.keystore.jks:/certs/client.keystore.jks:ro
+      - $PWD/$CERT_DIR/kafka.truststore.jks:/certs/client.truststore.jks:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - kafka

@@ -20,39 +20,7 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	os.Unsetenv("GO_PHDOCBASEDBBZ_MAIN")
-
-	//настройка наименования регионального объекта
-	os.Unsetenv("GO_PHDOCBASEDBBZ_REGIONALOBJECT")
-
-	//настройки NATS
-	os.Unsetenv("GO_PHDOCBASEDBBZ_NHOST")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_NPORT")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_NCACHETTL")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_NSUBLISTENER")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_NENRICHINGQUER")
-
-	//настройки Kafka
-	os.Unsetenv("GO_PHDOCBASEDBBZ_KHOST")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_KPORT")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_KTOPICS")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_KCACHETTL")
-
-	// Настройки доступа к БД в которую будут записыватся alert и case
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEN")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEHOST")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPORT")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGENAME")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEUSER")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD")
-
-	//настройки доступа к БД в которую будут записыватся логи
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGHOST")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGPORT")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGNAME")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGUSER")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGPASSWD")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME")
+	cleanEnv()
 
 	//загружаем ключи и пароли
 	if err := godotenv.Load("../../.env"); err != nil {
@@ -87,8 +55,7 @@ func TestConfigHandler(t *testing.T) {
 			}
 
 			listSubscriptions := map[string]string{
-				"alert": "object.alerttype.test",
-				"case":  "object.casetype.test",
+				"some": "somesubscription",
 			}
 			for k, v := range listSubscriptions {
 				s, ok := conf.GetNATS().Subscriptions[k]
@@ -126,8 +93,8 @@ func TestConfigHandler(t *testing.T) {
 			assert.Equal(t, conf.GetStorageDB().NameDB, "")
 
 			list := map[string]string{
-				"alert": "testtt.module_placeholderdb_alert",
-				"case":  "testtt.module_placeholderdb_case",
+				"alerts":      "module_placeholderdb_bizone_alerts.test",
+				"soar-alerts": "module_placeholderdb_bizone_soar-alerts.test",
 			}
 			for k, v := range list {
 				s, ok := conf.GetStorageDB().Storage[k]
@@ -144,11 +111,12 @@ func TestConfigHandler(t *testing.T) {
 			assert.Equal(t, conf.GetLogDB().NameDB, "")
 			assert.Equal(t, conf.GetLogDB().StorageNameDB, "placeholder_docbasedb-bizone")
 		})
-	})
 
-	t.Run("Тест настройки профилирования из файла config.yml", func(t *testing.T) {
-		assert.Equal(t, conf.Common.Profiling.Host, "")
-		assert.Equal(t, conf.Common.Profiling.Port, 6162)
+		t.Run("Тест 6. Проверка настроек сервера отладки", func(t *testing.T) {
+			assert.True(t, conf.DebugServer.Enable)
+			assert.Equal(t, conf.DebugServer.Host, "localhost")
+			assert.Equal(t, conf.DebugServer.Port, int(6565))
+		})
 	})
 
 	t.Run("Тест чтения переменных окружения", func(t *testing.T) {
@@ -192,6 +160,8 @@ func TestConfigHandler(t *testing.T) {
 			os.Setenv("GO_PHDOCBASEDBBZ_KPORT", "8977")
 			os.Setenv("GO_PHDOCBASEDBBZ_KTOPICS", "alerts:new_topic_for_alerts;soma-ealerts:some_new_alert_topic")
 			os.Setenv("GO_PHDOCBASEDBBZ_KCACHETTL", "4800")
+			os.Setenv("GO_PHDOCBASEDBBZ_KLOGIN")
+			os.Setenv("GO_PHDOCBASEDBBZ_KPASSWD")
 
 			conf, err := confighandler.New(Root_Dir)
 			assert.NoError(t, err)
@@ -258,4 +228,47 @@ func TestConfigHandler(t *testing.T) {
 			assert.Equal(t, conf.GetLogDB().StorageNameDB, "log_storage")
 		})
 	})
+
+	t.Cleanup(func() {
+		cleanEnv()
+	})
+}
+
+func cleanEnv() {
+	os.Unsetenv("GO_PHDOCBASEDBBZ_MAIN")
+
+	//настройка наименования регионального объекта
+	os.Unsetenv("GO_PHDOCBASEDBBZ_REGIONALOBJECT")
+
+	//настройки NATS
+	os.Unsetenv("GO_PHDOCBASEDBBZ_NHOST")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_NPORT")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_NCACHETTL")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_NSUBLISTENER")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_NENRICHINGQUER")
+
+	//настройки Kafka
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KHOST")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KPORT")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KTOPICS")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KCACHETTL")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KLOGIN")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KPASSWD")
+
+	// Настройки доступа к БД в которую будут записыватся alert и case
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEN")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEHOST")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPORT")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGENAME")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEUSER")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD")
+
+	//настройки доступа к БД в которую будут записыватся логи
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGHOST")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGPORT")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGNAME")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGUSER")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGPASSWD")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME")
+
 }

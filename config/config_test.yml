@@ -17,10 +17,12 @@ KAFKA:
   topics:
     alerts: object.topicalerttype.test
     soar-alerts: object.topicsoaralertstype.test
+  cert_path: "/certs/ca.crt"
+  trust_store_path: "/certs/truststore.jks"
 DATABASESTORAGE:
   host: 192.168.9.208
   port: 9200
-  user: placeholder-docbase-db
+  user: placeholder-docbasedb-bizone
   namedb: ""
   storage_name_db:
     alerts: module_placeholderdb_bizone_alerts.test
@@ -28,9 +30,9 @@ DATABASESTORAGE:
 DATABASEWRITELOG:
   host: 192.168.9.208
   port: 9200
-  user: placeholder-docbase-db
+  user: placeholder-docbasedb-bizone
   namedb: ""
-  storage_name_db: placeholder_doc-base-db
+  storage_name_db: placeholder_docbasedb-bizone
 DebugServer:
   enable: true
   host: localhost

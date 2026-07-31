@@ -2,8 +2,13 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"net"
+	"net/http"
 	"strings"
+
+	"golang.org/x/sync/errgroup"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
@@ -66,20 +71,15 @@ func NewApp(ctx context.Context) *App {
 }
 
 func (a *App) Start() {
-	// сервер для отладки
-	//
-	//
-	// это раскоментировать когда будет дописан раздел конфигурации
-	// связанный с отладкой приложения
-	//
-	//
-	/*if a.diContainer.Configer().GetDebugServer().Enable {
+	// сервер отладки
+	if a.diContainer.Configer().GetDebugServer().Enable {
 		go func() {
-			host := a.diContainer.Configer().GetDebugServer().Host
-			port := a.diContainer.Configer().GetDebugServer().Port
-
 			httpServer := &http.Server{
-				Addr: fmt.Sprintf("%s:%d", host, port),
+				Addr: fmt.Sprintf(
+					"%s:%d",
+					a.diContainer.Configer().GetDebugServer().Host,
+					a.diContainer.Configer().GetDebugServer().Port,
+				),
 				BaseContext: func(_ net.Listener) context.Context {
 					return a.ctx
 				},
@@ -95,13 +95,11 @@ func (a *App) Start() {
 				return httpServer.Shutdown(context.Background())
 			})
 
-			log.Printf("%vdebug server %v%s:%d%v\n", constants.Ansi_Bright_Green, constants.Ansi_Dark_Gray, host, port, constants.Ansi_Reset)
-
 			if err := g.Wait(); err != nil {
 				log.Fatal("error debugging server:", err)
 			}
 		}()
-	}*/
+	}
 
 	// вывод информационного сообщения при старте приложения
 	msg := getInformationMessage(a.diContainer.Configer().Get())

@@ -36,6 +36,7 @@ type Configer interface {
 	GetStorageDB() confighandler.CfgStorageDB
 	GetLogDB() confighandler.CfgWriteLogDB
 	GetZabbix() confighandler.ZabbixOptions
+	GetDebugServer() confighandler.CfgDebugServer
 }
 
 type NatsConnecter interface {

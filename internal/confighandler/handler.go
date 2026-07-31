@@ -36,6 +36,8 @@ func New(rootDir string) (*Config, error) {
 			"GO_PHDOCBASEDBBZ_KPORT":     "",
 			"GO_PHDOCBASEDBBZ_KTOPICS":   "",
 			"GO_PHDOCBASEDBBZ_KCACHETTL": "",
+			"GO_PHDOCBASEDBBZ_KLOGIN":    "",
+			"GO_PHDOCBASEDBBZ_KPASSWD":   "",
 
 			//Настройки доступа к БД в которую будут записыватся полученные объекты
 			"GO_PHDOCBASEDBBZ_DBSTORAGEN":      "",
@@ -100,18 +102,6 @@ func New(rootDir string) (*Config, error) {
 			}
 		}
 
-		p := ProfilingSet{}
-		if ok := viper.IsSet("PROFILING"); ok {
-			if err := viper.GetViper().Unmarshal(&p); err != nil {
-				return err
-			}
-
-			cfg.Common.Profiling = ProfilingOptions{
-				Host: p.Profiling.Host,
-				Port: p.Profiling.Port,
-			}
-		}
-
 		return nil
 	}
 
@@ -156,6 +146,12 @@ func New(rootDir string) (*Config, error) {
 		}
 		if viper.IsSet("KAFKA.topics") {
 			cfg.Kafka.Topics = viper.GetStringMapString("KAFKA.topics")
+		}
+		if viper.IsSet("KAFKA.cert_path") {
+			cfg.Kafka.CertPath = viper.GetString("KAFKA.cert_path")
+		}
+		if viper.IsSet("KAFKA.trust_store_path") {
+			cfg.Kafka.TrustStorePath = viper.GetString("KAFKA.trust_store_path")
 		}
 
 		// Настройки доступа к БД в которую будет записыватся основная информация
@@ -333,6 +329,12 @@ func New(rootDir string) (*Config, error) {
 				}
 			}
 		}
+	}
+	if envList["GO_PHDOCBASEDBBZ_KLOGIN"] != "" {
+		cfg.Kafka.Login = envList["GO_PHDOCBASEDBBZ_KLOGIN"]
+	}
+	if envList["GO_PHDOCBASEDBBZ_KPASSWD"] != "" {
+		cfg.Kafka.Passwd = envList["GO_PHDOCBASEDBBZ_KPASSWD"]
 	}
 
 	//Настройки доступа к БД в которую будет добавлятся информация по alert и case

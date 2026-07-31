@@ -17,6 +17,8 @@ KAFKA:
   topics:
     alerts: alertmgr-alerts
     cases: socd-soar-prod-issue-v1
+  cert_path: "/certs/ca.crt"
+  trust_store_path: "/certs/truststore.jks"
 DATABASESTORAGE:
   host: 192.168.9.208
   port: 9200
