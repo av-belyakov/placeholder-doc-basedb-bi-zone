@@ -1,0 +1,25 @@
+services:
+  kafka-ui:
+    image: kafbat/kafka-ui:main
+    container_name: kafka-ui
+    restart: unless-stopped
+    ports:
+      - 8383:8080
+    env_file: .env
+    environment:
+      # KAFKA_CLUSTERS_0_NAME: local
+      # KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 192.168.9.206:29092
+      KAFKA_CLUSTERS_0_NAME: bi.zone
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 192.168.9.73:30932
+      KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL: SASL_SSL
+      SPRING_SECURITY_USER_NAME: $GO_PHDOCBASEDBBZ_KLOGIN # Ваш логин
+      SPRING_SECURITY_USER_PASSWORD: $GO_PHDOCBASEDBBZ_KPASSWD # Ваш пароль
+      KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM: SCRAM-SHA-512
+      KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username=siem2 password=rdhMrFmweDuFTimiovDoNIt7IyJ888gG;
+      KAFKA_CLUSTERS_0_PROPERTIES_SSL_TRUSTSTORE_LOCATION: /kafka/secrets/truststore.jks
+      # KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: "" отключает проверку hostname для SSL
+      KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: ""
+    volumes:
+      - $PWD/secrets:/kafka/secrets:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro

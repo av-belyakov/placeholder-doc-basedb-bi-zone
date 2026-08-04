@@ -1,5 +1,4 @@
 COMMONINFO:
-  file_name: config_dev.yml
   regional_object: gcm-dev
 NATS:
   host: 192.168.9.208
@@ -33,7 +32,7 @@ DATABASEWRITELOG:
   user: placeholder-docbase-db
   namedb: ""
   storage_name_db: module_placeholderdb_bizone
-DebugServer:
+DEBUGSERVER:
   enable: true
   host: localhost
   port: 6565

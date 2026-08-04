@@ -67,25 +67,22 @@ ZABBIX:
   eventTypes:
     # для отслеживания ошибок
     - eventType: error
-      zabbixKey: placeholder_elasticsearch.error
+      zabbixKey: placeholder_db_bizone.error
       isTransmit: true
       handshake:
         timeInterval: 0
         message:
     # для информационных сообщений о выполненной работе
     - eventType: info
-      zabbixKey: placeholder_elasticsearch.info
+      zabbixKey: placeholder_db_bizone.info
       isTransmit: true
       handshake:
         timeInterval: 0
         message: "I'm still alive"
     # для регулярного отстукивания что модуль еще работает
     - eventType: handshake
-      zabbixKey: placeholder_elasticsearch.handshake
+      zabbixKey: placeholder_db_bizone.handshake
       isTransmit: true
       handshake:
         timeInterval: 1
         message: "0"
-PROFILING:
-  host:
-  port: 6163

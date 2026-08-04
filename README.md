@@ -43,14 +43,14 @@ export GO_PHDOCBASEDBBZ_MAIN=test
 export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 ```
 
-#### Переменные окружения отвечающие за подключение к Kafka
+#### Переменные окружения отвечающие за подключение к NATS
 
 - GO_PHDOCBASEDBBZ_NHOST - ip или доменное имя;
 - GO_PHDOCBASEDBBZ_NPORT - сетевой порт;
 - GO_PHDOCBASEDBBZ_NCACHETTL - данный параметр должен содержать время жизни записи
   кэша, по истечение которого запись автоматически удаляется, значение задается
   в секундах в диапазоне от 10 до 86400 секунд;
-- GO_PHDOCBASEDBBZ_NSUBLISTENER - подписки для приёма информации (например, такой как alert или case). Для этой переменной можно задавать список параметров типа ключ:значение, параметры между собой разделяются специальным символом ';'.
+- GO_PHDOCBASEDBBZ_NSUBSCRIPTIONS - подписки для приёма информации. Для этой переменной можно задавать список параметров типа ключ:значение, параметры между собой разделяются специальным символом ';'.
   Например, alert:subscriber.alert;case:subscriber.case.
 - GO_PHDOCBASEDBBZ_NENRICHINGQUER - запросы дополнительной информации по геопозиционировании ip адресов и информации о месте расположения и принадлежноти сенсоров. Для этой переменной можно задавать список параметров типа ключ:значение, параметры между собой разделяются специальным символом ';'.
   Например, get_geoip_info:object.geoip-request;get_sensor_info:object.sensor-info-request.
@@ -66,6 +66,8 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
   в секундах в диапазоне от 10 до 86400 секунд;
 - GO_PHDOCBASEDBBZ_KLOGIN - имя пользователя для авторизации
 - GO_PHDOCBASEDBBZ_KPASSWD - пароль пользователя для авторизации
+- GO_PHDOCBASEDBBZ_KCERTPATH - путь к сертификату
+- GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH - путь к доверенному ключу
 
 #### Переменные окружения отвечающие за настройку доступа к БД применяемой для хранения полученных объектов
 
@@ -74,7 +76,7 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 - GO_PHDOCBASEDBBZ_DBSTORAGENAME - наименование БД (при необходимости);
 - GO_PHDOCBASEDBBZ_DBSTORAGEUSER - пользователь БД;
 - GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD - пароль для доступа к БД;
-- GO_PHDOCBASEDBBZ_DBSTORAGEN - список таблиц БД где хранятся объекты разного типа (например alert и case). Для этой переменной можно задавать список параметров типа ключ:значение, параметры между собой разделяются специальным символом ';'.
+- GO_PHDOCBASEDBBZ_DBSTORAGETABLES - список таблиц БД где хранятся объекты разного типа (например alert и case). Для этой переменной можно задавать список параметров типа ключ:значение, параметры между собой разделяются специальным символом ';'.
   Например, alert:test.module_placeholderdb_alert;case:test.module_placeholderdb_case.
 
 #### Переменные окружения отвечающие за настройку доступа к БД применяемой для хранения логов
@@ -92,10 +94,13 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 
 #### Доступ к kafka ГЦМ
 
-Для доступа к kafka ГЦМ выполните
+Для доступа к kafka ГЦМ выполните:
 
 ```bash
-docker run -e xeotek_kadeck_free="my.email@mail.ru" -e xeotek_kadeck_port=8080 -p 8383:8080 -v kadeck_data:/home/.kadeck/ xeotek/kadeck7:7.0.4
+docker compose -f docker-compose.kafka-ui.yml up -d
 ```
 
-Дефолтный логин и пароль для доступа к kadeck admin:admin
+в файле .env должны быть переменные для доступа к kafka
+
+- GO_PHDOCBASEDBBZ_KLOGIN
+- GO_PHDOCBASEDBBZ_KPASSWD

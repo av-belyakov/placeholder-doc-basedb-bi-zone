@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -14,8 +15,9 @@ import (
 
 func TestConfigFileHandler(t *testing.T) {
 	const (
-	//		THEHIVE_APIKEY          = "ghu9dffhvbx2237ads2f3fsf"
-	//		DATABASEWRITELOG_PASSWD = "cjis8w-dff0w0-fy2y3"
+		KAFKA_PASSWD            = "687df-343rfs-1233f-aasq1"
+		DATABASESTORAGE_PASSWD  = "f990-gggr-02jfg-fww2"
+		DATABASEWRITELOG_PASSWD = "cjis8w-dff0w0-fy2y3"
 	)
 
 	var (
@@ -28,12 +30,13 @@ func TestConfigFileHandler(t *testing.T) {
 
 	unsetAllEnviromentEnvAny()
 
-	//	os.Setenv("GO_HIVEHOOK_THAPIKEY", THEHIVE_APIKEY)
-	//	os.Setenv("GO_HIVEHOOK_DBWLOGPASSWD", DATABASEWRITELOG_PASSWD)
+	os.Setenv("GO_PHDOCBASEDBBZ_KPASSWD", KAFKA_PASSWD)
+	os.Setenv("GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD", DATABASESTORAGE_PASSWD)
+	os.Setenv("GO_PHDOCBASEDBBZ_DBWLOGPASSWD", DATABASEWRITELOG_PASSWD)
 
 	// --- Общие настройки (из config.yml) ---
 	testOptions = TestOptions{
-		name: "Общие настройки получаемые из файла 'config.yml'",
+		name: "Общие настройки (чтение файла 'config.yml')",
 		function: func() {
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
@@ -57,7 +60,7 @@ func TestConfigFileHandler(t *testing.T) {
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[0].ZabbixKey},
-					expectedParameters: TestTypeElements{valueString: "shaper_stix.error"},
+					expectedParameters: TestTypeElements{valueString: "placeholder_db_bizone.error"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueBool: cfg.GetCommon().Zabbix.EventTypes[0].IsTransmit},
@@ -78,7 +81,7 @@ func TestConfigFileHandler(t *testing.T) {
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[1].ZabbixKey},
-					expectedParameters: TestTypeElements{valueString: "shaper_stix.info"},
+					expectedParameters: TestTypeElements{valueString: "placeholder_db_bizone.info"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueBool: cfg.GetCommon().Zabbix.EventTypes[1].IsTransmit},
@@ -99,7 +102,7 @@ func TestConfigFileHandler(t *testing.T) {
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[2].ZabbixKey},
-					expectedParameters: TestTypeElements{valueString: "shaper_stix.handshake"},
+					expectedParameters: TestTypeElements{valueString: "placeholder_db_bizone.handshake"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueBool: cfg.GetCommon().Zabbix.EventTypes[2].IsTransmit},
@@ -119,9 +122,8 @@ func TestConfigFileHandler(t *testing.T) {
 	testOptions.function()
 	listTesting = append(listTesting, testOptions)
 
-	// --- Настройки NATS ---
 	testOptions = TestOptions{
-		name: "Настройки NATS (чтение файла config_test.yml)",
+		name: "Общие настройки каждого файла (чтение файла config_test.yml)",
 		function: func() {
 			os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
 
@@ -132,13 +134,32 @@ func TestConfigFileHandler(t *testing.T) {
 					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().RegionalObject},
 					expectedParameters: TestTypeElements{valueString: "gcm-test"},
 				},
+			}
+		},
+	}
+	testOptions.function()
+	listTesting = append(listTesting, testOptions)
+
+	// --- Настройки NATS ---
+	testOptions = TestOptions{
+		name: "Настройки NATS (чтение файла config_test.yml)",
+		function: func() {
+			os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
+
+			cfg, err = confighandler.New(constants.Root_Dir)
+			testOptions.err = err
+			testOptions.items = []TestParametrs{
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetNATS().Host},
-					expectedParameters: TestTypeElements{valueString: "nats.cloud.gcm"},
+					expectedParameters: TestTypeElements{valueString: "192.168.9.208"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetNATS().Port},
 					expectedParameters: TestTypeElements{valueInt: 4222},
+				},
+				{
+					inputParameters:    TestTypeElements{valueInt: cfg.GetNATS().CacheTTL},
+					expectedParameters: TestTypeElements{valueInt: 3600},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetNATS().Subscriptions["some"]},
@@ -146,7 +167,7 @@ func TestConfigFileHandler(t *testing.T) {
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetNATS().EnrichingQueries["get_geoip_info"]},
-					expectedParameters: TestTypeElements{valueString: "object.object.geoip-request.test"},
+					expectedParameters: TestTypeElements{valueString: "object.geoip-request.test"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetNATS().EnrichingQueries["get_sensor_info"]},
@@ -168,10 +189,6 @@ func TestConfigFileHandler(t *testing.T) {
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().RegionalObject},
-					expectedParameters: TestTypeElements{valueString: "gcm-test"},
-				},
-				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Host},
 					expectedParameters: TestTypeElements{valueString: "localhost"},
 				},
@@ -192,6 +209,10 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueString: "object.topicsoaralertstype.test"},
 				},
 				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Passwd},
+					expectedParameters: TestTypeElements{valueString: KAFKA_PASSWD},
+				},
+				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().CertPath},
 					expectedParameters: TestTypeElements{valueString: "/certs/ca.crt"},
 				},
@@ -207,13 +228,42 @@ func TestConfigFileHandler(t *testing.T) {
 
 	// --- Настройки DATABASESTORAGE ---
 	testOptions = TestOptions{
-		name: "Настройки DATABASEWRITELOG (чтение файла config_test.yml)",
+		name: "Настройки DATABASESTORAGE (чтение файла config_test.yml)",
 		function: func() {
 			os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
 
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
-			testOptions.items = []TestParametrs{}
+			testOptions.items = []TestParametrs{
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Host},
+					expectedParameters: TestTypeElements{valueString: "192.168.9.208"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueInt: cfg.GetStorageDB().Port},
+					expectedParameters: TestTypeElements{valueInt: 9200},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().User},
+					expectedParameters: TestTypeElements{valueString: "placeholder-docbasedb-bizone"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().NameDB},
+					expectedParameters: TestTypeElements{valueString: ""},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Storage["alerts"]},
+					expectedParameters: TestTypeElements{valueString: "module_placeholderdb_bizone_alerts.test"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Storage["soar-alerts"]},
+					expectedParameters: TestTypeElements{valueString: "module_placeholderdb_bizone_soar-alerts.test"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Passwd},
+					expectedParameters: TestTypeElements{valueString: DATABASESTORAGE_PASSWD},
+				},
+			}
 		}}
 	testOptions.function()
 	listTesting = append(listTesting, testOptions)
@@ -228,31 +278,27 @@ func TestConfigFileHandler(t *testing.T) {
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().RegionalObject},
-					expectedParameters: TestTypeElements{valueString: "gcm-prod"},
+					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().Host},
+					expectedParameters: TestTypeElements{valueString: "192.168.9.208"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWriteLogDB().Host},
-					expectedParameters: TestTypeElements{valueString: "datahook.cloud.gcm"},
-				},
-				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetApplicationWriteLogDB().Port},
+					inputParameters:    TestTypeElements{valueInt: cfg.GetLogDB().Port},
 					expectedParameters: TestTypeElements{valueInt: 9200},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWriteLogDB().NameDB},
+					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().NameDB},
 					expectedParameters: TestTypeElements{valueString: ""},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWriteLogDB().StorageNameDB},
-					expectedParameters: TestTypeElements{valueString: "thehivehook_go_package"},
+					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().StorageNameDB},
+					expectedParameters: TestTypeElements{valueString: "db-placeholder_docbasedb-bizone_log"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWriteLogDB().User},
-					expectedParameters: TestTypeElements{valueString: "log_writer"},
+					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().User},
+					expectedParameters: TestTypeElements{valueString: "user-placeholder-docbasedb-bizone_log"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWriteLogDB().Passwd},
+					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().Passwd},
 					expectedParameters: TestTypeElements{valueString: DATABASEWRITELOG_PASSWD},
 				},
 			}
@@ -261,51 +307,29 @@ func TestConfigFileHandler(t *testing.T) {
 	testOptions.function()
 	listTesting = append(listTesting, testOptions)
 
-	// --- Настройки DebugServer ---
+	// --- Настройки DEBUGSERVER ---
 	testOptions = TestOptions{
-		name: "Настройки DebugServer (чтение файла config_test.yml)",
+		name: "Настройки DEBUGSERVER (чтение файла config_test.yml)",
 		function: func() {
 			os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
 
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
-			testOptions.items = []TestParametrs{}
-		}}
-	testOptions.function()
-	listTesting = append(listTesting, testOptions)
-
-	// --- Настройки TEMPORARYSTORAGE (через переменные окружения) ---
-	testOptions = TestOptions{
-		name: "Настройки TEMPORARYSTORAGE (через переменные окружения)",
-		function: func() {
-			const (
-				TSTORAGE_OBJECTTTL       = 120
-				TSTORAG_DELAYTOSENDALERT = 11
-				TSTORAG_DELAYTOSENDCASE  = 60
-			)
-
-			os.Setenv("GO_HIVEHOOK_TSTORAGEOBJECTTTL", strconv.Itoa(TSTORAGE_OBJECTTTL))
-			os.Setenv("GO_HIVEHOOK_TSTORAGDELAYTOSENDALERT", strconv.Itoa(TSTORAG_DELAYTOSENDALERT))
-			os.Setenv("GO_HIVEHOOK_TSTORAGDELAYTOSENDCASE", strconv.Itoa(TSTORAG_DELAYTOSENDCASE))
-
-			cfg, err = confighandler.NewConfig(constants.Root_Dir)
-			testOptions.err = err
 			testOptions.items = []TestParametrs{
 				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetApplicationTemporaryStorage().StorageObjectTTL},
-					expectedParameters: TestTypeElements{valueInt: TSTORAGE_OBJECTTTL},
+					inputParameters:    TestTypeElements{valueBool: cfg.GetDebugServer().Enable},
+					expectedParameters: TestTypeElements{valueBool: true},
 				},
 				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetApplicationTemporaryStorage().StorageDelayToSendAlert},
-					expectedParameters: TestTypeElements{valueInt: TSTORAG_DELAYTOSENDALERT},
+					inputParameters:    TestTypeElements{valueString: cfg.GetDebugServer().Host},
+					expectedParameters: TestTypeElements{valueString: "localhost"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetApplicationTemporaryStorage().StorageDelayToSendCase},
-					expectedParameters: TestTypeElements{valueInt: TSTORAG_DELAYTOSENDCASE},
+					inputParameters:    TestTypeElements{valueInt: cfg.GetDebugServer().Port},
+					expectedParameters: TestTypeElements{valueInt: 6565},
 				},
 			}
-		},
-	}
+		}}
 	testOptions.function()
 	listTesting = append(listTesting, testOptions)
 
@@ -314,164 +338,274 @@ func TestConfigFileHandler(t *testing.T) {
 		name: "Настройки NATS (через переменные окружения)",
 		function: func() {
 			const (
-				NATS_HOST               = "nats.cloud.gcm.test.test"
-				NATS_PORT               = 4545
-				NATS_SUBSENDERCASE      = "sender.case"
-				NATS_SUBSENDERALERT     = "sender.alert"
-				NATS_SUBLISTENERCOMMAND = "listener.command"
+				HOST          = "nats.cloud.gcm.test.test"
+				PORT          = 4545
+				CACHE_TTL     = 10
+				SUBSCRIPTIONS = "send:sender.alert;receive:receiver.alert"
+				ENRICHINGQUER = "get_geoip_info:object.geoip-request;get_sensor_info:object.sensor-info-request"
 			)
 
-			os.Setenv("GO_HIVEHOOK_NHOST", NATS_HOST)
-			os.Setenv("GO_HIVEHOOK_NPORT", strconv.Itoa(NATS_PORT))
-			os.Setenv("GO_HIVEHOOK_NSUBSENDERCASE", NATS_SUBSENDERCASE)
-			os.Setenv("GO_HIVEHOOK_NSUBSENDERALERT", NATS_SUBSENDERALERT)
-			os.Setenv("GO_HIVEHOOK_NSUBLISTENERCOMMAND", NATS_SUBLISTENERCOMMAND)
+			os.Setenv("GO_PHDOCBASEDBBZ_NHOST", HOST)
+			os.Setenv("GO_PHDOCBASEDBBZ_NPORT", strconv.Itoa(PORT))
+			os.Setenv("GO_PHDOCBASEDBBZ_NCACHETTL", strconv.Itoa(CACHE_TTL))
+			os.Setenv("GO_PHDOCBASEDBBZ_NSUBSCRIPTIONS", SUBSCRIPTIONS)
+			os.Setenv("GO_PHDOCBASEDBBZ_NENRICHINGQUER", ENRICHINGQUER)
 
-			cfg, err = confighandler.NewConfig(constants.Root_Dir)
+			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationNATS().Host},
-					expectedParameters: TestTypeElements{valueString: NATS_HOST},
+					inputParameters:    TestTypeElements{valueString: cfg.GetNATS().Host},
+					expectedParameters: TestTypeElements{valueString: HOST},
 				},
 				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetApplicationNATS().Port},
-					expectedParameters: TestTypeElements{valueInt: NATS_PORT},
+					inputParameters:    TestTypeElements{valueInt: cfg.GetNATS().Port},
+					expectedParameters: TestTypeElements{valueInt: PORT},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationNATS().Subscriptions.SenderCase},
-					expectedParameters: TestTypeElements{valueString: NATS_SUBSENDERCASE},
+					inputParameters:    TestTypeElements{valueInt: cfg.GetNATS().CacheTTL},
+					expectedParameters: TestTypeElements{valueInt: CACHE_TTL},
 				},
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationNATS().Subscriptions.SenderAlert},
-					expectedParameters: TestTypeElements{valueString: NATS_SUBSENDERALERT},
-				},
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationNATS().Subscriptions.ListenerCommand},
-					expectedParameters: TestTypeElements{valueString: NATS_SUBLISTENERCOMMAND},
-				},
+			}
+
+			for k, v := range []string{SUBSCRIPTIONS, ENRICHINGQUER} {
+				if k == 0 {
+					if !strings.Contains(v, ";") {
+						if tmp := strings.Split(v, ":"); len(tmp) == 2 {
+							testOptions.items = append(testOptions.items, TestParametrs{
+								inputParameters:    TestTypeElements{valueString: cfg.GetNATS().Subscriptions[tmp[0]]},
+								expectedParameters: TestTypeElements{valueString: tmp[1]},
+							})
+						}
+					} else {
+						for sl := range strings.SplitSeq(v, ";") {
+							if tmp := strings.Split(sl, ":"); len(tmp) == 2 {
+								testOptions.items = append(testOptions.items, TestParametrs{
+									inputParameters:    TestTypeElements{valueString: cfg.GetNATS().Subscriptions[tmp[0]]},
+									expectedParameters: TestTypeElements{valueString: tmp[1]},
+								})
+							}
+						}
+					}
+
+					continue
+				}
+
+				if !strings.Contains(v, ";") {
+					if tmp := strings.Split(v, ":"); len(tmp) == 2 {
+						testOptions.items = append(testOptions.items, TestParametrs{
+							inputParameters:    TestTypeElements{valueString: cfg.GetNATS().EnrichingQueries[tmp[0]]},
+							expectedParameters: TestTypeElements{valueString: tmp[1]},
+						})
+					}
+				} else {
+					for sl := range strings.SplitSeq(v, ";") {
+						if tmp := strings.Split(sl, ":"); len(tmp) == 2 {
+							testOptions.items = append(testOptions.items, TestParametrs{
+								inputParameters:    TestTypeElements{valueString: cfg.GetNATS().EnrichingQueries[tmp[0]]},
+								expectedParameters: TestTypeElements{valueString: tmp[1]},
+							})
+						}
+					}
+				}
 			}
 		},
 	}
 	testOptions.function()
 	listTesting = append(listTesting, testOptions)
 
-	// --- Настройки TheHive (через переменные окружения) ---
+	// --- Настройки Kafka (через переменные окружения) ---
 	testOptions = TestOptions{
-		name: "Настройки TheHive (через переменные окружения)",
+		name: "Настройки Kafka (через переменные окружения)",
 		function: func() {
 			const (
-				THEHIVE_HOST = "thehive.cloud.gcm.test"
-				THEHIVE_PORT = 1122
+				HOST             = "45.6.36.1"
+				PORT             = 1180
+				CACHE_TTL        = 35
+				TOPICS           = "topiconw:phdocbasedbbz;topictwo:phdocbaseddmz2"
+				LOGIN            = "any-login"
+				PASSWORD         = "pass-here!@#"
+				CERT_PATH        = "/any-folder/any-folder-certs/cert.crt"
+				TRUST_STORE_PATH = "/any-folder/any-folder-truststore/truststore.jks"
 			)
 
-			os.Setenv("GO_HIVEHOOK_THHOST", THEHIVE_HOST)
-			os.Setenv("GO_HIVEHOOK_THPORT", strconv.Itoa(THEHIVE_PORT))
+			os.Setenv("GO_PHDOCBASEDBBZ_KHOST", HOST)
+			os.Setenv("GO_PHDOCBASEDBBZ_KPORT", strconv.Itoa(PORT))
+			os.Setenv("GO_PHDOCBASEDBBZ_KCACHETTL", strconv.Itoa(CACHE_TTL))
+			os.Setenv("GO_PHDOCBASEDBBZ_KTOPICS", TOPICS)
+			os.Setenv("GO_PHDOCBASEDBBZ_KLOGIN", LOGIN)
+			os.Setenv("GO_PHDOCBASEDBBZ_KPASSWD", PASSWORD)
+			os.Setenv("GO_PHDOCBASEDBBZ_KCERTPATH", CERT_PATH)
+			os.Setenv("GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH", TRUST_STORE_PATH)
 
-			cfg, err = confighandler.NewConfig(constants.Root_Dir)
+			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationTheHive().Host},
-					expectedParameters: TestTypeElements{valueString: THEHIVE_HOST},
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Host},
+					expectedParameters: TestTypeElements{valueString: HOST},
 				},
 				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetApplicationTheHive().Port},
-					expectedParameters: TestTypeElements{valueInt: THEHIVE_PORT},
+					inputParameters:    TestTypeElements{valueInt: cfg.GetKafka().Port},
+					expectedParameters: TestTypeElements{valueInt: PORT},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationTheHive().ApiKey},
-					expectedParameters: TestTypeElements{valueString: THEHIVE_APIKEY},
+					inputParameters:    TestTypeElements{valueInt: cfg.GetKafka().CacheTTL},
+					expectedParameters: TestTypeElements{valueInt: CACHE_TTL},
 				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Login},
+					expectedParameters: TestTypeElements{valueString: LOGIN},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Passwd},
+					expectedParameters: TestTypeElements{valueString: PASSWORD},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().CertPath},
+					expectedParameters: TestTypeElements{valueString: CERT_PATH},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().TrustStorePath},
+					expectedParameters: TestTypeElements{valueString: TRUST_STORE_PATH},
+				},
+			}
+
+			if !strings.Contains(TOPICS, ";") {
+				if tmp := strings.Split(TOPICS, ":"); len(tmp) == 2 {
+					testOptions.items = append(testOptions.items, TestParametrs{
+						inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Topics[tmp[0]]},
+						expectedParameters: TestTypeElements{valueString: tmp[1]},
+					})
+				}
+			} else {
+				for sl := range strings.SplitSeq(TOPICS, ";") {
+					if tmp := strings.Split(sl, ":"); len(tmp) == 2 {
+						testOptions.items = append(testOptions.items, TestParametrs{
+							inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Topics[tmp[0]]},
+							expectedParameters: TestTypeElements{valueString: tmp[1]},
+						})
+					}
+				}
 			}
 		},
 	}
 	testOptions.function()
 	listTesting = append(listTesting, testOptions)
 
-	// --- Настройки WEBHOOKSERVER (через переменные окружения) ---
+	// --- Настройки DATABASESTOREGE (через переменные окружения) ---
 	testOptions = TestOptions{
-		name: "Настройки WEBHOOKSERVER (через переменные окружения)",
+		name: "Настройки DATABASESTOREGE (через переменные окружения)",
 		function: func() {
 			const (
-				HIVEHOOK_WEBHHOST = "11.0.11.10"
-				HIVEHOOK_WEBHPORT = 7822
-				HIVEHOOK_WEBTTL   = 13
-				HIVEHOOK_WEBDS    = 55
-				HIVEHOOK_WEBHNAME = "gcm-rcm"
+				HOST   = "112.63.23.59"
+				PORT   = 8074
+				NAME   = "phdocbasedb"
+				USER   = "anybduser"
+				PASSWD = "AnyBD@User"
+				TABLES = "table.one:table-storage-one;table.two:my-table-storage-two"
 			)
 
-			os.Setenv("GO_HIVEHOOK_WEBHNAME", HIVEHOOK_WEBHNAME)
-			os.Setenv("GO_HIVEHOOK_WEBHHOST", HIVEHOOK_WEBHHOST)
-			os.Setenv("GO_HIVEHOOK_WEBHPORT", strconv.Itoa(HIVEHOOK_WEBHPORT))
-			os.Setenv("GO_HIVEHOOK_WEBHSTORAGETTL", strconv.Itoa(HIVEHOOK_WEBTTL))
-			os.Setenv("GO_HIVEHOOK_WEBHSTORAGDS", strconv.Itoa(HIVEHOOK_WEBDS))
+			os.Setenv("GO_PHDOCBASEDBBZ_DBSTORAGEHOST", HOST)
+			os.Setenv("GO_PHDOCBASEDBBZ_DBSTORAGEPORT", strconv.Itoa(PORT))
+			os.Setenv("GO_PHDOCBASEDBBZ_DBSTORAGENAME", NAME)
+			os.Setenv("GO_PHDOCBASEDBBZ_DBSTORAGEUSER", USER)
+			os.Setenv("GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD", PASSWD)
+			os.Setenv("GO_PHDOCBASEDBBZ_DBSTORAGETABLES", TABLES)
 
-			cfg, err = confighandler.NewConfig(constants.Root_Dir)
+			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWebHookServer().Name},
-					expectedParameters: TestTypeElements{valueString: HIVEHOOK_WEBHNAME},
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Host},
+					expectedParameters: TestTypeElements{valueString: HOST},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWebHookServer().Host},
-					expectedParameters: TestTypeElements{valueString: HIVEHOOK_WEBHHOST},
+					inputParameters:    TestTypeElements{valueInt: cfg.GetStorageDB().Port},
+					expectedParameters: TestTypeElements{valueInt: PORT},
 				},
 				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetApplicationWebHookServer().Port},
-					expectedParameters: TestTypeElements{valueInt: HIVEHOOK_WEBHPORT},
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().NameDB},
+					expectedParameters: TestTypeElements{valueString: NAME},
 				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().User},
+					expectedParameters: TestTypeElements{valueString: USER},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Passwd},
+					expectedParameters: TestTypeElements{valueString: PASSWD},
+				},
+			}
+
+			if !strings.Contains(TABLES, ";") {
+				if tmp := strings.Split(TABLES, ":"); len(tmp) == 2 {
+					testOptions.items = append(testOptions.items, TestParametrs{
+						inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Storage[tmp[0]]},
+						expectedParameters: TestTypeElements{valueString: tmp[1]},
+					})
+				}
+			} else {
+				for sl := range strings.SplitSeq(TABLES, ";") {
+					if tmp := strings.Split(sl, ":"); len(tmp) == 2 {
+						testOptions.items = append(testOptions.items, TestParametrs{
+							inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Storage[tmp[0]]},
+							expectedParameters: TestTypeElements{valueString: tmp[1]},
+						})
+					}
+				}
 			}
 		},
 	}
 	testOptions.function()
 	listTesting = append(listTesting, testOptions)
 
-	// --- Настройки WRITELOGDB (через переменные окружения) ---
+	// --- Настройки DATABASEWRITELOG (через переменные окружения) ---
 	testOptions = TestOptions{
-		name: "Настройки WRITELOGDB (через переменные окружения)",
+		name: "Настройки DATABASEWRITELOG (через переменные окружения)",
 		function: func() {
 			const (
-				HIVEHOOK_DBWLOGHOST        = "45.10.32.1"
-				HIVEHOOK_DBWLOGPORT        = 11123
-				HIVEHOOK_DBWLOGNAME        = "log_db"
-				HIVEHOOK_DBWLOGUSER        = "nreuser"
-				HIVEHOOK_DBWLOGSTORAGENAME = "thehivehookgolog"
+				HOST        = "112.100.100.159"
+				PORT        = 8099
+				NAME        = "phdocbasedblog"
+				USER        = "anybduserlog"
+				PASSWD      = "AnyBD@UserLoGG"
+				STORAGENAME = "storage_logs"
 			)
 
-			os.Setenv("GO_HIVEHOOK_DBWLOGHOST", HIVEHOOK_DBWLOGHOST)
-			os.Setenv("GO_HIVEHOOK_DBWLOGPORT", strconv.Itoa(HIVEHOOK_DBWLOGPORT))
-			os.Setenv("GO_HIVEHOOK_DBWLOGNAME", HIVEHOOK_DBWLOGNAME)
-			os.Setenv("GO_HIVEHOOK_DBWLOGUSER", HIVEHOOK_DBWLOGUSER)
-			os.Setenv("GO_HIVEHOOK_DBWLOGSTORAGENAME", HIVEHOOK_DBWLOGSTORAGENAME)
+			os.Setenv("GO_PHDOCBASEDBBZ_DBWLOGHOST", HOST)
+			os.Setenv("GO_PHDOCBASEDBBZ_DBWLOGPORT", strconv.Itoa(PORT))
+			os.Setenv("GO_PHDOCBASEDBBZ_DBWLOGNAME", NAME)
+			os.Setenv("GO_PHDOCBASEDBBZ_DBWLOGUSER", USER)
+			os.Setenv("GO_PHDOCBASEDBBZ_DBWLOGPASSWD", PASSWD)
+			os.Setenv("GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME", STORAGENAME)
 
-			cfg, err = confighandler.NewConfig(constants.Root_Dir)
+			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWriteLogDB().Host},
-					expectedParameters: TestTypeElements{valueString: HIVEHOOK_DBWLOGHOST},
+					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().Host},
+					expectedParameters: TestTypeElements{valueString: HOST},
 				},
 				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetApplicationWriteLogDB().Port},
-					expectedParameters: TestTypeElements{valueInt: HIVEHOOK_DBWLOGPORT},
+					inputParameters:    TestTypeElements{valueInt: cfg.GetLogDB().Port},
+					expectedParameters: TestTypeElements{valueInt: PORT},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWriteLogDB().NameDB},
-					expectedParameters: TestTypeElements{valueString: HIVEHOOK_DBWLOGNAME},
+					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().NameDB},
+					expectedParameters: TestTypeElements{valueString: NAME},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWriteLogDB().StorageNameDB},
-					expectedParameters: TestTypeElements{valueString: HIVEHOOK_DBWLOGSTORAGENAME},
+					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().User},
+					expectedParameters: TestTypeElements{valueString: USER},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWriteLogDB().User},
-					expectedParameters: TestTypeElements{valueString: HIVEHOOK_DBWLOGUSER},
+					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().Passwd},
+					expectedParameters: TestTypeElements{valueString: PASSWD},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetApplicationWriteLogDB().Passwd},
-					expectedParameters: TestTypeElements{valueString: DATABASEWRITELOG_PASSWD},
+					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().StorageNameDB},
+					expectedParameters: TestTypeElements{valueString: STORAGENAME},
 				},
 			}
 		},
@@ -527,14 +661,16 @@ func unsetAllEnviromentEnvAny() {
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KCACHETTL")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KLOGIN")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KPASSWD")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KCERTPATH")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH")
 
 	// Настройки доступа к БД в которую будут записыватся alert и case
-	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEN")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEHOST")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPORT")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGENAME")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEUSER")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGETABLES")
 
 	//настройки доступа к БД в которую будут записыватся логи
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGHOST")

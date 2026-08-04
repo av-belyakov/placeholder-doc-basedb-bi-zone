@@ -1,5 +1,4 @@
 COMMONINFO:
-  file_name: config_prod.yml
   regional_object: gcm-prod
 NATS: # в основном используется для обогащения данных доп. информацией
   host: nats.cloud.gcm
@@ -33,7 +32,7 @@ DATABASEWRITELOG: # хранилище логов работы модуля
   user: log_writer
   namedb: ""
   storage_name_db: module_placeholderdb_bizone
-DebugServer:
+DEBUGSERVER:
   enable: false
   host: localhost
   port: 6565

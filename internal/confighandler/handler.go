@@ -28,24 +28,26 @@ func New(rootDir string) (*Config, error) {
 			"GO_PHDOCBASEDBBZ_NHOST":          "",
 			"GO_PHDOCBASEDBBZ_NPORT":          "",
 			"GO_PHDOCBASEDBBZ_NCACHETTL":      "",
-			"GO_PHDOCBASEDBBZ_NSUBLISTENER":   "",
+			"GO_PHDOCBASEDBBZ_NSUBSCRIPTIONS": "",
 			"GO_PHDOCBASEDBBZ_NENRICHINGQUER": "",
 
 			//Подключение к Kafka
-			"GO_PHDOCBASEDBBZ_KHOST":     "",
-			"GO_PHDOCBASEDBBZ_KPORT":     "",
-			"GO_PHDOCBASEDBBZ_KTOPICS":   "",
-			"GO_PHDOCBASEDBBZ_KCACHETTL": "",
-			"GO_PHDOCBASEDBBZ_KLOGIN":    "",
-			"GO_PHDOCBASEDBBZ_KPASSWD":   "",
+			"GO_PHDOCBASEDBBZ_KHOST":           "",
+			"GO_PHDOCBASEDBBZ_KPORT":           "",
+			"GO_PHDOCBASEDBBZ_KTOPICS":         "",
+			"GO_PHDOCBASEDBBZ_KCACHETTL":       "",
+			"GO_PHDOCBASEDBBZ_KLOGIN":          "",
+			"GO_PHDOCBASEDBBZ_KPASSWD":         "",
+			"GO_PHDOCBASEDBBZ_KCERTPATH":       "",
+			"GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH": "",
 
 			//Настройки доступа к БД в которую будут записыватся полученные объекты
-			"GO_PHDOCBASEDBBZ_DBSTORAGEN":      "",
 			"GO_PHDOCBASEDBBZ_DBSTORAGEHOST":   "",
 			"GO_PHDOCBASEDBBZ_DBSTORAGEPORT":   "",
 			"GO_PHDOCBASEDBBZ_DBSTORAGENAME":   "",
 			"GO_PHDOCBASEDBBZ_DBSTORAGEUSER":   "",
 			"GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD": "",
+			"GO_PHDOCBASEDBBZ_DBSTORAGETABLES": "",
 
 			//Настройки доступа к БД в которую будут записыватся логи
 			"GO_PHDOCBASEDBBZ_DBWLOGHOST":        "",
@@ -189,14 +191,14 @@ func New(rootDir string) (*Config, error) {
 		}
 
 		// Настройки для отладочного сервера
-		if viper.IsSet("DebugServer.enable") {
-			cfg.DebugServer.Enable = viper.GetBool("DebugServer.enable")
+		if viper.IsSet("DEBUGSERVER.enable") {
+			cfg.DebugServer.Enable = viper.GetBool("DEBUGSERVER.enable")
 		}
-		if viper.IsSet("DebugServer.host") {
-			cfg.DebugServer.Host = viper.GetString("DebugServer.host")
+		if viper.IsSet("DEBUGSERVER.host") {
+			cfg.DebugServer.Host = viper.GetString("DEBUGSERVER.host")
 		}
-		if viper.IsSet("DebugServer.port") {
-			cfg.DebugServer.Port = viper.GetInt("DebugServer.port")
+		if viper.IsSet("DEBUGSERVER.port") {
+			cfg.DebugServer.Port = viper.GetInt("DEBUGSERVER.port")
 		}
 
 		return nil
@@ -273,8 +275,8 @@ func New(rootDir string) (*Config, error) {
 			cfg.NATS.CacheTTL = ttl
 		}
 	}
-	if envList["GO_PHDOCBASEDBBZ_NSUBLISTENER"] != "" {
-		sublistener := envList["GO_PHDOCBASEDBBZ_NSUBLISTENER"]
+	if envList["GO_PHDOCBASEDBBZ_NSUBSCRIPTIONS"] != "" {
+		sublistener := envList["GO_PHDOCBASEDBBZ_NSUBSCRIPTIONS"]
 		if !strings.Contains(sublistener, ";") {
 			if tmp := strings.Split(sublistener, ":"); len(tmp) == 2 {
 				cfg.NATS.Subscriptions[tmp[0]] = tmp[1]
@@ -336,6 +338,12 @@ func New(rootDir string) (*Config, error) {
 	if envList["GO_PHDOCBASEDBBZ_KPASSWD"] != "" {
 		cfg.Kafka.Passwd = envList["GO_PHDOCBASEDBBZ_KPASSWD"]
 	}
+	if envList["GO_PHDOCBASEDBBZ_KCERTPATH"] != "" {
+		cfg.Kafka.CertPath = envList["GO_PHDOCBASEDBBZ_KCERTPATH"]
+	}
+	if envList["GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH"] != "" {
+		cfg.Kafka.TrustStorePath = envList["GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH"]
+	}
 
 	//Настройки доступа к БД в которую будет добавлятся информация по alert и case
 	if envList["GO_PHDOCBASEDBBZ_DBSTORAGEHOST"] != "" {
@@ -355,14 +363,14 @@ func New(rootDir string) (*Config, error) {
 	if envList["GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD"] != "" {
 		cfg.StorageDB.Passwd = envList["GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD"]
 	}
-	if envList["GO_PHDOCBASEDBBZ_DBSTORAGEN"] != "" {
-		sublistener := envList["GO_PHDOCBASEDBBZ_DBSTORAGEN"]
+	if envList["GO_PHDOCBASEDBBZ_DBSTORAGETABLES"] != "" {
+		sublistener := envList["GO_PHDOCBASEDBBZ_DBSTORAGETABLES"]
 		if !strings.Contains(sublistener, ";") {
 			if tmp := strings.Split(sublistener, ":"); len(tmp) == 2 {
 				cfg.StorageDB.Storage[tmp[0]] = tmp[1]
 			}
 		} else {
-			for _, sl := range strings.Split(sublistener, ";") {
+			for sl := range strings.SplitSeq(sublistener, ";") {
 				if tmp := strings.Split(sl, ":"); len(tmp) == 2 {
 					cfg.StorageDB.Storage[tmp[0]] = tmp[1]
 				}

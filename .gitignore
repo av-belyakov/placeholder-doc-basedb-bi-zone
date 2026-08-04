@@ -1,6 +1,6 @@
 app
 .env
-certs/
 logs/
+secrets/
 test/kafka/*.log
 test/documentsgenerator/*.log

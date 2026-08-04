@@ -56,7 +56,7 @@ type CfgNats struct {
 	Subscriptions    map[string]string `yaml:"subscriptions"`
 	Host             string            `validate:"required" yaml:"host"`
 	Port             int               `validate:"gt=0,lte=65535" yaml:"port"`
-	CacheTTL         int               `validate:"gt=10,lte=86400" yaml:"cache_ttl"`
+	CacheTTL         int               `validate:"gt=1,lte=86400" yaml:"cache_ttl"`
 }
 
 type CfgKafka struct {
@@ -67,7 +67,7 @@ type CfgKafka struct {
 	TrustStorePath string            `yaml:"trust_store_path"`
 	Host           string            `validate:"required" yaml:"host"`
 	Port           int               `validate:"gt=0,lte=65535" yaml:"port"`
-	CacheTTL       int               `validate:"gt=10,lte=86400" yaml:"cache_ttl"`
+	CacheTTL       int               `validate:"gt=1,lte=86400" yaml:"cache_ttl"`
 }
 
 type CfgStorageDB struct {
