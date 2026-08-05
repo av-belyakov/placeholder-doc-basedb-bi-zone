@@ -88,37 +88,64 @@ func WithTopicsSubscription(v map[string]string) KafkaApiOptions {
 	}
 }
 
-// WithClientName имя клиента
-func WithClientName(v string) KafkaApiOptions {
+// WithAuthType тип авторизации
+func WithAuthType(v string) KafkaApiOptions {
 	return func(api *kafkaApiModule) error {
-		api.settings.userName = v
+		api.settings.authType = v
 
 		return nil
 	}
 }
 
-// WithPassword пароль для доступа к Kafka
-func WithPassword(v string) KafkaApiOptions {
+// WithSASLMechanism SASL механизм передачи секретов
+func WithSASLMechanism(v string) KafkaApiOptions {
 	return func(api *kafkaApiModule) error {
-		api.settings.passwd = v
+		api.settings.saslMechanism = v
 
 		return nil
 	}
 }
 
-// WithCertPath путь к сертификату
-func WithCertPath(v string) KafkaApiOptions {
+// WithSSLUserName имя клиента
+func WithSSLUserName(v string) KafkaApiOptions {
 	return func(api *kafkaApiModule) error {
-		api.settings.certPath = v
+		api.settings.sslUsername = v
 
 		return nil
 	}
 }
 
-// WithTruststoragePath путь к ключу доверенного хранилища
-func WithTruststoragePath(v string) KafkaApiOptions {
+// WithSSLPassword пароль для доступа к Kafka
+func WithSSLPassword(v string) KafkaApiOptions {
 	return func(api *kafkaApiModule) error {
-		api.settings.truststorePath = v
+		api.settings.sslPassword = v
+
+		return nil
+	}
+}
+
+// WithSSLCeFile файл ca.crt или truststore.jks доверенного хранилища
+func WithSSLCeFile(v string) KafkaApiOptions {
+	return func(api *kafkaApiModule) error {
+		api.settings.sslCeFile = v
+
+		return nil
+	}
+}
+
+// WithSSLCertFile путь к ключу доверенного хранилища
+func WithSSLCertFile(v string) KafkaApiOptions {
+	return func(api *kafkaApiModule) error {
+		api.settings.sslCertFile = v
+
+		return nil
+	}
+}
+
+// WithKeyFile ключ клиента
+func WithKeyFile(v string) KafkaApiOptions {
+	return func(api *kafkaApiModule) error {
+		api.settings.sslKeyFile = v
 
 		return nil
 	}

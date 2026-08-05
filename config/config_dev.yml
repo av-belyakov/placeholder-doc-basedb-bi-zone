@@ -16,7 +16,7 @@ KAFKA:
   topics:
     alerts: alertmgr-alerts
     cases: socd-soar-prod-issue-v1
-  auth_type: sasl-ssl # none, ssl или sasl-ssl
+  auth_type: sasl-ssl # none/NONE, ssl/SSL или sasl-ssl/SASL-SSL
   # simple - протокол шифрования не используется, всё что ниже для настроек kafka не нужно
   # ssl - используется протокол mTLS с сертификатами ssl.ca.location, ssl.certificate.location, ssl.key.location
   # сертификаты должны быть в форматах PEM (crt/key)

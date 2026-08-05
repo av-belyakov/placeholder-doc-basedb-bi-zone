@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"maps"
+	"path/filepath"
+	"strings"
 
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
@@ -16,12 +18,29 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 	}
 
 	cfg := &kafka.ConfigMap{
-		"bootstrap.servers": fmt.Sprintf("%s:%d", api.settings.host, api.settings.port),
-		"group.id":          fmt.Sprintf("%s-group", api.settings.nameRegionalObject), // Идентификатор группы
-		"auto.offset.reset": "earliest",                                               // Читать с начала
+		"bootstrap.servers":     fmt.Sprintf("%s:%d", api.settings.host, api.settings.port),
+		"group.id":              fmt.Sprintf("%s-group", api.settings.nameRegionalObject), // Идентификатор группы
+		"auto.offset.reset":     "earliest",                                               // Читать с начала
+		"enable.auto.commit":    false,                                                    // не проверял
+		"heartbeat.interval.ms": 3000,                                                     // не проверял
+		"max.poll.interval.ms":  300000,                                                   // не проверял
 	}
 
-switch api.settings.
+	switch strings.ToLower(api.settings.authType) {
+	case "ssl":
+		cfg.SetKey("security.protocol", "SSL")
+		cfg.SetKey("ssl.ca.location", api.settings.sslCeFile)
+		cfg.SetKey("ssl.certificate.location", api.settings.sslCertFile)
+		cfg.SetKey("ssl.key.location", api.settings.sslKeyFile)
+		cfg.SetKey("ssl.endpoint.identification.algorithm", "https")
+	case "sasl-ssl":
+		cfg.SetKey("security.protocol", "SASL_SSL")
+		cfg.SetKey("sasl.mechanisms", api.settings.saslMechanism)
+		cfg.SetKey("sasl.username", api.settings.sslUsername)
+		cfg.SetKey("sasl.password", api.settings.sslPassword)
+		cfg.SetKey("ssl.ca.location", filepath.Join("../../", api.settings.sslCeFile))
+		cfg.SetKey("ssl.endpoint.identification.algorithm", "https")
+	}
 
 	consumer, err := kafka.NewConsumer(cfg)
 	if err != nil {

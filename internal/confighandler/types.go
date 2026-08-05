@@ -61,7 +61,7 @@ type CfgNats struct {
 
 type CfgKafka struct {
 	Topics        map[string]string `yaml:"topics"`
-	AuthType      string            `validate:"oneof=none ssl sasl-ssl" yaml:"auth_type"`
+	AuthType      string            `validate:"oneof=none NONE ssl SSL sasl-ssl SASL-SSL" yaml:"auth_type"`
 	SASLMechanism string            `validate:"oneof=PLAIN SCRAM-SHA-256 SCRAM-SHA-512"`
 	SSLUsername   string            `yaml:"ssl_username"`
 	SSLPassword   string            `yaml:"ssl_password"`
