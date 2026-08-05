@@ -15,7 +15,7 @@ import (
 
 func TestConfigFileHandler(t *testing.T) {
 	const (
-		KAFKA_PASSWD            = "687df-343rfs-1233f-aasq1"
+		KAFKA_SSLPASSWD         = "687df-343rfs-1233f-aasq1"
 		DATABASESTORAGE_PASSWD  = "f990-gggr-02jfg-fww2"
 		DATABASEWRITELOG_PASSWD = "cjis8w-dff0w0-fy2y3"
 	)
@@ -30,7 +30,8 @@ func TestConfigFileHandler(t *testing.T) {
 
 	unsetAllEnviromentEnvAny()
 
-	os.Setenv("GO_PHDOCBASEDBBZ_KPASSWD", KAFKA_PASSWD)
+	os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
+	os.Setenv("GO_PHDOCBASEDBBZ_KSSLPASSWORD", KAFKA_SSLPASSWD)
 	os.Setenv("GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD", DATABASESTORAGE_PASSWD)
 	os.Setenv("GO_PHDOCBASEDBBZ_DBWLOGPASSWD", DATABASEWRITELOG_PASSWD)
 
@@ -125,8 +126,6 @@ func TestConfigFileHandler(t *testing.T) {
 	testOptions = TestOptions{
 		name: "Общие настройки каждого файла (чтение файла config_test.yml)",
 		function: func() {
-			os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
-
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
@@ -144,8 +143,6 @@ func TestConfigFileHandler(t *testing.T) {
 	testOptions = TestOptions{
 		name: "Настройки NATS (чтение файла config_test.yml)",
 		function: func() {
-			os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
-
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
@@ -183,18 +180,16 @@ func TestConfigFileHandler(t *testing.T) {
 	testOptions = TestOptions{
 		name: "Настройки Kafka (чтение файла config_test.yml)",
 		function: func() {
-			os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
-
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Host},
-					expectedParameters: TestTypeElements{valueString: "localhost"},
+					expectedParameters: TestTypeElements{valueString: "192.168.9.73"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetKafka().Port},
-					expectedParameters: TestTypeElements{valueInt: 9092},
+					expectedParameters: TestTypeElements{valueInt: 30932},
 				},
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetKafka().CacheTTL},
@@ -209,16 +204,32 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueString: "object.topicsoaralertstype.test"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Passwd},
-					expectedParameters: TestTypeElements{valueString: KAFKA_PASSWD},
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().AuthType},
+					expectedParameters: TestTypeElements{valueString: "sasl-ssl"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().CertPath},
-					expectedParameters: TestTypeElements{valueString: "/certs/ca.crt"},
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SASLMechanism},
+					expectedParameters: TestTypeElements{valueString: "SCRAM-SHA-512"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().TrustStorePath},
-					expectedParameters: TestTypeElements{valueString: "/certs/truststore.jks"},
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLUsername},
+					expectedParameters: TestTypeElements{valueString: "siem2"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLCaFile},
+					expectedParameters: TestTypeElements{valueString: "/secrets/truststore.jks"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLCertFile},
+					expectedParameters: TestTypeElements{valueString: "/secrets/ca.crt"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLKeyFile},
+					expectedParameters: TestTypeElements{valueString: "/secrets/ca.crt"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLPassword},
+					expectedParameters: TestTypeElements{valueString: KAFKA_SSLPASSWD},
 				},
 			}
 		},
@@ -230,8 +241,6 @@ func TestConfigFileHandler(t *testing.T) {
 	testOptions = TestOptions{
 		name: "Настройки DATABASESTORAGE (чтение файла config_test.yml)",
 		function: func() {
-			os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
-
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
@@ -272,8 +281,6 @@ func TestConfigFileHandler(t *testing.T) {
 	testOptions = TestOptions{
 		name: "Настройки DATABASEWRITELOG (чтение файла config_test.yml)",
 		function: func() {
-			os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
-
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
@@ -311,8 +318,6 @@ func TestConfigFileHandler(t *testing.T) {
 	testOptions = TestOptions{
 		name: "Настройки DEBUGSERVER (чтение файла config_test.yml)",
 		function: func() {
-			os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
-
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
@@ -419,24 +424,30 @@ func TestConfigFileHandler(t *testing.T) {
 		name: "Настройки Kafka (через переменные окружения)",
 		function: func() {
 			const (
-				HOST             = "45.6.36.1"
-				PORT             = 1180
-				CACHE_TTL        = 35
-				TOPICS           = "topiconw:phdocbasedbbz;topictwo:phdocbaseddmz2"
-				LOGIN            = "any-login"
-				PASSWORD         = "pass-here!@#"
-				CERT_PATH        = "/any-folder/any-folder-certs/cert.crt"
-				TRUST_STORE_PATH = "/any-folder/any-folder-truststore/truststore.jks"
+				HOST           = "45.6.36.1"
+				PORT           = 1180
+				CACHE_TTL      = 35
+				TOPICS         = "topiconw:phdocbasedbbz;topictwo:phdocbaseddmz2"
+				AUTH_TYPE      = "none"
+				SASL_MECHANISM = "PLAIN"
+				SSL_USERNAME   = "any-login"
+				SSL_PASSWORD   = "pass-here!@#"
+				SSL_CA_FILE    = "/secrets/anycafile.jks"
+				SSL_CERT_FILE  = "/secrets/anycertfile.jks"
+				SSL_KEY_FILE   = "/secrets/anykeyfile.jks"
 			)
 
 			os.Setenv("GO_PHDOCBASEDBBZ_KHOST", HOST)
 			os.Setenv("GO_PHDOCBASEDBBZ_KPORT", strconv.Itoa(PORT))
 			os.Setenv("GO_PHDOCBASEDBBZ_KCACHETTL", strconv.Itoa(CACHE_TTL))
 			os.Setenv("GO_PHDOCBASEDBBZ_KTOPICS", TOPICS)
-			os.Setenv("GO_PHDOCBASEDBBZ_KLOGIN", LOGIN)
-			os.Setenv("GO_PHDOCBASEDBBZ_KPASSWD", PASSWORD)
-			os.Setenv("GO_PHDOCBASEDBBZ_KCERTPATH", CERT_PATH)
-			os.Setenv("GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH", TRUST_STORE_PATH)
+			os.Setenv("GO_PHDOCBASEDBBZ_KAUTHTYPE", AUTH_TYPE)
+			os.Setenv("GO_PHDOCBASEDBBZ_KSASLMECHANISM", SASL_MECHANISM)
+			os.Setenv("GO_PHDOCBASEDBBZ_KSSLUSERNAME", SSL_USERNAME)
+			os.Setenv("GO_PHDOCBASEDBBZ_KSSLPASSWORD", SSL_PASSWORD)
+			os.Setenv("GO_PHDOCBASEDBBZ_KSSLCAFILE", SSL_CA_FILE)
+			os.Setenv("GO_PHDOCBASEDBBZ_KCERTFILE", SSL_CERT_FILE)
+			os.Setenv("GO_PHDOCBASEDBBZ_KKEYFILE", SSL_KEY_FILE)
 
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
@@ -454,20 +465,32 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueInt: CACHE_TTL},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Login},
-					expectedParameters: TestTypeElements{valueString: LOGIN},
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().AuthType},
+					expectedParameters: TestTypeElements{valueString: AUTH_TYPE},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Passwd},
-					expectedParameters: TestTypeElements{valueString: PASSWORD},
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SASLMechanism},
+					expectedParameters: TestTypeElements{valueString: SASL_MECHANISM},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().CertPath},
-					expectedParameters: TestTypeElements{valueString: CERT_PATH},
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLUsername},
+					expectedParameters: TestTypeElements{valueString: SSL_USERNAME},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().TrustStorePath},
-					expectedParameters: TestTypeElements{valueString: TRUST_STORE_PATH},
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLPassword},
+					expectedParameters: TestTypeElements{valueString: SSL_PASSWORD},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLCaFile},
+					expectedParameters: TestTypeElements{valueString: SSL_CA_FILE},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLCertFile},
+					expectedParameters: TestTypeElements{valueString: SSL_CERT_FILE},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLKeyFile},
+					expectedParameters: TestTypeElements{valueString: SSL_KEY_FILE},
 				},
 			}
 

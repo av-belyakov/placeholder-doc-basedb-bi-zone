@@ -172,6 +172,11 @@ func (d *DiContainer) KafkaConnecter(ctx context.Context) KafkaConnecter {
 			kafkaapi.WithHost(d.Configer().GetKafka().Host),
 			kafkaapi.WithPort(d.Configer().GetKafka().Port),
 			kafkaapi.WithCacheTTL(d.Configer().GetKafka().CacheTTL),
+			kafkaapi.WithPassword(d.Configer().GetKafka().AuthType),
+			kafkaapi.WithPassword(d.Configer().GetKafka().SASLMechanism),
+			kafkaapi.WithPassword(d.Configer().GetKafka().SSLUsername),
+			kafkaapi.WithPassword(d.Configer().GetKafka().SSLPassword),
+			kafkaapi.WithTruststoragePath(d.Configer().GetKafka().SSLCaFile),
 			kafkaapi.WithTopicsSubscription(d.Configer().GetKafka().Topics),
 			kafkaapi.WithNameRegionalObject(d.Configer().GetCommon().RegionalObject),
 		)
@@ -179,7 +184,7 @@ func (d *DiContainer) KafkaConnecter(ctx context.Context) KafkaConnecter {
 			log.Fatal("error initialization module 'kafkaapi':", err)
 		}
 
-		if err = apiKafka.Start(ctx); err != nil {
+		if err = apiKafka.StartConsumer(ctx); err != nil {
 			log.Fatal("error start module 'kafkaapi':", err)
 		}
 

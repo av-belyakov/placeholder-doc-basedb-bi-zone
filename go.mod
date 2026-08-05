@@ -9,7 +9,7 @@ require (
 	github.com/confluentinc/confluent-kafka-go/v2 v2.15.0
 	github.com/elastic/elastic-transport-go/v8 v8.9.0
 	github.com/elastic/go-elasticsearch/v9 v9.4.2
-	github.com/go-playground/validator/v10 v10.27.0
+	github.com/go-playground/validator/v10 v10.30.3
 	github.com/goforj/godump v1.6.0
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
@@ -22,7 +22,7 @@ require (
 require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.9 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.13 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect

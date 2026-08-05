@@ -10,12 +10,29 @@ import (
 	"testing"
 	"time"
 
+	"github.com/joho/godotenv"
+
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/confighandler"
 	kafkaapi "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/kafkaapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supporting"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 func TestKafkaApi(t *testing.T) {
+	unsetAllEnviromentEnvAny()
+
+	if err := godotenv.Load("../../.env"); err != nil {
+		log.Fatalln(err)
+	}
+
+	os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
+
+	cfg, err := confighandler.New(constants.Root_Dir)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill, syscall.SIGINT)
 
 	go func() {
@@ -57,21 +74,23 @@ func TestKafkaApi(t *testing.T) {
 	kafkaApiModule, err := kafkaapi.New(
 		logging,
 		counting,
-		kafkaapi.WithNameRegionalObject("GCM-TEST"),
-		kafkaapi.WithHost("192.168.9.71"),
-		kafkaapi.WithPort(31792),
-		kafkaapi.WithTopicsSubscription(map[string]string{
-			"alerts": "alertmgr-alerts",
-			"case":   "socd-soar-prod-issue-v1",
-		}),
-		kafkaapi.WithCacheTTL(3600),
+		kafkaapi.WithHost(cfg.GetKafka().Host),
+		kafkaapi.WithPort(cfg.GetKafka().Port),
+		kafkaapi.WithCacheTTL(cfg.GetKafka().CacheTTL),
+		kafkaapi.WithPassword(cfg.GetKafka().AuthType),
+		kafkaapi.WithPassword(cfg.GetKafka().SASLMechanism),
+		kafkaapi.WithPassword(cfg.GetKafka().SSLUsername),
+		kafkaapi.WithPassword(cfg.GetKafka().SSLPassword),
+		kafkaapi.WithTruststoragePath(cfg.GetKafka().SSLCaFile),
+		kafkaapi.WithTopicsSubscription(cfg.GetKafka().Topics),
+		kafkaapi.WithNameRegionalObject(cfg.GetCommon().RegionalObject),
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	//запуск модуля
-	if err := kafkaApiModule.Start(ctx); err != nil {
+	if err := kafkaApiModule.StartConsumer(ctx); err != nil {
 		log.Fatal(err)
 	}
 
@@ -89,4 +108,49 @@ func TestKafkaApi(t *testing.T) {
 			t.Logf("Error: %+v\n", err)
 		}
 	}
+
+	t.Cleanup(func() {
+		stop()
+		unsetAllEnviromentEnvAny()
+	})
+}
+
+func unsetAllEnviromentEnvAny() {
+	os.Unsetenv("GO_PHDOCBASEDBBZ_MAIN")
+
+	//настройка наименования регионального объекта
+	os.Unsetenv("GO_PHDOCBASEDBBZ_REGIONALOBJECT")
+
+	//настройки NATS
+	os.Unsetenv("GO_PHDOCBASEDBBZ_NHOST")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_NPORT")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_NCACHETTL")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_NSUBLISTENER")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_NENRICHINGQUER")
+
+	//настройки Kafka
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KHOST")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KPORT")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KTOPICS")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KCACHETTL")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KLOGIN")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KPASSWD")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KCERTPATH")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH")
+
+	// Настройки доступа к БД в которую будут записыватся alert и case
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEHOST")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPORT")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGENAME")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEUSER")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGETABLES")
+
+	//настройки доступа к БД в которую будут записыватся логи
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGHOST")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGPORT")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGNAME")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGUSER")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGPASSWD")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME")
 }

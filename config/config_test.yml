@@ -10,14 +10,23 @@ NATS:
     get_geoip_info: object.geoip-request.test
     get_sensor_info: object.sensor-info-request.test
 KAFKA:
-  host: localhost
-  port: 9092
+  host: 192.168.9.73
+  port: 30932
   cache_ttl: 3600
   topics:
     alerts: object.topicalerttype.test
     soar-alerts: object.topicsoaralertstype.test
-  cert_path: "/certs/ca.crt"
-  trust_store_path: "/certs/truststore.jks"
+  auth_type: sasl-ssl # none, ssl или sasl-ssl
+  # simple - протокол шифрования не используется, всё что ниже для настроек kafka не нужно
+  # ssl - используется протокол mTLS с сертификатами ssl.ca.location, ssl.certificate.location, ssl.key.location
+  # сертификаты должны быть в форматах PEM (crt/key)
+  # sasl-ssl - используется sasl.mechanisms, sasl.username, sasl.password, а также хранилище доверенных
+  # сертификатов truststore.jks
+  sasl_mechanism: SCRAM-SHA-512 # PLAIN, SCRAM-SHA-256, SCRAM-SHA-512
+  ssl_username: siem2
+  ssl_ca_file: "/secrets/truststore.jks" # ca.crt или truststore.jks
+  ssl_cert_file: "/secrets/ca.crt" # client.crt (опционально) здесь задан не верный параметр и только для тестов
+  ssl_key_file: "/secrets/ca.crt" # client.key (опционально) здесь задан не верный параметр и только для тестов
 DATABASESTORAGE:
   host: 192.168.9.208
   port: 9200

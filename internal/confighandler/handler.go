@@ -32,14 +32,17 @@ func New(rootDir string) (*Config, error) {
 			"GO_PHDOCBASEDBBZ_NENRICHINGQUER": "",
 
 			//Подключение к Kafka
-			"GO_PHDOCBASEDBBZ_KHOST":           "",
-			"GO_PHDOCBASEDBBZ_KPORT":           "",
-			"GO_PHDOCBASEDBBZ_KTOPICS":         "",
-			"GO_PHDOCBASEDBBZ_KCACHETTL":       "",
-			"GO_PHDOCBASEDBBZ_KLOGIN":          "",
-			"GO_PHDOCBASEDBBZ_KPASSWD":         "",
-			"GO_PHDOCBASEDBBZ_KCERTPATH":       "",
-			"GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH": "",
+			"GO_PHDOCBASEDBBZ_KHOST":          "",
+			"GO_PHDOCBASEDBBZ_KPORT":          "",
+			"GO_PHDOCBASEDBBZ_KTOPICS":        "",
+			"GO_PHDOCBASEDBBZ_KCACHETTL":      "",
+			"GO_PHDOCBASEDBBZ_KAUTHTYPE":      "",
+			"GO_PHDOCBASEDBBZ_KSASLMECHANISM": "",
+			"GO_PHDOCBASEDBBZ_KSSLUSERNAME":   "",
+			"GO_PHDOCBASEDBBZ_KSSLPASSWORD":   "",
+			"GO_PHDOCBASEDBBZ_KSSLCAFILE":     "",
+			"GO_PHDOCBASEDBBZ_KCERTFILE":      "",
+			"GO_PHDOCBASEDBBZ_KKEYFILE":       "",
 
 			//Настройки доступа к БД в которую будут записыватся полученные объекты
 			"GO_PHDOCBASEDBBZ_DBSTORAGEHOST":   "",
@@ -149,11 +152,23 @@ func New(rootDir string) (*Config, error) {
 		if viper.IsSet("KAFKA.topics") {
 			cfg.Kafka.Topics = viper.GetStringMapString("KAFKA.topics")
 		}
-		if viper.IsSet("KAFKA.cert_path") {
-			cfg.Kafka.CertPath = viper.GetString("KAFKA.cert_path")
+		if viper.IsSet("KAFKA.auth_type") {
+			cfg.Kafka.AuthType = viper.GetString("KAFKA.auth_type")
 		}
-		if viper.IsSet("KAFKA.trust_store_path") {
-			cfg.Kafka.TrustStorePath = viper.GetString("KAFKA.trust_store_path")
+		if viper.IsSet("KAFKA.sasl_mechanism") {
+			cfg.Kafka.SASLMechanism = viper.GetString("KAFKA.sasl_mechanism")
+		}
+		if viper.IsSet("KAFKA.ssl_username") {
+			cfg.Kafka.SSLUsername = viper.GetString("KAFKA.ssl_username")
+		}
+		if viper.IsSet("KAFKA.ssl_ca_file") {
+			cfg.Kafka.SSLCaFile = viper.GetString("KAFKA.ssl_ca_file")
+		}
+		if viper.IsSet("KAFKA.ssl_cert_file") {
+			cfg.Kafka.SSLCertFile = viper.GetString("KAFKA.ssl_cert_file")
+		}
+		if viper.IsSet("KAFKA.ssl_key_file") {
+			cfg.Kafka.SSLKeyFile = viper.GetString("KAFKA.ssl_key_file")
 		}
 
 		// Настройки доступа к БД в которую будет записыватся основная информация
@@ -332,17 +347,26 @@ func New(rootDir string) (*Config, error) {
 			}
 		}
 	}
-	if envList["GO_PHDOCBASEDBBZ_KLOGIN"] != "" {
-		cfg.Kafka.Login = envList["GO_PHDOCBASEDBBZ_KLOGIN"]
+	if envList["GO_PHDOCBASEDBBZ_KAUTHTYPE"] != "" {
+		cfg.Kafka.AuthType = envList["GO_PHDOCBASEDBBZ_KAUTHTYPE"]
 	}
-	if envList["GO_PHDOCBASEDBBZ_KPASSWD"] != "" {
-		cfg.Kafka.Passwd = envList["GO_PHDOCBASEDBBZ_KPASSWD"]
+	if envList["GO_PHDOCBASEDBBZ_KSASLMECHANISM"] != "" {
+		cfg.Kafka.SASLMechanism = envList["GO_PHDOCBASEDBBZ_KSASLMECHANISM"]
 	}
-	if envList["GO_PHDOCBASEDBBZ_KCERTPATH"] != "" {
-		cfg.Kafka.CertPath = envList["GO_PHDOCBASEDBBZ_KCERTPATH"]
+	if envList["GO_PHDOCBASEDBBZ_KSSLUSERNAME"] != "" {
+		cfg.Kafka.SSLUsername = envList["GO_PHDOCBASEDBBZ_KSSLUSERNAME"]
 	}
-	if envList["GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH"] != "" {
-		cfg.Kafka.TrustStorePath = envList["GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH"]
+	if envList["GO_PHDOCBASEDBBZ_KSSLPASSWORD"] != "" {
+		cfg.Kafka.SSLPassword = envList["GO_PHDOCBASEDBBZ_KSSLPASSWORD"]
+	}
+	if envList["GO_PHDOCBASEDBBZ_KSSLCAFILE"] != "" {
+		cfg.Kafka.SSLCaFile = envList["GO_PHDOCBASEDBBZ_KSSLCAFILE"]
+	}
+	if envList["GO_PHDOCBASEDBBZ_KCERTFILE"] != "" {
+		cfg.Kafka.SSLCertFile = envList["GO_PHDOCBASEDBBZ_KCERTFILE"]
+	}
+	if envList["GO_PHDOCBASEDBBZ_KKEYFILE"] != "" {
+		cfg.Kafka.SSLKeyFile = envList["GO_PHDOCBASEDBBZ_KKEYFILE"]
 	}
 
 	//Настройки доступа к БД в которую будет добавлятся информация по alert и case
@@ -399,6 +423,8 @@ func New(rootDir string) (*Config, error) {
 	if envList["GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME"] != "" {
 		cfg.LogDB.StorageNameDB = envList["GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME"]
 	}
+
+	//fmt.Printf("STRACT:%+v\n", cfg)
 
 	//выполняем проверку заполненой структуры
 	if err = validate.Struct(cfg); err != nil {

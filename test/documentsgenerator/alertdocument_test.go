@@ -78,7 +78,7 @@ func TestAlertDocument(t *testing.T) {
 		assert.NoError(t, err)
 
 		//запуск модуля
-		err = kafkaApiModule.Start(ctx)
+		err = kafkaApiModule.StartConsumer(ctx)
 		assert.NoError(t, err)
 
 		//обработка входящих сообщений

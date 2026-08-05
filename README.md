@@ -64,10 +64,13 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 - GO_PHDOCBASEDBBZ_KCACHETTL - данный параметр должен содержать время жизни записи
   кэша, по истечение которого запись автоматически удаляется, значение задается
   в секундах в диапазоне от 10 до 86400 секунд;
-- GO_PHDOCBASEDBBZ_KLOGIN - имя пользователя для авторизации
-- GO_PHDOCBASEDBBZ_KPASSWD - пароль пользователя для авторизации
-- GO_PHDOCBASEDBBZ_KCERTPATH - путь к сертификату
-- GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH - путь к доверенному ключу
+- GO_PHDOCBASEDBBZ_KAUTHTYPE - тип авторизации, используется ли шифрование или нет, значение может быть пустое или none ssl sasl-ssl;
+- GO_PHDOCBASEDBBZ_KSASLMECHANISM - SASL механизмы, на выбор PLAIN SCRAM-SHA-256 SCRAM-SHA-512;
+- GO_PHDOCBASEDBBZ_KSSLUSERNAME - имя пользователя для SSL соединения;
+- GO_PHDOCBASEDBBZ_KSSLPASSWORD - пароль пользователя для SSL соединения;
+- GO_PHDOCBASEDBBZ_KSSLCAFILE - путь к ca.crt или truststore.jks файлу;
+- GO_PHDOCBASEDBBZ_KCERTFILE - путь к файлу сертификата клиента, например client.crt;
+- GO_PHDOCBASEDBBZ_KKEYFILE - путь к файлу ключа клиента, например client.key;
 
 #### Переменные окружения отвечающие за настройку доступа к БД применяемой для хранения полученных объектов
 
@@ -102,5 +105,5 @@ docker compose -f docker-compose.kafka-ui.yml up -d
 
 в файле .env должны быть переменные для доступа к kafka
 
-- GO_PHDOCBASEDBBZ_KLOGIN
-- GO_PHDOCBASEDBBZ_KPASSWD
+- GO_PHDOCBASEDBBZ_KSSLUSERNAME
+- GO_PHDOCBASEDBBZ_KSSLPASSWORD

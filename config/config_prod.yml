@@ -10,14 +10,23 @@ NATS: # в основном используется для обогащения
     get_geoip_info: object.geoip-request
     get_sensor_info: object.sensor-info-request
 KAFKA: # приём информации для её последующей обработки
-  host: 192.168.9.71
-  port: 31792
+  host: 192.168.9.73
+  port: 30932
   cache_ttl: 3600
   topics:
     alerts: alertmgr-alerts
     cases: socd-soar-prod-issue-v1
-  cert_path: "/certs/ca.crt"
-  trust_store_path: "/certs/truststore.jks"
+  auth_type: sasl-ssl # none, ssl или sasl-ssl
+  # simple - протокол шифрования не используется, всё что ниже для настроек kafka не нужно
+  # ssl - используется протокол mTLS с сертификатами ssl.ca.location, ssl.certificate.location, ssl.key.location
+  # сертификаты должны быть в форматах PEM (crt/key)
+  # sasl-ssl - используется sasl.mechanisms, sasl.username, sasl.password, а также хранилище доверенных
+  # сертификатов truststore.jks
+  sasl_mechanism: SCRAM-SHA-512 # PLAIN, SCRAM-SHA-256, SCRAM-SHA-512
+  ssl_username: siem2
+  ssl_ca_file: "/secrets/truststore.jks" # ca.crt или truststore.jks
+  ssl_cert_file: # client.crt (опционально)
+  ssl_key_file: # client.key (опционально)
 DATABASESTORAGE: # хранилище принятой информации
   host: datahook.cloud.gcm
   port: 9200

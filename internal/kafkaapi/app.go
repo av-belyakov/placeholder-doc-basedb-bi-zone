@@ -29,12 +29,12 @@ func New(logger interfaces.Logger, counter interfaces.Counter, opts ...KafkaApiO
 
 // WithHost имя или ip адрес хоста API
 func WithHost(v string) KafkaApiOptions {
-	return func(n *kafkaApiModule) error {
+	return func(api *kafkaApiModule) error {
 		if v == "" {
 			return errors.New("the value of 'host' cannot be empty")
 		}
 
-		n.settings.host = v
+		api.settings.host = v
 
 		return nil
 	}
@@ -42,12 +42,12 @@ func WithHost(v string) KafkaApiOptions {
 
 // WithPort порт API
 func WithPort(v int) KafkaApiOptions {
-	return func(n *kafkaApiModule) error {
+	return func(api *kafkaApiModule) error {
 		if v <= 0 || v > 65535 {
 			return errors.New("an incorrect network port value was received")
 		}
 
-		n.settings.port = v
+		api.settings.port = v
 
 		return nil
 	}
@@ -55,12 +55,12 @@ func WithPort(v int) KafkaApiOptions {
 
 // WithCacheTTL время жизни для кэша хранящего функции-обработчики запросов к модулю
 func WithCacheTTL(v int) KafkaApiOptions {
-	return func(th *kafkaApiModule) error {
+	return func(api *kafkaApiModule) error {
 		if v <= 10 || v > 86400 {
 			return errors.New("the lifetime of a cache entry should be between 10 and 86400 seconds")
 		}
 
-		th.settings.cachettl = v
+		api.settings.cachettl = v
 
 		return nil
 	}
@@ -68,8 +68,8 @@ func WithCacheTTL(v int) KafkaApiOptions {
 
 // WithNameRegionalObject наименование которое будет отображатся в статистике подключений NATS
 func WithNameRegionalObject(v string) KafkaApiOptions {
-	return func(n *kafkaApiModule) error {
-		n.settings.nameRegionalObject = v
+	return func(api *kafkaApiModule) error {
+		api.settings.nameRegionalObject = v
 
 		return nil
 	}
@@ -77,12 +77,48 @@ func WithNameRegionalObject(v string) KafkaApiOptions {
 
 // WithTopicsSubscription 'слушатель' разных топиков
 func WithTopicsSubscription(v map[string]string) KafkaApiOptions {
-	return func(n *kafkaApiModule) error {
+	return func(api *kafkaApiModule) error {
 		if len(v) == 0 {
 			return errors.New("the value of 'topics' cannot be empty")
 		}
 
-		n.topics = v
+		api.topics = v
+
+		return nil
+	}
+}
+
+// WithClientName имя клиента
+func WithClientName(v string) KafkaApiOptions {
+	return func(api *kafkaApiModule) error {
+		api.settings.userName = v
+
+		return nil
+	}
+}
+
+// WithPassword пароль для доступа к Kafka
+func WithPassword(v string) KafkaApiOptions {
+	return func(api *kafkaApiModule) error {
+		api.settings.passwd = v
+
+		return nil
+	}
+}
+
+// WithCertPath путь к сертификату
+func WithCertPath(v string) KafkaApiOptions {
+	return func(api *kafkaApiModule) error {
+		api.settings.certPath = v
+
+		return nil
+	}
+}
+
+// WithTruststoragePath путь к ключу доверенного хранилища
+func WithTruststoragePath(v string) KafkaApiOptions {
+	return func(api *kafkaApiModule) error {
+		api.settings.truststorePath = v
 
 		return nil
 	}

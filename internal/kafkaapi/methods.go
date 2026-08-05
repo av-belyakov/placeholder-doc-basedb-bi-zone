@@ -8,27 +8,27 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
-// Start инициализирует новый модуль взаимодействия с API Kafka,
-// при инициализации возращается канал для взаимодействия с модулем,
-// все запросы к модулю выполняются через данный канал
-func (api *kafkaApiModule) Start(ctx context.Context) error {
+// StartConsumer инициализирует новый модуль-потребитель Kafka,
+// при инициализации возращается канал для взаимодействия с модулем, все запросы к модулю выполняются через него
+func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 	if ctx.Err() != nil {
 		return ctx.Err()
 	}
 
-	if ctx.Err() != nil {
-		return ctx.Err()
-	}
-
-	consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
+	cfg := &kafka.ConfigMap{
 		"bootstrap.servers": fmt.Sprintf("%s:%d", api.settings.host, api.settings.port),
 		"group.id":          fmt.Sprintf("%s-group", api.settings.nameRegionalObject), // Идентификатор группы
 		"auto.offset.reset": "earliest",                                               // Читать с начала
-	})
+	}
+
+switch api.settings.
+
+	consumer, err := kafka.NewConsumer(cfg)
 	if err != nil {
 		return err
 	}
 	api.consumer = consumer
+
 	context.AfterFunc(ctx, func() {
 		consumer.Close()
 

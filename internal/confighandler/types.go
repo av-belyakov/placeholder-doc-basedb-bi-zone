@@ -60,14 +60,17 @@ type CfgNats struct {
 }
 
 type CfgKafka struct {
-	Topics         map[string]string `yaml:"topics"`
-	Login          string            `yaml:"login"`
-	Passwd         string            `yaml:"passwd"`
-	CertPath       string            `yaml:"cert_path"`
-	TrustStorePath string            `yaml:"trust_store_path"`
-	Host           string            `validate:"required" yaml:"host"`
-	Port           int               `validate:"gt=0,lte=65535" yaml:"port"`
-	CacheTTL       int               `validate:"gt=1,lte=86400" yaml:"cache_ttl"`
+	Topics        map[string]string `yaml:"topics"`
+	AuthType      string            `validate:"oneof=none ssl sasl-ssl" yaml:"auth_type"`
+	SASLMechanism string            `validate:"oneof=PLAIN SCRAM-SHA-256 SCRAM-SHA-512"`
+	SSLUsername   string            `yaml:"ssl_username"`
+	SSLPassword   string            `yaml:"ssl_password"`
+	SSLCaFile     string            `yaml:"ssl_ca_file"`
+	SSLCertFile   string            `yaml:"ssl_cert_file"`
+	SSLKeyFile    string            `yaml:"ssl_key_file"`
+	Host          string            `validate:"required" yaml:"host"`
+	Port          int               `validate:"gt=0,lte=65535" yaml:"port"`
+	CacheTTL      int               `validate:"gt=1,lte=86400" yaml:"cache_ttl"`
 }
 
 type CfgStorageDB struct {
