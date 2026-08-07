@@ -1,6 +1,6 @@
 module github.com/av-belyakov/placeholder_doc-basedb_bi.zone
 
-go 1.25.0
+go 1.26.5
 
 require (
 	github.com/av-belyakov/simplelogger v0.0.0-20250708122117-e5df57013a70
@@ -45,7 +45,6 @@ require (
 	go.opentelemetry.io/otel/metric v1.37.0 // indirect
 	go.opentelemetry.io/otel/trace v1.37.0 // indirect
 	golang.org/x/crypto v0.53.0 // indirect
-	golang.org/x/net v0.56.0 // indirect
 	golang.org/x/sys v0.46.0 // indirect
 	golang.org/x/text v0.38.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

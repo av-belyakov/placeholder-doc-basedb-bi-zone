@@ -95,15 +95,16 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 
 Приоритет значений заданных через переменные окружения выше чем значений полученных из конфигурационных файлов. Таким образом можно осуществлять гибкую временную настройку приложения.
 
-#### Доступ к kafka ГЦМ
+#### Доступ к kafka ГЦМ с помощью UI интерфейса Kafka-ui
 
-Для доступа к kafka ГЦМ выполните:
+Для доступа к kafka ГЦМ используется Kafka-ui. Для корректной работы нужно что бы в файле .env были заполнены переменные:
+
+- GO_PHDOCBASEDBBZ_KSSLUSERNAME
+- GO_PHDOCBASEDBBZ_KSSLPASSWORD
+
+Кроме того нужен файл truststore.jks являющийся хранилищем доверенных сертификатов в формате JKS (Java KeyStore).
+Для запуска Kafka-ui выполните:
 
 ```bash
 docker compose -f docker-compose.kafka-ui.yml up -d
 ```
-
-в файле .env должны быть переменные для доступа к kafka
-
-- GO_PHDOCBASEDBBZ_KSSLUSERNAME
-- GO_PHDOCBASEDBBZ_KSSLPASSWORD

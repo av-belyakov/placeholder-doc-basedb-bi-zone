@@ -82,6 +82,7 @@ func TestKafkaApi(t *testing.T) {
 		kafkaapi.WithSSLUserName(cfg.GetKafka().SSLUsername),
 		kafkaapi.WithSSLPassword(cfg.GetKafka().SSLPassword),
 		kafkaapi.WithSSLCeFile(cfg.GetKafka().SSLCaFile),
+		kafkaapi.WithSSLCertFile(cfg.GetKafka().SSLCertFile),
 		kafkaapi.WithTopicsSubscription(cfg.GetKafka().Topics),
 		kafkaapi.WithNameRegionalObject(cfg.GetCommon().RegionalObject),
 	)

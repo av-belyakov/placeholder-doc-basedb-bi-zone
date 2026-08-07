@@ -39,7 +39,16 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 		cfg.SetKey("sasl.username", api.settings.sslUsername)
 		cfg.SetKey("sasl.password", api.settings.sslPassword)
 		cfg.SetKey("ssl.ca.location", filepath.Join("../../", api.settings.sslCeFile))
-		cfg.SetKey("ssl.endpoint.identification.algorithm", "https")
+		cfg.SetKey("ssl.certificate.location", api.settings.sslCertFile)
+		cfg.SetKey("ssl.endpoint.identification.algorithm", "none")
+	}
+
+	if api.settings.sslCertFile != "" {
+		cfg.SetKey("ssl.certificate.location", filepath.Join("../../", api.settings.sslCertFile))
+	}
+
+	if api.settings.sslKeyFile != "" {
+		cfg.SetKey("ssl.key.location", filepath.Join("../../", api.settings.sslKeyFile))
 	}
 
 	consumer, err := kafka.NewConsumer(cfg)

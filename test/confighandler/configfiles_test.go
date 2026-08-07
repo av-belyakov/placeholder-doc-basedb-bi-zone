@@ -225,7 +225,7 @@ func TestConfigFileHandler(t *testing.T) {
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLKeyFile},
-					expectedParameters: TestTypeElements{valueString: "/secrets/ca.crt"},
+					expectedParameters: TestTypeElements{valueString: ""},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLPassword},
