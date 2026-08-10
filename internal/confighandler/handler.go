@@ -43,6 +43,8 @@ func New(rootDir string) (*Config, error) {
 			"GO_PHDOCBASEDBBZ_KSSLCAFILE":     "",
 			"GO_PHDOCBASEDBBZ_KCERTFILE":      "",
 			"GO_PHDOCBASEDBBZ_KKEYFILE":       "",
+			"GO_PHDOCBASEDBBZ_KSERVERNAME":    "",
+			"GO_PHDOCBASEDBBZ_KGROUPID":       "",
 
 			//Настройки доступа к БД в которую будут записыватся полученные объекты
 			"GO_PHDOCBASEDBBZ_DBSTORAGEHOST":   "",
@@ -169,6 +171,12 @@ func New(rootDir string) (*Config, error) {
 		}
 		if viper.IsSet("KAFKA.ssl_key_file") {
 			cfg.Kafka.SSLKeyFile = viper.GetString("KAFKA.ssl_key_file")
+		}
+		if viper.IsSet("KAFKA.server_name") {
+			cfg.Kafka.ServerName = viper.GetString("KAFKA.server_name")
+		}
+		if viper.IsSet("KAFKA.group_id") {
+			cfg.Kafka.GroupId = viper.GetString("KAFKA.group_id")
 		}
 
 		// Настройки доступа к БД в которую будет записыватся основная информация
@@ -367,6 +375,12 @@ func New(rootDir string) (*Config, error) {
 	}
 	if envList["GO_PHDOCBASEDBBZ_KKEYFILE"] != "" {
 		cfg.Kafka.SSLKeyFile = envList["GO_PHDOCBASEDBBZ_KKEYFILE"]
+	}
+	if envList["GO_PHDOCBASEDBBZ_KSERVERNAME"] != "" {
+		cfg.Kafka.ServerName = envList["GO_PHDOCBASEDBBZ_KSERVERNAME"]
+	}
+	if envList["GO_PHDOCBASEDBBZ_KGROUPID"] != "" {
+		cfg.Kafka.GroupId = envList["GO_PHDOCBASEDBBZ_KGROUPID"]
 	}
 
 	//Настройки доступа к БД в которую будет добавлятся информация по alert и case

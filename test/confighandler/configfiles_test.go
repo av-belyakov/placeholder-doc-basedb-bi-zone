@@ -204,6 +204,14 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueString: "object.topicsoaralertstype.test"},
 				},
 				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().ServerName},
+					expectedParameters: TestTypeElements{valueString: "kafka-cluster-kafka-bootstrap"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().GroupId},
+					expectedParameters: TestTypeElements{valueString: "gcm-group"},
+				},
+				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().AuthType},
 					expectedParameters: TestTypeElements{valueString: "sasl-ssl"},
 				},
@@ -435,6 +443,8 @@ func TestConfigFileHandler(t *testing.T) {
 				SSL_CA_FILE    = "/secrets/anycafile.jks"
 				SSL_CERT_FILE  = "/secrets/anycertfile.jks"
 				SSL_KEY_FILE   = "/secrets/anykeyfile.jks"
+				SERVER_NAME    = "any-kafka-cluster"
+				GROUP_ID       = "any-group-id"
 			)
 
 			os.Setenv("GO_PHDOCBASEDBBZ_KHOST", HOST)
@@ -448,6 +458,8 @@ func TestConfigFileHandler(t *testing.T) {
 			os.Setenv("GO_PHDOCBASEDBBZ_KSSLCAFILE", SSL_CA_FILE)
 			os.Setenv("GO_PHDOCBASEDBBZ_KCERTFILE", SSL_CERT_FILE)
 			os.Setenv("GO_PHDOCBASEDBBZ_KKEYFILE", SSL_KEY_FILE)
+			os.Setenv("GO_PHDOCBASEDBBZ_KSERVERNAME", SERVER_NAME)
+			os.Setenv("GO_PHDOCBASEDBBZ_KGROUPID", GROUP_ID)
 
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
@@ -491,6 +503,14 @@ func TestConfigFileHandler(t *testing.T) {
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLKeyFile},
 					expectedParameters: TestTypeElements{valueString: SSL_KEY_FILE},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().ServerName},
+					expectedParameters: TestTypeElements{valueString: SERVER_NAME},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().GroupId},
+					expectedParameters: TestTypeElements{valueString: GROUP_ID},
 				},
 			}
 
@@ -686,6 +706,8 @@ func unsetAllEnviromentEnvAny() {
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KPASSWD")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KCERTPATH")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KSERVERNAME")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KGROUPID")
 
 	// Настройки доступа к БД в которую будут записыватся alert и case
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEHOST")

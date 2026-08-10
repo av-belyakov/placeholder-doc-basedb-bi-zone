@@ -71,6 +71,8 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 - GO_PHDOCBASEDBBZ_KSSLCAFILE - путь к ca.crt или truststore.jks файлу;
 - GO_PHDOCBASEDBBZ_KCERTFILE - путь к файлу сертификата клиента, например client.crt;
 - GO_PHDOCBASEDBBZ_KKEYFILE - путь к файлу ключа клиента, например client.key;
+- GO_PHDOCBASEDBBZ_KSERVERNAME - имя сервера kafka указанное в сертификате клиента;
+- GO_PHDOCBASEDBBZ_KGROUPID - параметр GroupID для подключения к kafka, для ГЦМ пока что пустое;
 
 #### Переменные окружения отвечающие за настройку доступа к БД применяемой для хранения полученных объектов
 

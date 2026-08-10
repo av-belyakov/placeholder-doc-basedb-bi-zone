@@ -68,6 +68,8 @@ type CfgKafka struct {
 	SSLCaFile     string            `yaml:"ssl_ca_file"`
 	SSLCertFile   string            `yaml:"ssl_cert_file"`
 	SSLKeyFile    string            `yaml:"ssl_key_file"`
+	ServerName    string            `yaml:"kafka-cluster-kafka-bootstrap"`
+	GroupId       string            `yaml:"group_id"`
 	Host          string            `validate:"required" yaml:"host"`
 	Port          int               `validate:"gt=0,lte=65535" yaml:"port"`
 	CacheTTL      int               `validate:"gt=1,lte=86400" yaml:"cache_ttl"`
