@@ -212,10 +212,6 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueString: "gcm-group"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().AuthType},
-					expectedParameters: TestTypeElements{valueString: "sasl-ssl"},
-				},
-				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SASLMechanism},
 					expectedParameters: TestTypeElements{valueString: "SCRAM-SHA-512"},
 				},
@@ -440,7 +436,6 @@ func TestConfigFileHandler(t *testing.T) {
 				PORT            = 1180
 				CACHE_TTL       = 35
 				TOPICS          = "topiconw:phdocbasedbbz;topictwo:phdocbaseddmz2"
-				AUTH_TYPE       = "none"
 				SASL_MECHANISM  = "PLAIN"
 				SSL_USERNAME    = "any-login"
 				SSL_PASSWORD    = "pass-here!@#"
@@ -456,7 +451,6 @@ func TestConfigFileHandler(t *testing.T) {
 			os.Setenv("GO_PHDOCBASEDBBZ_KCACHETTL", strconv.Itoa(CACHE_TTL))
 			os.Setenv("GO_PHDOCBASEDBBZ_KGROUPID", GROUP_ID)
 			os.Setenv("GO_PHDOCBASEDBBZ_KTOPICS", TOPICS)
-			os.Setenv("GO_PHDOCBASEDBBZ_KAUTHTYPE", AUTH_TYPE)
 			os.Setenv("GO_PHDOCBASEDBBZ_KSASLMECHANISM", SASL_MECHANISM)
 			os.Setenv("GO_PHDOCBASEDBBZ_KSSLUSERNAME", SSL_USERNAME)
 			os.Setenv("GO_PHDOCBASEDBBZ_KSSLPASSWORD", SSL_PASSWORD)
@@ -483,10 +477,6 @@ func TestConfigFileHandler(t *testing.T) {
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().GroupId},
 					expectedParameters: TestTypeElements{valueString: GROUP_ID},
-				},
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().AuthType},
-					expectedParameters: TestTypeElements{valueString: AUTH_TYPE},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SASLMechanism},
@@ -707,7 +697,6 @@ func unsetAllEnviromentEnvAny() {
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KGROUPID")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KTOPICS")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KCACHETTL")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_KAUTHTYPE")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KSASLMECHANISM")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLUSERNAME")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLPASSWORD")

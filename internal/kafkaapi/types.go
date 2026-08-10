@@ -20,13 +20,14 @@ type kafkaApiModule struct {
 type kafkaApiSettings struct {
 	nameRegionalObject string
 	command            string
-	authType           string
+	groupId            string
 	saslMechanism      string
 	sslUsername        string
 	sslPassword        string
 	sslCeFile          string
 	sslCertFile        string
 	sslKeyFile         string
+	sslServerName      string
 	host               string
 	port               int
 	cachettl           int

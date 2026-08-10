@@ -17,17 +17,13 @@ KAFKA:
   topics:
     alerts: object.topicalerttype.test
     soar-alerts: object.topicsoaralertstype.test
-  auth_type: sasl-ssl # none/NONE, ssl/SSL или sasl-ssl/SASL-SSL
-  # simple - протокол шифрования не используется, всё что ниже для настроек kafka не нужно
-  # ssl - используется протокол mTLS с сертификатами ssl.ca.location, ssl.certificate.location, ssl.key.location
-  # сертификаты должны быть в форматах PEM (crt/key)
-  # sasl-ssl - используется sasl.mechanisms, sasl.username, sasl.password, а также хранилище доверенных
-  # сертификатов truststore.jks
   sasl_mechanism: SCRAM-SHA-512 # PLAIN, SCRAM-SHA-256, SCRAM-SHA-512
   ssl_username: siem2
-  ssl_ca_file: "/secrets/truststore.jks" # ca.crt или truststore.jks
-  ssl_cert_file: "/secrets/ca.crt" # client.crt (опционально) здесь задан не верный параметр и только для тестов
-  ssl_key_file: "" # client.key (опционально) здесь задан не верный параметр и только для тестов
+  ssl_ca_file: "/secrets/truststore.jks" # ca.crt или truststore.jks # ca.crt или truststore.jks (определяет набор корневых центров сертификации которые клиенты используют при проверке сертификатов сервера)
+  ssl_cert_file: "/secrets/ca.crt" # client.crt открытый сертификат клиента, параметр и только для тестов
+  ssl_key_file: "" # client.key закрытый ключ для сертификата клиента, параметр и только для тестов
+  # если ssl_ca_file, ssl_cert_file и ssl_key_file пустые то будут выполнятся поппытки соединения с сервером
+  # kafka без использования протокола TLS
   ssl_server_name: "kafka-cluster-kafka-bootstrap" # имя сервера kafka указанное в сертификате клиента
 DATABASESTORAGE:
   host: 192.168.9.208

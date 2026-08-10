@@ -77,7 +77,6 @@ func TestKafkaApi(t *testing.T) {
 		kafkaapi.WithHost(cfg.GetKafka().Host),
 		kafkaapi.WithPort(cfg.GetKafka().Port),
 		kafkaapi.WithCacheTTL(cfg.GetKafka().CacheTTL),
-		kafkaapi.WithAuthType(cfg.GetKafka().AuthType),
 		kafkaapi.WithSASLMechanism(cfg.GetKafka().SASLMechanism),
 		kafkaapi.WithSSLUserName(cfg.GetKafka().SSLUsername),
 		kafkaapi.WithSSLPassword(cfg.GetKafka().SSLPassword),

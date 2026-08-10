@@ -15,10 +15,10 @@ services:
       SPRING_SECURITY_USER_NAME: $GO_PHDOCBASEDBBZ_KSSLUSERNAME # имя клиента
       SPRING_SECURITY_USER_PASSWORD: $GO_PHDOCBASEDBBZ_KSSLPASSWORD # пароль клиента
       KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM: SCRAM-SHA-512
-      KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username=siem2 password=rdhMrFmweDuFTimiovDoNIt7IyJ888gG;
+      KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG: org.apache.kafka.common.security.scram.ScramLoginModule required username=$GO_PHDOCBASEDBBZ_KSSLUSERNAME password=$GO_PHDOCBASEDBBZ_KSSLPASSWORD;
       KAFKA_CLUSTERS_0_PROPERTIES_SSL_TRUSTSTORE_LOCATION: /kafka/secrets/truststore.jks
       # KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: "" отключает проверку hostname для SSL
-      KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: ""
+      KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: "kafka-cluster-kafka-bootstrap"
     volumes:
       - $PWD/secrets:/kafka/secrets:ro
       - /etc/timezone:/etc/timezone:ro

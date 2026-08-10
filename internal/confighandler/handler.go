@@ -157,9 +157,6 @@ func New(rootDir string) (*Config, error) {
 		if viper.IsSet("KAFKA.topics") {
 			cfg.Kafka.Topics = viper.GetStringMapString("KAFKA.topics")
 		}
-		if viper.IsSet("KAFKA.auth_type") {
-			cfg.Kafka.AuthType = viper.GetString("KAFKA.auth_type")
-		}
 		if viper.IsSet("KAFKA.sasl_mechanism") {
 			cfg.Kafka.SASLMechanism = viper.GetString("KAFKA.sasl_mechanism")
 		}
@@ -358,9 +355,6 @@ func New(rootDir string) (*Config, error) {
 			}
 		}
 	}
-	if envList["GO_PHDOCBASEDBBZ_KAUTHTYPE"] != "" {
-		cfg.Kafka.AuthType = envList["GO_PHDOCBASEDBBZ_KAUTHTYPE"]
-	}
 	if envList["GO_PHDOCBASEDBBZ_KSASLMECHANISM"] != "" {
 		cfg.Kafka.SASLMechanism = envList["GO_PHDOCBASEDBBZ_KSASLMECHANISM"]
 	}
@@ -381,9 +375,6 @@ func New(rootDir string) (*Config, error) {
 	}
 	if envList["GO_PHDOCBASEDBBZ_KSSLSERVERNAME"] != "" {
 		cfg.Kafka.SSLServerName = envList["GO_PHDOCBASEDBBZ_KSSLSERVERNAME"]
-	}
-	if envList["GO_PHDOCBASEDBBZ_KSERVERNAME"] != "" {
-		cfg.Kafka.ServerName = envList["GO_PHDOCBASEDBBZ_KSERVERNAME"]
 	}
 	if envList["GO_PHDOCBASEDBBZ_KGROUPID"] != "" {
 		cfg.Kafka.GroupId = envList["GO_PHDOCBASEDBBZ_KGROUPID"]

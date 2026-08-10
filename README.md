@@ -65,7 +65,6 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 - GO_PHDOCBASEDBBZ_KCACHETTL - данный параметр должен содержать время жизни записи
   кэша, по истечение которого запись автоматически удаляется, значение задается
   в секундах в диапазоне от 10 до 86400 секунд;
-- GO_PHDOCBASEDBBZ_KAUTHTYPE - тип авторизации, используется ли шифрование или нет, значение может быть пустое или none ssl sasl-ssl;
 - GO_PHDOCBASEDBBZ_KSASLMECHANISM - SASL механизмы, на выбор PLAIN SCRAM-SHA-256 SCRAM-SHA-512;
 - GO_PHDOCBASEDBBZ_KSSLUSERNAME - имя пользователя для SSL соединения;
 - GO_PHDOCBASEDBBZ_KSSLPASSWORD - пароль пользователя для SSL соединения;

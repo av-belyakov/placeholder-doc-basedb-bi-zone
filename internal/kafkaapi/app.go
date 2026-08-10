@@ -66,10 +66,19 @@ func WithCacheTTL(v int) KafkaApiOptions {
 	}
 }
 
-// WithNameRegionalObject наименование которое будет отображатся в статистике подключений NATS
+// WithNameRegionalObject наименование которое будет отображатся в статистике
 func WithNameRegionalObject(v string) KafkaApiOptions {
 	return func(api *kafkaApiModule) error {
 		api.settings.nameRegionalObject = v
+
+		return nil
+	}
+}
+
+// WithGroupId GroupId потребителя Kafka
+func WithGroupId(v string) KafkaApiOptions {
+	return func(api *kafkaApiModule) error {
+		api.settings.groupId = v
 
 		return nil
 	}
@@ -83,15 +92,6 @@ func WithTopicsSubscription(v map[string]string) KafkaApiOptions {
 		}
 
 		api.topics = v
-
-		return nil
-	}
-}
-
-// WithAuthType тип авторизации
-func WithAuthType(v string) KafkaApiOptions {
-	return func(api *kafkaApiModule) error {
-		api.settings.authType = v
 
 		return nil
 	}
@@ -124,7 +124,7 @@ func WithSSLPassword(v string) KafkaApiOptions {
 	}
 }
 
-// WithSSLCeFile файл ca.crt или truststore.jks доверенного хранилища
+// WithSSLCeFile файл ca.crt или truststore.jks хранилище набора корневых центров сертификации, которые клиенты используют при проверке сертификатов сервера
 func WithSSLCeFile(v string) KafkaApiOptions {
 	return func(api *kafkaApiModule) error {
 		api.settings.sslCeFile = v
@@ -133,7 +133,7 @@ func WithSSLCeFile(v string) KafkaApiOptions {
 	}
 }
 
-// WithSSLCertFile путь к ключу доверенного хранилища
+// WithSSLCertFile открытый сертификат клиента
 func WithSSLCertFile(v string) KafkaApiOptions {
 	return func(api *kafkaApiModule) error {
 		api.settings.sslCertFile = v
@@ -142,10 +142,19 @@ func WithSSLCertFile(v string) KafkaApiOptions {
 	}
 }
 
-// WithKeyFile ключ клиента
-func WithKeyFile(v string) KafkaApiOptions {
+// WithSSLKeyFile закрытый ключ для сертификата клиента
+func WithSSLKeyFile(v string) KafkaApiOptions {
 	return func(api *kafkaApiModule) error {
 		api.settings.sslKeyFile = v
+
+		return nil
+	}
+}
+
+// WithSSLServerName имя сервера kafka указанное в сертификате клиента
+func WithSSLServerName(v string) KafkaApiOptions {
+	return func(api *kafkaApiModule) error {
+		api.settings.sslServerName = v
 
 		return nil
 	}
