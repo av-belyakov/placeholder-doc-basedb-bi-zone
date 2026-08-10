@@ -59,6 +59,7 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 
 - GO_PHDOCBASEDBBZ_KHOST - ip или доменное имя;
 - GO_PHDOCBASEDBBZ_KPORT - сетевой порт;
+- GO_PHDOCBASEDBBZ_KGROUPID - параметр GroupID для подключения к kafka, для ГЦМ пока что пустое;
 - GO_PHDOCBASEDBBZ_KTOPICS - подписки на топики, нужны для приёма информации. Для этой переменной можно задавать список # # параметров типа ключ:значение, параметры между собой разделяются специальным символом ';'.
   Например, alert:subscriber.alert;case:subscriber.case.
 - GO_PHDOCBASEDBBZ_KCACHETTL - данный параметр должен содержать время жизни записи
@@ -69,8 +70,9 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 - GO_PHDOCBASEDBBZ_KSSLUSERNAME - имя пользователя для SSL соединения;
 - GO_PHDOCBASEDBBZ_KSSLPASSWORD - пароль пользователя для SSL соединения;
 - GO_PHDOCBASEDBBZ_KSSLCAFILE - путь к ca.crt или truststore.jks файлу;
-- GO_PHDOCBASEDBBZ_KCERTFILE - путь к файлу сертификата клиента, например client.crt;
-- GO_PHDOCBASEDBBZ_KKEYFILE - путь к файлу ключа клиента, например client.key;
+- GO_PHDOCBASEDBBZ_KSSLCERTFILE - путь к файлу сертификата клиента, например client.crt;
+- GO_PHDOCBASEDBBZ_KSSLKEYFILE - путь к файлу ключа клиента, например client.key;
+- GO_PHDOCBASEDBBZ_KSSLSERVERNAME - имя сервера kafka указанное в сертификате клиента;
 
 #### Переменные окружения отвечающие за настройку доступа к БД применяемой для хранения полученных объектов
 

@@ -13,6 +13,7 @@ KAFKA:
   host: 192.168.9.73
   port: 30932
   cache_ttl: 3600
+  group_id: "gcm-group" # для ГЦМ оставляем пустым
   topics:
     alerts: object.topicalerttype.test
     soar-alerts: object.topicsoaralertstype.test
@@ -27,6 +28,7 @@ KAFKA:
   ssl_ca_file: "/secrets/truststore.jks" # ca.crt или truststore.jks
   ssl_cert_file: "/secrets/ca.crt" # client.crt (опционально) здесь задан не верный параметр и только для тестов
   ssl_key_file: "" # client.key (опционально) здесь задан не верный параметр и только для тестов
+  ssl_server_name: "kafka-cluster-kafka-bootstrap" # имя сервера kafka указанное в сертификате клиента
 DATABASESTORAGE:
   host: 192.168.9.208
   port: 9200

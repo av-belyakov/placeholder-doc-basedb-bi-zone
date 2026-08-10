@@ -196,12 +196,20 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueInt: 3600},
 				},
 				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().GroupId},
+					expectedParameters: TestTypeElements{valueString: "gcm-group"},
+				},
+				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Topics["alerts"]},
 					expectedParameters: TestTypeElements{valueString: "object.topicalerttype.test"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Topics["soar-alerts"]},
 					expectedParameters: TestTypeElements{valueString: "object.topicsoaralertstype.test"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().GroupId},
+					expectedParameters: TestTypeElements{valueString: "gcm-group"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().AuthType},
@@ -226,6 +234,10 @@ func TestConfigFileHandler(t *testing.T) {
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLKeyFile},
 					expectedParameters: TestTypeElements{valueString: ""},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLServerName},
+					expectedParameters: TestTypeElements{valueString: "kafka-cluster-kafka-bootstrap"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLPassword},
@@ -424,30 +436,34 @@ func TestConfigFileHandler(t *testing.T) {
 		name: "Настройки Kafka (через переменные окружения)",
 		function: func() {
 			const (
-				HOST           = "45.6.36.1"
-				PORT           = 1180
-				CACHE_TTL      = 35
-				TOPICS         = "topiconw:phdocbasedbbz;topictwo:phdocbaseddmz2"
-				AUTH_TYPE      = "none"
-				SASL_MECHANISM = "PLAIN"
-				SSL_USERNAME   = "any-login"
-				SSL_PASSWORD   = "pass-here!@#"
-				SSL_CA_FILE    = "/secrets/anycafile.jks"
-				SSL_CERT_FILE  = "/secrets/anycertfile.jks"
-				SSL_KEY_FILE   = "/secrets/anykeyfile.jks"
+				HOST            = "45.6.36.1"
+				PORT            = 1180
+				CACHE_TTL       = 35
+				TOPICS          = "topiconw:phdocbasedbbz;topictwo:phdocbaseddmz2"
+				AUTH_TYPE       = "none"
+				SASL_MECHANISM  = "PLAIN"
+				SSL_USERNAME    = "any-login"
+				SSL_PASSWORD    = "pass-here!@#"
+				SSL_CA_FILE     = "/secrets/anycafile.jks"
+				SSL_CERT_FILE   = "/secrets/anycertfile.jks"
+				SSL_KEY_FILE    = "/secrets/anykeyfile.jks"
+				SSL_SERVER_NAME = "any-kafka-cluster"
+				GROUP_ID        = "any-group-id"
 			)
 
 			os.Setenv("GO_PHDOCBASEDBBZ_KHOST", HOST)
 			os.Setenv("GO_PHDOCBASEDBBZ_KPORT", strconv.Itoa(PORT))
 			os.Setenv("GO_PHDOCBASEDBBZ_KCACHETTL", strconv.Itoa(CACHE_TTL))
+			os.Setenv("GO_PHDOCBASEDBBZ_KGROUPID", GROUP_ID)
 			os.Setenv("GO_PHDOCBASEDBBZ_KTOPICS", TOPICS)
 			os.Setenv("GO_PHDOCBASEDBBZ_KAUTHTYPE", AUTH_TYPE)
 			os.Setenv("GO_PHDOCBASEDBBZ_KSASLMECHANISM", SASL_MECHANISM)
 			os.Setenv("GO_PHDOCBASEDBBZ_KSSLUSERNAME", SSL_USERNAME)
 			os.Setenv("GO_PHDOCBASEDBBZ_KSSLPASSWORD", SSL_PASSWORD)
 			os.Setenv("GO_PHDOCBASEDBBZ_KSSLCAFILE", SSL_CA_FILE)
-			os.Setenv("GO_PHDOCBASEDBBZ_KCERTFILE", SSL_CERT_FILE)
-			os.Setenv("GO_PHDOCBASEDBBZ_KKEYFILE", SSL_KEY_FILE)
+			os.Setenv("GO_PHDOCBASEDBBZ_KSSLCERTFILE", SSL_CERT_FILE)
+			os.Setenv("GO_PHDOCBASEDBBZ_KSSLKEYFILE", SSL_KEY_FILE)
+			os.Setenv("GO_PHDOCBASEDBBZ_KSSLSERVERNAME", SSL_SERVER_NAME)
 
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
@@ -463,6 +479,10 @@ func TestConfigFileHandler(t *testing.T) {
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetKafka().CacheTTL},
 					expectedParameters: TestTypeElements{valueInt: CACHE_TTL},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().GroupId},
+					expectedParameters: TestTypeElements{valueString: GROUP_ID},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().AuthType},
@@ -491,6 +511,10 @@ func TestConfigFileHandler(t *testing.T) {
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLKeyFile},
 					expectedParameters: TestTypeElements{valueString: SSL_KEY_FILE},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLServerName},
+					expectedParameters: TestTypeElements{valueString: SSL_SERVER_NAME},
 				},
 			}
 
@@ -680,12 +704,17 @@ func unsetAllEnviromentEnvAny() {
 	//настройки Kafka
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KHOST")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KPORT")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KGROUPID")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KTOPICS")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KCACHETTL")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_KLOGIN")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_KPASSWD")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_KCERTPATH")
-	os.Unsetenv("GO_PHDOCBASEDBBZ_KTRUSTSTOREPATH")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KAUTHTYPE")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KSASLMECHANISM")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLUSERNAME")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLPASSWORD")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLCAFILE")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLCERTFILE")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLKEYFILE")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLSERVERNAME")
 
 	// Настройки доступа к БД в которую будут записыватся alert и case
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEHOST")

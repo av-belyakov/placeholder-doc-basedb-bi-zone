@@ -60,6 +60,7 @@ type CfgNats struct {
 }
 
 type CfgKafka struct {
+	GroupId       string            `yaml:"group_id"`
 	Topics        map[string]string `yaml:"topics"`
 	AuthType      string            `validate:"oneof=none NONE ssl SSL sasl-ssl SASL-SSL" yaml:"auth_type"`
 	SASLMechanism string            `validate:"oneof=PLAIN SCRAM-SHA-256 SCRAM-SHA-512"`
@@ -68,6 +69,7 @@ type CfgKafka struct {
 	SSLCaFile     string            `yaml:"ssl_ca_file"`
 	SSLCertFile   string            `yaml:"ssl_cert_file"`
 	SSLKeyFile    string            `yaml:"ssl_key_file"`
+	SSLServerName string            `yaml:"ssl_server_name"`
 	Host          string            `validate:"required" yaml:"host"`
 	Port          int               `validate:"gt=0,lte=65535" yaml:"port"`
 	CacheTTL      int               `validate:"gt=1,lte=86400" yaml:"cache_ttl"`

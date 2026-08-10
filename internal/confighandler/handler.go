@@ -34,6 +34,7 @@ func New(rootDir string) (*Config, error) {
 			//Подключение к Kafka
 			"GO_PHDOCBASEDBBZ_KHOST":          "",
 			"GO_PHDOCBASEDBBZ_KPORT":          "",
+			"GO_PHDOCBASEDBBZ_KGROUPID":       "",
 			"GO_PHDOCBASEDBBZ_KTOPICS":        "",
 			"GO_PHDOCBASEDBBZ_KCACHETTL":      "",
 			"GO_PHDOCBASEDBBZ_KAUTHTYPE":      "",
@@ -41,8 +42,9 @@ func New(rootDir string) (*Config, error) {
 			"GO_PHDOCBASEDBBZ_KSSLUSERNAME":   "",
 			"GO_PHDOCBASEDBBZ_KSSLPASSWORD":   "",
 			"GO_PHDOCBASEDBBZ_KSSLCAFILE":     "",
-			"GO_PHDOCBASEDBBZ_KCERTFILE":      "",
-			"GO_PHDOCBASEDBBZ_KKEYFILE":       "",
+			"GO_PHDOCBASEDBBZ_KSSLCERTFILE":   "",
+			"GO_PHDOCBASEDBBZ_KSSLKEYFILE":    "",
+			"GO_PHDOCBASEDBBZ_KSSLSERVERNAME": "",
 
 			//Настройки доступа к БД в которую будут записыватся полученные объекты
 			"GO_PHDOCBASEDBBZ_DBSTORAGEHOST":   "",
@@ -149,6 +151,9 @@ func New(rootDir string) (*Config, error) {
 		if viper.IsSet("KAFKA.cache_ttl") {
 			cfg.Kafka.CacheTTL = viper.GetInt("KAFKA.cache_ttl")
 		}
+		if viper.IsSet("KAFKA.group_id") {
+			cfg.Kafka.GroupId = viper.GetString("KAFKA.group_id")
+		}
 		if viper.IsSet("KAFKA.topics") {
 			cfg.Kafka.Topics = viper.GetStringMapString("KAFKA.topics")
 		}
@@ -169,6 +174,9 @@ func New(rootDir string) (*Config, error) {
 		}
 		if viper.IsSet("KAFKA.ssl_key_file") {
 			cfg.Kafka.SSLKeyFile = viper.GetString("KAFKA.ssl_key_file")
+		}
+		if viper.IsSet("KAFKA.ssl_server_name") {
+			cfg.Kafka.SSLServerName = viper.GetString("KAFKA.ssl_server_name")
 		}
 
 		// Настройки доступа к БД в которую будет записыватся основная информация
@@ -333,6 +341,9 @@ func New(rootDir string) (*Config, error) {
 			cfg.Kafka.CacheTTL = ttl
 		}
 	}
+	if envList["GO_PHDOCBASEDBBZ_KGROUPID"] != "" {
+		cfg.Kafka.GroupId = envList["GO_PHDOCBASEDBBZ_KGROUPID"]
+	}
 	if envList["GO_PHDOCBASEDBBZ_KTOPICS"] != "" {
 		sublistener := envList["GO_PHDOCBASEDBBZ_KTOPICS"]
 		if !strings.Contains(sublistener, ";") {
@@ -362,11 +373,14 @@ func New(rootDir string) (*Config, error) {
 	if envList["GO_PHDOCBASEDBBZ_KSSLCAFILE"] != "" {
 		cfg.Kafka.SSLCaFile = envList["GO_PHDOCBASEDBBZ_KSSLCAFILE"]
 	}
-	if envList["GO_PHDOCBASEDBBZ_KCERTFILE"] != "" {
-		cfg.Kafka.SSLCertFile = envList["GO_PHDOCBASEDBBZ_KCERTFILE"]
+	if envList["GO_PHDOCBASEDBBZ_KSSLCERTFILE"] != "" {
+		cfg.Kafka.SSLCertFile = envList["GO_PHDOCBASEDBBZ_KSSLCERTFILE"]
 	}
-	if envList["GO_PHDOCBASEDBBZ_KKEYFILE"] != "" {
-		cfg.Kafka.SSLKeyFile = envList["GO_PHDOCBASEDBBZ_KKEYFILE"]
+	if envList["GO_PHDOCBASEDBBZ_KSSLKEYFILE"] != "" {
+		cfg.Kafka.SSLKeyFile = envList["GO_PHDOCBASEDBBZ_KSSLKEYFILE"]
+	}
+	if envList["GO_PHDOCBASEDBBZ_KSSLSERVERNAME"] != "" {
+		cfg.Kafka.SSLServerName = envList["GO_PHDOCBASEDBBZ_KSSLSERVERNAME"]
 	}
 
 	//Настройки доступа к БД в которую будет добавлятся информация по alert и case
