@@ -2,7 +2,6 @@ package kafkaapi
 
 import (
 	"context"
-	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 
@@ -17,7 +16,7 @@ func (api *kafkaApiModule) topicsHandler(ctx context.Context) {
 			return
 
 		default:
-			msg, err := api.consumer.ReadMessage(time.Second) //-1)
+			msg, err := api.consumer.ReadMessage(ctx)
 			if err != nil {
 				if !err.(kafka.Error).IsTimeout() {
 					api.logger.Send("error", supportingfunctions.CustomError(err).Error())
@@ -27,8 +26,7 @@ func (api *kafkaApiModule) topicsHandler(ctx context.Context) {
 			}
 
 			subjectType := "undefined_type"
-			topic := msg.TopicPartition.Topic
-			topicKey, ok := supportingfunctions.SearchValue(api.topics, *topic)
+			topicKey, ok := supportingfunctions.SearchValue(api.topics, msg.Topic)
 			if ok {
 				subjectType = topicKey
 			}
