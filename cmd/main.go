@@ -19,6 +19,5 @@ func main() {
 		stop()
 	}()
 
-	//server(ctx)
-	NewApp(ctx).Start()
+	NewApp().Start(ctx)
 }
