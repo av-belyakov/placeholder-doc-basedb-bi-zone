@@ -49,7 +49,7 @@ type KafkaConnecter interface {
 	GetChannelToModule() chan<- kafkaapi.SettingsChanInput
 }
 
-type DB interface {
+type DBConnecter interface {
 	GetChannelToModule() chan databasestorageapi.SettingsChanInput
 	GetChannelFromModule() chan databasestorageapi.SettingsChanOutput
 }

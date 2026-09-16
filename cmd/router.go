@@ -27,7 +27,7 @@ func NewRouter(logger interfaces.Logger, counter interfaces.Counter, settings Ap
 	}
 }
 
-func (r *ApplicationRouter) Router(ctx context.Context) {
+func (r *ApplicationRouter) Start(ctx context.Context) {
 	go func() {
 		decoder := decoderjsondocuments.New(r.counter, r.logger)
 

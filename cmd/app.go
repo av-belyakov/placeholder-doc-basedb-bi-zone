@@ -76,15 +76,15 @@ func (app *App) Start(ctx context.Context) {
 			ChanFromNats:  app.diContainer.NatsConnecter(ctx).GetChannelFromModule(),
 			ChanToKafka:   app.diContainer.KafkaConnecter(ctx).GetChannelToModule(),
 			ChanFromKafka: app.diContainer.KafkaConnecter(ctx).GetChannelFromModule(),
-			ChanToDBS:     app.diContainer.DB(ctx).GetChannelToModule(),
-			ChanFromDBS:   app.diContainer.DB(ctx).GetChannelFromModule(),
+			ChanToDBS:     app.diContainer.DbConnecter(ctx).GetChannelToModule(),
+			ChanFromDBS:   app.diContainer.DbConnecter(ctx).GetChannelFromModule(),
 		})
 
 	// вывод информационного сообщения при старте приложения
 	msg := getInformationMessage(app.diContainer.Configer().Get())
 	app.diContainer.SimpleLogger(ctx).Write("info", strings.ToLower(msg))
 
-	app.appRouter.Router(ctx)
+	app.appRouter.Start(ctx)
 
 	<-ctx.Done()
 }

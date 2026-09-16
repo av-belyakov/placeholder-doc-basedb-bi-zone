@@ -9,11 +9,11 @@ type DiContainer struct {
 	configer     Configer
 	simpleLogger SimpleLogger
 
-	db       DB
-	dbLogger DbLogger
-	nats     NatsConnecter
-	kafka    KafkaConnecter
+	dbLogger       DbLogger
+	dbConnecter    DBConnecter
+	natsConnecter  NatsConnecter
+	kafkaConnecter KafkaConnecter
 
-	ch      chan interfaces.Messager
 	rootDir string
+	ch      chan interfaces.Messager
 }

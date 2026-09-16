@@ -109,9 +109,9 @@ func (d *DiContainer) DbLogger() DbLogger {
 	return d.dbLogger
 }
 
-// DB подключение к основной БД
-func (d *DiContainer) DB(ctx context.Context) DB {
-	if d.db == nil {
+// DbConnecter подключение к основной БД
+func (d *DiContainer) DbConnecter(ctx context.Context) DBConnecter {
+	if d.dbConnecter == nil {
 		apiDBS, err := databasestorageapi.New(
 			d.Logger(ctx),
 			d.Counter(ctx),
@@ -130,15 +130,15 @@ func (d *DiContainer) DB(ctx context.Context) DB {
 			log.Fatal("error start module 'db':", err)
 		}
 
-		d.db = apiDBS
+		d.dbConnecter = apiDBS
 	}
 
-	return d.db
+	return d.dbConnecter
 }
 
 // NatsConnecter подключение к NATS
 func (d *DiContainer) NatsConnecter(ctx context.Context) NatsConnecter {
-	if d.nats == nil {
+	if d.natsConnecter == nil {
 		apiNats, err := natsapi.New(
 			d.Logger(ctx),
 			d.Counter(ctx),
@@ -157,15 +157,15 @@ func (d *DiContainer) NatsConnecter(ctx context.Context) NatsConnecter {
 			log.Fatal("error start module 'natsapi':", err)
 		}
 
-		d.nats = apiNats
+		d.natsConnecter = apiNats
 	}
 
-	return d.nats
+	return d.natsConnecter
 }
 
 // KafkaConnecter подключение к Kafka
 func (d *DiContainer) KafkaConnecter(ctx context.Context) KafkaConnecter {
-	if d.kafka == nil {
+	if d.kafkaConnecter == nil {
 		apiKafka, err := kafkaapi.New(
 			d.Logger(ctx),
 			d.Counter(ctx),
@@ -191,8 +191,8 @@ func (d *DiContainer) KafkaConnecter(ctx context.Context) KafkaConnecter {
 			log.Fatal("error start module 'kafkaapi':", err)
 		}
 
-		d.kafka = apiKafka
+		d.kafkaConnecter = apiKafka
 	}
 
-	return d.kafka
+	return d.kafkaConnecter
 }
