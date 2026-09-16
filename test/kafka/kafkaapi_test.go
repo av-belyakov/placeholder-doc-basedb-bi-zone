@@ -14,7 +14,7 @@ import (
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/confighandler"
-	kafkaapi "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/kafkaapi"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/kafkaapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supporting"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
@@ -26,7 +26,7 @@ func TestKafkaApi(t *testing.T) {
 		log.Fatalln(err)
 	}
 
-	os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
+	os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "development")
 
 	cfg, err := confighandler.New(constants.Root_Dir)
 	if err != nil {

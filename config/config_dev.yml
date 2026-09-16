@@ -13,23 +13,24 @@ KAFKA:
   host: 192.168.9.73
   port: 30932
   cache_ttl: 3601
-  group_id: "" # для ГЦМ оставляем пустым
+  group_id: # для ГЦМ оставляем пустым
   topics:
-    alerts: alertmgr-alerts
-    cases: socd-soar-prod-issue-v1
-  sasl_mechanism: SCRAM-SHA-512 # PLAIN, SCRAM-SHA-256, SCRAM-SHA-512
-  ssl_username: siem2
-  ssl_ca_file: "/secrets/ca.crt" # ca.crt или truststore.jks (определяет набор корневых центров сертификации которые клиенты используют при проверке сертификатов сервера)
+    alerts: alerts
+    alertmgr: alertmgr-alerts
+    alerting-prod-mpsiem: alerting-prod-mpsiem
+  sasl_mechanism: ANONYMOUS # PLAIN, SCRAM-SHA-256, SCRAM-SHA-512 или ANONYMOUS если аутентификации не требуется
+  ssl_username:
+  ssl_ca_file: # ca.crt или truststore.jks (определяет набор корневых центров сертификации которые клиенты используют при проверке сертификатов сервера)
   ssl_cert_file: # client.crt открытый сертификат клиента
   ssl_key_file: # client.key закрытый ключ для сертификата клиента
   # если ssl_ca_file, ssl_cert_file и ssl_key_file пустые то будут выполнятся поппытки соединения с сервером
   # kafka без использования протокола TLS
-  ssl_server_name: "kafka-cluster-kafka-bootstrap" # имя сервера kafka указанное в сертификате клиента
+  ssl_server_name: kafka-cluster-kafka-bootstrap # имя сервера kafka указанное в сертификате клиента
 DATABASESTORAGE:
   host: 192.168.9.208
   port: 9200
   user: placeholder-docbase-db
-  namedb: ""
+  namedb:
   storage_name_db:
     alerts: module_placeholderdb_bizone_alerts
     case: module_placeholderdb_bizone_case
@@ -37,7 +38,7 @@ DATABASEWRITELOG:
   host: 192.168.9.208
   port: 9200
   user: placeholder-docbase-db
-  namedb: ""
+  namedb:
   storage_name_db: module_placeholderdb_bizone
 DEBUGSERVER:
   enable: true

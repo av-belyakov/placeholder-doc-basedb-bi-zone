@@ -435,8 +435,6 @@ func New(rootDir string) (*Config, error) {
 		cfg.LogDB.StorageNameDB = envList["GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME"]
 	}
 
-	//fmt.Printf("STRACT:%+v\n", cfg)
-
 	//выполняем проверку заполненой структуры
 	if err = validate.Struct(cfg); err != nil {
 		return cfg, err

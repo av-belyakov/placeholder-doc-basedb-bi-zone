@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/segmentio/kafka-go"
-	"github.com/segmentio/kafka-go/sasl"
 	"github.com/segmentio/kafka-go/sasl/plain"
 	"github.com/segmentio/kafka-go/sasl/scram"
 )
@@ -23,43 +22,41 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 		return ctx.Err()
 	}
 
-	var (
-		dialer    *kafka.Dialer
-		tlsCfg    *tls.Config
-		mechanism sasl.Mechanism
-		topics    []string
-		err       error
-	)
+	var topics []string
 
 	mapTopics := maps.Values(api.topics)
 	for topic := range mapTopics {
 		topics = append(topics, topic)
 	}
 
-	tlsCfg, err = api.createTLSConfig()
-	if err != nil {
-		return err
+	dialer := &kafka.Dialer{
+		Timeout:   10 * time.Second,
+		DualStack: true, // использовать или IPv4 или IPv6
+	}
+
+	if strings.ToUpper(api.settings.saslMechanism) != "ANONYMOUS" {
+		tlsCfg, err := api.createTLSConfig()
+		if err != nil {
+			return err
+		}
+
+		dialer.TLS = tlsCfg
 	}
 
 	switch strings.ToUpper(api.settings.saslMechanism) {
 	case "PLAIN":
-		mechanism = plain.Mechanism{
+		dialer.SASLMechanism = plain.Mechanism{
 			Username: api.settings.sslUsername,
 			Password: api.settings.sslPassword,
 		}
 
 	case "SCRAM-SHA-256", "SCRAM-SHA-512":
-		mechanism, err = scram.Mechanism(scram.SHA512, api.settings.sslUsername, api.settings.sslPassword)
+		mechanism, err := scram.Mechanism(scram.SHA512, api.settings.sslUsername, api.settings.sslPassword)
 		if err != nil {
 			return err
 		}
-	}
 
-	dialer = &kafka.Dialer{
-		Timeout:       10 * time.Second,
-		DualStack:     true, // использовать или IPv4 или IPv6
-		SASLMechanism: mechanism,
-		TLS:           tlsCfg,
+		dialer.SASLMechanism = mechanism
 	}
 
 	api.consumer = kafka.NewReader(kafka.ReaderConfig{
