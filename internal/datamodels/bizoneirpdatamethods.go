@@ -8,11 +8,15 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
+// NewBiZoneIRPData новый объект Data
 func NewBiZoneIRPData() *BiZoneIRPData {
 	return &BiZoneIRPData{
-		SnortSid:   []uint64(nil),
-		AllIPHome:  []string(nil),
-		AllSensors: []uint64(nil),
+		DataSecurity:              []BiZoneIRPDataSecurity(nil),
+		Tags:                      []string(nil),
+		UnmappedDstEndpointArray:  []string(nil),
+		UnmappedHomeEndpointArray: []string(nil),
+		DetectionPattern:          []uint64(nil),
+		UnmappedAgentArray:        []uint64(nil),
 	}
 }
 
@@ -20,19 +24,48 @@ func (d *BiZoneIRPData) Get() *BiZoneIRPData {
 	return d
 }
 
-// GetId для поля ID
-func (d *BiZoneIRPData) GetId() string {
-	return d.ID
+// GetAgent для поля agent
+func (d *BiZoneIRPData) GetAgent() uint64 {
+	return d.Agent
 }
 
-// SetId для поля ID
-func (d *BiZoneIRPData) SetId(id string) {
-	d.ID = id
+// SetAgent для поля agent
+func (d *BiZoneIRPData) SetAgent(agent uint64) error {
+	d.Agent = agent
+
+	return nil
 }
 
-// SetAnyID для поля ID
-func (d *BiZoneIRPData) SetAnyID(a any) {
-	d.ID = fmt.Sprint(a)
+// SetAnyAgent для поля agent
+func (d *BiZoneIRPData) SetAnyAgent(a any) error {
+	v, err := supportingfunctions.GetUint64(a)
+	if err != nil {
+		return err
+	}
+
+	return d.SetAgent(v)
+}
+
+// GetSeverityID для поля severity_id
+func (d *BiZoneIRPData) GetSeverityID() uint64 {
+	return d.SeverityID
+}
+
+// SetSeverityID для поля severity_id
+func (d *BiZoneIRPData) SetSeverityID(id uint64) error {
+	d.SeverityID = id
+
+	return nil
+}
+
+// SetAnySeverityID для поля severity_id
+func (d *BiZoneIRPData) SetAnySeverityID(a any) error {
+	v, err := supportingfunctions.GetUint64(a)
+	if err != nil {
+		return err
+	}
+
+	return d.SetSeverityID(v)
 }
 
 // GetTitle для поля Title

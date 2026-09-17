@@ -1,21 +1,58 @@
 {
-    "detection_rule": "NoN_RCE",
-    "tenant": "8030150",
-    "platform_hostname": "DFL",
-    "log_source_type": "SourceZaslon",
-    "platform_type": "DFL",
-    "external_id": "TSK-8MSK-6-ZPM-260917-2932870",
+    "affected_log_sources": [],
+    "confidence": "Medium",
+    "created_time": "2026-09-17T10:58:38.178863+03:00",
+    "customer_system": "8030150",
     "tags": [
-        "Sensor:id=\"8030150\"",
-        "ATs:reason=\"sigma:Exploit attempts\"",
-        "ATs:reason=\"sigma:МЭ UserGate\""
+        {
+            "name": "ats:reason=\"sigma:exploit attempts\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 1,
+                "username": "admin@bi.zone"
+            },
+            "created": "2026-08-13T19:03:44.783959+03:00"
+        },
+        {
+            "name": "ats:reason=\"sigma:мэ usergate\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 2,
+                "username": "svc_alertmgr"
+            },
+            "created": "2026-08-24T13:10:31.269689+03:00"
+        },
+        {
+            "name": "sensor:id=\"8030150\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 1,
+                "username": "admin@bi.zone"
+            },
+            "created": "2026-08-18T17:01:23.179229+03:00"
+        }
     ],
-    "title": "sigma:Exploit attempts, sigma:МЭ UserGate с 31.31.196.167",
     "description": "## Данная задача создана автоматически\n Время начала: 2026-09-17 08:52:00\n Время окончания: 2026-09-17 08:52:00\n Продолжительность воздействий: 0:00:00",
-    "detection_time": "2026-09-17T07:58:37Z",
-    "event_time": "2026-09-17T07:58:37Z",
+    "detection_rule": "NoN_RCE",
+    "event_end_time": "2026-09-17T10:58:37+03:00",
+    "event_start_time": "2026-09-17T10:58:37+03:00",
+    "external_id": "TSK-8MSK-6-ZPM-260917-2932870",
+    "first_detection_time": "2026-09-17T10:58:37+03:00",
+    "last_detection_time": "2026-09-17T10:58:37+03:00",
+    "id": 31440,
+    "platform_hostname": "DFL",
+    "platform_type": "DFL",
     "severity": "Medium",
+    "priority_id": "Medium",
+    "snapshots": [],
+    "title": "Попытки эксплуатаци уязвимости с 31.31.196.167 на Рязань Плазма",
+    "updated_time": "2026-09-17T10:58:38.178863+03:00",
+    "uuid": "10c4a306-33dd-480c-bbbd-e688c2a78662",
     "response_team": 1,
+    "recommendations": "",
     "data": {
         "agent": 8030150,
         "data_security": [

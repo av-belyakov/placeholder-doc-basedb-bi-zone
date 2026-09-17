@@ -1,29 +1,66 @@
 {
-    "detection_rule": "NoN_RCE",
-    "tenant": "8030150",
-    "platform_hostname": "DFL",
-    "log_source_type": "SourceZaslon",
-    "platform_type": "DFL",
-    "external_id": "TSK-8MSK-6-ZPM-260917-2932870",
+    "affected_log_sources": [],
+    "confidence": "",
+    "created_time": "",
+    "customer_system": "",
     "tags": [
-        "Sensor:id=\"8030150\"",
-        "ATs:reason=\"sigma:Exploit attempts\"",
-        "ATs:reason=\"sigma:МЭ UserGate\""
+        {
+            "name": "",
+            "color": "",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 1,
+                "username": ""
+            },
+            "created": ""
+        },
+        {
+            "name": "",
+            "color": "",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 2,
+                "username": ""
+            },
+            "created": ""
+        },
+        {
+            "name": "",
+            "color": "",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 1,
+                "username": ""
+            },
+            "created": ""
+        }
     ],
-    "title": "sigma:Exploit attempts, sigma:МЭ UserGate с 31.31.196.167",
-    "description": "## Данная задача создана автоматически\n Время начала: 2026-09-17 08:52:00\n Время окончания: 2026-09-17 08:52:00\n Продолжительность воздействий: 0:00:00",
-    "detection_time": "2026-09-17T07:58:37Z",
-    "event_time": "2026-09-17T07:58:37Z",
-    "severity": "Medium",
+    "description": "",
+    "detection_rule": "",
+    "event_end_time": "",
+    "event_start_time": "",
+    "external_id": "",
+    "first_detection_time": "",
+    "last_detection_time": "",
+    "id": 31440,
+    "platform_hostname": "",
+    "platform_type": "",
+    "severity": "",
+    "priority_id": "",
+    "snapshots": [],
+    "title": "",
+    "updated_time": "",
+    "uuid": "",
     "response_team": 1,
+    "recommendations": "",
     "data": {
-        "agent": 8030150,
+        "agent": 8,
         "data_security": [
             {
-                "i_sid": 2800778,
+                "i_sid": 28,
                 "i_rev": 3,
-                "s_add_date": 1733830766,
-                "s_rule_body": "alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:\"ETPRO WEB_CLIENT Microsoft Internet Explorer JPEG Rendering Buffer Overflow\"; flow:to_client,established; content:\"image/jpeg\"; nocase; content:\"|0D 0A 0D 0A FF D8 FF|\"; content:\"|FF DA 00 0C 03|\"; distance:0; pcre:!\"/^..(\\x02.\\x03|\\x04.\\x05)/sR\"; reference:cve,CVE-2005-1988; reference:bugtraq,14282; classtype:attempted-user; sid:2800778; rev:3; metadata:affected_product Web_Browsers, affected_product Web_Browser_Plugins, attack_target Client_Endpoint, created_at 2010_09_26, deployment Perimeter, confidence High, signature_severity Major, tag Web_Client_Attacks, updated_at 2010_09_30;)",
+                "s_add_date": 173,
+                "s_rule_body": "",
                 "s_content": [
                     {
                         "depth:": null,
@@ -86,41 +123,41 @@
                         "http_client_body": false
                     }
                 ],
-                "s_classtype": "attempted-user",
-                "s_msg": "ETPRO WEB_CLIENT Microsoft Internet Explorer JPEG Rendering Buffer Overflow",
+                "s_classtype": "",
+                "s_msg": "",
                 "i_priority": 1,
-                "s_source_name": "kryptonite_etpro",
+                "s_source_name": "",
                 "i_b_rec": 1
             }
         ],
-        "desc": "## Данная задача создана автоматически\n Время начала: 2026-09-17 08:52:00\n Время окончания: 2026-09-17 08:52:00\n Продолжительность воздействий: 0:00:00",
+        "desc": "",
         "detection_pattern": [
             2800778
         ],
-        "event_uid": "TSK-8MSK-6-ZPM-260917-2932870",
-        "first_seen_time": "2026-09-17T05:52:00Z",
-        "job_title": "sigma:Exploit attempts, sigma:МЭ UserGate с 31.31.196.167",
-        "last_seen_time": "2026-09-17T05:52:00Z",
-        "metadata_product_name": "Security Event Manager",
+        "event_uid": "",
+        "first_seen_time": "",
+        "job_title": "",
+        "last_seen_time": "",
+        "metadata_product_name": "",
         "severity_id": 2,
-        "source_ip": "31.31.196.167",
+        "source_ip": "",
         "tags": [
-            "Sensor:id=\"8030150\"",
-            "ATs:reason=\"sigma:Exploit attempts\"",
-            "ATs:reason=\"sigma:МЭ UserGate\""
+            "",
+            "",
+            ""
         ],
-        "target_ip": "212.26.239.45",
+        "target_ip": "",
         "unmapped_agent_array": [
-            8030150
+            80
         ],
         "unmapped_dst_endpoint_array": [
-            "31.31.196.167"
+            ""
         ],
-        "unmapped_hive_alert_id": "~92691980520",
+        "unmapped_hive_alert_id": "~920",
         "unmapped_home_endpoint_array": [
-            "212.26.239.45"
+            ""
         ],
-        "unmapped_sensor_ip": "10.20.0.150",
-        "unmapped_sensor_name": "Рязань Плазма"
+        "unmapped_sensor_ip": "",
+        "unmapped_sensor_name": ""
     }
 }

@@ -3,7 +3,6 @@ package datamodels
 import (
 	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
@@ -528,6 +527,7 @@ func (cfd *BiZoneIRPCaseFieldData) SetAnyIsPublic(a any) {
 	}
 }
 
+/*
 // ToStringBeautiful форматированный вывод
 func (cfd *BiZoneIRPCaseFieldData) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
@@ -618,3 +618,4 @@ func (cfd *BiZoneIRPCaseFieldData) ToStringBeautiful(num int) string {
 
 	return str.String()
 }
+*/
