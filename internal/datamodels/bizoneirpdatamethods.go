@@ -1,6 +1,7 @@
 package datamodels
 
 import (
+	"errors"
 	"fmt"
 	"slices"
 	"strings"
@@ -30,8 +31,8 @@ func (d *BiZoneIRPData) GetAgent() uint64 {
 }
 
 // SetAgent для поля agent
-func (d *BiZoneIRPData) SetAgent(agent uint64) error {
-	d.Agent = agent
+func (d *BiZoneIRPData) SetAgent(v uint64) error {
+	d.Agent = v
 
 	return nil
 }
@@ -52,8 +53,8 @@ func (d *BiZoneIRPData) GetSeverityID() uint64 {
 }
 
 // SetSeverityID для поля severity_id
-func (d *BiZoneIRPData) SetSeverityID(id uint64) error {
-	d.SeverityID = id
+func (d *BiZoneIRPData) SetSeverityID(v uint64) error {
+	d.SeverityID = v
 
 	return nil
 }
@@ -68,308 +69,402 @@ func (d *BiZoneIRPData) SetAnySeverityID(a any) error {
 	return d.SetSeverityID(v)
 }
 
-// GetTitle для поля Title
-func (d *BiZoneIRPData) GetTitle() string {
-	return d.Title
+// GetDesc для поля desc
+func (d *BiZoneIRPData) GetDesc() string {
+	return d.Desc
 }
 
-// SetTitle для поля Title
-func (d *BiZoneIRPData) SetTitle(title string) {
-	d.Title = title
+// SetDesc для поля desc
+func (d *BiZoneIRPData) SetDesc(v string) error {
+	d.Desc = v
+
+	return nil
 }
 
-// SetAnyTitle для поля Title
-func (d *BiZoneIRPData) SetAnyTitle(a any) {
-	d.Title = fmt.Sprint(a)
+// SetAnyDesc для поля desc
+func (d *BiZoneIRPData) SetAnyDesc(a any) error {
+	return d.SetDesc(fmt.Sprint(a))
 }
 
-// GetIPHome для поля IPHome
-func (d *BiZoneIRPData) GetIPHome() string {
-	return d.IPHome
+// GetEventUid для поля event_uid
+func (d *BiZoneIRPData) GetEventUid() string {
+	return d.EventUID
 }
 
-// SetIPHome для поля IPHome
-func (d *BiZoneIRPData) SetIPHome(ipHome string) {
-	d.IPHome = ipHome
+// SetEventUid для поля event_uid
+func (d *BiZoneIRPData) SetEventUid(v string) error {
+	d.EventUID = v
+
+	return nil
 }
 
-// SetAnyIPHome для поля IPHome
-func (d *BiZoneIRPData) SetAnyIPHome(a any) {
-	d.IPHome = fmt.Sprint(a)
+// SetAnyEventUid для поля event_uid
+func (d *BiZoneIRPData) SetAnyEventUid(a any) error {
+	return d.SetEventUid(fmt.Sprint(a))
 }
 
-// GetIPExter для поля IPExter
-func (d *BiZoneIRPData) GetIPExter() string {
-	return d.IPExter
+// GetJobTitle для поля job_title
+func (d *BiZoneIRPData) GetJobTitle() string {
+	return d.JobTitle
 }
 
-// SetIPExter для поля IPExter
-func (d *BiZoneIRPData) SetIPExter(ipExter string) {
-	d.IPExter = ipExter
+// SetJobTitle для поля job_title
+func (d *BiZoneIRPData) SetJobTitle(v string) error {
+	d.JobTitle = v
+
+	return nil
 }
 
-// SetAnyIPExter для поля IPExter
-func (d *BiZoneIRPData) SetAnyIPExter(a any) {
-	d.IPExter = fmt.Sprint(a)
+// SetAnyIPExter для поля job_title
+func (d *BiZoneIRPData) SetAnyIPExter(a any) error {
+	return d.SetAnyIPExter(fmt.Sprint(a))
 }
 
-// GetURLHTTP для поля URLHTTP
-func (d *BiZoneIRPData) GetURLHTTP() string {
-	return d.URLHTTP
+// GetMetadataProductName для поля metadata_product_name
+func (d *BiZoneIRPData) GetMetadataProductName() string {
+	return d.MetadataProductName
 }
 
-// SetURLHTTP для поля URLHTTP
-func (d *BiZoneIRPData) SetURLHTTP(urlHTTP string) {
-	d.URLHTTP = urlHTTP
+// SetMetadataProductName для поля metadata_product_name
+func (d *BiZoneIRPData) SetMetadataProductName(v string) error {
+	d.MetadataProductName = v
+
+	return nil
 }
 
-// SetAnyURLHTTP для поля URLHTTP
-func (d *BiZoneIRPData) SetAnyURLHTTP(a any) {
-	d.URLHTTP = fmt.Sprint(a)
+// SetAnyMetadataProductName для поля metadata_product_name
+func (d *BiZoneIRPData) SetAnyMetadataProductName(a any) error {
+	return d.SetMetadataProductName(fmt.Sprint(a))
 }
 
-// GetEventType для поля EventType
-func (d *BiZoneIRPData) GetEventType() string {
-	return d.EventType
+// GetSourceIP для поля source_ip
+func (d *BiZoneIRPData) GetSourceIP() string {
+	return d.SourceIP
 }
 
-// SetEventType для поля EventType
-func (d *BiZoneIRPData) SetEventType(eventType string) {
-	d.EventType = eventType
+// SetSourceIP для поля source_ip
+func (d *BiZoneIRPData) SetSourceIP(v string) error {
+	d.SourceIP = v
+
+	return nil
 }
 
-// SetAnyEventType для поля EventType
-func (d *BiZoneIRPData) SetAnyEventType(a any) {
-	d.EventType = fmt.Sprint(a)
+// SetAnySourceIP для поля source_ip
+func (d *BiZoneIRPData) SetAnySourceIP(a any) error {
+	return d.SetSourceIP(fmt.Sprint(a))
 }
 
-// GetURLArkime для поля URLArkime
-func (d *BiZoneIRPData) GetURLArkime() string {
-	return d.URLArkime
+// GetTargetIP для поля target_ip
+func (d *BiZoneIRPData) GetTargetIP() string {
+	return d.TargetIP
 }
 
-// SetURLArkime для поля URLArkime
-func (d *BiZoneIRPData) SetURLArkime(urlArkime string) {
-	d.URLArkime = urlArkime
+// SetTargetIP для поля target_ip
+func (d *BiZoneIRPData) SetTargetIP(v string) error {
+	d.TargetIP = v
+
+	return nil
 }
 
-// SetAnyURLArkime для поля URLArkime
-func (d *BiZoneIRPData) SetAnyURLArkime(a any) {
-	d.URLArkime = fmt.Sprint(a)
+// SetAnyTargetIP для поля target_ip
+func (d *BiZoneIRPData) SetAnyTargetIP(a any) error {
+	return d.SetTargetIP(fmt.Sprint(a))
 }
 
-// GetURLFTP для поля URLFTP
-func (d *BiZoneIRPData) GetURLFTP() string {
-	return d.URLFTP
+// GetUnmappedHiveAlertID для поля unmapped_hive_alert_id
+func (d *BiZoneIRPData) GetUnmappedHiveAlertID() string {
+	return d.UnmappedHiveAlertID
 }
 
-// SetURLFTP для поля URLFTP
-func (d *BiZoneIRPData) SetURLFTP(urlFTP string) {
-	d.URLFTP = urlFTP
+// SetUnmappedHiveAlertID для поля unmapped_hive_alert_id
+func (d *BiZoneIRPData) SetUnmappedHiveAlertID(v string) error {
+	d.UnmappedHiveAlertID = v
+
+	return nil
 }
 
-// SetAnyURLFTP для поля URLFTP
-func (d *BiZoneIRPData) SetAnyURLFTP(a any) {
-	d.URLFTP = fmt.Sprint(a)
+// SetAnyUnmappedHiveAlertID для поля unmapped_hive_alert_id
+func (d *BiZoneIRPData) SetAnyUnmappedHiveAlertID(a any) error {
+	return d.SetUnmappedHiveAlertID(fmt.Sprint(a))
 }
 
-// GetSensor для поля Sensor
-func (d *BiZoneIRPData) GetSensor() uint64 {
-	return d.Sensor
+// GetUnmappedSensorIP для поля unmapped_sensor_ip
+func (d *BiZoneIRPData) GetUnmappedSensorIP() string {
+	return d.UnmappedSensorIP
 }
 
-// SetSensor для поля Sensor
-func (d *BiZoneIRPData) SetSensor(sensor uint64) {
-	d.Sensor = sensor
+// SetUnmappedSensorIP для поля unmapped_sensor_ip
+func (d *BiZoneIRPData) SetUnmappedSensorIP(v string) error {
+	d.UnmappedSensorIP = v
+
+	return nil
 }
 
-// SetAnySensor для поля Sensor
-func (d *BiZoneIRPData) SetAnySensor(a any) {
-	if v, ok := a.(int); ok {
-		d.Sensor = uint64(v)
+// SetAnyUnmappedSensorIP для поля unmapped_sensor_ip
+func (d *BiZoneIRPData) SetAnyUnmappedSensorIP(a any) error {
+	return d.SetUnmappedSensorIP(fmt.Sprint(a))
+}
 
-		return
+// GetUnmappedSensorName для поля unmapped_sensor_name
+func (d *BiZoneIRPData) GetUnmappedSensorName() string {
+	return d.UnmappedSensorName
+}
+
+// SetUnmappedSensorName для поля unmapped_sensor_name
+func (d *BiZoneIRPData) SetUnmappedSensorName(v string) error {
+	d.UnmappedSensorName = v
+
+	return nil
+}
+
+// SetAnyUnmappedSensorName для поля unmapped_sensor_name
+func (d *BiZoneIRPData) SetAnyUnmappedSensorName(a any) error {
+	return d.SetUnmappedSensorName(fmt.Sprint(a))
+}
+
+// GetFirstSeenTime для поля first_seen_time (формат RFC3339)
+func (d *BiZoneIRPData) GetFirstSeenTime() string {
+	return d.FirstSeenTime
+}
+
+// SetFirstSeenTime для поля first_seen_time (преобразует в формат времени RFC3339)
+func (d *BiZoneIRPData) SetFirstSeenTime(v string) error {
+	timeStr, err := supportingfunctions.SmartConvertToRFC3339(v)
+	if err != nil {
+		return err
 	}
 
-	if v, ok := a.(float32); ok {
-		d.Sensor = uint64(v)
+	d.FirstSeenTime = timeStr
 
-		return
-	}
-
-	if v, ok := a.(float64); ok {
-		d.Sensor = uint64(v)
-
-		return
-	}
-
-	if v, ok := a.(uint64); ok {
-		d.Sensor = v
-	}
+	return nil
 }
 
-// GetAllIPExt для поля AllIPExt
-func (d *BiZoneIRPData) GetAllIPExt() uint64 {
-	return d.AllIPExt
+// SetAnyFirstSeenTime для поля first_seen_time
+func (d *BiZoneIRPData) SetAnyFirstSeenTime(a any) error {
+	if v, ok := a.(string); ok {
+		return d.SetFirstSeenTime(v)
+	}
+
+	return errors.New("type conversion error for field 'first_seen_time'")
 }
 
-// SetAllIPExt для поля AllIPExt
-func (d *BiZoneIRPData) SetAllIPExt(allIPExt uint64) {
-	d.AllIPExt = allIPExt
+// GetLastSeenTime для поля last_seen_time (формат RFC3339)
+func (d *BiZoneIRPData) GetLastSeenTime() string {
+	return d.LastSeenTime
 }
 
-// SetAnyAllIPExt для поля AllIPExt
-func (d *BiZoneIRPData) SetAnyAllIPExt(a any) {
-	if v, ok := a.(int); ok {
-		d.AllIPExt = uint64(v)
-
-		return
+// SetLastSeenTime для поля last_seen_time (преобразует в формат времени RFC3339)
+func (d *BiZoneIRPData) SetLastSeenTime(v string) error {
+	timeStr, err := supportingfunctions.SmartConvertToRFC3339(v)
+	if err != nil {
+		return err
 	}
 
-	if v, ok := a.(float32); ok {
-		d.AllIPExt = uint64(v)
+	d.LastSeenTime = timeStr
 
-		return
-	}
-
-	if v, ok := a.(float64); ok {
-		d.AllIPExt = uint64(v)
-
-		return
-	}
-
-	if v, ok := a.(uint64); ok {
-		d.AllIPExt = v
-	}
+	return nil
 }
 
-// GetResponseTeam для поля ResponseTeam
-func (d *BiZoneIRPData) GetResponseTeam() uint64 {
-	return d.ResponseTeam
-}
-
-// SetResponseTeam для поля ResponseTeam
-func (d *BiZoneIRPData) SetResponseTeam(responseTeam uint64) {
-	d.ResponseTeam = responseTeam
-}
-
-// SetAnyResponseTeam для поля ResponseTeam
-func (d *BiZoneIRPData) SetAnyResponseTeam(a any) {
-	if v, ok := a.(int); ok {
-		d.ResponseTeam = uint64(v)
-
-		return
+// SetAnyLastSeenTime для поля last_seen_time
+func (d *BiZoneIRPData) SetAnyLastSeenTime(a any) error {
+	if v, ok := a.(string); ok {
+		return d.SetLastSeenTime(v)
 	}
 
-	if v, ok := a.(float32); ok {
-		d.ResponseTeam = uint64(v)
-
-		return
-	}
-
-	if v, ok := a.(float64); ok {
-		d.ResponseTeam = uint64(v)
-
-		return
-	}
-
-	if v, ok := a.(uint64); ok {
-		d.ResponseTeam = v
-	}
+	return errors.New("type conversion error for field 'last_seen_time'")
 }
 
-// GetSnortSids список sid snort
-func (d *BiZoneIRPData) GetSnortSids() []uint64 {
-	return d.SnortSid
+// GetTags для поля tags
+func (d *BiZoneIRPData) GetTags() []string {
+	return d.Tags
 }
 
-// SetSnortSid список sid snort
-func (d *BiZoneIRPData) SetSnortSids(sids []uint64) {
-	d.SnortSid = sids
+// SetTags для поля tags
+func (d *BiZoneIRPData) SetTags(v []string) error {
+	d.Tags = v
+
+	return nil
 }
 
-// SetSnortSid записывает значение в список SnortSid
-func (d *BiZoneIRPData) SetSnortSid(sid uint64) {
-	if d.SnortSid == nil {
-		d.SnortSid = []uint64(nil)
+// SetTag добавляет значение tag в список
+func (d *BiZoneIRPData) SetTag(v string) error {
+	if d.Tags == nil {
+		d.Tags = []string(nil)
 	}
 
-	if slices.Contains(d.SnortSid, sid) {
-		return
+	if slices.Contains(d.Tags, v) {
+		return nil
 	}
 
-	d.SnortSid = append(d.SnortSid, sid)
+	d.Tags = append(d.Tags, v)
+
+	return nil
 }
 
-// SetAnySnortSid записывает значение в список SnortSid
-func (d *BiZoneIRPData) SetAnySnortSid(a any) {
+// SetAnyTag добавляет некоторое значение в список tags
+func (d *BiZoneIRPData) SetAnyTag(a any) error {
+	return d.SetTag(fmt.Sprint(a))
+}
+
+// GetUnmappedDstEndpointArray для поля unmapped_dst_endpoint_array
+func (d *BiZoneIRPData) GetUnmappedDstEndpointArray() []string {
+	return d.UnmappedDstEndpointArray
+}
+
+// SetUnmappedDstEndpointArray для поля unmapped_dst_endpoint_array
+func (d *BiZoneIRPData) SetUnmappedDstEndpointArray(v []string) error {
+	d.UnmappedDstEndpointArray = v
+
+	return nil
+}
+
+// SetUnmappedDstEndpointArrayElement добавляет значение unmapped_dst_endpoint_array в список
+func (d *BiZoneIRPData) SetUnmappedDstEndpointArrayElement(v string) error {
+	if d.UnmappedDstEndpointArray == nil {
+		d.UnmappedDstEndpointArray = []string(nil)
+	}
+
+	if slices.Contains(d.UnmappedDstEndpointArray, v) {
+		return nil
+	}
+
+	d.UnmappedDstEndpointArray = append(d.UnmappedDstEndpointArray, v)
+
+	return nil
+}
+
+// SetAnyUnmappedDstEndpointArray добавляет некоторое значение в список unmapped_dst_endpoint_array
+func (d *BiZoneIRPData) SetAnyUnmappedDstEndpointArray(a any) error {
+	return d.SetUnmappedDstEndpointArrayElement(fmt.Sprint(a))
+}
+
+// GetUnmappedHomeEndpointArray для поля unmapped_home_endpoint_array
+func (d *BiZoneIRPData) GetUnmappedHomeEndpointArray() []string {
+	return d.UnmappedHomeEndpointArray
+}
+
+// SetUnmappedHomeEndpointArray для поля unmapped_home_endpoint_array
+func (d *BiZoneIRPData) SetUnmappedHomeEndpointArray(v []string) error {
+	d.UnmappedHomeEndpointArray = v
+
+	return nil
+}
+
+// SetUnmappedHomeEndpointArrayElement добавляет значение unmapped_home_endpoint_array в список
+func (d *BiZoneIRPData) SetUnmappedHomeEndpointArrayElement(v string) error {
+	if d.UnmappedHomeEndpointArray == nil {
+		d.UnmappedHomeEndpointArray = []string(nil)
+	}
+
+	if slices.Contains(d.UnmappedHomeEndpointArray, v) {
+		return nil
+	}
+
+	d.UnmappedHomeEndpointArray = append(d.UnmappedHomeEndpointArray, v)
+
+	return nil
+}
+
+// SetAnyUnmappedHomeEndpointArray добавляет некоторое значение в список unmapped_home_endpoint_array
+func (d *BiZoneIRPData) SetAnyUnmappedHomeEndpointArray(a any) error {
+	return d.SetUnmappedDstEndpointArrayElement(fmt.Sprint(a))
+}
+
+// GetDetectionPattern для поля detection_pattern
+func (d *BiZoneIRPData) GetDetectionPattern() []uint64 {
+	return d.DetectionPattern
+}
+
+// SetDetectionPattern для поля detection_pattern
+func (d *BiZoneIRPData) SetDetectionPattern(v []uint64) error {
+	d.DetectionPattern = v
+
+	return nil
+}
+
+// SetDetectionPatternElement добавляет значение detection_pattern в список
+func (d *BiZoneIRPData) SetDetectionPatternElement(v uint64) error {
+	if d.DetectionPattern == nil {
+		d.DetectionPattern = []uint64(nil)
+	}
+
+	if slices.Contains(d.DetectionPattern, v) {
+		return nil
+	}
+
+	d.DetectionPattern = append(d.DetectionPattern, v)
+
+	return nil
+}
+
+// SetAnyDetectionPatternElement добавляет некоторое значение в список detection_pattern
+func (d *BiZoneIRPData) SetAnyDetectionPatternElement(a any) error {
 	v, err := supportingfunctions.GetUint64(a)
 	if err != nil {
-		return
+		return err
 	}
 
-	d.SetSnortSid(v)
+	return d.SetDetectionPatternElement(v)
 }
 
-// GetAllSensors для поля AllSensors
-func (d *BiZoneIRPData) GetAllSensors() []uint64 {
-	return d.AllSensors
+// GetUnmappedAgentArray для поля unmapped_agent_array
+func (d *BiZoneIRPData) GetUnmappedAgentArray() []uint64 {
+	return d.UnmappedAgentArray
 }
 
-// SetAllSensors для поля AllSensors
-func (d *BiZoneIRPData) SetAllSensors(allSensors []uint64) {
-	d.AllSensors = allSensors
+// SetUnmappedAgentArrayn для поля unmapped_agent_array
+func (d *BiZoneIRPData) SetUnmappedAgentArrayn(v []uint64) error {
+	d.UnmappedAgentArray = v
+
+	return nil
 }
 
-// SetAllSensor записывает значение в список AllSensors
-func (d *BiZoneIRPData) SetAllSensor(sensor uint64) {
-	if d.AllSensors == nil {
-		d.AllSensors = []uint64(nil)
+// SetUnmappedAgentArrayElement добавляет значение unmapped_agent_array в список
+func (d *BiZoneIRPData) SetUnmappedAgentArrayElement(v uint64) error {
+	if d.UnmappedAgentArray == nil {
+		d.UnmappedAgentArray = []uint64(nil)
 	}
 
-	if slices.Contains(d.AllSensors, sensor) {
-		return
+	if slices.Contains(d.UnmappedAgentArray, v) {
+		return nil
 	}
 
-	d.SnortSid = append(d.SnortSid, sensor)
+	d.UnmappedAgentArray = append(d.UnmappedAgentArray, v)
+
+	return nil
 }
 
-// SetAnyAllSensor записывает значение в список AllSensors
-func (d *BiZoneIRPData) SetAnyAllSensor(a any) {
+// SetAnyUnmappedAgentArrayElement добавляет некоторое значение в список unmapped_agent_array
+func (d *BiZoneIRPData) SetAnyUnmappedAgentArrayElement(a any) error {
 	v, err := supportingfunctions.GetUint64(a)
 	if err != nil {
-		return
+		return err
 	}
 
-	d.SetAllSensor(v)
+	return d.SetDetectionPatternElement(v)
 }
 
-// GetAllIPHomes для поля AllIPHome
-func (d *BiZoneIRPData) GetAllIPHomes() []string {
-	return d.AllIPHome
+// GetDataSecurity для поля data_security
+func (d *BiZoneIRPData) GetDataSecurity() []BiZoneIRPDataSecurity {
+	return d.DataSecurity
 }
 
-// SetAllIPHomes для поля AllIPHomes
-func (d *BiZoneIRPData) SetAllIPHomes(allIPHome []string) {
-	d.AllIPHome = allIPHome
+// SetDataSecurity для поля data_security
+func (d *BiZoneIRPData) SetDataSecurity(v []BiZoneIRPDataSecurity) error {
+	d.DataSecurity = v
+
+	return nil
 }
 
-// SetAllIPHome добавляет значение AllIPHome в список
-func (d *BiZoneIRPData) SetAllIPHome(ipHome string) {
-	if d.AllIPHome == nil {
-		d.AllIPHome = []string(nil)
+// SetDataSecurityElement добавляет значение data_security в список
+func (d *BiZoneIRPData) SetDataSecurityElement(v BiZoneIRPDataSecurity) error {
+	if d.DataSecurity == nil {
+		d.DataSecurity = []BiZoneIRPDataSecurity(nil)
 	}
 
-	if slices.Contains(d.AllIPHome, ipHome) {
-		return
-	}
+	d.DataSecurity = append(d.DataSecurity, v)
 
-	d.AllIPHome = append(d.AllIPHome, ipHome)
-}
-
-// SetAnyAllIPHome добавляет значение AllIPHome  в список
-func (d *BiZoneIRPData) SetAnyAllIPHome(a any) {
-	d.SetAllIPHome(fmt.Sprint(a))
+	return nil
 }
 
 // ToStringBeautiful форматированный вывод
@@ -377,21 +472,30 @@ func (d *BiZoneIRPData) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)
+	wsInc := supportingfunctions.GetWhitespace(num + 1)
 
-	str.WriteString(fmt.Sprintf("%s'_id': '%s'\n", ws, d.ID))
-	str.WriteString(fmt.Sprintf("%s'title': '%s'\n", ws, d.Title))
-	str.WriteString(fmt.Sprintf("%s'sensor': '%d'\n", ws, d.Sensor))
-	str.WriteString(fmt.Sprintf("%s'ip_home': '%s'\n", ws, d.IPHome))
-	str.WriteString(fmt.Sprintf("%s'ip_exter': '%s'\n", ws, d.IPExter))
-	str.WriteString(fmt.Sprintf("%s'url____ftp': '%s'\n", ws, d.URLFTP))
-	str.WriteString(fmt.Sprintf("%s'url___http': '%s'\n", ws, d.URLHTTP))
-	str.WriteString(fmt.Sprintf("%s'event_type': '%s'\n", ws, d.EventType))
-	str.WriteString(fmt.Sprintf("%s'url_arkime': '%s'\n", ws, d.URLArkime))
-	str.WriteString(fmt.Sprintf("%s'all____ip_ext': '%d'\n", ws, d.AllIPExt))
-	str.WriteString(fmt.Sprintf("%s'response_team': '%d'\n", ws, d.ResponseTeam))
-	str.WriteString(fmt.Sprintf("%s'snort_sid': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.SnortSid)))
-	str.WriteString(fmt.Sprintf("%s'all_sensors': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.AllSensors)))
-	str.WriteString(fmt.Sprintf("%s'all__ip_home': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.AllIPHome)))
+	fmt.Fprintf(&str, "%s'desc': '%s'\n", ws, d.Desc)
+	fmt.Fprintf(&str, "%s'event_uid': '%s'\n", ws, d.EventUID)
+	fmt.Fprintf(&str, "%s'job_title': '%s'\n", ws, d.JobTitle)
+	fmt.Fprintf(&str, "%s'first_seen_time': '%s'\n", ws, d.FirstSeenTime)
+	fmt.Fprintf(&str, "%s'last_seen_time': '%s'\n", ws, d.LastSeenTime)
+	fmt.Fprintf(&str, "%s'metadata_product_name': '%s'\n", ws, d.MetadataProductName)
+	fmt.Fprintf(&str, "%s'source_ip': '%s'\n", ws, d.SourceIP)
+	fmt.Fprintf(&str, "%s'target_ip': '%s'\n", ws, d.TargetIP)
+	fmt.Fprintf(&str, "%s'unmapped_hive_alert_id': '%s'\n", ws, d.GetUnmappedHiveAlertID())
+	fmt.Fprintf(&str, "%s'unmapped_sensor_ip': '%s'\n", ws, d.UnmappedSensorIP)
+	fmt.Fprintf(&str, "%s'unmapped_sensor_name': '%s'\n", ws, d.UnmappedSensorName)
+	fmt.Fprintf(&str, "%s'agent': '%d'\n", ws, d.Agent)
+	fmt.Fprintf(&str, "%s'severity_id': '%d'\n", ws, d.SeverityID)
+	fmt.Fprintf(&str, "%s'tags': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.Tags))
+	fmt.Fprintf(&str, "%s'unmapped_dst_endpoint_array': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.UnmappedDstEndpointArray))
+	fmt.Fprintf(&str, "%s'unmapped_home_endpoint_array': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.UnmappedHomeEndpointArray))
+	fmt.Fprintf(&str, "%s'detection_pattern': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.DetectionPattern))
+	fmt.Fprintf(&str, "%s'unmapped_agent_array': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.UnmappedAgentArray))
+	fmt.Fprintf(&str, "%s'data_security':\n", ws)
+	for k, v := range d.DataSecurity {
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
+	}
 
 	return str.String()
 }

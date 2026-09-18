@@ -64,30 +64,6 @@ type BiZoneIRPData struct {
 	SeverityID                uint64                  `json:"severity_id"`
 }
 
-/*
-type BiZoneIRPData struct {
-+	DataSecurity              []BiZoneIRPDataSecurity `json:"data_security"`
-+	Tags                      []string                `json:"tags"`
-+	UnmappedDstEndpointArray  []string                `json:"unmapped_dst_endpoint_array"`
-+	UnmappedHomeEndpointArray []string                `json:"unmapped_home_endpoint_array"`
-+	DetectionPattern          []uint64                `json:"detection_pattern"`
-+	UnmappedAgentArray        []uint64                `json:"unmapped_agent_array"`
-	Desc                      string                  `json:"desc"`
-	EventUID                  string                  `json:"event_uid"`
-	JobTitle                  string                  `json:"job_title"`
-	FirstSeenTime             string                  `json:"first_seen_time"` //дата создания (формат RFC3339) или ISO 8601
-	LastSeenTime              string                  `json:"last_seen_time"`  //дата создания (формат RFC3339) или ISO 8601
-	MetadataProductName       string                  `json:"metadata_product_name"`
-	SourceIP                  string                  `json:"source_ip"`
-	TargetIP                  string                  `json:"target_ip"`
-	UnmappedHiveAlertID       string                  `json:"unmapped_hive_alert_id"`
-	UnmappedSensorIP          string                  `json:"unmapped_sensor_ip"`
-	UnmappedSensorName        string                  `json:"unmapped_sensor_name"`
-+	Agent                     uint64                  `json:"agent"`
-+	SeverityID                uint64                  `json:"severity_id"`
-}
-*/
-
 // BiZoneIRPDataSecurity элемент массива data_security
 type BiZoneIRPDataSecurity struct {
 	SContent    []BiZoneIRPSContent `json:"s_content"`
@@ -123,6 +99,29 @@ type BiZoneIRPSContent struct {
 	Offset         *int    `json:"offset:"`      // null или число
 	Within         *int    `json:"within:"`      // null или число
 }
+
+/*
+type BiZoneIRPSContent struct {
++	Content        string  `json:"content"`
++	Nocase         bool    `json:"nocase"`
++	HTTPURI        bool    `json:"http_uri"`
++	Rawbytes       bool    `json:"rawbytes"`
++	HTTPCookie     bool    `json:"http_cookie"`
++	HTTPHeader     bool    `json:"http_header"`
++	HTTPMethod     bool    `json:"http_method"`
++	HTTPRawURI     bool    `json:"http_raw_uri"`
++	HTTPStatMsg    bool    `json:"http_stat_msg"`
++	HTTPStatCode   bool    `json:"http_stat_code"`
++	HTTPRawCookie  bool    `json:"http_raw_cookie"`
++	HTTPRawHeader  bool    `json:"http_raw_header"`
++	HTTPClientBody bool    `json:"http_client_body"`
++	Distance       *string `json:"distance:"`    // null или строка (например "0")
+	FastPattern    *bool   `json:"fast_pattern"` // null или bool
+	Depth          *int    `json:"depth:"`       // null или число
+	Offset         *int    `json:"offset:"`      // null или число
+	Within         *int    `json:"within:"`      // null или число
+}
+*/
 
 type BiZoneIRPCaseFieldData struct {
 	Tags              []BiZoneIRPFieldTagDescription `json:"tags"`

@@ -199,7 +199,7 @@ func (va *VerifiedBiZoneIRPAlert) SetAnyCreatedTime(a any) error {
 		return va.SetCreatedTime(v)
 	}
 
-	return errors.New("type conversion error")
+	return errors.New("type conversion error for field 'created_time'")
 }
 
 // GetUpdatedTime для поля updated_time (формат RFC3339)
@@ -225,7 +225,7 @@ func (va *VerifiedBiZoneIRPAlert) SetAnyUpdatedTime(a any) error {
 		return va.SetUpdatedTime(v)
 	}
 
-	return errors.New("type conversion error")
+	return errors.New("type conversion error for field 'updated_time'")
 }
 
 // GetEventStartTime для поля event_start_time (формат RFC3339)
@@ -251,7 +251,7 @@ func (va *VerifiedBiZoneIRPAlert) SetAnyEventStartTime(a any) error {
 		return va.SetEventStartTime(v)
 	}
 
-	return errors.New("type conversion error")
+	return errors.New("type conversion error for field 'event_start_time'")
 }
 
 // GetVerifiedBiZoneIRPAlertEndTime для поля event_end_time (формат RFC3339)
@@ -277,7 +277,7 @@ func (va *VerifiedBiZoneIRPAlert) SetAnyEventEndTime(a any) error {
 		return va.SetEventEndTime(v)
 	}
 
-	return errors.New("type conversion error")
+	return errors.New("type conversion error for field 'event_end_time'")
 }
 
 // GetFirstDetectionTime для поля first_detection_time (формат RFC3339)
@@ -303,7 +303,7 @@ func (va *VerifiedBiZoneIRPAlert) SetAnyFirstDetectionTime(a any) error {
 		return va.SetFirstDetectionTime(v)
 	}
 
-	return errors.New("type conversion error")
+	return errors.New("type conversion error for field 'first_detection_time'")
 }
 
 // GetLastDetectionTime для поля last_detection_time (формат RFC3339)
@@ -330,7 +330,7 @@ func (va *VerifiedBiZoneIRPAlert) SetAnyLastDetectionTime(a any) error {
 		return va.SetLastDetectionTime(v)
 	}
 
-	return errors.New("type conversion error")
+	return errors.New("type conversion error for field 'last_detection_time'")
 }
 
 // GetPlatformHostname для поля platform_hostname
@@ -507,35 +507,35 @@ func (va *VerifiedBiZoneIRPAlert) ToStringBeautiful(num int) string {
 	ws := supportingfunctions.GetWhitespace(num)
 	wsInc := supportingfunctions.GetWhitespace(num + 1)
 
-	str.WriteString(fmt.Sprintf("%s'id': '%d'\n", ws, va.ID))
-	str.WriteString(fmt.Sprintf("%s'uuid': '%s'\n", ws, va.UUID))
-	str.WriteString(fmt.Sprintf("%s'Title': '%s'\n", ws, va.Title))
-	str.WriteString(fmt.Sprintf("%s'severity': '%s'\n", ws, va.Severity))
-	str.WriteString(fmt.Sprintf("%s'external_id': '%s'\n", ws, va.ExternalID))
-	str.WriteString(fmt.Sprintf("%s'confidence': '%s'\n", ws, va.Confidence))
-	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, va.Description))
-	str.WriteString(fmt.Sprintf("%s'created_time': '%s'\n", ws, va.CreatedTime))
-	str.WriteString(fmt.Sprintf("%s'updated_time': '%s'\n", ws, va.UpdatedTime))
-	str.WriteString(fmt.Sprintf("%s'event_start_time': '%s'\n", ws, va.EventStartTime))
-	str.WriteString(fmt.Sprintf("%s'event_end_time': '%s'\n", ws, va.EventEndTime))
-	str.WriteString(fmt.Sprintf("%s'first_detection_time': '%s'\n", ws, va.FirstDetectionTime))
-	str.WriteString(fmt.Sprintf("%s'last_detection_time': '%s'\n", ws, va.LastDetectionTime))
-	str.WriteString(fmt.Sprintf("%s'detection_rule': '%s'\n", ws, va.DetectionRule))
-	str.WriteString(fmt.Sprintf("%s'customer_system': '%s'\n", ws, va.CustomerSystem))
-	str.WriteString(fmt.Sprintf("%s'recommendations': '%s'\n", ws, va.Recommendations))
-	str.WriteString(fmt.Sprintf("%s'platform_type': '%s'\n", ws, va.PlatformType))
-	str.WriteString(fmt.Sprintf("%s'platform_hostname': '%s'\n", ws, va.PlatformHostname))
-	str.WriteString(fmt.Sprintf("%s'affected_log_sources': '%s'\n", ws, va.AffectedLogSources))
-	str.WriteString(fmt.Sprintf("%s'data':\n%s", ws, va.Data.ToStringBeautiful(num+1)))
-	str.WriteString(fmt.Sprintf("%s'tags':\n", ws))
+	fmt.Fprintf(&str, "%s'id': '%d'\n", ws, va.ID)
+	fmt.Fprintf(&str, "%s'uuid': '%s'\n", ws, va.UUID)
+	fmt.Fprintf(&str, "%s'Title': '%s'\n", ws, va.Title)
+	fmt.Fprintf(&str, "%s'severity': '%s'\n", ws, va.Severity)
+	fmt.Fprintf(&str, "%s'external_id': '%s'\n", ws, va.ExternalID)
+	fmt.Fprintf(&str, "%s'confidence': '%s'\n", ws, va.Confidence)
+	fmt.Fprintf(&str, "%s'description': '%s'\n", ws, va.Description)
+	fmt.Fprintf(&str, "%s'created_time': '%s'\n", ws, va.CreatedTime)
+	fmt.Fprintf(&str, "%s'updated_time': '%s'\n", ws, va.UpdatedTime)
+	fmt.Fprintf(&str, "%s'event_start_time': '%s'\n", ws, va.EventStartTime)
+	fmt.Fprintf(&str, "%s'event_end_time': '%s'\n", ws, va.EventEndTime)
+	fmt.Fprintf(&str, "%s'first_detection_time': '%s'\n", ws, va.FirstDetectionTime)
+	fmt.Fprintf(&str, "%s'last_detection_time': '%s'\n", ws, va.LastDetectionTime)
+	fmt.Fprintf(&str, "%s'detection_rule': '%s'\n", ws, va.DetectionRule)
+	fmt.Fprintf(&str, "%s'customer_system': '%s'\n", ws, va.CustomerSystem)
+	fmt.Fprintf(&str, "%s'recommendations': '%s'\n", ws, va.Recommendations)
+	fmt.Fprintf(&str, "%s'platform_type': '%s'\n", ws, va.PlatformType)
+	fmt.Fprintf(&str, "%s'platform_hostname': '%s'\n", ws, va.PlatformHostname)
+	fmt.Fprintf(&str, "%s'affected_log_sources': '%s'\n", ws, va.AffectedLogSources)
+	fmt.Fprintf(&str, "%s'data':\n%s", ws, va.Data.ToStringBeautiful(num+1))
+	fmt.Fprintf(&str, "%s'tags':\n", ws)
 	for k, v := range va.Tags {
-		str.WriteString(fmt.Sprintf("%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2)))
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
 	}
-	str.WriteString(fmt.Sprintf("%s'snapshots':\n", ws))
+	fmt.Fprintf(&str, "%s'snapshots':\n", ws)
 	for k, v := range va.Snapshots {
-		str.WriteString(fmt.Sprintf("%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2)))
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
 	}
-	str.WriteString(fmt.Sprintf("%s'@additional_information':\n%s", ws, va.AdditionalInformation.ToStringBeautiful(num+1)))
+	fmt.Fprintf(&str, "%s'@additional_information':\n%s", ws, va.AdditionalInformation.ToStringBeautiful(num+1))
 
 	return str.String()
 }
