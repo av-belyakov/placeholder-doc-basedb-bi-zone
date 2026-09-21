@@ -31,60 +31,6 @@ var (
 	}
 )
 
-// ************* Структура SupportingStructureForTags *************
-// *** используется как временный накопитель информации о тегах ***
-// ****************************************************************
-
-// NewSupportingStructureForTags формирует вспомогательный объект для обработки
-// объектов типа tag находящихся в data.tags
-func NewSupportingStructureForTags() *SupportingStructureForTags {
-	return &SupportingStructureForTags{
-		listAcceptedFields: []string(nil),
-		tagTmp:             *NewBiZoneIRPTag(),
-		tags:               []BiZoneIRPTag(nil),
-	}
-}
-
-// GetTags возвращает []BiZoneTag, однако, метод
-// выполняет еще очень важное действие, перемещает содержимое из stags.tagTmp в
-// список stag.tags, так как ttps автоматически пополняется только при
-// совпадении значений в listAcceptedFields. Соответственно при завершении
-// JSON объекта, последние добавленные значения остаются stags.tagTmp
-func (stags *SupportingStructureForTags) GetTags() []BiZoneIRPTag {
-	stags.listAcceptedFields = []string(nil)
-	if stags.tagTmp.Name != "" {
-		stags.tags = append(stags.tags, stags.tagTmp)
-	}
-
-	return stags.tags
-}
-
-// GetTagTmp возвращает временный объект tagTmp
-func (stags *SupportingStructureForTags) GetTagTmp() *BiZoneIRPTag {
-	return &stags.tagTmp
-}
-
-// HandlerValue обрабатывает значения, добавляет поле в список listAcceptedFields
-func (stags *SupportingStructureForTags) HandlerValue(fieldBranch string, a any, f func(any)) {
-	//если поле повторяется то считается что это уже новый объект
-	isExist := isExistFieldsRepresentedAsList(fieldBranch, fieldsFroTagsRepresentedAsList)
-
-	if !isExist && stags.isExistFieldBranch(fieldBranch) {
-		stags.listAcceptedFields = []string(nil)
-		stags.tags = append(stags.tags, stags.tagTmp)
-		stags.tagTmp = *NewBiZoneIRPTag()
-	}
-
-	stags.listAcceptedFields = append(stags.listAcceptedFields, fieldBranch)
-
-	f(a)
-}
-
-// isExistFieldBranch проверяет есть ли в списке listAcceptedFields принятое значение
-func (stags *SupportingStructureForTags) isExistFieldBranch(v string) bool {
-	return slices.Contains(stags.listAcceptedFields, v)
-}
-
 // ************* Структура SupportingStructureForSnapshots ***************
 // ****** используется как временный накопитель информации о снимках *****
 // ***********************************************************************

@@ -3,6 +3,9 @@ package datamodels
 import (
 	"errors"
 	"fmt"
+	"strings"
+
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 func NewBiZoneIRPSContent() *BiZoneIRPSContent {
@@ -42,8 +45,8 @@ func (d *BiZoneIRPSContent) SetNocase(v bool) error {
 	return nil
 }
 
-// SetAnySRuleBody для поля nocase
-func (d *BiZoneIRPSContent) SetAnySRuleBody(a any) error {
+// SetAnyNocase для поля nocase
+func (d *BiZoneIRPSContent) SetAnyNocase(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'nocase'")
@@ -314,4 +317,120 @@ func (d *BiZoneIRPSContent) SetAnyDistance(a any) error {
 	}
 
 	return d.SetDistance(v)
+}
+
+// GetFastPattern для поля fast_pattern
+func (d *BiZoneIRPSContent) GetFastPattern() *bool {
+	return d.FastPattern
+}
+
+// SetFastPattern для поля fast_pattern
+func (d *BiZoneIRPSContent) SetFastPattern(v *bool) error {
+	d.FastPattern = v
+
+	return nil
+}
+
+// SetAnyFastPattern для поля fast_pattern
+func (d *BiZoneIRPSContent) SetAnyFastPattern(a any) error {
+	v, ok := a.(*bool)
+	if !ok {
+		return errors.New("type conversion error for field 'fast_pattern'")
+	}
+
+	return d.SetFastPattern(v)
+}
+
+// GetDepth для поля depth
+func (d *BiZoneIRPSContent) GetDepth() *int {
+	return d.Depth
+}
+
+// SetDepth для поля depth
+func (d *BiZoneIRPSContent) SetDepth(v *int) error {
+	d.Depth = v
+
+	return nil
+}
+
+// SetAnyDepth для поля depth
+func (d *BiZoneIRPSContent) SetAnyDepth(a any) error {
+	v, ok := a.(*int)
+	if !ok {
+		return errors.New("type conversion error for field 'depth'")
+	}
+
+	return d.SetDepth(v)
+}
+
+// GetOffset для поля offset
+func (d *BiZoneIRPSContent) GetOffset() *int {
+	return d.Offset
+}
+
+// SetOffset для поля offset
+func (d *BiZoneIRPSContent) SetOffset(v *int) error {
+	d.Offset = v
+
+	return nil
+}
+
+// SetAnyOffset для поля offset
+func (d *BiZoneIRPSContent) SetAnyOffset(a any) error {
+	v, ok := a.(*int)
+	if !ok {
+		return errors.New("type conversion error for field 'offset'")
+	}
+
+	return d.SetOffset(v)
+}
+
+// GetWithin для поля within
+func (d *BiZoneIRPSContent) GetWithin() *int {
+	return d.Within
+}
+
+// SetWithin для поля within
+func (d *BiZoneIRPSContent) SetWithin(v *int) error {
+	d.Within = v
+
+	return nil
+}
+
+// SetAnyWithin для поля within
+func (d *BiZoneIRPSContent) SetAnyWithin(a any) error {
+	v, ok := a.(*int)
+	if !ok {
+		return errors.New("type conversion error for field 'within'")
+	}
+
+	return d.SetWithin(v)
+}
+
+// ToStringBeautiful форматированный вывод
+func (c *BiZoneIRPSContent) ToStringBeautiful(num int) string {
+	str := strings.Builder{}
+
+	ws := supportingfunctions.GetWhitespace(num)
+
+	fmt.Fprintf(&str, "%s'content': '%s'\n", ws, c.Content)
+	fmt.Fprintf(&str, "%s'nocase': '%t'\n", ws, c.Nocase)
+	fmt.Fprintf(&str, "%s'http_uri': '%t'\n", ws, c.HTTPURI)
+	fmt.Fprintf(&str, "%s'rawbytes': '%t'\n", ws, c.Rawbytes)
+	fmt.Fprintf(&str, "%s'http_cookie': '%t'\n", ws, c.HTTPCookie)
+	fmt.Fprintf(&str, "%s'http_header': '%t'\n", ws, c.HTTPHeader)
+	fmt.Fprintf(&str, "%s'http_method': '%t'\n", ws, c.HTTPMethod)
+	fmt.Fprintf(&str, "%s'http_raw_uri': '%t'\n", ws, c.HTTPRawURI)
+	fmt.Fprintf(&str, "%s'http_stat_msg': '%t'\n", ws, c.HTTPStatMsg)
+	fmt.Fprintf(&str, "%s'http_stat_code': '%t'\n", ws, c.HTTPStatCode)
+	fmt.Fprintf(&str, "%s'http_raw_cookie': '%t'\n", ws, c.HTTPRawCookie)
+	fmt.Fprintf(&str, "%s'http_raw_header': '%t'\n", ws, c.HTTPRawHeader)
+	fmt.Fprintf(&str, "%s'http_client_body': '%t'\n", ws, c.HTTPClientBody)
+	fmt.Fprintf(&str, "%s'distance': '%s'\n", ws, *c.Distance)
+	fmt.Fprintf(&str, "%s'fast_pattern': '%t'\n", ws, *c.FastPattern)
+	fmt.Fprintf(&str, "%s'depth': '%d'\n", ws, *c.Depth)
+	fmt.Fprintf(&str, "%s'offset': '%d'\n", ws, *c.Offset)
+	fmt.Fprintf(&str, "%s'within': '%d'\n", ws, *c.Within)
+
+	return str.String()
 }

@@ -67,9 +67,9 @@ type BiZoneIRPData struct {
 // BiZoneIRPDataSecurity элемент массива data_security
 type BiZoneIRPDataSecurity struct {
 	SContent    []BiZoneIRPSContent `json:"s_content"`
+	SMsg        string              `json:"s_msg"`
 	SRuleBody   string              `json:"s_rule_body"`
 	SClasstype  string              `json:"s_classtype"`
-	SMsg        string              `json:"s_msg"`
 	SSourceName string              `json:"s_source_name"`
 	ISid        uint64              `json:"i_sid"`
 	IRev        uint64              `json:"i_rev"`
@@ -102,20 +102,20 @@ type BiZoneIRPSContent struct {
 
 /*
 type BiZoneIRPSContent struct {
-+	Content        string  `json:"content"`
-+	Nocase         bool    `json:"nocase"`
-+	HTTPURI        bool    `json:"http_uri"`
-+	Rawbytes       bool    `json:"rawbytes"`
-+	HTTPCookie     bool    `json:"http_cookie"`
-+	HTTPHeader     bool    `json:"http_header"`
-+	HTTPMethod     bool    `json:"http_method"`
-+	HTTPRawURI     bool    `json:"http_raw_uri"`
-+	HTTPStatMsg    bool    `json:"http_stat_msg"`
-+	HTTPStatCode   bool    `json:"http_stat_code"`
-+	HTTPRawCookie  bool    `json:"http_raw_cookie"`
-+	HTTPRawHeader  bool    `json:"http_raw_header"`
-+	HTTPClientBody bool    `json:"http_client_body"`
-+	Distance       *string `json:"distance:"`    // null или строка (например "0")
+	Content        string  `json:"content"`
+	Nocase         bool    `json:"nocase"`
+	HTTPURI        bool    `json:"http_uri"`
+	Rawbytes       bool    `json:"rawbytes"`
+	HTTPCookie     bool    `json:"http_cookie"`
+	HTTPHeader     bool    `json:"http_header"`
+	HTTPMethod     bool    `json:"http_method"`
+	HTTPRawURI     bool    `json:"http_raw_uri"`
+	HTTPStatMsg    bool    `json:"http_stat_msg"`
+	HTTPStatCode   bool    `json:"http_stat_code"`
+	HTTPRawCookie  bool    `json:"http_raw_cookie"`
+	HTTPRawHeader  bool    `json:"http_raw_header"`
+	HTTPClientBody bool    `json:"http_client_body"`
+	Distance       *string `json:"distance:"`    // null или строка (например "0")
 	FastPattern    *bool   `json:"fast_pattern"` // null или bool
 	Depth          *int    `json:"depth:"`       // null или число
 	Offset         *int    `json:"offset:"`      // null или число

@@ -1,32 +1,61 @@
 package handlers
 
-import "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
-
-// NewListBiZoneHandlerTags обработчик для значений типа 'data.tags.*' основного объекта
-func NewListBiZoneHandlerTags(sst *datamodels.SupportingStructureForTags) map[string][]func(any) {
-	return map[string][]func(any){
+// NewListBiZoneHandlerTags обработчик для значений типа 'tags.*' основного объекта
+func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]func(any) error {
+	return map[string][]func(any) error{
 		//--- name ---
-		"tags.name": {func(a any) {
-			sst.HandlerValue("data.tags.name", a, sst.GetTagTmp().SetAnyName)
-		}},
+		"tags.name": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.name",
+					a,
+					tg.GetTagTmp().SetAnyName,
+				)
+			}},
 		//--- color ---
-		"tags.color": {func(a any) {
-			sst.HandlerValue("data.tags.color", a, sst.GetTagTmp().SetAnyColor)
-		}},
+		"tags.color": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.color",
+					a,
+					tg.GetTagTmp().SetAnyColor,
+				)
+			}},
 		//--- created ---
-		"tags.created": {func(a any) {
-			sst.HandlerValue("data.tags.created", a, func(a any) {
-				//sst.GetTagTmp().SetAnyCreated может возвращать ошибку, которая пока не как бы обрабатывается
-				_ = sst.GetTagTmp().SetAnyCreated(a)
-			})
-		}},
+		"tags.created": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.created",
+					a,
+					tg.GetTagTmp().SetAnyCreated,
+				)
+			}},
 		//--- created_by.id ---
-		"tags.created_by.id": {func(a any) {
-			sst.HandlerValue("data.tags.created_by.id", a, sst.GetTagTmp().SetAnyCreatedByID)
-		}},
+		"tags.created_by.id": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.created_by.id",
+					a,
+					tg.GetTagTmp().SetAnyCreatedByID,
+				)
+			}},
 		//--- created_by.username ---
-		"tags.created_by.username": {func(a any) {
-			sst.HandlerValue("data.tags.created_by.username", a, sst.GetTagTmp().SetAnyCreatedByUsername)
-		}},
+		"tags.created_by.username": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.created_by.username",
+					a,
+					tg.GetTagTmp().SetAnyCreatedByUsername,
+				)
+			}},
+		//--- is_visible_for_customer ---
+		"tags.is_visible_for_customer": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.is_visible_for_customer",
+					a,
+					tg.GetTagTmp().SetAnyCreatedByID,
+				)
+			}},
 	}
 }

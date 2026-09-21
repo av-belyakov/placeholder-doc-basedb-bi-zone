@@ -66,7 +66,7 @@ func (td *BiZoneIRPFieldTagDescription) ToStringBeautiful(num int) string {
 
 	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, td.Name))
 	str.WriteString(fmt.Sprintf("%s'color': '%s'\n", ws, td.Color))
-	str.WriteString(fmt.Sprintf("%s'is_visible_for_customer': '%s'\n", ws, td.IsVisibleForCustomer))
+	str.WriteString(fmt.Sprintf("%s'is_visible_for_customer': '%t'\n", ws, td.IsVisibleForCustomer))
 
 	return str.String()
 }

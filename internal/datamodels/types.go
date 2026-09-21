@@ -1,13 +1,5 @@
 package datamodels
 
-// SupportingStructureForTags вспомогательный тип используемый для хранения
-// объектов типа tags
-type SupportingStructureForTags struct {
-	listAcceptedFields []string
-	tagTmp             BiZoneIRPTag
-	tags               []BiZoneIRPTag
-}
-
 // SupportingStructureForSnapshots вспомогательный тип используемый для хранения
 // объектов типа snapshots
 type SupportingStructureForSnapshots struct {

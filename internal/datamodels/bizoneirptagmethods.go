@@ -15,117 +15,139 @@ func NewBiZoneIRPTag() *BiZoneIRPTag {
 	}
 }
 
-// GetCreated для поля Created (формат RFC3339)
-func (t *BiZoneIRPTag) GetCreated() string {
-	return t.Created
+// GetCreated для поля 'created' (формат RFC3339)
+func (tg *BiZoneIRPTag) GetCreated() string {
+	return tg.Created
 }
 
-// SetCreated для поля Created (преобразует в формат времени RFC3339)
-func (t *BiZoneIRPTag) SetCreated(v string) error {
+// SetCreated для поля 'created' (преобразует в формат времени RFC3339)
+func (tg *BiZoneIRPTag) SetCreated(v string) error {
 	timeStr, err := supportingfunctions.SmartConvertToRFC3339(v)
 	if err != nil {
 		return err
 	}
 
-	t.Created = timeStr
+	tg.Created = timeStr
 
 	return nil
 }
 
-// SetAnyCreated для поля Created
-func (t *BiZoneIRPTag) SetAnyCreated(a any) error {
+// SetAnyCreated для поля 'created'
+func (tg *BiZoneIRPTag) SetAnyCreated(a any) error {
 	if v, ok := a.(string); ok {
-		return t.SetCreated(v)
+		return tg.SetCreated(v)
 	}
 
 	return errors.New("type conversion error")
 }
 
-// GetName для поля Name
-func (t *BiZoneIRPTag) GetName() string {
-	return t.Name
+// GetName для поля 'name'
+func (tg *BiZoneIRPTag) GetName() string {
+	return tg.Name
 }
 
-// SetName для поля Name
-func (t *BiZoneIRPTag) SetName(name string) {
-	t.Name = name
+// SetName для поля 'name'
+func (tg *BiZoneIRPTag) SetName(v string) error {
+	tg.Name = v
+
+	return nil
 }
 
-// SetAnyName для поля Name
-func (t *BiZoneIRPTag) SetAnyName(a any) {
-	t.Name = fmt.Sprint(a)
+// SetAnyName для поля 'name'
+func (tg *BiZoneIRPTag) SetAnyName(a any) error {
+	return tg.SetName(fmt.Sprint(a))
 }
 
-// GetColor для поля Color
-func (t *BiZoneIRPTag) GetColor() string {
-	return t.Color
+// GetColor для поля 'color'
+func (tg *BiZoneIRPTag) GetColor() string {
+	return tg.Color
 }
 
-// SetColor для поля Color
-func (t *BiZoneIRPTag) SetColor(color string) {
-	t.Color = color
+// SetColor для поля 'color'
+func (tg *BiZoneIRPTag) SetColor(v string) error {
+	tg.Color = v
+
+	return nil
 }
 
-// SetAnyColor для поля Color
-func (t *BiZoneIRPTag) SetAnyColor(a any) {
-	t.Color = fmt.Sprint(a)
+// SetAnyColor для поля 'color'
+func (tg *BiZoneIRPTag) SetAnyColor(a any) error {
+	return tg.SetColor(fmt.Sprint(a))
 }
 
-// GetCreatedByID для поля CreatedBy.ID
-func (t *BiZoneIRPTag) GetCreatedByID() uint64 {
-	return t.CreatedBy.ID
+// GetCreatedByID для поля 'created_by.id'
+func (tg *BiZoneIRPTag) GetCreatedByID() uint64 {
+	return tg.CreatedBy.ID
 }
 
-// SetCreatedByID для поля CreatedBy.ID
-func (t *BiZoneIRPTag) SetCreatedByID(id uint64) {
-	t.CreatedBy.ID = id
+// SetCreatedByID для поля 'created_by.id'
+func (tg *BiZoneIRPTag) SetCreatedByID(v uint64) error {
+	tg.CreatedBy.ID = v
+
+	return nil
 }
 
-// SetAnyCreatedByID для поля CreatedBy.ID
-func (t *BiZoneIRPTag) SetAnyCreatedByID(a any) {
-	if v, ok := a.(float32); ok {
-		t.CreatedBy.ID = uint64(v)
-
-		return
+// SetAnyCreatedByID для поля 'created_by.id'
+func (tg *BiZoneIRPTag) SetAnyCreatedByID(a any) error {
+	v, err := supportingfunctions.GetUint64(a)
+	if err != nil {
+		return err
 	}
 
-	if v, ok := a.(float64); ok {
-		t.CreatedBy.ID = uint64(v)
+	return tg.SetCreatedByID(v)
+}
 
-		return
+// GetCreatedByUsername для поля 'created_by.username'
+func (tg *BiZoneIRPTag) GetCreatedByUsername() string {
+	return tg.CreatedBy.Username
+}
+
+// SetCreatedByUsername для поля 'created_by.username'
+func (tg *BiZoneIRPTag) SetCreatedByUsername(v string) error {
+	tg.CreatedBy.Username = v
+
+	return nil
+}
+
+// SetAnyCreatedByUsername для поля 'created_by.username'
+func (tg *BiZoneIRPTag) SetAnyCreatedByUsername(a any) error {
+	return tg.SetCreatedByUsername(fmt.Sprint(a))
+}
+
+// GetIsVisibleForCustomer для поля 'is_visible_for_customer'
+func (tg *BiZoneIRPTag) GetIsVisibleForCustomer() bool {
+	return tg.IsVisibleForCustomer
+}
+
+// SetIsVisibleForCustomer для поля 'is_visible_for_customer'
+func (tg *BiZoneIRPTag) SetIsVisibleForCustomer(v bool) error {
+	tg.IsVisibleForCustomer = v
+
+	return nil
+}
+
+// SetAnyIsVisibleForCustomer для поля 'is_visible_for_customer'
+func (tg *BiZoneIRPTag) SetAnyIsVisibleForCustomer(a any) error {
+	v, ok := a.(bool)
+	if !ok {
+		return errors.New("type conversion error for field 'is_visible_for_customer'")
 	}
 
-	if v, ok := a.(uint64); ok {
-		t.CreatedBy.ID = v
-	}
-}
-
-// GetCreatedByUsername для поля CreatedBy.Username
-func (t *BiZoneIRPTag) GetCreatedByUsername() string {
-	return t.CreatedBy.Username
-}
-
-// SetCreatedByUsername для поля CreatedBy.Username
-func (t *BiZoneIRPTag) SetCreatedByUsername(username string) {
-	t.CreatedBy.Username = username
-}
-
-// SetAnyCreatedByUsername для поля CreatedBy.Username
-func (t *BiZoneIRPTag) SetAnyCreatedByUsername(a any) {
-	t.CreatedBy.Username = fmt.Sprint(a)
+	return tg.SetIsVisibleForCustomer(v)
 }
 
 // ToStringBeautiful форматированный вывод
-func (t *BiZoneIRPTag) ToStringBeautiful(num int) string {
+func (tg *BiZoneIRPTag) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)
 
-	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, t.Name))
-	str.WriteString(fmt.Sprintf("%s'color': '%s'\n", ws, t.Color))
-	str.WriteString(fmt.Sprintf("%s'created': '%s'\n", ws, t.Created))
-	str.WriteString(fmt.Sprintf("%s'created_by.id': '%d'\n", ws, t.CreatedBy.ID))
-	str.WriteString(fmt.Sprintf("%s'created_by.username': '%s'\n", ws, t.CreatedBy.Username))
+	fmt.Fprintf(&str, "%s'name': '%s'\n", ws, tg.Name)
+	fmt.Fprintf(&str, "%s'color': '%s'\n", ws, tg.Color)
+	fmt.Fprintf(&str, "%s'created': '%s'\n", ws, tg.Created)
+	fmt.Fprintf(&str, "%s'created_by.id': '%d'\n", ws, tg.CreatedBy.ID)
+	fmt.Fprintf(&str, "%s'created_by.username': '%s'\n", ws, tg.CreatedBy.Username)
+	fmt.Fprintf(&str, "%s'is_visible_for_customer': '%t'\n", ws, tg.IsVisibleForCustomer)
 
 	return str.String()
 }

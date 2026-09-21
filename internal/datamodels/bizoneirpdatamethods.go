@@ -3,7 +3,6 @@ package datamodels
 import (
 	"errors"
 	"fmt"
-	"slices"
 	"strings"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
@@ -115,9 +114,9 @@ func (d *BiZoneIRPData) SetJobTitle(v string) error {
 	return nil
 }
 
-// SetAnyIPExter для поля job_title
-func (d *BiZoneIRPData) SetAnyIPExter(a any) error {
-	return d.SetAnyIPExter(fmt.Sprint(a))
+// SetAnyJobTitle для поля job_title
+func (d *BiZoneIRPData) SetAnyJobTitle(a any) error {
+	return d.SetJobTitle(fmt.Sprint(a))
 }
 
 // GetMetadataProductName для поля metadata_product_name
@@ -288,15 +287,9 @@ func (d *BiZoneIRPData) SetTags(v []string) error {
 
 // SetTag добавляет значение tag в список
 func (d *BiZoneIRPData) SetTag(v string) error {
-	if d.Tags == nil {
-		d.Tags = []string(nil)
+	if _, isExist := supportingfunctions.SliceContainsElement(v, d.Tags); !isExist {
+		d.Tags = append(d.Tags, v)
 	}
-
-	if slices.Contains(d.Tags, v) {
-		return nil
-	}
-
-	d.Tags = append(d.Tags, v)
 
 	return nil
 }
@@ -320,15 +313,9 @@ func (d *BiZoneIRPData) SetUnmappedDstEndpointArray(v []string) error {
 
 // SetUnmappedDstEndpointArrayElement добавляет значение unmapped_dst_endpoint_array в список
 func (d *BiZoneIRPData) SetUnmappedDstEndpointArrayElement(v string) error {
-	if d.UnmappedDstEndpointArray == nil {
-		d.UnmappedDstEndpointArray = []string(nil)
+	if _, isExist := supportingfunctions.SliceContainsElement(v, d.UnmappedDstEndpointArray); !isExist {
+		d.UnmappedDstEndpointArray = append(d.UnmappedDstEndpointArray, v)
 	}
-
-	if slices.Contains(d.UnmappedDstEndpointArray, v) {
-		return nil
-	}
-
-	d.UnmappedDstEndpointArray = append(d.UnmappedDstEndpointArray, v)
 
 	return nil
 }
@@ -352,15 +339,9 @@ func (d *BiZoneIRPData) SetUnmappedHomeEndpointArray(v []string) error {
 
 // SetUnmappedHomeEndpointArrayElement добавляет значение unmapped_home_endpoint_array в список
 func (d *BiZoneIRPData) SetUnmappedHomeEndpointArrayElement(v string) error {
-	if d.UnmappedHomeEndpointArray == nil {
-		d.UnmappedHomeEndpointArray = []string(nil)
+	if _, isExist := supportingfunctions.SliceContainsElement(v, d.UnmappedHomeEndpointArray); !isExist {
+		d.UnmappedHomeEndpointArray = append(d.UnmappedHomeEndpointArray, v)
 	}
-
-	if slices.Contains(d.UnmappedHomeEndpointArray, v) {
-		return nil
-	}
-
-	d.UnmappedHomeEndpointArray = append(d.UnmappedHomeEndpointArray, v)
 
 	return nil
 }
@@ -384,15 +365,9 @@ func (d *BiZoneIRPData) SetDetectionPattern(v []uint64) error {
 
 // SetDetectionPatternElement добавляет значение detection_pattern в список
 func (d *BiZoneIRPData) SetDetectionPatternElement(v uint64) error {
-	if d.DetectionPattern == nil {
-		d.DetectionPattern = []uint64(nil)
+	if _, isExist := supportingfunctions.SliceContainsElement(v, d.DetectionPattern); !isExist {
+		d.DetectionPattern = append(d.DetectionPattern, v)
 	}
-
-	if slices.Contains(d.DetectionPattern, v) {
-		return nil
-	}
-
-	d.DetectionPattern = append(d.DetectionPattern, v)
 
 	return nil
 }
@@ -421,15 +396,9 @@ func (d *BiZoneIRPData) SetUnmappedAgentArrayn(v []uint64) error {
 
 // SetUnmappedAgentArrayElement добавляет значение unmapped_agent_array в список
 func (d *BiZoneIRPData) SetUnmappedAgentArrayElement(v uint64) error {
-	if d.UnmappedAgentArray == nil {
-		d.UnmappedAgentArray = []uint64(nil)
+	if _, isExist := supportingfunctions.SliceContainsElement(v, d.UnmappedAgentArray); !isExist {
+		d.UnmappedAgentArray = append(d.UnmappedAgentArray, v)
 	}
-
-	if slices.Contains(d.UnmappedAgentArray, v) {
-		return nil
-	}
-
-	d.UnmappedAgentArray = append(d.UnmappedAgentArray, v)
 
 	return nil
 }

@@ -200,6 +200,7 @@ func (ds *BiZoneIRPDataSecurity) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)
+	wsInc := supportingfunctions.GetWhitespace(num + 1)
 
 	fmt.Fprintf(&str, "%s's_rule_body': '%s'\n", ws, ds.SRuleBody)
 	fmt.Fprintf(&str, "%s's_classtype': '%s'\n", ws, ds.SClasstype)
@@ -210,11 +211,9 @@ func (ds *BiZoneIRPDataSecurity) ToStringBeautiful(num int) string {
 	fmt.Fprintf(&str, "%s'i_b_rec': '%d'\n", ws, ds.IBRec)
 	fmt.Fprintf(&str, "%s's_add_date': '%d'\n", ws, ds.SAddDate)
 	fmt.Fprintf(&str, "%s'i_priority': '%d'\n", ws, ds.IPriority)
-
-	/*
-	   			!!!!!!
-	   тут еще нужно для поля SContent
-	*/
-
+	fmt.Fprintf(&str, "%s's_content':\n", ws)
+	for k, v := range ds.SContent {
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
+	}
 	return str.String()
 }

@@ -45,10 +45,10 @@ func (fwt *BiZoneIRPFieldWithTitle) ToStringBeautiful(num int) string {
 	ws := supportingfunctions.GetWhitespace(num)
 	wsInc := supportingfunctions.GetWhitespace(num + 1)
 
-	str.WriteString(fmt.Sprintf("%s'id': '%s'\n", ws, fwt.Id))
-	str.WriteString(fmt.Sprintf("%s'title': '%s'\n", ws))
+	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, fwt.Id)
+	fmt.Fprintf(&str, "%s'title':\n", ws)
 	for k, v := range fwt.Title {
-		str.WriteString(fmt.Sprintf("%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2)))
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
 	}
 
 	return str.String()

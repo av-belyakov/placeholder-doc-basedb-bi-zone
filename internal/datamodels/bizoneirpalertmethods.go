@@ -38,8 +38,8 @@ func (va *VerifiedBiZoneIRPAlert) GetID() uint64 {
 }
 
 // SetID для поля id
-func (va *VerifiedBiZoneIRPAlert) SetID(id uint64) error {
-	va.ID = id
+func (va *VerifiedBiZoneIRPAlert) SetID(v uint64) error {
+	va.ID = v
 
 	return nil
 }
@@ -60,8 +60,8 @@ func (va *VerifiedBiZoneIRPAlert) GetUUID() string {
 }
 
 // SetUUID для поля uuid
-func (va *VerifiedBiZoneIRPAlert) SetUUID(UUID string) error {
-	va.UUID = UUID
+func (va *VerifiedBiZoneIRPAlert) SetUUID(v string) error {
+	va.UUID = v
 
 	return nil
 }
@@ -77,8 +77,8 @@ func (va *VerifiedBiZoneIRPAlert) GetExternalID() string {
 }
 
 // SetExternalID для поля external_id
-func (va *VerifiedBiZoneIRPAlert) SetExternalID(externalID string) error {
-	va.ExternalID = externalID
+func (va *VerifiedBiZoneIRPAlert) SetExternalID(v string) error {
+	va.ExternalID = v
 
 	return nil
 }
@@ -94,8 +94,8 @@ func (va *VerifiedBiZoneIRPAlert) GetCustomerSystem() string {
 }
 
 // SetCustomerSystem для поля customer_system
-func (va *VerifiedBiZoneIRPAlert) SetCustomerSystem(customerSystem string) error {
-	va.CustomerSystem = customerSystem
+func (va *VerifiedBiZoneIRPAlert) SetCustomerSystem(v string) error {
+	va.CustomerSystem = v
 
 	return nil
 }
@@ -111,8 +111,8 @@ func (va *VerifiedBiZoneIRPAlert) GetPlatformType() string {
 }
 
 // SetPlatformType для поля platform_type
-func (va *VerifiedBiZoneIRPAlert) SetPlatformType(platformType string) error {
-	va.PlatformType = platformType
+func (va *VerifiedBiZoneIRPAlert) SetPlatformType(v string) error {
+	va.PlatformType = v
 
 	return nil
 }
@@ -128,8 +128,8 @@ func (va *VerifiedBiZoneIRPAlert) GetConfidence() string {
 }
 
 // SetConfidence для поля confidence
-func (va *VerifiedBiZoneIRPAlert) SetConfidence(confidence string) error {
-	va.Confidence = confidence
+func (va *VerifiedBiZoneIRPAlert) SetConfidence(v string) error {
+	va.Confidence = v
 
 	return nil
 }
@@ -145,11 +145,11 @@ func (va *VerifiedBiZoneIRPAlert) GetDescription() string {
 }
 
 // SetDescription для поля description
-func (va *VerifiedBiZoneIRPAlert) SetDescription(description string) error {
-	description = strings.ReplaceAll(description, "\t", "")
-	description = strings.ReplaceAll(description, "\n", "")
+func (va *VerifiedBiZoneIRPAlert) SetDescription(v string) error {
+	v = strings.ReplaceAll(v, "\t", "")
+	v = strings.ReplaceAll(v, "\n", "")
 
-	va.Description = description
+	va.Description = v
 
 	return nil
 }
@@ -165,8 +165,8 @@ func (va *VerifiedBiZoneIRPAlert) GetDetectionRule() string {
 }
 
 // SetDetectionRule для поля detection_rule
-func (va *VerifiedBiZoneIRPAlert) SetDetectionRule(detectionRule string) error {
-	va.DetectionRule = detectionRule
+func (va *VerifiedBiZoneIRPAlert) SetDetectionRule(v string) error {
+	va.DetectionRule = v
 
 	return nil
 }
@@ -339,8 +339,8 @@ func (va *VerifiedBiZoneIRPAlert) GetPlatformHostname() string {
 }
 
 // SetPlatformHostname для поля platform_hostname
-func (va *VerifiedBiZoneIRPAlert) SetPlatformHostname(platformHostname string) error {
-	va.PlatformHostname = platformHostname
+func (va *VerifiedBiZoneIRPAlert) SetPlatformHostname(v string) error {
+	va.PlatformHostname = v
 
 	return nil
 }
@@ -356,8 +356,8 @@ func (va *VerifiedBiZoneIRPAlert) GetTitle() string {
 }
 
 // SetTitle для поля title
-func (va *VerifiedBiZoneIRPAlert) SetTitle(title string) error {
-	va.Title = title
+func (va *VerifiedBiZoneIRPAlert) SetTitle(v string) error {
+	va.Title = v
 
 	return nil
 }
@@ -373,8 +373,8 @@ func (va *VerifiedBiZoneIRPAlert) GetSeverity() string {
 }
 
 // SetSeverity для поля severity
-func (va *VerifiedBiZoneIRPAlert) SetSeverity(severity string) error {
-	va.Severity = severity
+func (va *VerifiedBiZoneIRPAlert) SetSeverity(v string) error {
+	va.Severity = v
 
 	return nil
 }
@@ -390,8 +390,8 @@ func (va *VerifiedBiZoneIRPAlert) GetRecommendations() string {
 }
 
 // SetRecommendations для поля recommendations
-func (va *VerifiedBiZoneIRPAlert) SetRecommendations(recommendations string) error {
-	va.Recommendations = recommendations
+func (va *VerifiedBiZoneIRPAlert) SetRecommendations(v string) error {
+	va.Recommendations = v
 
 	return nil
 }
@@ -407,8 +407,8 @@ func (va *VerifiedBiZoneIRPAlert) GetPriorityID() string {
 }
 
 // SetPriorityID для поля priority_id
-func (va *VerifiedBiZoneIRPAlert) SetPriorityID(id string) error {
-	va.PriorityID = id
+func (va *VerifiedBiZoneIRPAlert) SetPriorityID(v string) error {
+	va.PriorityID = v
 
 	return nil
 }
@@ -424,8 +424,8 @@ func (va *VerifiedBiZoneIRPAlert) GetResponseTeam() uint64 {
 }
 
 // SetResponseTeam для поля response_team
-func (va *VerifiedBiZoneIRPAlert) SetResponseTeam(resTeam uint64) error {
-	va.ResponseTeam = resTeam
+func (va *VerifiedBiZoneIRPAlert) SetResponseTeam(v uint64) error {
+	va.ResponseTeam = v
 
 	return nil
 }
@@ -446,8 +446,8 @@ func (va *VerifiedBiZoneIRPAlert) GetData() *BiZoneIRPData {
 }
 
 // SetData для поля data
-func (va *VerifiedBiZoneIRPAlert) SetData(data BiZoneIRPData) error {
-	va.Data = data
+func (va *VerifiedBiZoneIRPAlert) SetData(v BiZoneIRPData) error {
+	va.Data = v
 
 	return nil
 }
@@ -458,8 +458,8 @@ func (va *VerifiedBiZoneIRPAlert) GetSnapshots() []BiZoneIRPSnapshot {
 }
 
 // SetSnapshots для поля snapshots
-func (va *VerifiedBiZoneIRPAlert) SetSnapshots(snapshots []BiZoneIRPSnapshot) error {
-	va.Snapshots = snapshots
+func (va *VerifiedBiZoneIRPAlert) SetSnapshots(v []BiZoneIRPSnapshot) error {
+	va.Snapshots = v
 
 	return nil
 }
@@ -470,8 +470,8 @@ func (va *VerifiedBiZoneIRPAlert) GetTags() []BiZoneIRPTag {
 }
 
 // SetTags для поля tags
-func (va *VerifiedBiZoneIRPAlert) SetTags(tags []BiZoneIRPTag) error {
-	va.Tags = tags
+func (va *VerifiedBiZoneIRPAlert) SetTags(v []BiZoneIRPTag) error {
+	va.Tags = v
 
 	return nil
 }
@@ -482,10 +482,24 @@ func (va *VerifiedBiZoneIRPAlert) GetAffectedLogSources() []string {
 }
 
 // SetAffectedLogSources для поля affected_log_sources
-func (va *VerifiedBiZoneIRPAlert) SetAffectedLogSources(affectedLogSources []string) error {
-	va.AffectedLogSources = affectedLogSources
+func (va *VerifiedBiZoneIRPAlert) SetAffectedLogSources(v []string) error {
+	va.AffectedLogSources = v
 
 	return nil
+}
+
+// SetAffectedLogSource одно значение для поля affected_log_sources
+func (va *VerifiedBiZoneIRPAlert) SetAffectedLogSource(v string) error {
+	if _, isExist := supportingfunctions.SliceContainsElement(v, va.AffectedLogSources); !isExist {
+		va.AffectedLogSources = append(va.AffectedLogSources, v)
+	}
+
+	return nil
+}
+
+// SetAnyAffectedLogSource одно значение для поля affected_log_sources
+func (va *VerifiedBiZoneIRPAlert) SetAnyAffectedLogSource(a any) error {
+	return va.SetAffectedLogSource(fmt.Sprint(a))
 }
 
 // GetAdditionalInformation поле дополнительной информации
@@ -494,8 +508,8 @@ func (va *VerifiedBiZoneIRPAlert) GetAdditionalInformation() *AdditionalInformat
 }
 
 // SetAdditionalInformation для поля дополнительной информации
-func (va *VerifiedBiZoneIRPAlert) SetAdditionalInformation(ai AdditionalInformation) error {
-	va.AdditionalInformation = ai
+func (va *VerifiedBiZoneIRPAlert) SetAdditionalInformation(v AdditionalInformation) error {
+	va.AdditionalInformation = v
 
 	return nil
 }
