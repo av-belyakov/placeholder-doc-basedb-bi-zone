@@ -31,67 +31,6 @@ var (
 	}
 )
 
-// ************* Структура SupportingStructureForSnapshots ***************
-// ****** используется как временный накопитель информации о снимках *****
-// ***********************************************************************
-
-// NewSupportingStructureForSnapshots формирует вспомогательный объект для
-// обработки объектов типа snapshot находящихся в data.snapshots
-func NewSupportingStructureForSnapshots() *SupportingStructureForSnapshots {
-	return &SupportingStructureForSnapshots{
-		listAcceptedFields: []string(nil),
-		snapshotTmp:        *NewBiZoneIRPSnapshot(),
-		snapshots:          []BiZoneIRPSnapshot(nil),
-	}
-}
-
-// GetSnapshots возвращает []BiZoneSnapshots, однако, метод
-// выполняет еще очень важное действие, перемещает содержимое из ssnap.snapshotTmp в
-// список ssnap.snapshots, так как snapshots автоматически пополняется только при
-// совпадении значений в listAcceptedFields. Соответственно при завершении
-// JSON объекта, последние добавленные значения остаются ssnap.snapshotTmp
-func (ssnap *SupportingStructureForSnapshots) GetSnapshots() []BiZoneIRPSnapshot {
-	ssnap.listAcceptedFields = []string(nil)
-	if ssnap.snapshotTmp.CMDBID != "" {
-		ssnap.snapshots = append(ssnap.snapshots, ssnap.snapshotTmp)
-	}
-
-	return ssnap.snapshots
-}
-
-// GetSnapshotTmp возвращает временный объект snapshotTmp
-func (ssnap *SupportingStructureForSnapshots) GetSnapshotTmp() *BiZoneIRPSnapshot {
-	return &ssnap.snapshotTmp
-}
-
-// HandlerValue обрабатывает значения, добавляет поле в список listAcceptedFields
-func (ssnap *SupportingStructureForSnapshots) HandlerValue(fieldBranch string, a any, f func(any)) {
-	//если поле повторяется то считается что это уже новый объект
-	isExist := isExistFieldsRepresentedAsList(fieldBranch, fieldsFroTagsRepresentedAsList)
-
-	if !isExist && ssnap.isExistFieldBranch(fieldBranch) {
-		ssnap.listAcceptedFields = []string(nil)
-		ssnap.snapshots = append(ssnap.snapshots, ssnap.snapshotTmp)
-		ssnap.snapshotTmp = *NewBiZoneIRPSnapshot()
-	}
-
-	ssnap.listAcceptedFields = append(ssnap.listAcceptedFields, fieldBranch)
-
-	f(a)
-}
-
-// isExistFieldBranch проверяет есть ли в списке listAcceptedFields принятое значение
-func (ssnap *SupportingStructureForSnapshots) isExistFieldBranch(v string) bool {
-	return slices.Contains(ssnap.listAcceptedFields, v)
-}
-
-func isExistFieldsRepresentedAsList(field string, list []string) bool {
-	return slices.Contains(list, field)
-}
-
-// ************* Различная дополнительная информация ***************
-// *****************************************************************
-
 // GetSensorsInformation объекты с информацией о сенсоре
 func (ai *AdditionalInformation) GetSensorsInformation() []SensorInformation {
 	return ai.Sensors

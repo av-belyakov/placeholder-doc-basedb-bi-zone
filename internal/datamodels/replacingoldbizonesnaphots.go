@@ -21,7 +21,7 @@ func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneSnapshots(incomingTypes []Bi
 
 func compareSnapshot(currentValue BiZoneIRPSnapshot, incomingValue []BiZoneIRPSnapshot) (int, bool) {
 	for k, v := range incomingValue {
-		if v.CMDBID == currentValue.CMDBID {
+		if v.CmdbId == currentValue.CmdbId {
 			return k, true
 		}
 	}

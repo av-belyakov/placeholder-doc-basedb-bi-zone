@@ -38,7 +38,7 @@ func (tg *BiZoneIRPTag) SetAnyCreated(a any) error {
 		return tg.SetCreated(v)
 	}
 
-	return errors.New("type conversion error")
+	return errors.New("type conversion error for 'created' field")
 }
 
 // GetName для поля 'name'

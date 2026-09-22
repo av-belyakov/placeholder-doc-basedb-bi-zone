@@ -1,7 +1,7 @@
 package handlers
 
 // NewListBiZoneHandlerDataSecurity начальный обработчик событий полей 'data.data_security.*'
-func NewListBiZoneHandlerDataSecurity(sds *SupportiveDataSecurityType) map[string][]func(any) error {
+func NewListBiZoneHandlerDataSecurity(sds *SupportingStructureForDataSecurityType) map[string][]func(any) error {
 	return map[string][]func(any) error{
 		// --- i_sid ---
 		"data.data_security.i_sid": {

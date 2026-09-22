@@ -49,7 +49,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	}
 
 	defer func(document *datamodels.VerifiedBiZoneIRPAlert, getChan func() chan SettingsChanOutput, logger interfaces.Logger) {
-		id := fmt.Sprintf("alerts:%s", newDocument.GetSpecialUUID())
+		id := fmt.Sprintf("alerts:%s", newDocument.GetUUID())
 
 		//обогащение кейса дополнительной информацией о локальном место положении ip адресов
 		listIp := documentgenerator.GetListIPAddr(document.GetAdditionalInformation().GetIpAddressesInformation())
@@ -120,7 +120,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 
 		//счетчик
 		dbs.counter.SendMessage("update count insert subject alerts to db", 1)
-		dbs.logger.Send("info", fmt.Sprintf("insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetIDNum(), newDocument.GetUUID(), statusCode))
+		dbs.logger.Send("info", fmt.Sprintf("insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
 
 		//*******************************************
 		//*** здесь установка тегов, под вопросом ***
@@ -172,7 +172,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 
 		//счетчик
 		dbs.counter.SendMessage("update count insert subject alerts to db", 1)
-		dbs.logger.Send("info", fmt.Sprintf("insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetIDNum(), newDocument.GetUUID(), statusCode))
+		dbs.logger.Send("info", fmt.Sprintf("insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
 
 		//*******************************************
 		//*** здесь установка тегов, под вопросом ***

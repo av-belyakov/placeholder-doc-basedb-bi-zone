@@ -26,11 +26,11 @@ func NewSupportingStructureForTagsType() *SupportingStructureForTagsType {
 // Однако, метод выполняет еще очень важное действие, перемещает содержимое из tg.tagTmp в
 // tg.tags, так как tags автоматически пополняется только при
 // совпадении значений в listAcceptedFields. Соответственно при завершении
-// JSON объекта, последние добавленные значения остаются tg.sContentTmp
+// JSON объекта, последние добавленные значения остаются tg.tagTmp
 func (tg *SupportingStructureForTagsType) GetTags() []datamodels.BiZoneIRPTag {
 	if tg.tagTmp != nil {
 		// здесь можно выполнять постобработку некоторых пользовательский типов
-		// Например, заменить в поле 'data.data_security.s_msg' символ ':' на ';'.
+		// например, изменить содержимое какого нибудь поля.
 		// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&tg.tagTmp)
@@ -55,7 +55,7 @@ func (tg *SupportingStructureForTagsType) HandlerValue(fieldBranch string, a any
 		tg.listAcceptedFields = []string(nil)
 
 		// здесь можно выполнять постобработку некоторых пользовательский типов
-		// Например, заменить в поле 'data.data_security.s_msg' символ ':' на ';'.
+		// например, изменить содержимое какого нибудь поля.
 		// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&sc.tagTmp)

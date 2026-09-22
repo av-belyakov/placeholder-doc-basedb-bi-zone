@@ -6,16 +6,16 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 )
 
-// SupportiveSContentType вспомогательный тип для обработки 'data.data_security.scontent'
-type SupportiveSContentType struct {
+// SupportingStructureForSContentType вспомогательный тип для обработки 'data.data_security.scontent'
+type SupportingStructureForSContentType struct {
 	listAcceptedFields []string
 	sContentTmp        *datamodels.BiZoneIRPSContent
 	sContentList       []datamodels.BiZoneIRPSContent
 }
 
-// NewSupportiveSContentTypeType формирует вспомогательный объект для обработки объектов типа 'data.data_security.scontent'
-func NewSupportiveSContentTypeType() *SupportiveSContentType {
-	return &SupportiveSContentType{
+// NewSupportingStructureForSContentTypeType формирует вспомогательный объект для обработки объектов типа 'data.data_security.scontent'
+func NewSupportingStructureForSContentType() *SupportingStructureForSContentType {
+	return &SupportingStructureForSContentType{
 		listAcceptedFields: []string(nil),
 		sContentTmp:        datamodels.NewBiZoneIRPSContent(),
 		sContentList:       make([]datamodels.BiZoneIRPSContent, 0),
@@ -27,10 +27,10 @@ func NewSupportiveSContentTypeType() *SupportiveSContentType {
 // sc.sContentList, так как sContentList автоматически пополняется только при
 // совпадении значений в listAcceptedFields. Соответственно при завершении
 // JSON объекта, последние добавленные значения остаются sc.sContentTmp
-func (sc *SupportiveSContentType) GetSContent() []datamodels.BiZoneIRPSContent {
+func (sc *SupportingStructureForSContentType) GetSContent() []datamodels.BiZoneIRPSContent {
 	if sc.sContentTmp != nil {
 		// здесь можно выполнять постобработку некоторых пользовательский типов
-		// Например, заменить в поле 'data.data_security.s_msg' символ ':' на ';'.
+		// например, изменить содержимое какого нибудь поля.
 		// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&sc.sContentTmp)
@@ -44,18 +44,18 @@ func (sc *SupportiveSContentType) GetSContent() []datamodels.BiZoneIRPSContent {
 }
 
 // GetSContentTmp возвращает временный объект
-func (sc *SupportiveSContentType) GetSContentTmp() *datamodels.BiZoneIRPSContent {
+func (sc *SupportingStructureForSContentType) GetSContentTmp() *datamodels.BiZoneIRPSContent {
 	return sc.sContentTmp
 }
 
 // HandlerValue функция обработчик значений
-func (sc *SupportiveSContentType) HandlerValue(fieldBranch string, a any, f func(any) error) error {
+func (sc *SupportingStructureForSContentType) HandlerValue(fieldBranch string, a any, f func(any) error) error {
 	//если поле повторяется то считается что это уже новый объект
 	if sc.isExistFieldBranch((fieldBranch)) {
 		sc.listAcceptedFields = []string(nil)
 
 		// здесь можно выполнять постобработку некоторых пользовательский типов
-		// Например, заменить в поле 'data.data_security.s_msg' символ ':' на ';'.
+		// например, изменить содержимое какого нибудь поля.
 		// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&sc.sContentTmp)
@@ -69,6 +69,6 @@ func (sc *SupportiveSContentType) HandlerValue(fieldBranch string, a any, f func
 }
 
 // isExistFieldBranch проверка существования ветки
-func (sc *SupportiveSContentType) isExistFieldBranch(v string) bool {
+func (sc *SupportingStructureForSContentType) isExistFieldBranch(v string) bool {
 	return slices.Contains(sc.listAcceptedFields, v)
 }

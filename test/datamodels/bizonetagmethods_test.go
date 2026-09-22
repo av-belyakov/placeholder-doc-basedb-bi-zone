@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 	datamodeltest "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/test/datamodels"
 )
 
@@ -35,10 +36,12 @@ func TestBiZoneTag(t *testing.T) {
 		},
 	}
 
+	timeStr := gofakeit.Date().String()
+	timeStrConv, _ := supportingfunctions.SmartConvertToRFC3339(timeStr)
 	listTesting["Created"] = datamodeltest.TestOptions{
-		ValueString: gofakeit.ConnectiveTime(),
+		ValueString: timeStrConv,
 		SetFunc: func() {
-			tag.SetAnyCreated(listTesting["Created"].ValueString)
+			tag.SetAnyCreated(timeStr)
 		},
 		GetFunc: func() {
 			assert.Equal(t, tag.GetCreated(), listTesting["Created"].ValueString)

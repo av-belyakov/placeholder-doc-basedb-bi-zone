@@ -35,15 +35,18 @@ func TestBiZoneIRPAlertMethods(t *testing.T) {
 	snapshotsExample := make([]datamodels.BiZoneIRPSnapshot, 0, size)
 	for range size {
 		snapshot := datamodels.NewBiZoneIRPSnapshot()
-		snapshot.SetAnyIPAddresse(ipAddresses)
-		snapshot.SetAnyMACAddresse(macAddresses)
-		snapshot.SetAnyOS(gofakeit.BankName())
-		snapshot.SetAnyOSType(gofakeit.BankType())
-		snapshot.SetAnyFqdn(gofakeit.DomainName())
-		snapshot.SetAnyDomain(gofakeit.DomainName())
-		snapshot.SetAnyCMDBID(gofakeit.CarModel())
-		snapshot.SetAnyHostname(gofakeit.DomainName())
-		snapshot.SetAnyUserCMDBName(gofakeit.DomainSuffix())
+		assert.NoError(t, snapshot.SetAnyIPAddresse(ipAddresses))
+		assert.NoError(t, snapshot.SetAnyMACAddresse(macAddresses))
+		assert.NoError(t, snapshot.SetAnyOS(gofakeit.BankName()))
+		assert.NoError(t, snapshot.SetAnyOSType(gofakeit.BankType()))
+		assert.NoError(t, snapshot.SetAnyFqdn(gofakeit.DomainName()))
+		assert.NoError(t, snapshot.SetAnyDomain(gofakeit.DomainName()))
+		assert.NoError(t, snapshot.SetAnyCMDBID(gofakeit.CarModel()))
+		assert.NoError(t, snapshot.SetAnyHostname(gofakeit.DomainName()))
+		assert.NoError(t, snapshot.SetAnyTitle(gofakeit.AppAuthor()))
+		assert.NoError(t, snapshot.SetAnySeverity(gofakeit.Sentence()))
+		assert.NoError(t, snapshot.SetAnyUserCmdbId(gofakeit.ID()))
+		assert.NoError(t, snapshot.SetAnyUserCMDBName(gofakeit.DomainSuffix()))
 
 		snapshotsExample = append(snapshotsExample, *snapshot)
 	}
@@ -88,9 +91,23 @@ func TestBiZoneIRPAlertMethods(t *testing.T) {
 					if a.GetCMDBID() != b.GetCMDBID() {
 						return false
 					}
+
 					if a.GetHostname() != b.GetHostname() {
 						return false
 					}
+
+					if a.GetTitle() != b.GetTitle() {
+						return false
+					}
+
+					if a.GetSeverity() != b.GetSeverity() {
+						return false
+					}
+
+					if a.GetUserCmdbId() != b.GetUserCmdbId() {
+						return false
+					}
+
 					return a.GetUserCMDBName() == b.GetUserCMDBName()
 				}))
 		},
@@ -101,57 +118,26 @@ func TestBiZoneIRPAlertMethods(t *testing.T) {
 	tagsExample := make([]datamodels.BiZoneIRPTag, 0, size)
 	for range size {
 		tag := datamodels.NewBiZoneIRPTag()
-		tag.SetAnyName(gofakeit.EmojiTag())
-		tag.SetAnyColor(gofakeit.Color())
+		assert.NoError(t, tag.SetAnyName(gofakeit.EmojiTag()))
+		assert.NoError(t, tag.SetAnyColor(gofakeit.Color()))
+		assert.NoError(t, tag.SetAnyCreated(gofakeit.Date().String()))
+		assert.NoError(t, tag.SetAnyCreatedByUsername(gofakeit.Name()))
+		assert.NoError(t, tag.SetAnyCreatedByID(gofakeit.Uint64()))
+		assert.NoError(t, tag.SetAnyIsVisibleForCustomer(true))
 
 		tagsExample = append(tagsExample, *tag)
 	}
 
 	listTesting["Tags"] = datamodelstest.TestOptions{
-		ValueAny: snapshotsExample,
+		ValueAny: tagsExample,
 		SetFunc: func() {
-			biZoneIRPAlert.SetSnapshots(snapshotsExample)
+			biZoneIRPAlert.SetTags(tagsExample)
 		},
 		GetFunc: func() {
-			snapshots, ok := listTesting["Tags"].ValueAny.([]datamodels.BiZoneIRPSnapshot)
+			tags, ok := listTesting["Tags"].ValueAny.([]datamodels.BiZoneIRPTag)
 			assert.True(t, ok)
 
-			assert.True(t, slices.EqualFunc(
-				snapshots,
-				biZoneIRPAlert.GetSnapshots(),
-				func(a, b datamodels.BiZoneIRPSnapshot) bool {
-					if !slices.Equal(a.IPAddresses, b.IPAddresses) {
-						return false
-					}
-
-					if !slices.Equal(a.MACAddresses, b.MACAddresses) {
-						return false
-					}
-
-					if a.GetOS() != b.GetOS() {
-						return false
-					}
-
-					if a.GetOSType() != b.GetOSType() {
-						return false
-					}
-
-					if a.GetFqdn() != b.GetFqdn() {
-						return false
-					}
-
-					if a.GetDomain() != b.GetDomain() {
-						return false
-					}
-
-					if a.GetCMDBID() != b.GetCMDBID() {
-						return false
-					}
-					if a.GetHostname() != b.GetHostname() {
-						return false
-					}
-					return a.GetUserCMDBName() == b.GetUserCMDBName()
-				}))
+			assert.Equal(t, tags, biZoneIRPAlert.GetTags())
 		},
 	}
 
@@ -173,20 +159,59 @@ func TestBiZoneIRPAlertMethods(t *testing.T) {
 	}
 
 	dataExample := datamodels.NewBiZoneIRPData()
-	dataExample.SetAnyIPHome(allIPHomes)
-	dataExample.SetAnySnortSid(snortIds)
-	dataExample.SetAnyAllSensor(allSensors)
-	dataExample.SetAnyID(gofakeit.ID())
-	dataExample.SetAnyTitle(gofakeit.BookTitle())
-	dataExample.SetAnyIPHome(gofakeit.IPv4Address())
-	dataExample.SetAnyURLFTP(gofakeit.URL())
-	dataExample.SetAnyIPExter(gofakeit.IPv4Address())
-	dataExample.SetAnyURLHTTP(gofakeit.URL())
-	dataExample.SetAnyEventType(gofakeit.BankType())
-	dataExample.SetAnyURLArkime(gofakeit.URL())
-	dataExample.SetAnySensor(gofakeit.Uint64())
-	dataExample.SetAnyAllIPExt(gofakeit.Uint64())
-	dataExample.SetAnyResponseTeam(gofakeit.Uint64())
+	assert.NoError(t, dataExample.SetAgent(gofakeit.Uint64()))
+	assert.NoError(t, dataExample.SetSeverityID(gofakeit.Uint64()))
+	assert.NoError(t, dataExample.SetDesc(gofakeit.Adjective()))
+	assert.NoError(t, dataExample.SetEventUid(gofakeit.ID()))
+	assert.NoError(t, dataExample.SetJobTitle(gofakeit.Book().Title))
+	assert.NoError(t, dataExample.SetFirstSeenTime(gofakeit.Date().String()))
+	assert.NoError(t, dataExample.SetLastSeenTime(gofakeit.Date().String()))
+	assert.NoError(t, dataExample.SetMetadataProductName(gofakeit.PetName()))
+	assert.NoError(t, dataExample.SetSourceIP(gofakeit.IPv4Address()))
+	assert.NoError(t, dataExample.SetTargetIP(gofakeit.IPv4Address()))
+	assert.NoError(t, dataExample.SetUnmappedHiveAlertID(gofakeit.ID()))
+	assert.NoError(t, dataExample.SetUnmappedSensorIP(gofakeit.IPv4Address()))
+	assert.NoError(t, dataExample.SetUnmappedSensorName(gofakeit.PetName()))
+
+	// --- tags ---
+	dataTagsSize := 11
+	dataTags := make([]string, 0, dataTagsSize)
+	for range dataTagsSize {
+		dataTags = append(dataTags, gofakeit.Adjective())
+	}
+	assert.NoError(t, dataExample.SetTags(dataTags))
+
+	// --- unmapped_dst_endpoint_array ---
+	dataUnmappedDstEndpointArraySize := 12
+	dataUnmappedDstEndpointArray := make([]string, 0, dataUnmappedDstEndpointArraySize)
+	for range dataUnmappedDstEndpointArraySize {
+		dataUnmappedDstEndpointArray = append(dataUnmappedDstEndpointArray, gofakeit.FarmAnimal())
+	}
+	assert.NoError(t, dataExample.SetUnmappedDstEndpointArray(dataUnmappedDstEndpointArray))
+
+	// --- unmapped_home_endpoint_array ---
+	dataUnmappedHomeEndpointArraySize := 13
+	dataUnmappedHomeEndpointArray := make([]string, 0, dataUnmappedHomeEndpointArraySize)
+	for range dataUnmappedHomeEndpointArraySize {
+		dataUnmappedHomeEndpointArray = append(dataUnmappedHomeEndpointArray, gofakeit.FarmAnimal())
+	}
+	assert.NoError(t, dataExample.SetUnmappedDstEndpointArray(dataUnmappedHomeEndpointArray))
+
+	// --- detection_pattern ---
+	dataDetectionPatternSize := 13
+	dataDetectionPattern := make([]uint64, 0, dataDetectionPatternSize)
+	for range dataDetectionPatternSize {
+		dataDetectionPattern = append(dataDetectionPattern, gofakeit.Uint64())
+	}
+	assert.NoError(t, dataExample.SetUnmappedDstEndpointArray(dataUnmappedHomeEndpointArray))
+
+	// --- unmapped_agent_array ---
+	dataUnmappedAgentArraySize := 13
+	dataUnmappedAgentArray := make([]uint64, 0, dataUnmappedAgentArraySize)
+	for range dataUnmappedAgentArraySize {
+		dataUnmappedAgentArray = append(dataUnmappedAgentArray, gofakeit.Uint64())
+	}
+	assert.NoError(t, dataExample.SetUnmappedAgentArrayn(dataUnmappedAgentArray))
 
 	listTesting["Data"] = datamodelstest.TestOptions{
 		ValueAny: *dataExample,
@@ -402,10 +427,10 @@ func TestBiZoneIRPAlertMethods(t *testing.T) {
 	listTesting["IDNum"] = datamodelstest.TestOptions{
 		ValueAny: gofakeit.Uint64(),
 		SetFunc: func() {
-			biZoneIRPAlert.SetAnyIDNum(listTesting["IDNum"].ValueAny)
+			biZoneIRPAlert.SetAnyID(listTesting["IDNum"].ValueAny)
 		},
 		GetFunc: func() {
-			assert.Equal(t, biZoneIRPAlert.GetIDNum(), listTesting["IDNum"].ValueAny)
+			assert.Equal(t, biZoneIRPAlert.GetID(), listTesting["IDNum"].ValueAny)
 		},
 	}
 

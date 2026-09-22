@@ -1,45 +1,125 @@
 package handlers
 
-import "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
-
 // NewListBiZoneHandlerSnapshots обработчик для значений типа 'data.snapshots.*' основного объекта
-func NewListBiZoneHandlerSnapshots(sst *datamodels.SupportingStructureForSnapshots) map[string][]func(any) {
-	return map[string][]func(any){
+func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[string][]func(any) error {
+	return map[string][]func(any) error{
 		//--- os ---
-		"snapshots.os": {func(a any) {
-			sst.HandlerValue("data.snapshots.os", a, sst.GetSnapshotTmp().SetAnyOS)
-		}},
+		"snapshots.os": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.os",
+					a,
+					s.GetSnapshotTmp().SetAnyOS,
+				)
+			},
+		},
 		//--- fqdn ---
-		"snapshots.fqdn": {func(a any) {
-			sst.HandlerValue("data.snapshots.fqdn", a, sst.GetSnapshotTmp().SetAnyFqdn)
-		}},
-		//--- cmdb_id ---
-		"snapshots.cmdb_id": {func(a any) {
-			sst.HandlerValue("data.snapshots.cmdb_id", a, sst.GetSnapshotTmp().SetAnyCMDBID)
-		}},
+		"snapshots.fqdn": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.fqdn",
+					a,
+					s.GetSnapshotTmp().SetAnyFqdn,
+				)
+			},
+		},
+		//--- title ---
+		"snapshots.title": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.title",
+					a,
+					s.GetSnapshotTmp().SetAnyTitle,
+				)
+			},
+		},
 		//--- domain ---
-		"snapshots.domain": {func(a any) {
-			sst.HandlerValue("data.snapshots.domain", a, sst.GetSnapshotTmp().SetAnyDomain)
-		}},
+		"snapshots.domain": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.domain",
+					a,
+					s.GetSnapshotTmp().SetAnyDomain,
+				)
+			},
+		},
+		//--- cmdb_id ---
+		"snapshots.cmdb_id": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.cmdb_id",
+					a,
+					s.GetSnapshotTmp().SetAnyCMDBID,
+				)
+			},
+		},
 		//--- os_type ---
-		"snapshots.os_type": {func(a any) {
-			sst.HandlerValue("data.snapshots.os_type", a, sst.GetSnapshotTmp().SetAnyOSType)
-		}},
+		"snapshots.os_type": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.os_type",
+					a,
+					s.GetSnapshotTmp().SetAnyOSType,
+				)
+			},
+		},
 		//--- hostname ---
-		"snapshots.hostname": {func(a any) {
-			sst.HandlerValue("data.snapshots.hostname", a, sst.GetSnapshotTmp().SetAnyHostname)
-		}},
+		"snapshots.hostname": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.hostname",
+					a,
+					s.GetSnapshotTmp().SetAnyHostname)
+			},
+		},
+		//--- severity ---
+		"snapshots.severity": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.severity",
+					a,
+					s.GetSnapshotTmp().SetAnySeverity)
+			},
+		},
 		//--- user_cmdb_name ---
-		"snapshots.user_cmdb_name": {func(a any) {
-			sst.HandlerValue("data.snapshots.user_cmdb_name", a, sst.GetSnapshotTmp().SetAnyUserCMDBName)
-		}},
+		"snapshots.user_cmdb_name": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.user_cmdb_name",
+					a,
+					s.GetSnapshotTmp().SetAnyUserCMDBName,
+				)
+			},
+		},
+		//--- user_cmdb_id ---
+		"snapshots.user_cmdb_id": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.user_cmdb_id",
+					a,
+					s.GetSnapshotTmp().SetAnyUserCmdbId,
+				)
+			},
+		},
+		//ниже работа со срезам содержащими простые типы
 		//--- ip_addresses ---
-		"snapshots.ip_addresses": {func(a any) {
-			sst.HandlerValue("data.snapshots.ip_addresses", a, sst.GetSnapshotTmp().SetAnyIPAddresse)
-		}},
+		"snapshots.ip_addresses": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.ip_addresses",
+					a,
+					s.GetSnapshotTmp().SetAnyIPAddresse,
+				)
+			}},
 		//--- mac_addresses ---
-		"snapshots.mac_addresses": {func(a any) {
-			sst.HandlerValue("data.snapshots.mac_addresses", a, sst.GetSnapshotTmp().SetAnyMACAddresse)
-		}},
+		"snapshots.mac_addresses": {
+			func(a any) error {
+				return s.HandlerValue(
+					"snapshots.mac_addresses",
+					a,
+					s.GetSnapshotTmp().SetAnyMACAddresse,
+				)
+			},
+		},
 	}
 }

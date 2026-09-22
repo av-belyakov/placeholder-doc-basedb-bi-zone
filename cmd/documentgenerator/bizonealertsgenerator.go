@@ -27,12 +27,16 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 	listHandlerData := handlers.NewListBiZoneHandlerData(verifiedData)
 
 	//******** вспомогательные объекты ********
-	supportObjectTags := datamodels.NewSupportingStructureForTags()
-	supportObjectSnapshot := datamodels.NewSupportingStructureForSnapshots()
+	supportObjectTags := handlers.NewSupportingStructureForTagsType()
+	supportObjectSnapshot := handlers.NewSupportingStructureForSnapshotsType()
+	supportObjectSContent := handlers.NewSupportingStructureForSContentType()
+	supportObjectDataSecurity := handlers.NewSupportingStructureForDataSecurityType()
 
 	// ********* обработчики для вспомогательных объектов ***********
 	listHandlerTags := handlers.NewListBiZoneHandlerTags(supportObjectTags)
 	listHandlerSnapshots := handlers.NewListBiZoneHandlerSnapshots(supportObjectSnapshot)
+	listHandlerScontents := handlers.NewListBiZoneHandlerSContents(supportObjectSContent)
+	listHandlerDataSecurity := handlers.NewListBiZoneHandlerDataSecurity(supportObjectDataSecurity)
 
 	//объект с дополнительной информацией по сенсорам и ip адресам
 	additionalInformation := datamodels.AdditionalInformation{

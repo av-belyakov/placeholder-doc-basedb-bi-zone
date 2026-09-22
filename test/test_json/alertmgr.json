@@ -35,6 +35,22 @@
             "created": "2026-08-18T17:01:23.179229+03:00"
         }
     ],
+    "snapshots": [
+        {
+            "cmdb_id": "dac0d32f-1135-4f85-a2c2-4b593aae14ab",
+            "domain": "",
+            "fqdn": "",
+            "hostname": "192.168.102.25",
+            "ip_address": null,
+            "mac_addresses": [],
+            "os": "",
+            "os_type": "",
+            "title": null,
+            "severity": "Medium",
+            "user_cmdb_name": "",
+            "user_cmdb_id": null
+        }
+    ],
     "description": "## Данная задача создана автоматически\n Время начала: 2026-09-17 08:52:00\n Время окончания: 2026-09-17 08:52:00\n Продолжительность воздействий: 0:00:00",
     "detection_rule": "NoN_RCE",
     "event_end_time": "2026-09-17T10:58:37+03:00",
@@ -47,7 +63,6 @@
     "platform_type": "DFL",
     "severity": "Medium",
     "priority_id": "Medium",
-    "snapshots": [],
     "title": "Попытки эксплуатаци уязвимости с 31.31.196.167 на Рязань Плазма",
     "updated_time": "2026-09-17T10:58:38.178863+03:00",
     "uuid": "10c4a306-33dd-480c-bbbd-e688c2a78662",
