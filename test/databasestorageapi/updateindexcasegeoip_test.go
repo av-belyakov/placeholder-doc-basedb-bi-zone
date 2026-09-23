@@ -94,7 +94,10 @@ func CreateTestCase(ctx context.Context, filePath string) (string, *datamodels.V
 		}
 	}(ctx, logging, counting)
 
-	rootId, verifiedAlert, _ = documentgenerator.BiZoneAlertsGenerator(chDecode)
+	rootId, verifiedAlert, _, err = documentgenerator.BiZoneAlertsGenerator(chDecode)
+	if err != nil {
+		return rootId, verifiedAlert, err
+	}
 
 	return rootId, verifiedAlert, nil
 }

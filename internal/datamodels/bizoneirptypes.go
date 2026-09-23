@@ -43,25 +43,25 @@ type BiZoneIRPTag struct {
 
 // BiZoneData структура для вложенного объекта data
 type BiZoneIRPData struct {
-	DataSecurity              []BiZoneIRPDataSecurity `json:"data_security"`
-	Tags                      []string                `json:"tags"`
-	UnmappedDstEndpointArray  []string                `json:"unmapped_dst_endpoint_array"`
-	UnmappedHomeEndpointArray []string                `json:"unmapped_home_endpoint_array"`
-	DetectionPattern          []uint64                `json:"detection_pattern"`
-	UnmappedAgentArray        []uint64                `json:"unmapped_agent_array"`
-	Desc                      string                  `json:"desc"`
-	EventUID                  string                  `json:"event_uid"`
-	JobTitle                  string                  `json:"job_title"`
-	FirstSeenTime             string                  `json:"first_seen_time"` //дата создания (формат RFC3339) или ISO 8601
-	LastSeenTime              string                  `json:"last_seen_time"`  //дата создания (формат RFC3339) или ISO 8601
-	MetadataProductName       string                  `json:"metadata_product_name"`
-	SourceIP                  string                  `json:"source_ip"`
-	TargetIP                  string                  `json:"target_ip"`
-	UnmappedHiveAlertID       string                  `json:"unmapped_hive_alert_id"`
-	UnmappedSensorIP          string                  `json:"unmapped_sensor_ip"`
-	UnmappedSensorName        string                  `json:"unmapped_sensor_name"`
-	Agent                     uint64                  `json:"agent"`
-	SeverityID                uint64                  `json:"severity_id"`
+	DataSecurity              map[string][]BiZoneIRPDataSecurity `json:"data_security"`
+	Tags                      []string                           `json:"tags"`
+	UnmappedDstEndpointArray  []string                           `json:"unmapped_dst_endpoint_array"`
+	UnmappedHomeEndpointArray []string                           `json:"unmapped_home_endpoint_array"`
+	DetectionPattern          []uint64                           `json:"detection_pattern"`
+	UnmappedAgentArray        []uint64                           `json:"unmapped_agent_array"`
+	Desc                      string                             `json:"desc"`
+	EventUID                  string                             `json:"event_uid"`
+	JobTitle                  string                             `json:"job_title"`
+	FirstSeenTime             string                             `json:"first_seen_time"` //дата создания (формат RFC3339) или ISO 8601
+	LastSeenTime              string                             `json:"last_seen_time"`  //дата создания (формат RFC3339) или ISO 8601
+	MetadataProductName       string                             `json:"metadata_product_name"`
+	SourceIP                  string                             `json:"source_ip"`
+	TargetIP                  string                             `json:"target_ip"`
+	UnmappedHiveAlertID       string                             `json:"unmapped_hive_alert_id"`
+	UnmappedSensorIP          string                             `json:"unmapped_sensor_ip"`
+	UnmappedSensorName        string                             `json:"unmapped_sensor_name"`
+	Agent                     uint64                             `json:"agent"`
+	SeverityID                uint64                             `json:"severity_id"`
 }
 
 // BiZoneIRPDataSecurity элемент массива data_security

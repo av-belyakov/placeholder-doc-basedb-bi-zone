@@ -4,13 +4,15 @@ import (
 	"slices"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 // SupportingStructureForSContentType вспомогательный тип для обработки 'data.data_security.scontent'
 type SupportingStructureForSContentType struct {
+	currentKey         uint64
 	listAcceptedFields []string
 	sContentTmp        *datamodels.BiZoneIRPSContent
-	sContentList       []datamodels.BiZoneIRPSContent
+	sContentList       map[uint64][]datamodels.BiZoneIRPSContent
 }
 
 // NewSupportingStructureForSContentTypeType формирует вспомогательный объект для обработки объектов типа 'data.data_security.scontent'
@@ -18,7 +20,7 @@ func NewSupportingStructureForSContentType() *SupportingStructureForSContentType
 	return &SupportingStructureForSContentType{
 		listAcceptedFields: []string(nil),
 		sContentTmp:        datamodels.NewBiZoneIRPSContent(),
-		sContentList:       make([]datamodels.BiZoneIRPSContent, 0),
+		sContentList:       make(map[uint64][]datamodels.BiZoneIRPSContent, 0),
 	}
 }
 
@@ -27,14 +29,14 @@ func NewSupportingStructureForSContentType() *SupportingStructureForSContentType
 // sc.sContentList, так как sContentList автоматически пополняется только при
 // совпадении значений в listAcceptedFields. Соответственно при завершении
 // JSON объекта, последние добавленные значения остаются sc.sContentTmp
-func (sc *SupportingStructureForSContentType) GetSContent() []datamodels.BiZoneIRPSContent {
+func (sc *SupportingStructureForSContentType) GetSContent() map[uint64][]datamodels.BiZoneIRPSContent {
 	if sc.sContentTmp != nil {
 		// здесь можно выполнять постобработку некоторых пользовательский типов
 		// например, изменить содержимое какого нибудь поля.
 		// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&sc.sContentTmp)
-		sc.sContentList = append(sc.sContentList, *sc.sContentTmp)
+		sc.sContentList[sc.currentKey] = append(sc.sContentList[sc.currentKey], *sc.sContentTmp)
 
 		sc.sContentTmp = nil
 		sc.listAcceptedFields = []string(nil)
@@ -50,6 +52,19 @@ func (sc *SupportingStructureForSContentType) GetSContentTmp() *datamodels.BiZon
 
 // HandlerValue функция обработчик значений
 func (sc *SupportingStructureForSContentType) HandlerValue(fieldBranch string, a any, f func(any) error) error {
+	if fieldBranch == "data.data_security.i_sid" {
+		iSid, err := supportingfunctions.GetUint64(a)
+		if err != nil {
+			return err
+		}
+
+		sc.currentKey = iSid
+	}
+
+	if _, ok := sc.sContentList[sc.currentKey]; !ok {
+		sc.sContentList[sc.currentKey] = []datamodels.BiZoneIRPSContent{}
+	}
+
 	//если поле повторяется то считается что это уже новый объект
 	if sc.isExistFieldBranch((fieldBranch)) {
 		sc.listAcceptedFields = []string(nil)
@@ -59,7 +74,7 @@ func (sc *SupportingStructureForSContentType) HandlerValue(fieldBranch string, a
 		// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&sc.sContentTmp)
-		sc.sContentList = append(sc.sContentList, *sc.sContentTmp)
+		sc.sContentList[sc.currentKey] = append(sc.sContentList[sc.currentKey], *sc.sContentTmp)
 		sc.sContentTmp = datamodels.NewBiZoneIRPSContent()
 	}
 

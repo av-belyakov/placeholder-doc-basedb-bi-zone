@@ -5,8 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 func TestSmartConvertToRFC3339(t *testing.T) {

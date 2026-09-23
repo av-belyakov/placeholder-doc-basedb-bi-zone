@@ -53,8 +53,8 @@ func (ds *SupportingStructureForDataSecurityType) GetDataSecurityTmp() *datamode
 
 // HandlerValue функция обработчик значений
 func (ds *SupportingStructureForDataSecurityType) HandlerValue(fieldBranch string, a any, f func(any) error) error {
-	// делаем значение поля 'data.data_security.i_sid' ключём списка
-	if fieldBranch == "data.data_security.i_sid" {
+	// делаем значение поля 'data.data_security.s_classtype' ключём списка
+	if fieldBranch == "data.data_security.s_classtype" {
 		str := fmt.Sprint(a)
 		if _, ok := ds.dataSecurityList[str]; !ok {
 			ds.dataSecurityList[str] = []datamodels.BiZoneIRPDataSecurity{}

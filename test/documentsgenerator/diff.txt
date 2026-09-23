@@ -1,0 +1,320 @@
+--- file ---
+"snapshots": [
+    {
+        "cmdb_id": "dac0d32f-1135-4f85-a2c2-4b593aae14ab",
+        "domain": "",
+        "fqdn": "",
+        "hostname": "192.168.102.25",
+        "ip_address": null,
+        "mac_addresses": [],
+        "os": "",
+        "os_type": "",
+        "title": null,
+        "severity": "Medium",
+        "user_cmdb_name": "",
+        "user_cmdb_id": null
+    }
+],
+
+--- result ---
+"snapshots": [
+    {
+        "cmdb_id": "dac0d32f-1135-4f85-a2c2-4b593aae14ab",
+        "domain": "",
+        "fqdn": "",
+        "hostname": "192.168.102.25",
+        "ip_addresses": null,
+        "mac_addresses": null,
+        "os": "",
+        "os_type": "",
+        "title": "",
+        "severity": "Medium",
+        "user_cmdb_name": "",
+        "user_cmdb_id": null
+    }
+],    
+  ----- содержимое полностью совпадает -----
+--- file ---
+"tags": [
+    {
+        "name": "ats:reason=\"sigma:exploit attempts\"",
+        "color": "#DCDCDC",
+        "created": "2026-08-13T19:03:44.783959+03:00"
+        "is_visible_for_customer": false,
+        "created_by": {
+            "id": 1,
+            "username": "admin@bi.zone"
+        },
+    },
+    {
+        "name": "ats:reason=\"sigma:мэ usergate\"",
+        "color": "#DCDCDC",
+        "created": "2026-08-24T13:10:31.269689+03:00"
+        "created_by": {
+            "id": 2,
+            "username": "svc_alertmgr"
+        },
+        "is_visible_for_customer": false,
+    },
+    {
+        "name": "sensor:id=\"8030150\"",
+        "color": "#DCDCDC",
+        "is_visible_for_customer": false,
+        "created_by": {
+            "id": 1,
+            "username": "admin@bi.zone"
+        },
+        "created": "2026-08-18T17:01:23.179229+03:00"
+    }
+],
+
+--- result ---
+"tags": [
+    {
+      "name": "ats:reason=\"sigma:exploit attempts\"",
+      "color": "#DCDCDC",
+      "created": "2026-08-13T19:03:44+03:00",
+      "is_visible_for_customer": false
+      "created_by": {
+        "id": 1
+        "username": "admin@bi.zone",
+      },
+    },
+    {
+      "name": "ats:reason=\"sigma:мэ usergate\"",
+      "color": "#DCDCDC",
+      "created": "2026-08-24T13:10:31+03:00",
+      "created_by": {
+        "id": 2
+        "username": "svc_alertmgr",
+      },
+      "is_visible_for_customer": false
+    },
+    {
+-      "name": "", !!! --- отсутствует значение
+      "color": "#DCDCDC",
+      "created": "2026-08-18T17:01:23+03:00",
+      "is_visible_for_customer": false
+      "created_by": {
+        "username": "admin@bi.zone",
+        "id": 1
+      },
+    }
+],
+  ----- неполное совпадение ------
+
+--- file ---
+"affected_log_sources": [],
+
+--- result ---
+ "affected_log_sources": null, 
+   ----- тут пока что не очень понятно ------
+
+**** основное тело объекта alertmgr ****
+--- file ---
+"confidence": "Medium",
+"created_time": "2026-09-17T10:58:38.178863+03:00",
+"updated_time": "2026-09-17T10:58:38.178863+03:00",
+"customer_system": "8030150",
+"description": "## Данная задача создана автоматически\n Время начала: 2026-09-17 08:52:00\n Время окончания: 2026-09-17 08:52:00\n Продолжительность воздействий: 0:00:00",
+"detection_rule": "NoN_RCE",
+"event_start_time": "2026-09-17T10:58:37+03:00",
+"event_end_time": "2026-09-17T10:58:37+03:00",
+"first_detection_time": "2026-09-17T10:58:37+03:00",
+"last_detection_time": "2026-09-17T10:58:37+03:00",
+"platform_hostname": "DFL",
+"platform_type": "DFL",
+"severity": "Medium",
+"priority_id": "Medium",
+"title": "Попытки эксплуатаци уязвимости с 31.31.196.167 на Рязань Плазма",
+"recommendations": "",
+"uuid": "10c4a306-33dd-480c-bbbd-e688c2a78662",
+"external_id": "TSK-8MSK-6-ZPM-260917-2932870",
+"id": 31440,
+"response_team": 1,
+
+--- result ---
+"confidence": "Medium",
+"created_time": "2026-09-17T10:58:38+03:00",
+"updated_time": "2026-09-17T10:58:38+03:00",
+"customer_system": "8030150",
+"description": "## Данная задача создана автоматически Время начала: 2026-09-17 08:52:00 Время окончания: 2026-09-17 08:52:00 Продолжительность воздействий: 0:00:00",
+"detection_rule": "NoN_RCE",
+"event_start_time": "2026-09-17T10:58:37+03:00",
+"event_end_time": "2026-09-17T10:58:37+03:00",
+"first_detection_time": "2026-09-17T10:58:37+03:00",
+"last_detection_time": "2026-09-17T10:58:37+03:00",
+"platform_hostname": "DFL",
+"platform_type": "DFL",
+"severity": "Medium",
+"priority_id": "Medium",
+"title": "Попытки эксплуатаци уязвимости с 31.31.196.167 на Рязань Плазма",
+"recommendations": "",
+"uuid": "10c4a306-33dd-480c-bbbd-e688c2a78662",
+"external_id": "TSK-8MSK-6-ZPM-260917-2932870",
+"id": 31440,
+"response_team": 1
+  ----- неполное совпадение ------
+
+--- file ---
+"data": {
+    "agent": 8030150,
+    "desc": "## Данная задача создана автоматически\n Время начала: 2026-09-17 08:52:00\n Время окончания: 2026-09-17 08:52:00\n Продолжительность воздействий: 0:00:00",
+    "data_security": [ПОДРОБНЫЙ СЛАЙС НИЖЕ]
+    "detection_pattern": [
+        2800778
+    ],
+    "event_uid": "TSK-8MSK-6-ZPM-260917-2932870",
+    "first_seen_time": "2026-09-17T05:52:00Z",
+    "last_seen_time": "2026-09-17T05:52:00Z",
+    "job_title": "sigma:Exploit attempts, sigma:МЭ UserGate с 31.31.196.167",
+    "metadata_product_name": "Security Event Manager",
+    "severity_id": 2,
+    "source_ip": "31.31.196.167",
+    "tags": [
+        "Sensor:id=\"8030150\"",
+        "ATs:reason=\"sigma:Exploit attempts\"",
+        "ATs:reason=\"sigma:МЭ UserGate\""
+    ],
+    "target_ip": "212.26.239.45",
+    "unmapped_agent_array": [
+        8030150
+    ],
+    "unmapped_dst_endpoint_array": [
+        "31.31.196.167"
+    ],
+    "unmapped_hive_alert_id": "~92691980520",
+    "unmapped_home_endpoint_array": [
+        "212.26.239.45"
+    ],
+    "unmapped_sensor_ip": "10.20.0.150",
+    "unmapped_sensor_name": "Рязань Плазма"
+}
+
+--- result ---
+"data": {
+    "agent": 8030150
+    "desc": "## Данная задача создана автоматически\n Время начала: 2026-09-17 08:52:00\n Время окончания: 2026-09-17 08:52:00\n Продолжительность воздействий: 0:00:00",
+    "data_security": {ПРЕОБРАЗУЕМ В МАПУ, ПОДРОБНЫЙ РЕЗУЛЬТАТ НИЖЕ}
+-    "detection_pattern": [
+      2800778,
+      8030150 !!! --- лишнее значение (почему то попал id сенсора сюда)
+    ],
+    "event_uid": "TSK-8MSK-6-ZPM-260917-2932870",
+-    "first_seen_time": "", !!! --- нет совпадения (должно быть время)
+-    "last_seen_time": "", !!! --- нет совпадения (должно быть время)
+    "job_title": "sigma:Exploit attempts, sigma:МЭ UserGate с 31.31.196.167",
+    "metadata_product_name": "Security Event Manager",
+    "severity_id": 2
+    "source_ip": "31.31.196.167",
+    "tags": [
+      "Sensor:id=\"8030150\"",
+      "ATs:reason=\"sigma:Exploit attempts\"",
+      "ATs:reason=\"sigma:МЭ UserGate\""
+    ],
+    "target_ip": "212.26.239.45",
+-    "unmapped_agent_array": null, !!! --- нет значения (должен быть срез из одного элемента)
+-    "unmapped_dst_endpoint_array": [
+      "212.26.239.45",
+      "31.31.196.167" !!! --- лишнее значение
+    ],
+    "unmapped_hive_alert_id": "~92691980520",
+-    "unmapped_home_endpoint_array": null, !!! --- нет значения (должен быть срез из одного элемента)
+    "unmapped_sensor_ip": "10.20.0.150",
+    "unmapped_sensor_name": "Рязань Плазма",
+},
+
+--- file ---
+"data_security": [
+    {
+        "i_sid": 2800778,
+        "s_msg": "ETPRO WEB_CLIENT Microsoft Internet Explorer JPEG Rendering Buffer Overflow",
+        "i_rev": 3,
+        "s_add_date": 1733830766,
+        "s_rule_body": "alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:\"ETPRO WEB_CLIENT Microsoft Internet Explorer JPEG Rendering Buffer Overflow\"; flow:to_client,established; content:\"image/jpeg\"; nocase; content:\"|0D 0A 0D 0A FF D8 FF|\"; content:\"|FF DA 00 0C 03|\"; distance:0; pcre:!\"/^..(\\x02.\\x03|\\x04.\\x05)/sR\"; reference:cve,CVE-2005-1988; reference:bugtraq,14282; classtype:attempted-user; sid:2800778; rev:3; metadata:affected_product Web_Browsers, affected_product Web_Browser_Plugins, attack_target Client_Endpoint, created_at 2010_09_26, deployment Perimeter, confidence High, signature_severity Major, tag Web_Client_Attacks, updated_at 2010_09_30;)",
+        "s_classtype": "attempted-user",
+        "s_source_name": "kryptonite_etpro",
+        "i_priority": 1,
+        "i_b_rec": 1
+        "s_content": [
+            {
+                "depth:": null,
+                "nocase": true,
+                "content": "image/jpeg",
+                "offset:": null,
+                "within:": null,
+                "http_uri": false,
+                "rawbytes": false,
+                "distance:": null,
+                "http_cookie": false,
+                "http_header": false,
+                "http_method": false,
+                "fast_pattern": null,
+                "http_raw_uri": false,
+                "http_stat_msg": false,
+                "http_stat_code": false,
+                "http_raw_cookie": false,
+                "http_raw_header": false,
+                "http_client_body": false
+            },
+            {
+                "depth:": null,
+                "nocase": false,
+                "content": "|0D 0A 0D 0A FF D8 FF|",
+                "offset:": null,
+                "within:": null,
+                "http_uri": false,
+                "rawbytes": false,
+                "distance:": null,
+                "http_cookie": false,
+                "http_header": false,
+                "http_method": false,
+                "fast_pattern": null,
+                "http_raw_uri": false,
+                "http_stat_msg": false,
+                "http_stat_code": false,
+                "http_raw_cookie": false,
+                "http_raw_header": false,
+                "http_client_body": false
+            },
+            {
+                "depth:": null,
+                "nocase": false,
+                "content": "|FF DA 00 0C 03|\"; distance:0; pcre:!\"/^..(\\x02.\\x03|\\x04.\\x05)/sR",
+                "offset:": null,
+                "within:": null,
+                "http_uri": false,
+                "rawbytes": false,
+                "distance:": "0",
+                "http_cookie": false,
+                "http_header": false,
+                "http_method": false,
+                "fast_pattern": null,
+                "http_raw_uri": false,
+                "http_stat_msg": false,
+                "http_stat_code": false,
+                "http_raw_cookie": false,
+                "http_raw_header": false,
+                "http_client_body": false
+            }
+        ],
+    }
+],
+
+--- result ---
+"data_security": {
+    "attempted-user": [
+        {
+          "i_sid": 2800778,
+          "s_msg": "ETPRO WEB_CLIENT Microsoft Internet Explorer JPEG Rendering Buffer Overflow",
+          "i_rev": 3,
+          "s_add_date": 1733830766,
+          "s_rule_body": "alert tcp $EXTERNAL_NET $HTTP_PORTS -\u003e $HOME_NET any (msg:\"ETPRO WEB_CLIENT Microsoft Internet Explorer JPEG Rendering Buffer Overflow\"; flow:to_client,established; content:\"image/jpeg\"; nocase; content:\"|0D 0A 0D 0A FF D8 FF|\"; content:\"|FF DA 00 0C 03|\"; distance:0; pcre:!\"/^..(\\x02.\\x03|\\x04.\\x05)/sR\"; reference:cve,CVE-2005-1988; reference:bugtraq,14282; classtype:attempted-user; sid:2800778; rev:3; metadata:affected_product Web_Browsers, affected_product Web_Browser_Plugins, attack_target Client_Endpoint, created_at 2010_09_26, deployment Perimeter, confidence High, signature_severity Major, tag Web_Client_Attacks, updated_at 2010_09_30;)",
+          "s_classtype": "attempted-user",
+          "s_source_name": "kryptonite_etpro",
+          "i_b_rec": 1,
+          "i_priority": 1
+-          "s_content": null, !!! --- нет значения (должен быть срез из трёх элементов)
+        }
+    ]
+}     

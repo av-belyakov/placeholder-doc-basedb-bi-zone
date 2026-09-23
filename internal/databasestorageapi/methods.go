@@ -58,7 +58,7 @@ func (dbs *DatabaseStorage) GetChannelFromModule() chan SettingsChanOutput {
 func (dbs *DatabaseStorage) Ping() error {
 	res, err := dbs.client.Ping()
 	if res.StatusCode != http.StatusOK || err != nil {
-		return fmt.Errorf("ping failed (status code is %s, error message-%s)", res.StatusCode, err.Error())
+		return fmt.Errorf("ping failed (status code is %d, error message-%s)", res.StatusCode, err.Error())
 	}
 
 	return nil

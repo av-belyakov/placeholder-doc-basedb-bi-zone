@@ -42,21 +42,21 @@ func GetListSensorId(objects []datamodels.SensorInformation) []string {
 	return newList
 }
 
-// CreateListSensors список с идентификаторами сенсоров
-func CreateListSensors(verifiedData *datamodels.BiZoneIRPData) *datamodels.AdditionalInformation {
+// CreateListSensorsForAlerts список с идентификаторами сенсоров из объекта 'alerts'
+func CreateListSensorsForAlerts(verifiedData *datamodels.BiZoneIRPData) *datamodels.AdditionalInformation {
 	information := &datamodels.AdditionalInformation{
 		Sensors: []datamodels.SensorInformation(nil),
 	}
 
-	//из свойства 'data.all_sensors'
-	for _, sensor := range verifiedData.AllSensors {
+	//из свойства 'data.unmapped_agent_array'
+	for _, sensor := range verifiedData.UnmappedAgentArray {
 		information.AddSensorInformation(datamodels.SensorInformation{
 			SensorId: fmt.Sprint(sensor),
 		})
 	}
 
-	//из свойства 'data.all__ip_home'
-	for _, ipHome := range verifiedData.AllIPHome {
+	//из свойства 'data.unmapped_home_endpoint_array'
+	for _, ipHome := range verifiedData.UnmappedHomeEndpointArray {
 		tmp := strings.Split(ipHome, ":")
 		if len(tmp) == 0 {
 			continue
@@ -66,42 +66,32 @@ func CreateListSensors(verifiedData *datamodels.BiZoneIRPData) *datamodels.Addit
 
 	}
 
-	//из свойства 'data.sensor'
-	if verifiedData.Sensor != 0 {
+	//из свойства 'data.agent'
+	if verifiedData.Agent != 0 {
 		information.AddSensorInformation(datamodels.SensorInformation{
-			SensorId: fmt.Sprint(verifiedData.Sensor),
+			SensorId: fmt.Sprint(verifiedData.Agent),
 		})
 	}
 
 	return information
 }
 
-// CreateListIpAddreses список с ip адресами
-func CreateListIpAddreses(verifiedMainObject *datamodels.VerifiedBiZoneIRPAlert) *datamodels.AdditionalInformation {
+// CreateListIpAddreses список с ip адресами из объекта 'alerts'
+func CreateListIpAddresesForAlerts(verifiedData *datamodels.BiZoneIRPData) *datamodels.AdditionalInformation {
 	information := &datamodels.AdditionalInformation{
 		IpAddresses: []datamodels.IpAddressInformation(nil),
 	}
 
-	//из свойства 'snapshots'
-	for _, v := range verifiedMainObject.GetSnapshots() {
-		if len(v.IPAddresses) == 0 {
-			continue
-		}
-
-		for _, ip := range v.IPAddresses {
-			if strings.Contains(ip, "[.]") {
-				ip = strings.ReplaceAll(ip, "[.]", ".")
-			}
-
-			information.AddIpAddressInformation(datamodels.IpAddressInformation{
-				Ip: ip,
-			})
-		}
+	//из свойства 'data.unmapped_dst_endpoint_array'
+	for _, ip := range verifiedData.UnmappedDstEndpointArray {
+		information.AddIpAddressInformation(datamodels.IpAddressInformation{
+			Ip: ip,
+		})
 	}
 
-	//из свойства 'data.ip_exter'
+	//из свойства 'data.source_ip'
 	information.AddIpAddressInformation(datamodels.IpAddressInformation{
-		Ip: verifiedMainObject.GetData().GetIPExter(),
+		Ip: verifiedData.GetSourceIP(),
 	})
 
 	return information

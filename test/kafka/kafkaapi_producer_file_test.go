@@ -78,7 +78,8 @@ func TestKafkaProducerFile(t *testing.T) {
 
 	t.Run("Тест 3. Генерирование нового объекта типа datamodels.VerifiedBiZoneAlert", func(t *testing.T) {
 		decoder := decoderjsondocuments.New(counting, logging)
-		id, verifedBiZoneAlert, _ = documentgenerator.BiZoneAlertsGenerator(decoder.Start(fb))
+		id, verifedBiZoneAlert, _, err = documentgenerator.BiZoneAlertsGenerator(decoder.Start(fb))
+		assert.NoError(t, err)
 		assert.NotEqual(t, id, "")
 		assert.NotEmpty(t, verifedBiZoneAlert)
 

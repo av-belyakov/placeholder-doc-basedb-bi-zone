@@ -10,9 +10,10 @@ import (
 
 // BiZoneAlertsGenerator генерирует верифицированный объект типа 'alerts'.
 // Вернет первым элементом основной уникальный идентификатор события (UUID).
-// Вторым, проверенный объект типа 'alerts'. Третьим список полей которые не были
-// обработаны
-func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, *datamodels.VerifiedBiZoneIRPAlert, map[string]string) {
+// Вторым, проверенный объект типа 'alerts'.
+// Третьим список полей которые не были обработаны.
+// Четвёртым ошибку.
+func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, *datamodels.VerifiedBiZoneIRPAlert, map[string]string, error) {
 	// список не обработанных полей
 	var listRawFields map[string]string = make(map[string]string)
 
@@ -20,10 +21,7 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 	verifiedData := datamodels.NewBiZoneIRPData()
 
 	//********* основные обработчики **********
-	//--- alerts ---
 	listHandlerAlerts := handlers.NewListBiZoneHandlerAlerts(verifiedMainObject)
-
-	//--- data ---
 	listHandlerData := handlers.NewListBiZoneHandlerData(verifiedData)
 
 	//******** вспомогательные объекты ********
@@ -38,7 +36,7 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 	listHandlerScontents := handlers.NewListBiZoneHandlerSContents(supportObjectSContent)
 	listHandlerDataSecurity := handlers.NewListBiZoneHandlerDataSecurity(supportObjectDataSecurity)
 
-	//объект с дополнительной информацией по сенсорам и ip адресам
+	// объект с дополнительной информацией по сенсорам и ip адресам
 	additionalInformation := datamodels.AdditionalInformation{
 		Sensors:     []datamodels.SensorInformation(nil),
 		IpAddresses: []datamodels.IpAddressInformation(nil),
@@ -48,10 +46,10 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 		var handlerIsExist bool
 
 		//*** обработчик для объекта alerts ***
-		if lf, ok := listHandlerAlerts[msg.GetFieldBranch()]; ok {
+		if funcs, ok := listHandlerAlerts[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
-			for _, f := range lf {
+			for _, f := range funcs {
 				f(msg.GetValue())
 			}
 
@@ -59,10 +57,10 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 		}
 
 		//*** обработчик для под объекта alerts.data ***
-		if lf, ok := listHandlerData[msg.GetFieldBranch()]; ok {
+		if funcs, ok := listHandlerData[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
-			for _, f := range lf {
+			for _, f := range funcs {
 				f(msg.GetValue())
 			}
 
@@ -71,45 +69,94 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 
 		//***** обработчики для вспомогательных объектов *****
 		//****************************************************
-		//объект tags
-		if lf, ok := listHandlerTags[msg.GetFieldBranch()]; ok {
+		// объект tags
+		if funcs, ok := listHandlerTags[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
-			for _, f := range lf {
+			for _, f := range funcs {
 				f(msg.GetValue())
 			}
 
 			continue
 		}
-		//объект snapshots
-		if lf, ok := listHandlerSnapshots[msg.GetFieldBranch()]; ok {
+		// объект snapshots
+		if funcs, ok := listHandlerSnapshots[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
-			for _, f := range lf {
+			for _, f := range funcs {
 				f(msg.GetValue())
 			}
 
 			continue
 		}
 
-		//записываем в лог-файл поля, которые не были обработаны
+		// объект scontent
+		if funcs, ok := listHandlerScontents[msg.GetFieldBranch()]; ok {
+			handlerIsExist = true
+
+			for _, f := range funcs {
+				f(msg.GetValue())
+			}
+
+			//////continue
+		}
+
+		// объект datasecurity
+		if funcs, ok := listHandlerDataSecurity[msg.GetFieldBranch()]; ok {
+			handlerIsExist = true
+
+			for _, f := range funcs {
+				f(msg.GetValue())
+			}
+
+			continue
+		}
+
+		// записываем в лог-файл поля, которые не были обработаны
 		if !handlerIsExist {
 			listRawFields[msg.GetFieldBranch()] = fmt.Sprint(msg.GetValue())
 		}
 	}
 
-	//собираем все объекты в один
-	verifiedMainObject.SetData(*verifiedData.Get())
-	verifiedMainObject.SetTags(supportObjectTags.GetTags())
-	verifiedMainObject.SetSnapshots(supportObjectSnapshot.GetSnapshots())
+	// собираем все объекты в один
+	listDataSecurity := supportObjectDataSecurity.GetDataSecurity()
+	listSContent := supportObjectSContent.GetSContent()
+	// дополняем объект 'data_security' списком 's_content'
+	for k, v := range listDataSecurity {
+		for item, dataSecurity := range v {
+			if sContents, ok := listSContent[dataSecurity.ISid]; ok {
+				dataSecurity.SContent = sContents
+				listDataSecurity[k][item] = dataSecurity
+			}
+		}
+	}
+
+	// собираем объект 'data_security'
+	if err := verifiedData.SetDataSecurity(listDataSecurity); err != nil {
+		return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	}
+	// собираем объект 'data'
+	if err := verifiedMainObject.SetData(*verifiedData.Get()); err != nil {
+		return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	}
+	// собираем объект 'tags'
+	if err := verifiedMainObject.SetTags(supportObjectTags.GetTags()); err != nil {
+		return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	}
+	// собираем объект 'snapshots'
+	if err := verifiedMainObject.SetSnapshots(supportObjectSnapshot.GetSnapshots()); err != nil {
+		return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	}
 
 	// формируем дополнительную информацию с идентификаторами сенсоров
-	additionalInformation.SetSensorInformation(CreateListSensors(verifiedData).GetSensorsInformation())
+	additionalInformation.SetSensorInformation(CreateListSensorsForAlerts(verifiedData).GetSensorsInformation())
 
 	// формируем дополнительную информацию с ip адресами
-	additionalInformation.SetIpAddressesInformation(CreateListIpAddreses(verifiedMainObject).GetIpAddressesInformation())
+	additionalInformation.SetIpAddressesInformation(CreateListIpAddresesForAlerts(verifiedData).GetIpAddressesInformation())
 
-	verifiedMainObject.SetAdditionalInformation(additionalInformation)
+	if err := verifiedMainObject.SetAdditionalInformation(additionalInformation); err != nil {
+		return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	}
 
-	return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields
+	return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, nil
 }

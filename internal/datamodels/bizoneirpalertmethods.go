@@ -437,7 +437,7 @@ func (va *VerifiedBiZoneIRPAlert) SetAnyResponseTeam(a any) error {
 		return err
 	}
 
-	return va.SetID(v)
+	return va.SetResponseTeam(v)
 }
 
 // GetData для поля data
