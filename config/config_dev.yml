@@ -16,7 +16,7 @@ KAFKA:
   group_id: # для ГЦМ оставляем пустым
   topics:
     alerts: alertmgr-alerts
-    cases:
+    cases: socd-soar-prod-issue-v1
   sasl_mechanism: ANONYMOUS # PLAIN, SCRAM-SHA-256, SCRAM-SHA-512 или ANONYMOUS если аутентификации не требуется
   ssl_username:
   ssl_ca_file: # ca.crt или truststore.jks (определяет набор корневых центров сертификации которые клиенты используют при проверке сертификатов сервера)

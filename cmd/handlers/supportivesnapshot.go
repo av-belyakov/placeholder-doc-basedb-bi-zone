@@ -8,16 +8,17 @@ import (
 
 // SupportingStructureForSnapshotsType вспомогательный тип используемый для хранения объектов типа 'snapshots'
 type SupportingStructureForSnapshotsType struct {
-	listAcceptedFields []string
-	snapshotTmp        *datamodels.BiZoneIRPSnapshot
 	snapshots          []datamodels.BiZoneIRPSnapshot
+	listAcceptedFields []string
+	snapshotTmp        datamodels.BiZoneIRPSnapshot
+	isCompleted        bool
 }
 
 // NewSupportingStructureForSnapshotsTypeType формирует вспомогательный объект для обработки объектов типа 'snapshots'
 func NewSupportingStructureForSnapshotsType() *SupportingStructureForSnapshotsType {
 	return &SupportingStructureForSnapshotsType{
 		listAcceptedFields: []string(nil),
-		snapshotTmp:        datamodels.NewBiZoneIRPSnapshot(),
+		snapshotTmp:        *datamodels.NewBiZoneIRPSnapshot(),
 		snapshots:          make([]datamodels.BiZoneIRPSnapshot, 0),
 	}
 }
@@ -28,23 +29,22 @@ func NewSupportingStructureForSnapshotsType() *SupportingStructureForSnapshotsTy
 // совпадении значений в listAcceptedFields. Соответственно при завершении
 // JSON объекта, последние добавленные значения остаются s.snapshotTmp
 func (s *SupportingStructureForSnapshotsType) GetSnapshots() []datamodels.BiZoneIRPSnapshot {
-	if s.snapshotTmp != nil {
+	if !s.isCompleted {
 		// здесь можно выполнять постобработку некоторых пользовательский типов
 		// например, изменить содержимое какого нибудь поля.
 		// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&s.snapshotTmp)
-		s.snapshots = append(s.snapshots, *s.snapshotTmp)
-
-		s.snapshotTmp = nil
+		s.snapshots = append(s.snapshots, s.snapshotTmp)
 		s.listAcceptedFields = []string(nil)
+		s.isCompleted = true
 	}
 
 	return s.snapshots
 }
 
 // GetSnapshotTmp возвращает временный объект
-func (s *SupportingStructureForSnapshotsType) GetSnapshotTmp() *datamodels.BiZoneIRPSnapshot {
+func (s *SupportingStructureForSnapshotsType) GetSnapshotTmp() datamodels.BiZoneIRPSnapshot {
 	return s.snapshotTmp
 }
 
@@ -52,15 +52,14 @@ func (s *SupportingStructureForSnapshotsType) GetSnapshotTmp() *datamodels.BiZon
 func (s *SupportingStructureForSnapshotsType) HandlerValue(fieldBranch string, a any, f func(any) error) error {
 	//если поле повторяется то считается что это уже новый объект
 	if s.isExistFieldBranch((fieldBranch)) {
-		s.listAcceptedFields = []string(nil)
-
 		// здесь можно выполнять постобработку некоторых пользовательский типов
 		// например, изменить содержимое какого нибудь поля.
 		// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&s.snapshotTmp)
-		s.snapshots = append(s.snapshots, *s.snapshotTmp)
-		s.snapshotTmp = datamodels.NewBiZoneIRPSnapshot()
+		s.snapshots = append(s.snapshots, s.snapshotTmp)
+		s.snapshotTmp = *datamodels.NewBiZoneIRPSnapshot()
+		s.listAcceptedFields = []string(nil)
 	}
 
 	s.listAcceptedFields = append(s.listAcceptedFields, fieldBranch)

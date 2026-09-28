@@ -4,12 +4,12 @@ package handlers
 func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[string][]func(any) error {
 	return map[string][]func(any) error{
 		// --- depth ---
-		"data.data_security.s_content.depth": {
+		"data.data_security.s_content.depth:": {
 			func(a any) error {
 				return sc.HandlerValue(
-					"data.data_security.s_content.depth",
+					"data.data_security.s_content.depth:",
 					a,
-					sc.GetSContentTmp().SetAnyDepth,
+					sc.sContentTmp.SetAnyDepth,
 				)
 			},
 		},
@@ -19,7 +19,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.nocase",
 					a,
-					sc.GetSContentTmp().SetAnyNocase,
+					sc.sContentTmp.SetAnyNocase,
 				)
 			},
 		},
@@ -29,27 +29,27 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.content",
 					a,
-					sc.GetSContentTmp().SetAnyContent,
+					sc.sContentTmp.SetAnyContent,
 				)
 			},
 		},
 		// --- offset ---
-		"data.data_security.s_content.offset": {
+		"data.data_security.s_content.offset:": {
 			func(a any) error {
 				return sc.HandlerValue(
-					"data.data_security.s_content.offset",
+					"data.data_security.s_content.offset:",
 					a,
-					sc.GetSContentTmp().SetAnyOffset,
+					sc.sContentTmp.SetAnyOffset,
 				)
 			},
 		},
 		// --- within ---
-		"data.data_security.s_content.within": {
+		"data.data_security.s_content.within:": {
 			func(a any) error {
 				return sc.HandlerValue(
-					"data.data_security.s_content.within",
+					"data.data_security.s_content.within:",
 					a,
-					sc.GetSContentTmp().SetAnyWithin,
+					sc.sContentTmp.SetAnyWithin,
 				)
 			},
 		},
@@ -59,7 +59,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.http_uri",
 					a,
-					sc.GetSContentTmp().SetAnyHTTPURI,
+					sc.sContentTmp.SetAnyHTTPURI,
 				)
 			},
 		},
@@ -69,17 +69,17 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.rawbytes",
 					a,
-					sc.GetSContentTmp().SetAnyRawbytes,
+					sc.sContentTmp.SetAnyRawbytes,
 				)
 			},
 		},
 		// --- distance ---
-		"data.data_security.s_content.distance": {
+		"data.data_security.s_content.distance:": {
 			func(a any) error {
 				return sc.HandlerValue(
-					"data.data_security.s_content.distance",
+					"data.data_security.s_content.distance:",
 					a,
-					sc.GetSContentTmp().SetAnyDistance,
+					sc.sContentTmp.SetAnyDistance,
 				)
 			},
 		},
@@ -89,7 +89,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.http_cookie",
 					a,
-					sc.GetSContentTmp().SetAnyHTTPCookie,
+					sc.sContentTmp.SetAnyHTTPCookie,
 				)
 			},
 		},
@@ -99,7 +99,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.http_header",
 					a,
-					sc.GetSContentTmp().SetAnyHTTPHeader,
+					sc.sContentTmp.SetAnyHTTPHeader,
 				)
 			},
 		},
@@ -109,7 +109,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.http_method",
 					a,
-					sc.GetSContentTmp().SetAnyHTTPMethod,
+					sc.sContentTmp.SetAnyHTTPMethod,
 				)
 			},
 		},
@@ -119,7 +119,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.fast_pattern",
 					a,
-					sc.GetSContentTmp().SetAnyFastPattern,
+					sc.sContentTmp.SetAnyFastPattern,
 				)
 			},
 		},
@@ -129,7 +129,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.http_raw_uri",
 					a,
-					sc.GetSContentTmp().SetAnyHTTPRawURI,
+					sc.sContentTmp.SetAnyHTTPRawURI,
 				)
 			},
 		},
@@ -139,7 +139,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.http_stat_msg",
 					a,
-					sc.GetSContentTmp().SetAnyHTTPStatMsg,
+					sc.sContentTmp.SetAnyHTTPStatMsg,
 				)
 			},
 		},
@@ -149,7 +149,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.http_stat_code",
 					a,
-					sc.GetSContentTmp().SetAnyHTTPStatCode,
+					sc.sContentTmp.SetAnyHTTPStatCode,
 				)
 			},
 		},
@@ -159,7 +159,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.http_raw_cookie",
 					a,
-					sc.GetSContentTmp().SetAnyHTTPRawCookie,
+					sc.sContentTmp.SetAnyHTTPRawCookie,
 				)
 			},
 		},
@@ -169,7 +169,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.http_raw_header",
 					a,
-					sc.GetSContentTmp().SetAnyHTTPRawHeader,
+					sc.sContentTmp.SetAnyHTTPRawHeader,
 				)
 			},
 		},
@@ -179,7 +179,7 @@ func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[s
 				return sc.HandlerValue(
 					"data.data_security.s_content.http_client_body",
 					a,
-					sc.GetSContentTmp().SetAnyHTTPClientBody,
+					sc.sContentTmp.SetAnyHTTPClientBody,
 				)
 			},
 		},

@@ -228,12 +228,8 @@ func (d *BiZoneIRPData) GetFirstSeenTime() string {
 
 // SetFirstSeenTime для поля 'first_seen_time' (преобразует в формат времени RFC3339)
 func (d *BiZoneIRPData) SetFirstSeenTime(v string) error {
-	fmt.Println("method 'SetFirstSeenTime'")
-
 	timeStr, err := supportingfunctions.SmartConvertToRFC3339(v)
 	if err != nil {
-		fmt.Println("method 'SetFirstSeenTime', error:", err)
-
 		return err
 	}
 
@@ -352,7 +348,7 @@ func (d *BiZoneIRPData) SetUnmappedHomeEndpointArrayElement(v string) error {
 
 // SetAnyUnmappedHomeEndpointArray добавляет некоторое значение в список 'unmapped_home_endpoint_array'
 func (d *BiZoneIRPData) SetAnyUnmappedHomeEndpointArray(a any) error {
-	return d.SetUnmappedDstEndpointArrayElement(fmt.Sprint(a))
+	return d.SetUnmappedHomeEndpointArrayElement(fmt.Sprint(a))
 }
 
 // GetDetectionPattern для поля 'detection_pattern'
@@ -414,7 +410,7 @@ func (d *BiZoneIRPData) SetAnyUnmappedAgentArrayElement(a any) error {
 		return err
 	}
 
-	return d.SetDetectionPatternElement(v)
+	return d.SetUnmappedAgentArrayElement(v)
 }
 
 // GetDataSecurity для поля 'data_security'

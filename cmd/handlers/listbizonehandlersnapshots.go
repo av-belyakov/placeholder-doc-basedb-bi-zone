@@ -9,7 +9,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.os",
 					a,
-					s.GetSnapshotTmp().SetAnyOS,
+					s.snapshotTmp.SetAnyOS,
 				)
 			},
 		},
@@ -19,7 +19,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.fqdn",
 					a,
-					s.GetSnapshotTmp().SetAnyFqdn,
+					s.snapshotTmp.SetAnyFqdn,
 				)
 			},
 		},
@@ -29,7 +29,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.title",
 					a,
-					s.GetSnapshotTmp().SetAnyTitle,
+					s.snapshotTmp.SetAnyTitle,
 				)
 			},
 		},
@@ -39,7 +39,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.domain",
 					a,
-					s.GetSnapshotTmp().SetAnyDomain,
+					s.snapshotTmp.SetAnyDomain,
 				)
 			},
 		},
@@ -49,7 +49,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.cmdb_id",
 					a,
-					s.GetSnapshotTmp().SetAnyCMDBID,
+					s.snapshotTmp.SetAnyCMDBID,
 				)
 			},
 		},
@@ -59,7 +59,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.os_type",
 					a,
-					s.GetSnapshotTmp().SetAnyOSType,
+					s.snapshotTmp.SetAnyOSType,
 				)
 			},
 		},
@@ -69,7 +69,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.hostname",
 					a,
-					s.GetSnapshotTmp().SetAnyHostname)
+					s.snapshotTmp.SetAnyHostname)
 			},
 		},
 		//--- severity ---
@@ -78,7 +78,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.severity",
 					a,
-					s.GetSnapshotTmp().SetAnySeverity)
+					s.snapshotTmp.SetAnySeverity)
 			},
 		},
 		//--- user_cmdb_name ---
@@ -87,7 +87,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.user_cmdb_name",
 					a,
-					s.GetSnapshotTmp().SetAnyUserCMDBName,
+					s.snapshotTmp.SetAnyUserCMDBName,
 				)
 			},
 		},
@@ -97,7 +97,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.user_cmdb_id",
 					a,
-					s.GetSnapshotTmp().SetAnyUserCmdbId,
+					s.snapshotTmp.SetAnyUserCmdbId,
 				)
 			},
 		},
@@ -108,7 +108,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.ip_addresses",
 					a,
-					s.GetSnapshotTmp().SetAnyIPAddresse,
+					s.snapshotTmp.SetAnyIPAddresse,
 				)
 			}},
 		//--- mac_addresses ---
@@ -117,7 +117,7 @@ func NewListBiZoneHandlerSnapshots(s *SupportingStructureForSnapshotsType) map[s
 				return s.HandlerValue(
 					"snapshots.mac_addresses",
 					a,
-					s.GetSnapshotTmp().SetAnyMACAddresse,
+					s.snapshotTmp.SetAnyMACAddresse,
 				)
 			},
 		},

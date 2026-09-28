@@ -5,26 +5,6 @@
     "customer_system": "8030150",
     "tags": [
         {
-            "name": "ats:reason=\"sigma:exploit attempts\"",
-            "color": "#DCDCDC",
-            "is_visible_for_customer": false,
-            "created_by": {
-                "id": 1,
-                "username": "admin@bi.zone"
-            },
-            "created": "2026-08-13T19:03:44.783959+03:00"
-        },
-        {
-            "name": "ats:reason=\"sigma:мэ usergate\"",
-            "color": "#DCDCDC",
-            "is_visible_for_customer": false,
-            "created_by": {
-                "id": 2,
-                "username": "svc_alertmgr"
-            },
-            "created": "2026-08-24T13:10:31.269689+03:00"
-        },
-        {
             "name": "sensor:id=\"8030150\"",
             "color": "#DCDCDC",
             "is_visible_for_customer": false,
@@ -33,6 +13,26 @@
                 "username": "admin@bi.zone"
             },
             "created": "2026-08-18T17:01:23.179229+03:00"
+        },
+        {
+            "name": "ats:reason=\"sigma:мэ usergate\"",
+            "color": "#ABDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 2,
+                "username": "svc_alertmgr"
+            },
+            "created": "2026-08-24T13:10:31.269689+03:00"
+        },
+        {
+            "name": "ats:reason=\"sigma:exploit attempts\"",
+            "color": "#D2D6DC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 1,
+                "username": "admin@bi.zone"
+            },
+            "created": "2026-08-13T19:03:44.783959+03:00"
         }
     ],
     "snapshots": [
@@ -41,6 +41,20 @@
             "domain": "",
             "fqdn": "",
             "hostname": "192.168.102.25",
+            "ip_address": null,
+            "mac_addresses": [],
+            "os": "",
+            "os_type": "",
+            "title": null,
+            "severity": "Medium",
+            "user_cmdb_name": "",
+            "user_cmdb_id": null
+        },
+        {
+            "cmdb_id": "82dbd7cf-471d-4e44-ae32-c33f42a407eb",
+            "domain": "",
+            "fqdn": "",
+            "hostname": "185.57.237.33",
             "ip_address": null,
             "mac_addresses": [],
             "os": "",
@@ -78,7 +92,7 @@
                 "s_rule_body": "alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:\"ETPRO WEB_CLIENT Microsoft Internet Explorer JPEG Rendering Buffer Overflow\"; flow:to_client,established; content:\"image/jpeg\"; nocase; content:\"|0D 0A 0D 0A FF D8 FF|\"; content:\"|FF DA 00 0C 03|\"; distance:0; pcre:!\"/^..(\\x02.\\x03|\\x04.\\x05)/sR\"; reference:cve,CVE-2005-1988; reference:bugtraq,14282; classtype:attempted-user; sid:2800778; rev:3; metadata:affected_product Web_Browsers, affected_product Web_Browser_Plugins, attack_target Client_Endpoint, created_at 2010_09_26, deployment Perimeter, confidence High, signature_severity Major, tag Web_Client_Attacks, updated_at 2010_09_30;)",
                 "s_content": [
                     {
-                        "depth:": null,
+                        "depth:": "4",
                         "nocase": true,
                         "content": "image/jpeg",
                         "offset:": null,
@@ -89,7 +103,7 @@
                         "http_cookie": false,
                         "http_header": false,
                         "http_method": false,
-                        "fast_pattern": null,
+                        "fast_pattern": ":only",
                         "http_raw_uri": false,
                         "http_stat_msg": false,
                         "http_stat_code": false,
@@ -101,11 +115,11 @@
                         "depth:": null,
                         "nocase": false,
                         "content": "|0D 0A 0D 0A FF D8 FF|",
-                        "offset:": null,
-                        "within:": null,
+                        "offset:": "15",
+                        "within:": "50",
                         "http_uri": false,
                         "rawbytes": false,
-                        "distance:": null,
+                        "distance:": "1",
                         "http_cookie": false,
                         "http_header": false,
                         "http_method": false,
@@ -142,6 +156,125 @@
                 "s_msg": "ETPRO WEB_CLIENT Microsoft Internet Explorer JPEG Rendering Buffer Overflow",
                 "i_priority": 1,
                 "s_source_name": "kryptonite_etpro",
+                "i_b_rec": 1
+            },
+            {
+                "i_sid": 90000086,
+                "i_rev": 2,
+                "s_add_date": 1773291603,
+                "s_rule_body": "alert tcp $SMTP_SERVERS [25,587] -> $EXTERNAL_NET any (msg:\"Potential SMTP Brute-Force attempt (T1110)\"; content: \"535 \"; detection_filter:track by_src, count 10, seconds 3600; content: \"POST\"; classtype:unsuccessful-user; sid:90000086; rev:2; metadata: author RCM_NVS, created 2024_08_14;)",
+                "s_content": [
+                    {
+                        "depth:": null,
+                        "nocase": false,
+                        "content": "535 ",
+                        "offset:": null,
+                        "within:": null,
+                        "http_uri": false,
+                        "rawbytes": false,
+                        "distance:": null,
+                        "http_cookie": false,
+                        "http_header": false,
+                        "http_method": false,
+                        "fast_pattern": null,
+                        "http_raw_uri": false,
+                        "http_stat_msg": false,
+                        "http_stat_code": false,
+                        "http_raw_cookie": false,
+                        "http_raw_header": false,
+                        "http_client_body": false
+                    },
+                    {
+                        "depth:": "8",
+                        "nocase": false,
+                        "content": "POST",
+                        "offset:": null,
+                        "within:": null,
+                        "http_uri": false,
+                        "rawbytes": false,
+                        "distance:": null,
+                        "http_cookie": false,
+                        "http_header": false,
+                        "http_method": false,
+                        "fast_pattern": null,
+                        "http_raw_uri": false,
+                        "http_stat_msg": false,
+                        "http_stat_code": false,
+                        "http_raw_cookie": false,
+                        "http_raw_header": false,
+                        "http_client_body": false
+                    }
+                ],
+                "s_classtype": "unsuccessful-user",
+                "s_msg": "Potential SMTP Brute-Force attempt (T1110)",
+                "i_priority": 1,
+                "s_source_name": "rcm_sfo__nsk",
+                "i_b_rec": 1
+            },
+            {
+                "i_sid": 90000086,
+                "i_rev": 1,
+                "s_add_date": 1728532803,
+                "s_rule_body": "alert tcp $SMTP_SERVERS 25 -> $EXTERNAL_NET any (msg:\"Potential SMTP Brute-Force attempt (T1110)\"; content: \"535 \"; detection_filter:track by_src, count 10, seconds 3600; classtype:unsuccessful-user; sid:90000086; rev:1; metadata: author RCM_NVS, created 2024_08_14;)",
+                "s_content": [
+                    {
+                        "depth:": null,
+                        "nocase": false,
+                        "content": "535 ",
+                        "offset:": null,
+                        "within:": null,
+                        "http_uri": false,
+                        "rawbytes": false,
+                        "distance:": null,
+                        "http_cookie": false,
+                        "http_header": false,
+                        "http_method": false,
+                        "fast_pattern": null,
+                        "http_raw_uri": false,
+                        "http_stat_msg": false,
+                        "http_stat_code": false,
+                        "http_raw_cookie": false,
+                        "http_raw_header": false,
+                        "http_client_body": false
+                    }
+                ],
+                "s_classtype": "unsuccessful-user",
+                "s_msg": "Potential SMTP Brute-Force attempt (T1110)",
+                "i_priority": 1,
+                "s_source_name": "rcm_sfo__nsk",
+                "i_b_rec": 0
+            },
+            {
+                "i_sid": 21003726,
+                "i_rev": 1,
+                "s_add_date": 1716974571,
+                "s_rule_body": "alert tcp any any -> $HOME_NET any (msg:\"FOX-SRT - Exploit - Possible Apache Log4J RCE Request Observed (CVE-2021-44228)\"; flow:established, to_server; content:\"${jndi:ldap://\"; fast_pattern:only; flowbits:set, fox.apachelog4j.rce; threshold:type limit, track by_dst, count 1, seconds 3600; classtype:web-application-attack; priority:3; reference:url, www.lunasec.io/docs/blog/log4j-zero-day/; metadata:CVE 2021-44228; metadata:created_at 2021-12-10; metadata:ids suricata; sid:21003726; rev:1;)\n",
+                "s_content": [
+                    {
+                        "depth:": null,
+                        "nocase": false,
+                        "content": "${jndi:ldap://",
+                        "offset:": null,
+                        "within:": null,
+                        "http_uri": false,
+                        "rawbytes": false,
+                        "distance:": null,
+                        "http_cookie": false,
+                        "http_header": false,
+                        "http_method": false,
+                        "fast_pattern": ":only",
+                        "http_raw_uri": false,
+                        "http_stat_msg": false,
+                        "http_stat_code": false,
+                        "http_raw_cookie": false,
+                        "http_raw_header": false,
+                        "http_client_body": false
+                    }
+                ],
+                "s_classtype": "web-application-attack",
+                "s_msg": "FOX-SRT - Exploit - Possible Apache Log4J RCE Request Observed (CVE-2021-44228)",
+                "i_priority": 1,
+                "s_source_name": "NCIRCC",
                 "i_b_rec": 1
             }
         ],

@@ -6,7 +6,44 @@ import (
 	"strings"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
+
+// injectSContentToDataSecurity дополняет объект 'data_security' списком 's_content'
+func injectSContentToDataSecurity(lds map[string][]datamodels.BiZoneIRPDataSecurity, lsc []datamodels.BiZoneIRPSContent) error {
+	for classType, dataSecurity := range lds {
+		for k, v := range dataSecurity {
+			contents, err := supportingfunctions.GetContentFromSnortRule(v.SRuleBody)
+			if err != nil {
+				return err
+			}
+
+			for _, content := range contents {
+				index, isExist := searchSContentFromSContents(content, lsc)
+				if !isExist {
+					continue
+				}
+
+				v.SContent = append(v.SContent, lsc[index])
+				dataSecurity[k] = v
+				lds[classType] = dataSecurity
+			}
+		}
+	}
+
+	return nil
+}
+
+// searchSContentFromSContents ищет значение в срезе
+func searchSContentFromSContents(content string, contents []datamodels.BiZoneIRPSContent) (int, bool) {
+	for k, v := range contents {
+		if strings.Contains(v.Content, content) {
+			return k, true
+		}
+	}
+
+	return -1, false
+}
 
 // GetListIPAddr список ip адресов из элементов объекта
 func GetListIPAddr(objects []datamodels.IpAddressInformation) []string {

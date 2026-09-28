@@ -93,11 +93,11 @@ type BiZoneIRPSContent struct {
 	HTTPRawCookie  bool    `json:"http_raw_cookie"`
 	HTTPRawHeader  bool    `json:"http_raw_header"`
 	HTTPClientBody bool    `json:"http_client_body"`
+	Depth          *string `json:"depth:"`       // null или строка (например "0")
+	Within         *string `json:"within:"`      // null или строка (например "0")
 	Distance       *string `json:"distance:"`    // null или строка (например "0")
-	FastPattern    *bool   `json:"fast_pattern"` // null или bool
-	Depth          *int    `json:"depth:"`       // null или число
-	Offset         *int    `json:"offset:"`      // null или число
-	Within         *int    `json:"within:"`      // null или число
+	FastPattern    *string `json:"fast_pattern"` // null или строка (например "0")
+	Offset         *string `json:"offset:"`      // null или строка (например "0")
 }
 
 type BiZoneIRPCaseFieldData struct {

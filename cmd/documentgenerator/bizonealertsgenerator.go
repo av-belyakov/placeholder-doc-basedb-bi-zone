@@ -15,7 +15,11 @@ import (
 // Четвёртым ошибку.
 func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, *datamodels.VerifiedBiZoneIRPAlert, map[string]string, error) {
 	// список не обработанных полей
-	var listRawFields map[string]string = make(map[string]string)
+	var (
+		listRawFields map[string]string = make(map[string]string)
+
+		err error
+	)
 
 	verifiedMainObject := datamodels.NewVerifiedBiZoneIRPAlert()
 	verifiedData := datamodels.NewBiZoneIRPData()
@@ -45,7 +49,7 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 	for msg := range chInput {
 		var handlerIsExist bool
 
-		//*** обработчик для объекта alerts ***
+		//*** обработчик для объекта 'alerts' ***
 		if funcs, ok := listHandlerAlerts[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -56,7 +60,7 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 			continue
 		}
 
-		//*** обработчик для под объекта alerts.data ***
+		//*** обработчик для под объекта 'alerts.data' ***
 		if funcs, ok := listHandlerData[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -69,7 +73,7 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 
 		//***** обработчики для вспомогательных объектов *****
 		//****************************************************
-		// объект tags
+		// объект 'tags'
 		if funcs, ok := listHandlerTags[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -77,9 +81,9 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 				f(msg.GetValue())
 			}
 
-			continue
+			//			continue
 		}
-		// объект snapshots
+		// объект 'snapshots'
 		if funcs, ok := listHandlerSnapshots[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -87,10 +91,10 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 				f(msg.GetValue())
 			}
 
-			continue
+			//			continue
 		}
 
-		// объект scontent
+		// объект 'data.datasecurity.scontent'
 		if funcs, ok := listHandlerScontents[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -98,10 +102,10 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 				f(msg.GetValue())
 			}
 
-			//////continue
+			//			continue
 		}
 
-		// объект datasecurity
+		// объект 'data.datasecurity'
 		if funcs, ok := listHandlerDataSecurity[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -109,7 +113,7 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 				f(msg.GetValue())
 			}
 
-			continue
+			//			continue
 		}
 
 		// записываем в лог-файл поля, которые не были обработаны
@@ -122,30 +126,23 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 	listDataSecurity := supportObjectDataSecurity.GetDataSecurity()
 	listSContent := supportObjectSContent.GetSContent()
 	// дополняем объект 'data_security' списком 's_content'
-	for k, v := range listDataSecurity {
-		for item, dataSecurity := range v {
-			if sContents, ok := listSContent[dataSecurity.ISid]; ok {
-				dataSecurity.SContent = sContents
-				listDataSecurity[k][item] = dataSecurity
-			}
-		}
-	}
+	err = injectSContentToDataSecurity(listDataSecurity, listSContent)
 
 	// собираем объект 'data_security'
-	if err := verifiedData.SetDataSecurity(listDataSecurity); err != nil {
-		return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	if errTmp := verifiedData.SetDataSecurity(listDataSecurity); errTmp != nil {
+		err = errTmp
 	}
 	// собираем объект 'data'
-	if err := verifiedMainObject.SetData(*verifiedData.Get()); err != nil {
-		return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	if errTmp := verifiedMainObject.SetData(*verifiedData.Get()); errTmp != nil {
+		err = errTmp
 	}
 	// собираем объект 'tags'
-	if err := verifiedMainObject.SetTags(supportObjectTags.GetTags()); err != nil {
-		return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	if errTmp := verifiedMainObject.SetTags(supportObjectTags.GetTags()); errTmp != nil {
+		err = errTmp
 	}
 	// собираем объект 'snapshots'
-	if err := verifiedMainObject.SetSnapshots(supportObjectSnapshot.GetSnapshots()); err != nil {
-		return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	if errTmp := verifiedMainObject.SetSnapshots(supportObjectSnapshot.GetSnapshots()); errTmp != nil {
+		err = errTmp
 	}
 
 	// формируем дополнительную информацию с идентификаторами сенсоров
@@ -154,9 +151,9 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 	// формируем дополнительную информацию с ip адресами
 	additionalInformation.SetIpAddressesInformation(CreateListIpAddresesForAlerts(verifiedData).GetIpAddressesInformation())
 
-	if err := verifiedMainObject.SetAdditionalInformation(additionalInformation); err != nil {
-		return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	if errTmp := verifiedMainObject.SetAdditionalInformation(additionalInformation); errTmp != nil {
+		err = errTmp
 	}
 
-	return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, nil
+	return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
 }

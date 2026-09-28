@@ -94,13 +94,13 @@ func TestAlertDocumentWithFile(t *testing.T) {
 	id, verifedBiZoneAlert, listRawFields, err := documentgenerator.BiZoneAlertsGenerator(decoder.Start(alertRaw))
 	assert.NoError(t, err)
 
-	fmt.Println("ID:", id)
+	fmt.Println("\nID:", id)
 	fmt.Println("List Raw Fields:")
 	for k, v := range listRawFields {
 		fmt.Printf("\t%s:%s\n", k, v)
 	}
 
-	fmt.Println("\nVerifedBiZoneAlert")
+	fmt.Println("VerifedBiZoneAlert")
 	godump.DumpJSON(verifedBiZoneAlert)
 
 	t.Cleanup(func() {

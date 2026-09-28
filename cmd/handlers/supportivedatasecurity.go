@@ -61,15 +61,14 @@ func (ds *SupportingStructureForDataSecurityType) HandlerValue(fieldBranch strin
 		}
 
 		if ds.isExistFieldBranch(fieldBranch) {
-			ds.listAcceptedFields = []string(nil)
 			// здесь можно выполнять постобработку некоторых пользовательский типов
 			// например, изменить содержимое какого нибудь поля.
 			// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 			// на основании которых было бы понятно что нужно менять.
 			//_, _ = supportingfunctions.PostProcessingUserType(&ds.dataSecurityTmp)
 			ds.dataSecurityList[ds.currentKey] = append(ds.dataSecurityList[ds.currentKey], ds.dataSecurityTmp)
-
 			ds.dataSecurityTmp = *datamodels.NewBiZoneIRPDataSecurity()
+			ds.listAcceptedFields = []string(nil)
 		}
 
 		ds.currentKey = str
@@ -89,7 +88,6 @@ func (ds *SupportingStructureForDataSecurityType) HandlerValue(fieldBranch strin
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&ds.dataSecurityTmp)
 		ds.dataSecurityList[ds.currentKey] = append(ds.dataSecurityList[ds.currentKey], ds.dataSecurityTmp)
-
 		ds.dataSecurityTmp = *datamodels.NewBiZoneIRPDataSecurity()
 	}
 

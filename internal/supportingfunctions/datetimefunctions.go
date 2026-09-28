@@ -23,6 +23,10 @@ func SmartConvertToRFC3339(dateStr string) (string, error) {
 		//RFC3339 = "2006-01-02T15:04:05Z07:00"
 		layout = time.RFC3339
 
+	case regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`).MatchString(dateStr):
+		//"2026-09-17T05:52:00Z"
+		layout = time.RFC3339
+
 	case regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+[Z|\+|-]\d{2}:\d{2}$`).MatchString(dateStr):
 		//RFC3339Nano = "2006-01-02T15:04:05.999999999Z07:00"
 		layout = time.RFC3339Nano

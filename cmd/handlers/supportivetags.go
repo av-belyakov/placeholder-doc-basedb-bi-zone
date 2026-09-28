@@ -8,16 +8,17 @@ import (
 
 // SupportingStructureForTagsType вспомогательный тип используемый для хранения объектов типа 'tags'
 type SupportingStructureForTagsType struct {
-	listAcceptedFields []string
-	tagTmp             *datamodels.BiZoneIRPTag
 	tags               []datamodels.BiZoneIRPTag
+	listAcceptedFields []string
+	tagTmp             datamodels.BiZoneIRPTag
+	isCompleted        bool
 }
 
 // NewSupportingStructureForTagsType формирует вспомогательный объект для обработки объектов типа 'tags'
 func NewSupportingStructureForTagsType() *SupportingStructureForTagsType {
 	return &SupportingStructureForTagsType{
 		listAcceptedFields: []string(nil),
-		tagTmp:             datamodels.NewBiZoneIRPTag(),
+		tagTmp:             *datamodels.NewBiZoneIRPTag(),
 		tags:               make([]datamodels.BiZoneIRPTag, 0),
 	}
 }
@@ -28,23 +29,22 @@ func NewSupportingStructureForTagsType() *SupportingStructureForTagsType {
 // совпадении значений в listAcceptedFields. Соответственно при завершении
 // JSON объекта, последние добавленные значения остаются tg.tagTmp
 func (tg *SupportingStructureForTagsType) GetTags() []datamodels.BiZoneIRPTag {
-	if tg.tagTmp != nil {
+	if !tg.isCompleted {
 		// здесь можно выполнять постобработку некоторых пользовательский типов
 		// например, изменить содержимое какого нибудь поля.
 		// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&tg.tagTmp)
-		tg.tags = append(tg.tags, *tg.tagTmp)
-
-		tg.tagTmp = nil
+		tg.tags = append(tg.tags, tg.tagTmp)
 		tg.listAcceptedFields = []string(nil)
+		tg.isCompleted = true
 	}
 
 	return tg.tags
 }
 
 // GetTagTmp возвращает временный объект
-func (tg *SupportingStructureForTagsType) GetTagTmp() *datamodels.BiZoneIRPTag {
+func (tg *SupportingStructureForTagsType) GetTagTmp() datamodels.BiZoneIRPTag {
 	return tg.tagTmp
 }
 
@@ -52,15 +52,14 @@ func (tg *SupportingStructureForTagsType) GetTagTmp() *datamodels.BiZoneIRPTag {
 func (tg *SupportingStructureForTagsType) HandlerValue(fieldBranch string, a any, f func(any) error) error {
 	//если поле повторяется то считается что это уже новый объект
 	if tg.isExistFieldBranch((fieldBranch)) {
-		tg.listAcceptedFields = []string(nil)
-
 		// здесь можно выполнять постобработку некоторых пользовательский типов
 		// например, изменить содержимое какого нибудь поля.
 		// Однако, пока данная функция не чего полезного не выполяет так как нет вводных
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&sc.tagTmp)
-		tg.tags = append(tg.tags, *tg.tagTmp)
-		tg.tagTmp = datamodels.NewBiZoneIRPTag()
+		tg.tags = append(tg.tags, tg.tagTmp)
+		tg.tagTmp = *datamodels.NewBiZoneIRPTag()
+		tg.listAcceptedFields = []string(nil)
 	}
 
 	tg.listAcceptedFields = append(tg.listAcceptedFields, fieldBranch)

@@ -34,6 +34,7 @@
     }
 ],    
   ----- содержимое полностью совпадает -----
+
 --- file ---
 "tags": [
     {
@@ -91,7 +92,7 @@
       "is_visible_for_customer": false
     },
     {
--      "name": "", !!! --- отсутствует значение
+      "name": "sensor:id=\"8030150\"", 
       "color": "#DCDCDC",
       "created": "2026-08-18T17:01:23+03:00",
       "is_visible_for_customer": false
@@ -154,7 +155,7 @@
 "external_id": "TSK-8MSK-6-ZPM-260917-2932870",
 "id": 31440,
 "response_team": 1
-  ----- неполное совпадение ------
+  ----- содержимое полностью совпадает -----
 
 --- file ---
 "data": {
@@ -196,13 +197,12 @@
     "agent": 8030150
     "desc": "## Данная задача создана автоматически\n Время начала: 2026-09-17 08:52:00\n Время окончания: 2026-09-17 08:52:00\n Продолжительность воздействий: 0:00:00",
     "data_security": {ПРЕОБРАЗУЕМ В МАПУ, ПОДРОБНЫЙ РЕЗУЛЬТАТ НИЖЕ}
--    "detection_pattern": [
-      2800778,
-      8030150 !!! --- лишнее значение (почему то попал id сенсора сюда)
+    "detection_pattern": [
+      2800778
     ],
     "event_uid": "TSK-8MSK-6-ZPM-260917-2932870",
--    "first_seen_time": "", !!! --- нет совпадения (должно быть время)
--    "last_seen_time": "", !!! --- нет совпадения (должно быть время)
+    "first_seen_time": "", !!! --- нет совпадения (должно быть время)
+    "last_seen_time": "", !!! --- нет совпадения (должно быть время)
     "job_title": "sigma:Exploit attempts, sigma:МЭ UserGate с 31.31.196.167",
     "metadata_product_name": "Security Event Manager",
     "severity_id": 2
@@ -213,13 +213,16 @@
       "ATs:reason=\"sigma:МЭ UserGate\""
     ],
     "target_ip": "212.26.239.45",
--    "unmapped_agent_array": null, !!! --- нет значения (должен быть срез из одного элемента)
--    "unmapped_dst_endpoint_array": [
-      "212.26.239.45",
-      "31.31.196.167" !!! --- лишнее значение
+    "unmapped_agent_array": [
+      8030150
+    ],
+    "unmapped_dst_endpoint_array": [
+      "212.26.239.45"
     ],
     "unmapped_hive_alert_id": "~92691980520",
--    "unmapped_home_endpoint_array": null, !!! --- нет значения (должен быть срез из одного элемента)
+    "unmapped_home_endpoint_array": [
+      "212.26.239.45"
+    ],
     "unmapped_sensor_ip": "10.20.0.150",
     "unmapped_sensor_name": "Рязань Плазма",
 },

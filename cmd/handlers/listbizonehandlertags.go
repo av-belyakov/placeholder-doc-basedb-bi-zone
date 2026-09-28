@@ -9,7 +9,7 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				return tg.HandlerValue(
 					"tags.name",
 					a,
-					tg.GetTagTmp().SetAnyName,
+					tg.tagTmp.SetAnyName,
 				)
 			}},
 		//--- color ---
@@ -18,7 +18,7 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				return tg.HandlerValue(
 					"tags.color",
 					a,
-					tg.GetTagTmp().SetAnyColor,
+					tg.tagTmp.SetAnyColor,
 				)
 			}},
 		//--- created ---
@@ -27,7 +27,7 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				return tg.HandlerValue(
 					"tags.created",
 					a,
-					tg.GetTagTmp().SetAnyCreated,
+					tg.tagTmp.SetAnyCreated,
 				)
 			}},
 		//--- created_by.id ---
@@ -36,7 +36,7 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				return tg.HandlerValue(
 					"tags.created_by.id",
 					a,
-					tg.GetTagTmp().SetAnyCreatedByID,
+					tg.tagTmp.SetAnyCreatedByID,
 				)
 			}},
 		//--- created_by.username ---
@@ -45,7 +45,7 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				return tg.HandlerValue(
 					"tags.created_by.username",
 					a,
-					tg.GetTagTmp().SetAnyCreatedByUsername,
+					tg.tagTmp.SetAnyCreatedByUsername,
 				)
 			}},
 		//--- is_visible_for_customer ---
@@ -54,7 +54,7 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				return tg.HandlerValue(
 					"tags.is_visible_for_customer",
 					a,
-					tg.GetTagTmp().SetAnyCreatedByID,
+					tg.tagTmp.SetAnyCreatedByID,
 				)
 			}},
 	}

@@ -25,6 +25,8 @@ func (d *BiZoneIRPSContent) GetContent() string {
 func (d *BiZoneIRPSContent) SetContent(v string) error {
 	d.Content = v
 
+	fmt.Println("**** ---- BiZoneIRPSContent.SetContent =", v)
+
 	return nil
 }
 
@@ -311,21 +313,21 @@ func (d *BiZoneIRPSContent) SetDistance(v *string) error {
 
 // SetAnyDistance для поля distance
 func (d *BiZoneIRPSContent) SetAnyDistance(a any) error {
-	v, ok := a.(*string)
+	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'distance'")
 	}
 
-	return d.SetDistance(v)
+	return d.SetDistance(&v)
 }
 
 // GetFastPattern для поля fast_pattern
-func (d *BiZoneIRPSContent) GetFastPattern() *bool {
+func (d *BiZoneIRPSContent) GetFastPattern() *string {
 	return d.FastPattern
 }
 
 // SetFastPattern для поля fast_pattern
-func (d *BiZoneIRPSContent) SetFastPattern(v *bool) error {
+func (d *BiZoneIRPSContent) SetFastPattern(v *string) error {
 	d.FastPattern = v
 
 	return nil
@@ -333,21 +335,21 @@ func (d *BiZoneIRPSContent) SetFastPattern(v *bool) error {
 
 // SetAnyFastPattern для поля fast_pattern
 func (d *BiZoneIRPSContent) SetAnyFastPattern(a any) error {
-	v, ok := a.(*bool)
+	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'fast_pattern'")
 	}
 
-	return d.SetFastPattern(v)
+	return d.SetFastPattern(&v)
 }
 
 // GetDepth для поля depth
-func (d *BiZoneIRPSContent) GetDepth() *int {
+func (d *BiZoneIRPSContent) GetDepth() *string {
 	return d.Depth
 }
 
 // SetDepth для поля depth
-func (d *BiZoneIRPSContent) SetDepth(v *int) error {
+func (d *BiZoneIRPSContent) SetDepth(v *string) error {
 	d.Depth = v
 
 	return nil
@@ -355,21 +357,21 @@ func (d *BiZoneIRPSContent) SetDepth(v *int) error {
 
 // SetAnyDepth для поля depth
 func (d *BiZoneIRPSContent) SetAnyDepth(a any) error {
-	v, ok := a.(*int)
+	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'depth'")
 	}
 
-	return d.SetDepth(v)
+	return d.SetDepth(&v)
 }
 
 // GetOffset для поля offset
-func (d *BiZoneIRPSContent) GetOffset() *int {
+func (d *BiZoneIRPSContent) GetOffset() *string {
 	return d.Offset
 }
 
 // SetOffset для поля offset
-func (d *BiZoneIRPSContent) SetOffset(v *int) error {
+func (d *BiZoneIRPSContent) SetOffset(v *string) error {
 	d.Offset = v
 
 	return nil
@@ -377,21 +379,21 @@ func (d *BiZoneIRPSContent) SetOffset(v *int) error {
 
 // SetAnyOffset для поля offset
 func (d *BiZoneIRPSContent) SetAnyOffset(a any) error {
-	v, ok := a.(*int)
+	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'offset'")
 	}
 
-	return d.SetOffset(v)
+	return d.SetOffset(&v)
 }
 
 // GetWithin для поля within
-func (d *BiZoneIRPSContent) GetWithin() *int {
+func (d *BiZoneIRPSContent) GetWithin() *string {
 	return d.Within
 }
 
 // SetWithin для поля within
-func (d *BiZoneIRPSContent) SetWithin(v *int) error {
+func (d *BiZoneIRPSContent) SetWithin(v *string) error {
 	d.Within = v
 
 	return nil
@@ -399,12 +401,12 @@ func (d *BiZoneIRPSContent) SetWithin(v *int) error {
 
 // SetAnyWithin для поля within
 func (d *BiZoneIRPSContent) SetAnyWithin(a any) error {
-	v, ok := a.(*int)
+	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'within'")
 	}
 
-	return d.SetWithin(v)
+	return d.SetWithin(&v)
 }
 
 // ToStringBeautiful форматированный вывод
@@ -426,11 +428,11 @@ func (c *BiZoneIRPSContent) ToStringBeautiful(num int) string {
 	fmt.Fprintf(&str, "%s'http_raw_cookie': '%t'\n", ws, c.HTTPRawCookie)
 	fmt.Fprintf(&str, "%s'http_raw_header': '%t'\n", ws, c.HTTPRawHeader)
 	fmt.Fprintf(&str, "%s'http_client_body': '%t'\n", ws, c.HTTPClientBody)
+	fmt.Fprintf(&str, "%s'depth': '%s'\n", ws, *c.Depth)
+	fmt.Fprintf(&str, "%s'offset': '%s'\n", ws, *c.Offset)
+	fmt.Fprintf(&str, "%s'within': '%s'\n", ws, *c.Within)
 	fmt.Fprintf(&str, "%s'distance': '%s'\n", ws, *c.Distance)
-	fmt.Fprintf(&str, "%s'fast_pattern': '%t'\n", ws, *c.FastPattern)
-	fmt.Fprintf(&str, "%s'depth': '%d'\n", ws, *c.Depth)
-	fmt.Fprintf(&str, "%s'offset': '%d'\n", ws, *c.Offset)
-	fmt.Fprintf(&str, "%s'within': '%d'\n", ws, *c.Within)
+	fmt.Fprintf(&str, "%s'fast_pattern': '%s'\n", ws, *c.FastPattern)
 
 	return str.String()
 }
