@@ -11,9 +11,9 @@ NATS:
     get_sensor_info: object.sensor-info-request.test
 KAFKA:
   host: 192.168.9.73
-  port: 30932
+  port: 32704
   cache_ttl: 3601
-  group_id: # для ГЦМ оставляем пустым
+  group_id: spring.kafka.bootstrap.servers
   topics:
     alerts: alertmgr-alerts
     cases: socd-soar-prod-issue-v1

@@ -22,7 +22,9 @@ func (d *BiZoneIRPData) ReplacingOldBiZoneData(incomingType BiZoneIRPData) int {
 				continue
 			}
 
-			if typeOfCurrentStruct.Field(i).Name == "AllIPHome" {
+			if typeOfCurrentStruct.Field(i).Name == "tags" ||
+				typeOfCurrentStruct.Field(i).Name == "unmapped_dst_endpoint_array" ||
+				typeOfCurrentStruct.Field(i).Name == "unmapped_home_endpoint_array" {
 				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
 					countReplacingFields++
@@ -31,12 +33,16 @@ func (d *BiZoneIRPData) ReplacingOldBiZoneData(incomingType BiZoneIRPData) int {
 				continue
 			}
 
-			if typeOfCurrentStruct.Field(i).Name == "SnortSid" || typeOfCurrentStruct.Field(i).Name == "AllSensors" {
+			if typeOfCurrentStruct.Field(i).Name == "detection_pattern" || typeOfCurrentStruct.Field(i).Name == "unmapped_agent_array" {
 				if list, ok := supportingfunctions.ReplacingSlice[uint64](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
 					countReplacingFields++
 				}
 
+				continue
+			}
+
+			if typeOfCurrentStruct.Field(i).Name == "data_security" {
 				continue
 			}
 

@@ -23,6 +23,7 @@ func NewVerifiedBiZoneIRPAlert() *VerifiedBiZoneIRPAlert {
 		EventStartTime:     oldTime,
 		LastDetectionTime:  oldTime,
 		FirstDetectionTime: oldTime,
+		AffectedLogSources: []string(nil),
 		Tags:               []BiZoneIRPTag(nil),
 		Snapshots:          []BiZoneIRPSnapshot(nil),
 	}

@@ -10,10 +10,11 @@ func GetContentFromSnortRule(snortRule string) ([]string, error) {
 	suffies := []string{
 		"content:\"",
 		"content: \"",
+		"content:!\"",
 	}
 
 	result := []string(nil)
-	rgx, err := regexp.Compile(`content:\s?"([^"]*)";`)
+	rgx, err := regexp.Compile(`content:[\s|!?]"([^"]*)";`)
 	if err != nil {
 		return result, err
 	}

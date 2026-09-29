@@ -59,12 +59,14 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 		dialer.SASLMechanism = mechanism
 	}
 
-	api.consumer = kafka.NewReader(kafka.ReaderConfig{
+	kafkaReaderCfg := kafka.ReaderConfig{
 		Brokers:     []string{fmt.Sprintf("%s:%d", api.settings.host, api.settings.port)},
 		GroupID:     api.settings.groupId,
 		GroupTopics: topics,
 		Dialer:      dialer,
-	})
+	}
+
+	api.consumer = kafka.NewReader(kafkaReaderCfg)
 
 	//обработчик подписок
 	go api.topicsHandler(ctx)

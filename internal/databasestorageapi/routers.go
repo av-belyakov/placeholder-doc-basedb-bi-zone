@@ -9,7 +9,7 @@ import (
 
 func (dbs *DatabaseStorage) router(ctx context.Context) {
 	handlersList := map[string]map[string]func(context.Context, any){
-		"handling bz_alerts": {
+		"handling bizone alerts": {
 			"add alerts": dbs.addBiZoneAlerts,
 		},
 		"information handling": {

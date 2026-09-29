@@ -188,14 +188,17 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	updateVerified := datamodels.NewVerifiedBiZoneIRPAlert()
 	//заполняем новый объект информацией из базы данных
 	for _, v := range response.Options.Hits {
+
+		fmt.Printf("DatabaseStorage.addBiZoneAlerts document ID:'%s'\n", v.ID)
+		fmt.Printf("DatabaseStorage.addBiZoneAlerts document UUID:'%s'\n", v.Source.UUID)
+
 		countReplacingFields += updateVerified.RepalcingOldBiZoneAlert(*v.Source.Get())
 		listDeleting = append(listDeleting, ServiseOption{
 			ID:    v.ID,
 			Index: v.Index,
 		})
 
-		//заполняем новый объект дополнительной информацией о сенсорах и
-		// месторасположении ip адресов
+		//заполняем новый объект дополнительной информацией о сенсорах и месторасположении ip адресов
 		updateVerified.SetAdditionalInformation(*v.Source.GetAdditionalInformation())
 	}
 

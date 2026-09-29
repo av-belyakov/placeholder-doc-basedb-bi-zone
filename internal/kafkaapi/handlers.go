@@ -2,6 +2,7 @@ package kafkaapi
 
 import (
 	"context"
+	"errors"
 
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 
@@ -18,11 +19,17 @@ func (api *kafkaApiModule) topicsHandler(ctx context.Context) {
 		default:
 			msg, err := api.consumer.ReadMessage(ctx)
 			if err != nil {
-				if !err.(kafka.Error).IsTimeout() {
-					api.logger.Send("error", supportingfunctions.CustomError(err).Error())
-
-					continue
+				if kafkaErr, ok := err.(kafka.Error); ok {
+					if kafkaErr.IsTimeout() {
+						errTimeout := errors.New("timeout error")
+						errors.Join(errTimeout, err)
+						api.logger.Send("error", supportingfunctions.CustomError(errTimeout).Error())
+					}
 				}
+
+				api.logger.Send("error", supportingfunctions.CustomError(err).Error())
+
+				continue
 			}
 
 			subjectType := "undefined_type"

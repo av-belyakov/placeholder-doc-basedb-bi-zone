@@ -1,12 +1,17 @@
 package datamodels
 
 import (
+	"fmt"
 	"reflect"
+
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 // RepalcingOldBiZoneAlert заменяет старые значения типа VerifiedBiZoneAlert новыми
 func (va *VerifiedBiZoneIRPAlert) RepalcingOldBiZoneAlert(incomingType VerifiedBiZoneIRPAlert) int {
 	var countReplacingFields int
+
+	fmt.Println("VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert START")
 
 	currentStruct := reflect.ValueOf(va).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
@@ -36,6 +41,17 @@ func (va *VerifiedBiZoneIRPAlert) RepalcingOldBiZoneAlert(incomingType VerifiedB
 				continue
 			}
 
+			if typeOfCurrentStruct.Field(i).Name == "AffectedLogSources" {
+				//if data, ok := newStruct.Field(j).Interface().([]string); ok {
+				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
+					currentStruct.Field(i).Set(list)
+					countReplacingFields++
+				}
+				//}
+
+				continue
+			}
+
 			if typeOfCurrentStruct.Field(i).Name == "Data" {
 				if data, ok := newStruct.Field(j).Interface().(BiZoneIRPData); ok {
 					countReplacingFields += va.Data.ReplacingOldBiZoneData(data)
@@ -49,6 +65,11 @@ func (va *VerifiedBiZoneIRPAlert) RepalcingOldBiZoneAlert(incomingType VerifiedB
 			if typeOfCurrentStruct.Field(i).Name == "AdditionalInformation" {
 				continue
 			}
+
+			fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert field name:'%s'\n", typeOfNewStruct.Field(i).Name)
+			fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert type element from database:'%v'\n", typeOfNewStruct.Field(i).Type)
+			fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert value element from database:'%v'\n", typeOfNewStruct.Field(i))
+			fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert comparation currentStruct.Field(i):'%+v' && newStruct.Field(j):'%+v'\n", currentStruct.Field(i), newStruct.Field(j))
 
 			if !currentStruct.Field(i).Equal(newStruct.Field(j)) {
 				if !currentStruct.Field(i).CanSet() {
@@ -67,6 +88,8 @@ func (va *VerifiedBiZoneIRPAlert) RepalcingOldBiZoneAlert(incomingType VerifiedB
 			}
 		}
 	}
+
+	fmt.Printf("VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert count replacing fields:'%d'\n", countReplacingFields)
 
 	return countReplacingFields
 }

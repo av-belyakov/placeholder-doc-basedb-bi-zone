@@ -77,7 +77,7 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 						//передача объекта в модуль взаимодействия с базой данных для
 						//дальнейшей загрузки данных в базу
 						r.chToDBSApi <- databasestorageapi.SettingsChanInput{
-							Section: "handling bz_alerts",
+							Section: "handling bizone alerts",
 							Command: "add alerts",
 							Data:    verifedBiZoneAlert,
 						}

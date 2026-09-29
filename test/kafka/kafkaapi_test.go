@@ -26,7 +26,7 @@ func TestKafkaApi(t *testing.T) {
 		log.Fatalln(err)
 	}
 
-	os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "development")
+	os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
 
 	cfg, err := confighandler.New(constants.Root_Dir)
 	if err != nil {
@@ -76,6 +76,7 @@ func TestKafkaApi(t *testing.T) {
 		counting,
 		kafkaapi.WithHost(cfg.GetKafka().Host),
 		kafkaapi.WithPort(cfg.GetKafka().Port),
+		kafkaapi.WithGroupId(cfg.GetKafka().GroupId),
 		kafkaapi.WithCacheTTL(cfg.GetKafka().CacheTTL),
 		kafkaapi.WithSASLMechanism(cfg.GetKafka().SASLMechanism),
 		kafkaapi.WithSSLUserName(cfg.GetKafka().SSLUsername),

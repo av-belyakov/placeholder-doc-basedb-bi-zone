@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/elastic/elastic-transport-go/v8/elastictransport"
 	"github.com/elastic/go-elasticsearch/v9"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
@@ -16,23 +17,24 @@ import (
 
 // Start инициализирует новый модуль взаимодействия с API Database
 func (dbs *DatabaseStorage) Start(ctx context.Context) error {
-	es, err := elasticsearch.NewClient(elasticsearch.Config{
-		Addresses: []string{fmt.Sprintf("http://%s:%d", dbs.settings.host, dbs.settings.port)},
-		Username:  dbs.settings.user,
-		Password:  dbs.settings.passwd,
-		Transport: &http.Transport{
-			MaxIdleConns:          10,              //число открытых TCP-соединений, которые в данный момент не используются
-			MaxIdleConnsPerHost:   10,              //число неактивных TCP-соединений, которые допускается устанавливать на один хост
-			IdleConnTimeout:       1 * time.Second, //время, через которое закрываются такие неактивные соединения
-			ResponseHeaderTimeout: 2 * time.Second, //время в течении которого сервер ожидает получение ответа после записи заголовка запроса
-			DialContext: (&net.Dialer{
-				Timeout: 3 * time.Second,
-				//KeepAlive: 1 * time.Second,
-			}).DialContext,
-		},
-		//RetryOnError: ,
-		//RetryOnStatus: ,
-	})
+	es, err := elasticsearch.New(
+		elasticsearch.WithAddresses(fmt.Sprintf("http://%s:%d", dbs.settings.host, dbs.settings.port)),
+		elasticsearch.WithBasicAuth(dbs.settings.user, dbs.settings.passwd),
+		elasticsearch.WithTransportOptions(
+			elastictransport.WithTransport(
+				&http.Transport{
+					MaxIdleConns:          10,              //число открытых TCP-соединений, которые в данный момент не используются
+					MaxIdleConnsPerHost:   10,              //число неактивных TCP-соединений, которые допускается устанавливать на один хост
+					IdleConnTimeout:       5 * time.Second, //время, через которое закрываются такие неактивные соединения
+					ResponseHeaderTimeout: 5 * time.Second, //время в течении которого сервер ожидает получение ответа после записи заголовка запроса
+					DialContext: (&net.Dialer{
+						Timeout: 10 * time.Second,
+						//KeepAlive: 1 * time.Second,
+					}).DialContext,
+				},
+			),
+		),
+	)
 	if err != nil {
 		return supportingfunctions.CustomError(err)
 	}

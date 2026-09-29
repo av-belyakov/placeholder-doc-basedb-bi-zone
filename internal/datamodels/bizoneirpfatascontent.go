@@ -25,8 +25,6 @@ func (d *BiZoneIRPSContent) GetContent() string {
 func (d *BiZoneIRPSContent) SetContent(v string) error {
 	d.Content = v
 
-	fmt.Println("**** ---- BiZoneIRPSContent.SetContent =", v)
-
 	return nil
 }
 
