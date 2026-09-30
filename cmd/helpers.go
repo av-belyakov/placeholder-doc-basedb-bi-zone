@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"maps"
+	"os"
 	"strings"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
@@ -20,8 +21,12 @@ func getInformationMessage(cfg confighandler.Config) string {
 
 	var profiling string
 	appStatus := fmt.Sprintf("%vproduction%v", constants.Ansi_Bright_Blue, constants.Ansi_Reset)
+	envValue, ok := os.LookupEnv("GO_PHDOCBASEDBBZ_MAIN")
+	if ok && (envValue == "development" || envValue == "test") {
+		appStatus = fmt.Sprintf("%v%s", constants.Ansi_Bright_Red, envValue)
+	}
 
-	msg := fmt.Sprintf("Application '%s' v%s was successfully launched", appname.GetAppName(), strings.Replace(version, "\n", "", -1))
+	msg := fmt.Sprintf("Application '%s' v%s was successfully launched", appname.GetAppName(), strings.ReplaceAll(version, "\n", ""))
 
 	topics := make([]string, 0, len(cfg.GetKafka().Topics))
 	iterator := maps.Values(cfg.GetKafka().Topics)
@@ -39,9 +44,9 @@ func getInformationMessage(cfg confighandler.Config) string {
 	if cfg.GetDebugServer().Enable {
 		debugServerStatus = fmt.Sprintf("%venable%v", constants.Ansi_Bright_Red, constants.Ansi_Reset)
 		profiling = fmt.Sprintf(
-			"%vProfiling is available on %v'%s:%d/debug/pprof'%v\n",
+			"%vProfiling is available on %v%s:%d/debug/pprof%v\n",
 			constants.Ansi_Bright_Green,
-			constants.Ansi_Bright_Blue,
+			constants.Ansi_Dark_Gray,
 			cfg.GetDebugServer().Host,
 			cfg.GetDebugServer().Port,
 			constants.Ansi_Reset,
@@ -91,11 +96,8 @@ func getInformationMessage(cfg confighandler.Config) string {
 		constants.Ansi_Reset,
 	)
 	fmt.Printf(
-		"%vDebug server with address %v%s:%d%v %s%v\n",
+		"%vDebug server is %v%s%v\n",
 		constants.Ansi_Bright_Green,
-		constants.Ansi_Dark_Gray,
-		cfg.GetDebugServer().Host,
-		cfg.GetDebugServer().Port,
 		constants.Ansi_Reset,
 		debugServerStatus,
 		constants.Ansi_Reset,

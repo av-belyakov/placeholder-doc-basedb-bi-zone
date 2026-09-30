@@ -68,7 +68,7 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 							r.logger.Send("error", supportingfunctions.CustomError(err).Error())
 						}
 
-						r.logger.Send("info", fmt.Sprintf("an 'alerts' document has been generated, and the document has been transferred to the database (id document '%s')", id))
+						r.logger.Send("info", fmt.Sprintf("an 'alerts' document has been generated, and the document has been transferred to the database (uuid document '%s')", id))
 
 						if len(listRawFields) > 0 {
 							r.logger.Send("alert_raw_fields", supportingfunctions.JoinRawFieldsToString(listRawFields, "id", id))

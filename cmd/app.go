@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	_ "net/http/pprof"
 	"strings"
 
 	"golang.org/x/sync/errgroup"
@@ -41,10 +42,18 @@ func NewApp() *App {
 
 // Start инициализация запуска приложения
 func (app *App) Start(ctx context.Context) {
-	// запуск сервера отладки
-	if app.diContainer.Configer().GetDebugServer().Enable {
-		go app.startDebugServer(ctx)
-	}
+	// инициализация внутреннего роутера
+	app.appRouter = NewRouter(
+		app.diContainer.Logger(ctx),
+		app.diContainer.Counter(ctx),
+		ApplicationRouterSettings{
+			ChanToNats:    app.diContainer.NatsConnecter(ctx).GetChannelToModule(),
+			ChanFromNats:  app.diContainer.NatsConnecter(ctx).GetChannelFromModule(),
+			ChanToKafka:   app.diContainer.KafkaConnecter(ctx).GetChannelToModule(),
+			ChanFromKafka: app.diContainer.KafkaConnecter(ctx).GetChannelFromModule(),
+			ChanToDBS:     app.diContainer.DbConnecter(ctx).GetChannelToModule(),
+			ChanFromDBS:   app.diContainer.DbConnecter(ctx).GetChannelFromModule(),
+		})
 
 	// настройка обёртки для взаимодействия с Zabbix
 	zabbixSettings := wrappers.WrappersZabbixInteractionSettings{
@@ -67,18 +76,10 @@ func (app *App) Start(ctx context.Context) {
 	// обертка для взаимодействия с Zabbix
 	wrappers.WrappersZabbixInteraction(ctx, zabbixSettings, app.diContainer.SimpleLogger(ctx), app.chanMessage)
 
-	// инициализация внутреннего роутера
-	app.appRouter = NewRouter(
-		app.diContainer.Logger(ctx),
-		app.diContainer.Counter(ctx),
-		ApplicationRouterSettings{
-			ChanToNats:    app.diContainer.NatsConnecter(ctx).GetChannelToModule(),
-			ChanFromNats:  app.diContainer.NatsConnecter(ctx).GetChannelFromModule(),
-			ChanToKafka:   app.diContainer.KafkaConnecter(ctx).GetChannelToModule(),
-			ChanFromKafka: app.diContainer.KafkaConnecter(ctx).GetChannelFromModule(),
-			ChanToDBS:     app.diContainer.DbConnecter(ctx).GetChannelToModule(),
-			ChanFromDBS:   app.diContainer.DbConnecter(ctx).GetChannelFromModule(),
-		})
+	// запуск сервера отладки
+	if app.diContainer.Configer().GetDebugServer().Enable {
+		go app.startDebugServer(ctx)
+	}
 
 	// вывод информационного сообщения при старте приложения
 	msg := getInformationMessage(app.diContainer.Configer().Get())
@@ -111,7 +112,15 @@ func (app *App) startDebugServer(ctx context.Context) {
 		return httpServer.Shutdown(context.Background())
 	})
 
+	app.appRouter.logger.Send(
+		"info",
+		fmt.Sprintf(
+			"start debug server with address '%s' port '%d'",
+			app.diContainer.Configer().GetDebugServer().Host,
+			app.diContainer.Configer().GetDebugServer().Port,
+		))
+
 	if err := g.Wait(); err != nil {
-		log.Fatal("error debugging server:", err)
+		app.appRouter.logger.Send("error", fmt.Sprintf("error debugging server: '%s'", err.Error()))
 	}
 }

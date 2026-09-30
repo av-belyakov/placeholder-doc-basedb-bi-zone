@@ -42,7 +42,7 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 
 	//получаем наименование хранилища
 	// так как id для выполяемой задачи по поиску информации о месторасположении ip адресов
-	// был сформирован по следующему шаблону id := fmt.Sprintf("alerts:%s", newDocument.GetUUID())
+	// был сформирован по следующему шаблону id := fmt.Sprintf("<index_elasticsearch>:%s", newDocument.GetUUID())
 	tmp := strings.Split(newDocument.TaskId, ":")
 	if len(tmp) <= 1 {
 		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("no value was found to determine the index name")).Error())
@@ -50,19 +50,10 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 		return
 	}
 
-	//получаем имя индекса из настроек конфигурации
-	indexName, isExist := dbs.settings.storages[tmp[0]]
-	if !isExist {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the identifier of the index name was not found")).Error())
+	currentIndex := tmp[0]
+	specialUUID := tmp[1]
 
-		return
-	}
-
-	specialUuid := tmp[1]
-	t := time.Now()
-	month := int(t.Month())
-	//текущий индекс
-	indexCurrent := fmt.Sprintf("%s_%d_%d", indexName, t.Year(), month)
+	fmt.Printf("\t---DatabaseStorage.addGeoIPInformation taskId:'%s' elasticsearch index:'%s', UUID:'%s'\n", newDocument.TaskId, currentIndex, specialUUID)
 
 	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*15)
 	defer ctxCancel()
@@ -101,7 +92,7 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 		return
 	}
 
-	underlineId, geoIpInfo, err := dbs.SearchGeoIPInformation(ctxTimeout, indexCurrent, specialUuid)
+	underlineId, geoIpInfo, err := dbs.SearchGeoIPInformation(ctxTimeout, currentIndex, specialUUID)
 	if err != nil {
 		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the identifier of the index name was not found")).Error())
 
@@ -127,23 +118,23 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 
 	request, err := json.MarshalIndent(datamodels.AdditionalInformationIpAddress{IpAddresses: geoIpInfo}, "", " ")
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUuid, err)).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUUID, err)).Error())
 
 		return
 	}
 
 	//выполняется обновление информации в БД
 	bodyUpdate := strings.NewReader(fmt.Sprintf("{\"doc\": %s}", string(request)))
-	res, err := dbs.client.Update(indexCurrent, underlineId, bodyUpdate)
+	res, err := dbs.client.Update(currentIndex, underlineId, bodyUpdate)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@specail_uuid:'%s', '%w'", specialUuid, err)).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@specail_uuid:'%s', '%w'", specialUUID, err)).Error())
 
 		return
 	}
 	defer res.Body.Close()
 
 	if res != nil && res.StatusCode != http.StatusOK {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUuid, err)).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUUID, err)).Error())
 
 		return
 	}
@@ -178,7 +169,7 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 
 	//получаем наименование хранилища
 	// так как id для выполяемой задачи по поиску информации о месторасположении ip адресов
-	// был сформирован по следующему шаблону id := fmt.Sprintf("alerts:%s", newDocument.GetUUID())
+	// был сформирован по следующему шаблону id := fmt.Sprintf("<index_elasticsearch>:%s", newDocument.GetUUID())
 	tmp := strings.Split(newDocument.TaskId, ":")
 	if len(tmp) <= 1 {
 		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("no value was found to determine the index name")).Error())
@@ -186,19 +177,10 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 		return
 	}
 
-	//получаем имя индекса из настроек конфигурации
-	indexName, isExist := dbs.settings.storages[tmp[0]]
-	if !isExist {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the identifier of the index name was not found")).Error())
+	currentIndex := tmp[0]
+	specialUUID := tmp[1]
 
-		return
-	}
-
-	specialUuid := tmp[1]
-	t := time.Now()
-	month := int(t.Month())
-	//текущий индекс
-	indexCurrent := fmt.Sprintf("%s_%d_%d", indexName, t.Year(), month)
+	fmt.Printf("\t---DatabaseStorage.addSensorInformation taskId:'%s' elasticsearch index:'%s', UUID:'%s'\n", newDocument.TaskId, currentIndex, specialUUID)
 
 	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*15)
 	defer ctxCancel()
@@ -209,7 +191,7 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 	//***************************************************************
 
 	//поиск _id объекта по его '@special_uuid'
-	underlineId, err := dbs.GetUnderlineId(ctxTimeout, indexCurrent, specialUuid)
+	underlineId, err := dbs.GetUnderlineId(ctxTimeout, currentIndex, specialUUID)
 	if err != nil {
 		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the identifier of the index name was not found")).Error())
 
@@ -252,7 +234,7 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 
 	//обновление информации в БД
 	bodyUpdate := strings.NewReader(fmt.Sprintf("{\"doc\": %s}", string(request)))
-	res, err := dbs.client.Update(indexCurrent, underlineId, bodyUpdate)
+	res, err := dbs.client.Update(currentIndex, underlineId, bodyUpdate)
 	if err != nil {
 		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId:'%s', '%w'", newDocument.TaskId, err)).Error())
 

@@ -100,7 +100,7 @@ export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 Что бы получить доступ к профилировщику, нужно выполнить в браузере, wget или curl следующий GET запрос:
 
 ```bash
-http://<ip>:<port>//debug/pprof/
+http://<ip>:<port>/debug/pprof/
 ```
 
 Использование инструмента 'go tool pprof'.

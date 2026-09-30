@@ -102,6 +102,10 @@ type BiZoneIRPSContent struct {
 	Offset         *string `json:"offset:"`      // null или строка (например "0")
 }
 
+// VerifiedBiZoneCase основной объект case
+type VerifiedBiZoneCase struct {
+}
+
 type BiZoneIRPCaseFieldData struct {
 	Tags              []BiZoneIRPFieldTagDescription `json:"tags"`
 	SecondaryCategory []BiZoneIRPFieldWithTitle      `json:"secondary_category"`

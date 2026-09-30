@@ -48,8 +48,20 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 		return
 	}
 
+	//формируем наименование индекса
+	currentIndex := fmt.Sprintf("%s_%d_%d", indexName, t.Year(), int(t.Month()))
+
+	//будет выполнятся поиск по индексам только в текущем году так как при
+	//накоплении большого количества индексов, поиск по всем серьезно замедлит работу
+	indexesOnlyCurrentYear := []string(nil)
+	for _, v := range existingIndexes {
+		if strings.Contains(v, fmt.Sprint(t.Year())) {
+			indexesOnlyCurrentYear = append(indexesOnlyCurrentYear, v)
+		}
+	}
+
 	defer func(document *datamodels.VerifiedBiZoneIRPAlert, getChan func() chan SettingsChanOutput, logger interfaces.Logger) {
-		id := fmt.Sprintf("alerts:%s", newDocument.GetUUID())
+		id := fmt.Sprintf("%s:%s", currentIndex, newDocument.GetUUID())
 
 		//обогащение кейса дополнительной информацией о локальном место положении ip адресов
 		listIp := documentgenerator.GetListIPAddr(document.GetAdditionalInformation().GetIpAddressesInformation())
@@ -71,34 +83,6 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 			logger.Send("info", fmt.Sprintf("we are sending a request to search for information on the following list of sensors: %#v", listSensor))
 		}
 	}(newDocument, dbs.GetChannelFromModule, dbs.logger)
-
-	//формируем наименование индекса
-	currentIndex := fmt.Sprintf("%s_%d_%d", indexName, t.Year(), int(t.Month()))
-
-	//*****************************
-	//*** здесь установка тегов ***
-	//пока не знаю нужно ли это в BiZone
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//caseId := fmt.Sprint(newDocument.GetEvent().GetObject().CaseId)
-	//reqSetTag := fmt.Appendf(nil, `{
-	//					  "service": "placeholder_doc-basedb-bi-zone",
-	//					  "command": "add_case_tag",
-	//					  "root_id": "%s",
-	//					  "case_id": "%s",
-	//					  "value": "Webhook: send=\"ElasticsearchDB"
-	//					}`,
-	//	newDocument.GetEvent().GetRootId(),
-	//	caseId)
-	//*****************************
-
-	//будет выполнятся поиск по индексам только в текущем году так как при
-	//накоплении большого количества индексов, поиск по всем серьезно замедлит работу
-	indexesOnlyCurrentYear := []string(nil)
-	for _, v := range existingIndexes {
-		if strings.Contains(v, fmt.Sprint(t.Year())) {
-			indexesOnlyCurrentYear = append(indexesOnlyCurrentYear, v)
-		}
-	}
 
 	// если похожих индексов нет
 	if len(indexesOnlyCurrentYear) == 0 {
@@ -122,18 +106,14 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 		dbs.counter.SendMessage("update count insert subject alerts to db", 1)
 		dbs.logger.Send("info", fmt.Sprintf("insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
 
-		//*******************************************
-		//*** здесь установка тегов, под вопросом ***
-		//*******************************************
-
 		return
 	}
 
 	//устанавливаем максимальный лимит количества полей для всех индексов которые
 	//содержат значение по умолчанию в 1000 полей
-	//if err := dbs.SetMaxTotalFieldsLimit(ctx, existingIndexes); err != nil {
-	//	dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
-	//}
+	if err := dbs.SetMaxTotalFieldsLimit(ctx, existingIndexes); err != nil {
+		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+	}
 
 	//ищем объект с таким же идентификатором как и принятый в обработку объект
 	res, err := dbs.GetDocument(
@@ -152,6 +132,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 
 		return
 	}
+
 	response := ResponseVerifiedBiZoneAlerts{}
 	if err = json.Unmarshal(res, &response); err != nil {
 		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
@@ -187,7 +168,6 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	updateVerified := datamodels.NewVerifiedBiZoneIRPAlert()
 	//заполняем новый объект информацией из базы данных
 	for _, v := range response.Options.Hits {
-		//fmt.Printf("DatabaseStorage.addBiZoneAlerts document ID:'%s' UUID:'%s'\n", v.ID, v.Source.UUID)
 		updateVerified.RepalcingOldBiZoneAlert(*v.Source.Get())
 		listDeleting = append(listDeleting, ServiseOption{
 			ID:    v.ID,
