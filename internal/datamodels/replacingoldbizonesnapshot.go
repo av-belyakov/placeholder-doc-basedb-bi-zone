@@ -1,7 +1,6 @@
 package datamodels
 
 import (
-	"fmt"
 	"reflect"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
@@ -26,7 +25,7 @@ func (s *BiZoneIRPSnapshot) ReplacingOldBiZOneSnapshot(incomingType BiZoneIRPSna
 			// для обработки поля "IPAddresses"
 			//*****************************
 			if typeOfCurrentStruct.Field(i).Name == "IPAddresses" {
-				fmt.Printf("BiZoneIRPSnapshot.ReplacingOldBiZOneSnapshot field name 'IPAddresses', currentStruct.Field(i):'%+v', newStruct.Field(j):'%+v'\n", currentStruct.Field(i), newStruct.Field(j))
+				//fmt.Printf("BiZoneIRPSnapshot.ReplacingOldBiZOneSnapshot field name 'IPAddresses', currentStruct.Field(i):'%+v', newStruct.Field(j):'%+v'\n", currentStruct.Field(i), newStruct.Field(j))
 
 				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
@@ -39,7 +38,7 @@ func (s *BiZoneIRPSnapshot) ReplacingOldBiZOneSnapshot(incomingType BiZoneIRPSna
 			// для обработки поля "MACAddresses"
 			//*****************************
 			if typeOfCurrentStruct.Field(i).Name == "MACAddresses" {
-				fmt.Printf("BiZoneIRPSnapshot.ReplacingOldBiZOneSnapshot field name 'IPAddresses', currentStruct.Field(i):'%+v', newStruct.Field(j):'%+v'\n", currentStruct.Field(i), newStruct.Field(j))
+				//fmt.Printf("BiZoneIRPSnapshot.ReplacingOldBiZOneSnapshot field name 'IPAddresses', currentStruct.Field(i):'%+v', newStruct.Field(j):'%+v'\n", currentStruct.Field(i), newStruct.Field(j))
 
 				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)

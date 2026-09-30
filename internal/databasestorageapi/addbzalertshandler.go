@@ -183,15 +183,12 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 
 	//*** при наличие искомого документа выполняем его замену ***
 	//***********************************************************
-	var countReplacingFields int
 	listDeleting := []ServiseOption(nil)
 	updateVerified := datamodels.NewVerifiedBiZoneIRPAlert()
 	//заполняем новый объект информацией из базы данных
 	for _, v := range response.Options.Hits {
-
-		fmt.Printf("DatabaseStorage.addBiZoneAlerts document ID:'%s' UUID:'%s'\n", v.ID, v.Source.UUID)
-
-		countReplacingFields += updateVerified.RepalcingOldBiZoneAlert(*v.Source.Get())
+		//fmt.Printf("DatabaseStorage.addBiZoneAlerts document ID:'%s' UUID:'%s'\n", v.ID, v.Source.UUID)
+		updateVerified.RepalcingOldBiZoneAlert(*v.Source.Get())
 		listDeleting = append(listDeleting, ServiseOption{
 			ID:    v.ID,
 			Index: v.Index,
@@ -202,7 +199,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	}
 
 	//выполняем обновление нового объекта данными полученными от брокера сообщений
-	updateVerified.RepalcingOldBiZoneAlert(*newDocument.Get())
+	countReplasedField := updateVerified.RepalcingOldBiZoneAlert(*newDocument.Get())
 
 	//готовим обновлённый объект к загрузке в базу данных
 	nvbyte, err := json.Marshal(updateVerified)
@@ -221,7 +218,15 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	}
 
 	dbs.counter.SendMessage("update count insert subject alerts to db", 1)
-	dbs.logger.Send("info", fmt.Sprintf("update document 'alerts' type, count delete:'%d', count replacing fields:'%d' for alerts with uuid:'%s', status code:'%d'", countDel, countReplacingFields, newDocument.GetUUID(), statusCode))
+	dbs.logger.Send(
+		"info",
+		fmt.Sprintf(
+			"update document 'alerts' type, count delete:'%d', count replacing fields:'%d' for alerts with uuid:'%s', status code:'%d'",
+			countDel,
+			countReplasedField,
+			newDocument.GetUUID(),
+			statusCode,
+		))
 }
 
 // TestAddBiZoneAlerts использовать только в тестах

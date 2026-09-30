@@ -1,7 +1,6 @@
 package datamodels
 
 import (
-	"fmt"
 	"reflect"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
@@ -88,8 +87,6 @@ func (va *VerifiedBiZoneIRPAlert) RepalcingOldBiZoneAlert(incomingType VerifiedB
 			}
 		}
 	}
-
-	fmt.Printf("VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert count replacing fields:'%d'\n", countReplacingFields)
 
 	return countReplacingFields
 }
