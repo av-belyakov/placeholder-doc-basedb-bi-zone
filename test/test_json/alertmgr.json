@@ -84,6 +84,7 @@
     "recommendations": "",
     "data": {
         "agent": 8030150,
+        "query": "mail.cmc.mycpanel.rs",
         "data_security": [
             {
                 "i_sid": 2800778,
@@ -295,6 +296,7 @@
             "ATs:reason=\"sigma:МЭ UserGate\""
         ],
         "target_ip": "212.26.239.45",
+        "unmapped_event_card": "TSK-8MSK-6-ZPM-260930-2949869",
         "unmapped_agent_array": [
             8030150
         ],

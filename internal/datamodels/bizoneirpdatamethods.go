@@ -85,6 +85,23 @@ func (d *BiZoneIRPData) SetAnyDesc(a any) error {
 	return d.SetDesc(fmt.Sprint(a))
 }
 
+// GetQuery для поля 'query'
+func (d *BiZoneIRPData) GetQuery() string {
+	return d.Query
+}
+
+// SetQuery для поля 'query'
+func (d *BiZoneIRPData) SetQuery(v string) error {
+	d.Query = v
+
+	return nil
+}
+
+// SetAnyQuery для поля 'query'
+func (d *BiZoneIRPData) SetAnyQuery(a any) error {
+	return d.SetQuery(fmt.Sprint(a))
+}
+
 // GetEventUid для поля 'event_uid'
 func (d *BiZoneIRPData) GetEventUid() string {
 	return d.EventUID
@@ -168,6 +185,23 @@ func (d *BiZoneIRPData) SetTargetIP(v string) error {
 // SetAnyTargetIP для поля 'target_ip'
 func (d *BiZoneIRPData) SetAnyTargetIP(a any) error {
 	return d.SetTargetIP(fmt.Sprint(a))
+}
+
+// GetUnmappedEventCard для поля 'unmapped_event_card'
+func (d *BiZoneIRPData) GetUnmappedEventCard() string {
+	return d.UnmappedEventCard
+}
+
+// SetUnmappedEventCard для поля 'unmapped_event_card'
+func (d *BiZoneIRPData) SetUnmappedEventCard(v string) error {
+	d.UnmappedEventCard = v
+
+	return nil
+}
+
+// SetAnyUnmappedEventCard для поля 'unmapped_event_card'
+func (d *BiZoneIRPData) SetAnyUnmappedEventCard(a any) error {
+	return d.SetUnmappedEventCard(fmt.Sprint(a))
 }
 
 // GetUnmappedHiveAlertID для поля 'unmapped_hive_alert_id'
@@ -441,15 +475,17 @@ func (d *BiZoneIRPData) ToStringBeautiful(num int) string {
 	wsInt := supportingfunctions.GetWhitespace(num + 2)
 
 	fmt.Fprintf(&str, "%s'desc': '%s'\n", ws, d.Desc)
+	fmt.Fprintf(&str, "%s'query': '%s'\n", ws, d.Query)
+	fmt.Fprintf(&str, "%s'source_ip': '%s'\n", ws, d.SourceIP)
+	fmt.Fprintf(&str, "%s'target_ip': '%s'\n", ws, d.TargetIP)
 	fmt.Fprintf(&str, "%s'event_uid': '%s'\n", ws, d.EventUID)
 	fmt.Fprintf(&str, "%s'job_title': '%s'\n", ws, d.JobTitle)
 	fmt.Fprintf(&str, "%s'first_seen_time': '%s'\n", ws, d.FirstSeenTime)
 	fmt.Fprintf(&str, "%s'last_seen_time': '%s'\n", ws, d.LastSeenTime)
-	fmt.Fprintf(&str, "%s'metadata_product_name': '%s'\n", ws, d.MetadataProductName)
-	fmt.Fprintf(&str, "%s'source_ip': '%s'\n", ws, d.SourceIP)
-	fmt.Fprintf(&str, "%s'target_ip': '%s'\n", ws, d.TargetIP)
-	fmt.Fprintf(&str, "%s'unmapped_hive_alert_id': '%s'\n", ws, d.GetUnmappedHiveAlertID())
 	fmt.Fprintf(&str, "%s'unmapped_sensor_ip': '%s'\n", ws, d.UnmappedSensorIP)
+	fmt.Fprintf(&str, "%s'unmapped_event_card': '%s'\n", ws, d.UnmappedEventCard)
+	fmt.Fprintf(&str, "%s'metadata_product_name': '%s'\n", ws, d.MetadataProductName)
+	fmt.Fprintf(&str, "%s'unmapped_hive_alert_id': '%s'\n", ws, d.UnmappedHiveAlertID)
 	fmt.Fprintf(&str, "%s'unmapped_sensor_name': '%s'\n", ws, d.UnmappedSensorName)
 	fmt.Fprintf(&str, "%s'agent': '%d'\n", ws, d.Agent)
 	fmt.Fprintf(&str, "%s'severity_id': '%d'\n", ws, d.SeverityID)
