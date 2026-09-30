@@ -39,7 +39,7 @@ func (dbs *DatabaseStorage) GetExistingIndexes(ctx context.Context, pattern stri
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
+	defer bodyClose(res)
 
 	if err = json.NewDecoder(res.Body).Decode(&msg); err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func (dbs *DatabaseStorage) GetIndexSetting(ctx context.Context, index string) (
 	if err != nil {
 		return
 	}
-	defer res.Body.Close()
+	defer bodyClose(res)
 
 	if res.StatusCode != http.StatusOK {
 		err = fmt.Errorf("the server response when executing an index search query is equal to '%s'", res.Status())
@@ -106,7 +106,7 @@ func (dbs *DatabaseStorage) SetIndexSetting(ctx context.Context, indexes []strin
 	if err != nil {
 		return false, err
 	}
-	defer res.Body.Close()
+	defer bodyClose(res)
 
 	if res.StatusCode == http.StatusCreated || res.StatusCode == http.StatusOK {
 		return true, nil
@@ -132,19 +132,19 @@ func (dbs *DatabaseStorage) DelIndexSetting(ctx context.Context, indexes []strin
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
+	defer bodyClose(res)
 
 	return err
 }
 
 // GetDocument выполняет запросы по поиску документа
 func (dbs *DatabaseStorage) GetDocument(ctx context.Context, indexes []string, query *strings.Reader, offset int) ([]byte, error) {
-	var res []byte
+	var response []byte
 
 	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*60)
 	defer ctxCancel()
 
-	response, err := dbs.client.Search(
+	res, err := dbs.client.Search(
 		dbs.client.Search.WithSize(dbs.settings.maxGetDocumentsSize),
 		dbs.client.Search.WithFrom(offset),
 		dbs.client.Search.WithContext(ctxTimeout),
@@ -152,16 +152,16 @@ func (dbs *DatabaseStorage) GetDocument(ctx context.Context, indexes []string, q
 		dbs.client.Search.WithBody(query),
 	)
 	if err != nil {
-		return res, err
+		return response, err
 	}
-	defer response.Body.Close()
+	defer bodyClose(res)
 
-	res, err = io.ReadAll(response.Body)
+	response, err = io.ReadAll(res.Body)
 	if err != nil {
-		return res, err
+		return response, err
 	}
 
-	return res, nil
+	return response, nil
 }
 
 // InsertDocument добавить новый документ в заданный индекс
@@ -175,7 +175,7 @@ func (dbs *DatabaseStorage) InsertDocument(ctx context.Context, index string, b 
 	if err != nil {
 		return 0, supportingfunctions.CustomError(err)
 	}
-	defer res.Body.Close()
+	defer bodyClose(res)
 
 	bodyRes, err := io.ReadAll(res.Body)
 	if err != nil {
@@ -206,8 +206,8 @@ func (dbs *DatabaseStorage) UpdateDocument(ctx context.Context, currentIndex str
 		if errDel != nil {
 			err = fmt.Errorf("%v, %v", err, errDel)
 		}
-		res.Body.Close()
 
+		bodyClose(res)
 		countDel++
 	}
 
@@ -302,7 +302,7 @@ func (dbs *DatabaseStorage) GetUnderlineId(ctx context.Context, indexName, speci
 	if err != nil {
 		return "", err
 	}
-	defer res.Body.Close()
+	defer bodyClose(res)
 
 	bodyRes, err := io.ReadAll(res.Body)
 	if err != nil {
@@ -341,7 +341,7 @@ func (dbs *DatabaseStorage) SearchGeoIPInformation(ctx context.Context, indexNam
 	if err != nil {
 		return "", geoIpInformation, err
 	}
-	defer res.Body.Close()
+	defer bodyClose(res)
 
 	bodyRes, err := io.ReadAll(res.Body)
 	if err != nil {

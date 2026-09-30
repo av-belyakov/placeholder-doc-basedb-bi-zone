@@ -11,8 +11,6 @@ import (
 func (va *VerifiedBiZoneIRPAlert) RepalcingOldBiZoneAlert(incomingType VerifiedBiZoneIRPAlert) int {
 	var countReplacingFields int
 
-	fmt.Println("VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert START")
-
 	currentStruct := reflect.ValueOf(va).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
 
@@ -66,10 +64,12 @@ func (va *VerifiedBiZoneIRPAlert) RepalcingOldBiZoneAlert(incomingType VerifiedB
 				continue
 			}
 
-			fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert field name:'%s'\n", typeOfNewStruct.Field(i).Name)
-			fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert type element from database:'%v'\n", typeOfNewStruct.Field(i).Type)
-			fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert value element from database:'%v'\n", typeOfNewStruct.Field(i))
-			fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert comparation currentStruct.Field(i):'%+v' && newStruct.Field(j):'%+v'\n", currentStruct.Field(i), newStruct.Field(j))
+			/*
+				fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert field name:'%s'\n", typeOfNewStruct.Field(i).Name)
+				fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert type element from database:'%v'\n", typeOfNewStruct.Field(i).Type)
+				fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert value element from database:'%v'\n", typeOfNewStruct.Field(i))
+				fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert comparation currentStruct.Field(i):'%+v' && newStruct.Field(j):'%+v'\n", currentStruct.Field(i), newStruct.Field(j))
+			*/
 
 			if !currentStruct.Field(i).Equal(newStruct.Field(j)) {
 				if !currentStruct.Field(i).CanSet() {

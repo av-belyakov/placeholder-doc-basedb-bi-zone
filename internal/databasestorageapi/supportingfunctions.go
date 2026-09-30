@@ -3,6 +3,8 @@ package databasestorageapi
 import (
 	"encoding/json"
 
+	"github.com/elastic/go-elasticsearch/v9/esapi"
+
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/request"
 )
 
@@ -60,4 +62,13 @@ func sendSensorInformationRequest(
 	}
 
 	return true, nil
+}
+
+// bodyClose закрывает ответ с предварительной проверкой
+func bodyClose(res *esapi.Response) {
+	if res == nil || res.Body == nil {
+		return
+	}
+
+	res.Body.Close()
 }

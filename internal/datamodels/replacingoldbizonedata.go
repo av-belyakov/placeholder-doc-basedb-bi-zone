@@ -22,9 +22,9 @@ func (d *BiZoneIRPData) ReplacingOldBiZoneData(incomingType BiZoneIRPData) int {
 				continue
 			}
 
-			if typeOfCurrentStruct.Field(i).Name == "tags" ||
-				typeOfCurrentStruct.Field(i).Name == "unmapped_dst_endpoint_array" ||
-				typeOfCurrentStruct.Field(i).Name == "unmapped_home_endpoint_array" {
+			if typeOfCurrentStruct.Field(i).Name == "Tags" ||
+				typeOfCurrentStruct.Field(i).Name == "UnmappedDstEndpointArray" ||
+				typeOfCurrentStruct.Field(i).Name == "UnmappedHomeEndpointArray" {
 				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
 					countReplacingFields++
@@ -33,7 +33,8 @@ func (d *BiZoneIRPData) ReplacingOldBiZoneData(incomingType BiZoneIRPData) int {
 				continue
 			}
 
-			if typeOfCurrentStruct.Field(i).Name == "detection_pattern" || typeOfCurrentStruct.Field(i).Name == "unmapped_agent_array" {
+			if typeOfCurrentStruct.Field(i).Name == "DetectionPattern" ||
+				typeOfCurrentStruct.Field(i).Name == "UnmappedAgentArray" {
 				if list, ok := supportingfunctions.ReplacingSlice[uint64](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
 					countReplacingFields++
@@ -42,7 +43,7 @@ func (d *BiZoneIRPData) ReplacingOldBiZoneData(incomingType BiZoneIRPData) int {
 				continue
 			}
 
-			if typeOfCurrentStruct.Field(i).Name == "data_security" {
+			if typeOfCurrentStruct.Field(i).Name == "DataSecurity" {
 				continue
 			}
 
