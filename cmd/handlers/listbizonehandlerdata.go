@@ -7,6 +7,7 @@ func NewListBiZoneHandlerData(data *datamodels.BiZoneIRPData) map[string][]func(
 	return map[string][]func(any) error{
 		"data.agent":                  {data.SetAnyAgent},
 		"data.desc":                   {data.SetAnyDesc},
+		"data.query":                  {data.SetAnyQuery},
 		"data.event_uid":              {data.SetAnyEventUid},
 		"data.job_title":              {data.SetAnyJobTitle},
 		"data.source_ip":              {data.SetAnySourceIP},
@@ -21,6 +22,7 @@ func NewListBiZoneHandlerData(data *datamodels.BiZoneIRPData) map[string][]func(
 		//ниже работа со срезам содержащими простые типы
 		"data.tags":                         {data.SetAnyTag},
 		"data.detection_pattern":            {data.SetAnyDetectionPatternElement},
+		"data.unmapped_event_card":          {data.SetAnyUnmappedEventCard},
 		"data.unmapped_agent_array":         {data.SetAnyUnmappedAgentArrayElement},
 		"data.unmapped_dst_endpoint_array":  {data.SetAnyUnmappedDstEndpointArray},
 		"data.unmapped_home_endpoint_array": {data.SetAnyUnmappedHomeEndpointArray},

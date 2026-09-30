@@ -50,6 +50,7 @@ type BiZoneIRPData struct {
 	DetectionPattern          []uint64                           `json:"detection_pattern"`
 	UnmappedAgentArray        []uint64                           `json:"unmapped_agent_array"`
 	Desc                      string                             `json:"desc"`
+	Query                     string                             `json:"query"`
 	EventUID                  string                             `json:"event_uid"`
 	JobTitle                  string                             `json:"job_title"`
 	FirstSeenTime             string                             `json:"first_seen_time"` //дата создания (формат RFC3339) или ISO 8601
@@ -57,6 +58,7 @@ type BiZoneIRPData struct {
 	MetadataProductName       string                             `json:"metadata_product_name"`
 	SourceIP                  string                             `json:"source_ip"`
 	TargetIP                  string                             `json:"target_ip"`
+	UnmappedEventCard         string                             `json:"unmapped_event_card"`
 	UnmappedHiveAlertID       string                             `json:"unmapped_hive_alert_id"`
 	UnmappedSensorIP          string                             `json:"unmapped_sensor_ip"`
 	UnmappedSensorName        string                             `json:"unmapped_sensor_name"`
