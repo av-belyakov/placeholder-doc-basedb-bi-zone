@@ -50,9 +50,19 @@ func (ai *AdditionalInformation) AddSensorInformation(v SensorInformation) {
 	}
 }
 
-// SetSensorInformation добавляет информацию о сенсорах
+// SetSensorInformation информация о сенсорах
 func (ai *AdditionalInformation) SetSensorInformation(v []SensorInformation) {
 	ai.Sensors = append(ai.Sensors, v...)
+}
+
+// GetSpecialUUID специальный уникальный идентификатор
+func (ai *AdditionalInformation) GetSpecialUUID() string {
+	return ai.SpecialUUID
+}
+
+// SetSpecialUUID специальный уникальный идентификатор
+func (ai *AdditionalInformation) SetSpecialUUID(v string) {
+	ai.SpecialUUID = v
 }
 
 // GetIpAddressesInformation объекты с информацией об ip адресах
@@ -60,7 +70,7 @@ func (ai *AdditionalInformation) GetIpAddressesInformation() []IpAddressInformat
 	return ai.IpAddresses
 }
 
-// SetIpAddressesInformation добавляет информацию об ip адресах
+// SetIpAddressesInformation объекты с информацией об ip адресах
 func (ai *AdditionalInformation) SetIpAddressesInformation(v []IpAddressInformation) {
 	ai.IpAddresses = append(ai.IpAddresses, v...)
 }
@@ -82,14 +92,15 @@ func (ai *AdditionalInformation) AddIpAddressInformation(v IpAddressInformation)
 // ToStringBeautiful дополнительная информация по сенсорам и ip адресам
 func (ai *AdditionalInformation) ToStringBeautiful(num int) string {
 	var str strings.Builder = strings.Builder{}
-	str.WriteString(fmt.Sprintf("%s'@sensor_additional_information':\n", supportingfunctions.GetWhitespace(num)))
+	fmt.Fprintf(&str, "%s'@special_uuid': '%s'\n", supportingfunctions.GetWhitespace(num), ai.SpecialUUID)
+	fmt.Fprintf(&str, "%s'@sensor_additional_information':\n", supportingfunctions.GetWhitespace(num))
 	for k, v := range ai.Sensors {
-		str.WriteString(fmt.Sprintf("%s%d.\n", supportingfunctions.GetWhitespace(num+1), k+1))
+		fmt.Fprintf(&str, "%s%d.\n", supportingfunctions.GetWhitespace(num+1), k+1)
 		str.WriteString(v.ToStringBeautiful(num + 2))
 	}
-	str.WriteString(fmt.Sprintf("%s'@ip_address_additional_information':\n", supportingfunctions.GetWhitespace(num)))
+	fmt.Fprintf(&str, "%s'@ip_address_additional_information':\n", supportingfunctions.GetWhitespace(num))
 	for k, v := range ai.IpAddresses {
-		str.WriteString(fmt.Sprintf("%s%d.\n", supportingfunctions.GetWhitespace(num+1), k+1))
+		fmt.Fprintf(&str, "%s%d.\n", supportingfunctions.GetWhitespace(num+1), k+1)
 		str.WriteString(v.ToStringBeautiful(num + 2))
 	}
 
@@ -101,15 +112,15 @@ func (si *SensorInformation) ToStringBeautiful(num int) string {
 	ws := supportingfunctions.GetWhitespace(num)
 
 	str := strings.Builder{}
-	str.WriteString(fmt.Sprintf("%s'sensor_id': '%s'\n", ws, si.SensorId))
-	str.WriteString(fmt.Sprintf("%s'host_id': '%s'\n", ws, si.HostId))
-	str.WriteString(fmt.Sprintf("%s'geo_code': '%s'\n", ws, si.GeoCode))
-	str.WriteString(fmt.Sprintf("%s'object_area': '%s'\n", ws, si.ObjectArea))
-	str.WriteString(fmt.Sprintf("%s'subject_rf': '%s'\n", ws, si.SubjectRF))
-	str.WriteString(fmt.Sprintf("%s'inn': '%s'\n", ws, si.INN))
-	str.WriteString(fmt.Sprintf("%s'home_net': '%s'\n", ws, si.HomeNet))
-	str.WriteString(fmt.Sprintf("%s'org_name': '%s'\n", ws, si.OrgName))
-	str.WriteString(fmt.Sprintf("%s'full_org_name': '%s'\n", ws, si.FullOrgName))
+	fmt.Fprintf(&str, "%s'sensor_id': '%s'\n", ws, si.SensorId)
+	fmt.Fprintf(&str, "%s'host_id': '%s'\n", ws, si.HostId)
+	fmt.Fprintf(&str, "%s'geo_code': '%s'\n", ws, si.GeoCode)
+	fmt.Fprintf(&str, "%s'object_area': '%s'\n", ws, si.ObjectArea)
+	fmt.Fprintf(&str, "%s'subject_rf': '%s'\n", ws, si.SubjectRF)
+	fmt.Fprintf(&str, "%s'inn': '%s'\n", ws, si.INN)
+	fmt.Fprintf(&str, "%s'home_net': '%s'\n", ws, si.HomeNet)
+	fmt.Fprintf(&str, "%s'org_name': '%s'\n", ws, si.OrgName)
+	fmt.Fprintf(&str, "%s'full_org_name': '%s'\n", ws, si.FullOrgName)
 
 	return str.String()
 }
@@ -119,10 +130,10 @@ func (i *IpAddressInformation) ToStringBeautiful(num int) string {
 	ws := supportingfunctions.GetWhitespace(num)
 
 	str := strings.Builder{}
-	str.WriteString(fmt.Sprintf("%s'ip': '%s'\n", ws, i.Ip))
-	str.WriteString(fmt.Sprintf("%s'city': '%s'\n", ws, i.City))
-	str.WriteString(fmt.Sprintf("%s'country': '%s'\n", ws, i.Country))
-	str.WriteString(fmt.Sprintf("%s'country_code': '%s'\n", ws, i.CountryCode))
+	fmt.Fprintf(&str, "%s'ip': '%s'\n", ws, i.Ip)
+	fmt.Fprintf(&str, "%s'city': '%s'\n", ws, i.City)
+	fmt.Fprintf(&str, "%s'country': '%s'\n", ws, i.Country)
+	fmt.Fprintf(&str, "%s'country_code': '%s'\n", ws, i.CountryCode)
 
 	return str.String()
 }

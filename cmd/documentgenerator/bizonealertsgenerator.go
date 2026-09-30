@@ -147,9 +147,13 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 
 	// формируем дополнительную информацию с идентификаторами сенсоров
 	additionalInformation.SetSensorInformation(CreateListSensorsForAlerts(verifiedData).GetSensorsInformation())
-
 	// формируем дополнительную информацию с ip адресами
 	additionalInformation.SetIpAddressesInformation(CreateListIpAddresesForAlerts(verifiedData).GetIpAddressesInformation())
+	// добавляем специальный, общий идентификатор
+	// так как в alert и case uuid хранятся в разных местах и под разными названиями необходимо унифицировать
+	// место хранения идентификатора для разных объектов, это позволит унифицировать обработчик отвечающий
+	// за наполнение полей с доп. информацией по ip адресам и сенсорам
+	additionalInformation.SetSpecialUUID(verifiedMainObject.GetUUID())
 
 	if errTmp := verifiedMainObject.SetAdditionalInformation(additionalInformation); errTmp != nil {
 		err = errTmp

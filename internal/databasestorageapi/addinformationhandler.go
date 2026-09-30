@@ -94,7 +94,7 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 
 	underlineId, geoIpInfo, err := dbs.SearchGeoIPInformation(ctxTimeout, currentIndex, specialUUID)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the identifier of the index name was not found")).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("the identifier of the index name '%s' was not found", currentIndex)).Error())
 
 		return
 	}
@@ -115,6 +115,8 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 			geoIpInfo = append(geoIpInfo, v)
 		}
 	}
+
+	fmt.Printf("\t---DatabaseStorage.addGeoIPInformation taskId:'%s' geoIpInfo:'%+v'\n", newDocument.TaskId, geoIpInfo)
 
 	request, err := json.MarshalIndent(datamodels.AdditionalInformationIpAddress{IpAddresses: geoIpInfo}, "", " ")
 	if err != nil {
