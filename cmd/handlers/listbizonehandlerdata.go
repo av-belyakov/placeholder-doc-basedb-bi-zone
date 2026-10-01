@@ -3,7 +3,7 @@ package handlers
 import "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 
 // NewListBiZoneHandlerData начальный обработчик событий объекта 'data.*' топика 'alertmgr-alerts'
-func NewListBiZoneHandlerData(data *datamodels.BiZoneIRPData) map[string][]func(any) error {
+func NewListBiZoneHandlerData(data *datamodels.BiZoneIRPAlertData) map[string][]func(any) error {
 	return map[string][]func(any) error{
 		"data.agent":                  {data.SetAnyAgent},
 		"data.desc":                   {data.SetAnyDesc},

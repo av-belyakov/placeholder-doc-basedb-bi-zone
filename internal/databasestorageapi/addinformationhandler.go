@@ -53,8 +53,6 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 	currentIndex := tmp[0]
 	specialUUID := tmp[1]
 
-	fmt.Printf("\t---DatabaseStorage.addGeoIPInformation taskId:'%s' elasticsearch index:'%s', UUID:'%s'\n", newDocument.TaskId, currentIndex, specialUUID)
-
 	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*15)
 	defer ctxCancel()
 
@@ -115,8 +113,6 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 			geoIpInfo = append(geoIpInfo, v)
 		}
 	}
-
-	fmt.Printf("\t---DatabaseStorage.addGeoIPInformation taskId:'%s' geoIpInfo:'%+v'\n", newDocument.TaskId, geoIpInfo)
 
 	request, err := json.MarshalIndent(datamodels.AdditionalInformationIpAddress{IpAddresses: geoIpInfo}, "", " ")
 	if err != nil {

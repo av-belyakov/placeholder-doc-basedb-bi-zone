@@ -1,0 +1,153 @@
+{
+    "source": "",
+    "id": "de08b255-6e2e-47da-8662-c605ff09c7de",
+    "type": "",
+    "specversion": "1.0",
+    "time": "2026-09-30T08:13:35.305885+00:00",
+    "subject": null,
+    "dataschema": null,
+    "data": {
+        "id": "2028",
+        "type": {
+            "id": "Incident",
+            "title": []
+        },
+        "tenant": {
+            "id": "445556",
+            "name": ""
+        },
+        "priority": {
+            "id": "High",
+            "title": [
+                {
+                    "value": "High",
+                    "language": "ru"
+                },
+                {
+                    "value": "High",
+                    "language": "en"
+                }
+            ]
+        },
+        "assignee": null,
+        "status": {
+            "id": "В работе",
+            "title": [
+                {
+                    "value": "В работе",
+                    "language": "ru"
+                },
+                {
+                    "value": "В работе",
+                    "language": "en"
+                }
+            ]
+        },
+        "is_public": true,
+        "summary": "",
+        "description": "",
+        "recommendations": "",
+        "external_id": "",
+        "primary_category": {
+            "id": "",
+            "title": [
+                {
+                    "value": "",
+                    "language": "ru"
+                }
+            ]
+        },
+        "created_by": {
+            "id": 4,
+            "username": "email@example.com"
+        },
+        "created": "2026-09-24T11:02:38.298800Z",
+        "updated": "2026-09-30T08:13:35.292200Z",
+        "resolutiondate": null,
+        "resolution_detailed": "",
+        "customer_star_rating": null,
+        "customer_star_rating_comment": "",
+        "status_description": "",
+        "customer_assignee": null,
+        "detection_date": "2026-09-24T11:01:00Z",
+        "platform_hostname": [
+            "DFL"
+        ],
+        "fp_type": "",
+        "tlp": "amber",
+        "mitre_cov": null,
+        "response_team": null,
+        "resolution": null,
+        "activity_detected": [],
+        "tags": [
+            {
+                "name": "",
+                "color": "#DCDCDC",
+                "is_visible_for_customer": false
+            },
+            {
+                "name": "",
+                "color": "#DCDCDC",
+                "is_visible_for_customer": false
+            },
+            {
+                "name": "",
+                "color": "#DCDCDC",
+                "is_visible_for_customer": false
+            },
+            {
+                "name": "",
+                "color": "#2196F3",
+                "is_visible_for_customer": false
+            },
+            {
+                "name": "",
+                "color": "#FF6B6B",
+                "is_visible_for_customer": false
+            },
+            {
+                "name": "",
+                "color": "#9C27B0",
+                "is_visible_for_customer": false
+            },
+            {
+                "name": "",
+                "color": "#DCDCDC",
+                "is_visible_for_customer": false
+            },
+            {
+                "name": "",
+                "color": "#4CAF50",
+                "is_visible_for_customer": false
+            },
+            {
+                "name": "",
+                "color": "#DCDCDC",
+                "is_visible_for_customer": false
+            }
+        ],
+        "detection_rules": [
+            3
+        ],
+        "secondary_category": [
+            {
+                "id": "",
+                "title": [
+                    {
+                        "value": "",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "",
+                "title": [
+                    {
+                        "value": "",
+                        "language": "ru"
+                    }
+                ]
+            }
+        ]
+    }
+}

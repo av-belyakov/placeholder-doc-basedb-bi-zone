@@ -442,12 +442,12 @@ func (va *VerifiedBiZoneIRPAlert) SetAnyResponseTeam(a any) error {
 }
 
 // GetData для поля data
-func (va *VerifiedBiZoneIRPAlert) GetData() *BiZoneIRPData {
+func (va *VerifiedBiZoneIRPAlert) GetData() *BiZoneIRPAlertData {
 	return &va.Data
 }
 
 // SetData для поля data
-func (va *VerifiedBiZoneIRPAlert) SetData(v BiZoneIRPData) error {
+func (va *VerifiedBiZoneIRPAlert) SetData(v BiZoneIRPAlertData) error {
 	va.Data = v
 
 	return nil

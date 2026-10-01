@@ -46,7 +46,7 @@ func searchSContentFromSContents(content string, contents []datamodels.BiZoneIRP
 }
 
 // CreateListSensorsForAlerts список с идентификаторами сенсоров из объекта 'alerts'
-func CreateListSensorsForAlerts(verifiedData *datamodels.BiZoneIRPData) *datamodels.AdditionalInformation {
+func CreateListSensorsForAlerts(verifiedData *datamodels.BiZoneIRPAlertData) *datamodels.AdditionalInformation {
 	information := &datamodels.AdditionalInformation{
 		Sensors: []datamodels.SensorInformation(nil),
 	}
@@ -69,7 +69,7 @@ func CreateListSensorsForAlerts(verifiedData *datamodels.BiZoneIRPData) *datamod
 }
 
 // CreateListIpAddreses список с ip адресами из объекта 'alerts'
-func CreateListIpAddresesForAlerts(verifiedData *datamodels.BiZoneIRPData) *datamodels.AdditionalInformation {
+func CreateListIpAddresesForAlerts(verifiedData *datamodels.BiZoneIRPAlertData) *datamodels.AdditionalInformation {
 	information := &datamodels.AdditionalInformation{
 		IpAddresses: []datamodels.IpAddressInformation(nil),
 	}

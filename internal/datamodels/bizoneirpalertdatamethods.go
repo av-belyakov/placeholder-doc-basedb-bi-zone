@@ -9,8 +9,8 @@ import (
 )
 
 // NewBiZoneIRPData новый объект Data
-func NewBiZoneIRPData() *BiZoneIRPData {
-	return &BiZoneIRPData{
+func NewBiZoneIRPData() *BiZoneIRPAlertData {
+	return &BiZoneIRPAlertData{
 		DataSecurity:              map[string][]BiZoneIRPDataSecurity(nil),
 		Tags:                      []string(nil),
 		UnmappedDstEndpointArray:  []string(nil),
@@ -20,24 +20,24 @@ func NewBiZoneIRPData() *BiZoneIRPData {
 	}
 }
 
-func (d *BiZoneIRPData) Get() *BiZoneIRPData {
+func (d *BiZoneIRPAlertData) Get() *BiZoneIRPAlertData {
 	return d
 }
 
 // GetAgent для поля 'agent'
-func (d *BiZoneIRPData) GetAgent() uint64 {
+func (d *BiZoneIRPAlertData) GetAgent() uint64 {
 	return d.Agent
 }
 
 // SetAgent для поля 'agent'
-func (d *BiZoneIRPData) SetAgent(v uint64) error {
+func (d *BiZoneIRPAlertData) SetAgent(v uint64) error {
 	d.Agent = v
 
 	return nil
 }
 
 // SetAnyAgent для поля 'agent'
-func (d *BiZoneIRPData) SetAnyAgent(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyAgent(a any) error {
 	v, err := supportingfunctions.GetUint64(a)
 	if err != nil {
 		return err
@@ -47,19 +47,19 @@ func (d *BiZoneIRPData) SetAnyAgent(a any) error {
 }
 
 // GetSeverityID для поля 'severity_id'
-func (d *BiZoneIRPData) GetSeverityID() uint64 {
+func (d *BiZoneIRPAlertData) GetSeverityID() uint64 {
 	return d.SeverityID
 }
 
 // SetSeverityID для поля 'severity_id'
-func (d *BiZoneIRPData) SetSeverityID(v uint64) error {
+func (d *BiZoneIRPAlertData) SetSeverityID(v uint64) error {
 	d.SeverityID = v
 
 	return nil
 }
 
 // SetAnySeverityID для поля 'severity_id'
-func (d *BiZoneIRPData) SetAnySeverityID(a any) error {
+func (d *BiZoneIRPAlertData) SetAnySeverityID(a any) error {
 	v, err := supportingfunctions.GetUint64(a)
 	if err != nil {
 		return err
@@ -69,199 +69,199 @@ func (d *BiZoneIRPData) SetAnySeverityID(a any) error {
 }
 
 // GetDesc для поля 'desc'
-func (d *BiZoneIRPData) GetDesc() string {
+func (d *BiZoneIRPAlertData) GetDesc() string {
 	return d.Desc
 }
 
 // SetDesc для поля 'desc'
-func (d *BiZoneIRPData) SetDesc(v string) error {
+func (d *BiZoneIRPAlertData) SetDesc(v string) error {
 	d.Desc = v
 
 	return nil
 }
 
 // SetAnyDesc для поля 'desc'
-func (d *BiZoneIRPData) SetAnyDesc(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyDesc(a any) error {
 	return d.SetDesc(fmt.Sprint(a))
 }
 
 // GetQuery для поля 'query'
-func (d *BiZoneIRPData) GetQuery() string {
+func (d *BiZoneIRPAlertData) GetQuery() string {
 	return d.Query
 }
 
 // SetQuery для поля 'query'
-func (d *BiZoneIRPData) SetQuery(v string) error {
+func (d *BiZoneIRPAlertData) SetQuery(v string) error {
 	d.Query = v
 
 	return nil
 }
 
 // SetAnyQuery для поля 'query'
-func (d *BiZoneIRPData) SetAnyQuery(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyQuery(a any) error {
 	return d.SetQuery(fmt.Sprint(a))
 }
 
 // GetEventUid для поля 'event_uid'
-func (d *BiZoneIRPData) GetEventUid() string {
+func (d *BiZoneIRPAlertData) GetEventUid() string {
 	return d.EventUID
 }
 
 // SetEventUid для поля 'event_uid'
-func (d *BiZoneIRPData) SetEventUid(v string) error {
+func (d *BiZoneIRPAlertData) SetEventUid(v string) error {
 	d.EventUID = v
 
 	return nil
 }
 
 // SetAnyEventUid для поля 'event_uid'
-func (d *BiZoneIRPData) SetAnyEventUid(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyEventUid(a any) error {
 	return d.SetEventUid(fmt.Sprint(a))
 }
 
 // GetJobTitle для поля 'job_title'
-func (d *BiZoneIRPData) GetJobTitle() string {
+func (d *BiZoneIRPAlertData) GetJobTitle() string {
 	return d.JobTitle
 }
 
 // SetJobTitle для поля 'job_title'
-func (d *BiZoneIRPData) SetJobTitle(v string) error {
+func (d *BiZoneIRPAlertData) SetJobTitle(v string) error {
 	d.JobTitle = v
 
 	return nil
 }
 
 // SetAnyJobTitle для поля 'job_title'
-func (d *BiZoneIRPData) SetAnyJobTitle(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyJobTitle(a any) error {
 	return d.SetJobTitle(fmt.Sprint(a))
 }
 
 // GetMetadataProductName для поля 'metadata_product_name'
-func (d *BiZoneIRPData) GetMetadataProductName() string {
+func (d *BiZoneIRPAlertData) GetMetadataProductName() string {
 	return d.MetadataProductName
 }
 
 // SetMetadataProductName для поля 'metadata_product_name'
-func (d *BiZoneIRPData) SetMetadataProductName(v string) error {
+func (d *BiZoneIRPAlertData) SetMetadataProductName(v string) error {
 	d.MetadataProductName = v
 
 	return nil
 }
 
 // SetAnyMetadataProductName для поля 'metadata_product_name'
-func (d *BiZoneIRPData) SetAnyMetadataProductName(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyMetadataProductName(a any) error {
 	return d.SetMetadataProductName(fmt.Sprint(a))
 }
 
 // GetSourceIP для поля 'source_ip'
-func (d *BiZoneIRPData) GetSourceIP() string {
+func (d *BiZoneIRPAlertData) GetSourceIP() string {
 	return d.SourceIP
 }
 
 // SetSourceIP для поля 'source_ip'
-func (d *BiZoneIRPData) SetSourceIP(v string) error {
+func (d *BiZoneIRPAlertData) SetSourceIP(v string) error {
 	d.SourceIP = v
 
 	return nil
 }
 
 // SetAnySourceIP для поля 'source_ip'
-func (d *BiZoneIRPData) SetAnySourceIP(a any) error {
+func (d *BiZoneIRPAlertData) SetAnySourceIP(a any) error {
 	return d.SetSourceIP(fmt.Sprint(a))
 }
 
 // GetTargetIP для поля 'target_ip'
-func (d *BiZoneIRPData) GetTargetIP() string {
+func (d *BiZoneIRPAlertData) GetTargetIP() string {
 	return d.TargetIP
 }
 
 // SetTargetIP для поля 'target_ip'
-func (d *BiZoneIRPData) SetTargetIP(v string) error {
+func (d *BiZoneIRPAlertData) SetTargetIP(v string) error {
 	d.TargetIP = v
 
 	return nil
 }
 
 // SetAnyTargetIP для поля 'target_ip'
-func (d *BiZoneIRPData) SetAnyTargetIP(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyTargetIP(a any) error {
 	return d.SetTargetIP(fmt.Sprint(a))
 }
 
 // GetUnmappedEventCard для поля 'unmapped_event_card'
-func (d *BiZoneIRPData) GetUnmappedEventCard() string {
+func (d *BiZoneIRPAlertData) GetUnmappedEventCard() string {
 	return d.UnmappedEventCard
 }
 
 // SetUnmappedEventCard для поля 'unmapped_event_card'
-func (d *BiZoneIRPData) SetUnmappedEventCard(v string) error {
+func (d *BiZoneIRPAlertData) SetUnmappedEventCard(v string) error {
 	d.UnmappedEventCard = v
 
 	return nil
 }
 
 // SetAnyUnmappedEventCard для поля 'unmapped_event_card'
-func (d *BiZoneIRPData) SetAnyUnmappedEventCard(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyUnmappedEventCard(a any) error {
 	return d.SetUnmappedEventCard(fmt.Sprint(a))
 }
 
 // GetUnmappedHiveAlertID для поля 'unmapped_hive_alert_id'
-func (d *BiZoneIRPData) GetUnmappedHiveAlertID() string {
+func (d *BiZoneIRPAlertData) GetUnmappedHiveAlertID() string {
 	return d.UnmappedHiveAlertID
 }
 
 // SetUnmappedHiveAlertID для поля 'unmapped_hive_alert_id'
-func (d *BiZoneIRPData) SetUnmappedHiveAlertID(v string) error {
+func (d *BiZoneIRPAlertData) SetUnmappedHiveAlertID(v string) error {
 	d.UnmappedHiveAlertID = v
 
 	return nil
 }
 
 // SetAnyUnmappedHiveAlertID для поля 'unmapped_hive_alert_id'
-func (d *BiZoneIRPData) SetAnyUnmappedHiveAlertID(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyUnmappedHiveAlertID(a any) error {
 	return d.SetUnmappedHiveAlertID(fmt.Sprint(a))
 }
 
 // GetUnmappedSensorIP для поля 'unmapped_sensor_ip'
-func (d *BiZoneIRPData) GetUnmappedSensorIP() string {
+func (d *BiZoneIRPAlertData) GetUnmappedSensorIP() string {
 	return d.UnmappedSensorIP
 }
 
 // SetUnmappedSensorIP для поля 'unmapped_sensor_ip'
-func (d *BiZoneIRPData) SetUnmappedSensorIP(v string) error {
+func (d *BiZoneIRPAlertData) SetUnmappedSensorIP(v string) error {
 	d.UnmappedSensorIP = v
 
 	return nil
 }
 
 // SetAnyUnmappedSensorIP для поля 'unmapped_sensor_ip'
-func (d *BiZoneIRPData) SetAnyUnmappedSensorIP(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyUnmappedSensorIP(a any) error {
 	return d.SetUnmappedSensorIP(fmt.Sprint(a))
 }
 
 // GetUnmappedSensorName для поля 'unmapped_sensor_name'
-func (d *BiZoneIRPData) GetUnmappedSensorName() string {
+func (d *BiZoneIRPAlertData) GetUnmappedSensorName() string {
 	return d.UnmappedSensorName
 }
 
 // SetUnmappedSensorName для поля 'unmapped_sensor_name'
-func (d *BiZoneIRPData) SetUnmappedSensorName(v string) error {
+func (d *BiZoneIRPAlertData) SetUnmappedSensorName(v string) error {
 	d.UnmappedSensorName = v
 
 	return nil
 }
 
 // SetAnyUnmappedSensorName для поля 'unmapped_sensor_name'
-func (d *BiZoneIRPData) SetAnyUnmappedSensorName(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyUnmappedSensorName(a any) error {
 	return d.SetUnmappedSensorName(fmt.Sprint(a))
 }
 
 // GetFirstSeenTime для поля 'first_seen_time' (формат RFC3339)
-func (d *BiZoneIRPData) GetFirstSeenTime() string {
+func (d *BiZoneIRPAlertData) GetFirstSeenTime() string {
 	return d.FirstSeenTime
 }
 
 // SetFirstSeenTime для поля 'first_seen_time' (преобразует в формат времени RFC3339)
-func (d *BiZoneIRPData) SetFirstSeenTime(v string) error {
+func (d *BiZoneIRPAlertData) SetFirstSeenTime(v string) error {
 	timeStr, err := supportingfunctions.SmartConvertToRFC3339(v)
 	if err != nil {
 		return err
@@ -273,7 +273,7 @@ func (d *BiZoneIRPData) SetFirstSeenTime(v string) error {
 }
 
 // SetAnyFirstSeenTime для поля 'first_seen_time'
-func (d *BiZoneIRPData) SetAnyFirstSeenTime(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyFirstSeenTime(a any) error {
 	if v, ok := a.(string); ok {
 		return d.SetFirstSeenTime(v)
 	}
@@ -282,12 +282,12 @@ func (d *BiZoneIRPData) SetAnyFirstSeenTime(a any) error {
 }
 
 // GetLastSeenTime для поля 'last_seen_time' (формат RFC3339)
-func (d *BiZoneIRPData) GetLastSeenTime() string {
+func (d *BiZoneIRPAlertData) GetLastSeenTime() string {
 	return d.LastSeenTime
 }
 
 // SetLastSeenTime для поля 'last_seen_time' (преобразует в формат времени RFC3339)
-func (d *BiZoneIRPData) SetLastSeenTime(v string) error {
+func (d *BiZoneIRPAlertData) SetLastSeenTime(v string) error {
 	timeStr, err := supportingfunctions.SmartConvertToRFC3339(v)
 	if err != nil {
 		return err
@@ -299,7 +299,7 @@ func (d *BiZoneIRPData) SetLastSeenTime(v string) error {
 }
 
 // SetAnyLastSeenTime для поля 'last_seen_time'
-func (d *BiZoneIRPData) SetAnyLastSeenTime(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyLastSeenTime(a any) error {
 	if v, ok := a.(string); ok {
 		return d.SetLastSeenTime(v)
 	}
@@ -308,19 +308,19 @@ func (d *BiZoneIRPData) SetAnyLastSeenTime(a any) error {
 }
 
 // GetTags для поля 'tags'
-func (d *BiZoneIRPData) GetTags() []string {
+func (d *BiZoneIRPAlertData) GetTags() []string {
 	return d.Tags
 }
 
 // SetTags для поля 'tags'
-func (d *BiZoneIRPData) SetTags(v []string) error {
+func (d *BiZoneIRPAlertData) SetTags(v []string) error {
 	d.Tags = v
 
 	return nil
 }
 
 // SetTag добавляет значение 'tag' в список
-func (d *BiZoneIRPData) SetTag(v string) error {
+func (d *BiZoneIRPAlertData) SetTag(v string) error {
 	if _, isExist := supportingfunctions.SliceContainsElement(v, d.Tags); !isExist {
 		d.Tags = append(d.Tags, v)
 	}
@@ -329,24 +329,24 @@ func (d *BiZoneIRPData) SetTag(v string) error {
 }
 
 // SetAnyTag добавляет некоторое значение в список 'tags'
-func (d *BiZoneIRPData) SetAnyTag(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyTag(a any) error {
 	return d.SetTag(fmt.Sprint(a))
 }
 
 // GetUnmappedDstEndpointArray для поля 'unmapped_dst_endpoint_array'
-func (d *BiZoneIRPData) GetUnmappedDstEndpointArray() []string {
+func (d *BiZoneIRPAlertData) GetUnmappedDstEndpointArray() []string {
 	return d.UnmappedDstEndpointArray
 }
 
 // SetUnmappedDstEndpointArray для поля 'unmapped_dst_endpoint_array'
-func (d *BiZoneIRPData) SetUnmappedDstEndpointArray(v []string) error {
+func (d *BiZoneIRPAlertData) SetUnmappedDstEndpointArray(v []string) error {
 	d.UnmappedDstEndpointArray = v
 
 	return nil
 }
 
 // SetUnmappedDstEndpointArrayElement добавляет значение 'unmapped_dst_endpoint_array' в список
-func (d *BiZoneIRPData) SetUnmappedDstEndpointArrayElement(v string) error {
+func (d *BiZoneIRPAlertData) SetUnmappedDstEndpointArrayElement(v string) error {
 	if _, isExist := supportingfunctions.SliceContainsElement(v, d.UnmappedDstEndpointArray); !isExist {
 		d.UnmappedDstEndpointArray = append(d.UnmappedDstEndpointArray, v)
 	}
@@ -355,24 +355,24 @@ func (d *BiZoneIRPData) SetUnmappedDstEndpointArrayElement(v string) error {
 }
 
 // SetAnyUnmappedDstEndpointArray добавляет некоторое значение в список 'unmapped_dst_endpoint_array'
-func (d *BiZoneIRPData) SetAnyUnmappedDstEndpointArray(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyUnmappedDstEndpointArray(a any) error {
 	return d.SetUnmappedDstEndpointArrayElement(fmt.Sprint(a))
 }
 
 // GetUnmappedHomeEndpointArray для поля 'unmapped_home_endpoint_array'
-func (d *BiZoneIRPData) GetUnmappedHomeEndpointArray() []string {
+func (d *BiZoneIRPAlertData) GetUnmappedHomeEndpointArray() []string {
 	return d.UnmappedHomeEndpointArray
 }
 
 // SetUnmappedHomeEndpointArray для поля 'unmapped_home_endpoint_array'
-func (d *BiZoneIRPData) SetUnmappedHomeEndpointArray(v []string) error {
+func (d *BiZoneIRPAlertData) SetUnmappedHomeEndpointArray(v []string) error {
 	d.UnmappedHomeEndpointArray = v
 
 	return nil
 }
 
 // SetUnmappedHomeEndpointArrayElement добавляет значение 'unmapped_home_endpoint_array' в список
-func (d *BiZoneIRPData) SetUnmappedHomeEndpointArrayElement(v string) error {
+func (d *BiZoneIRPAlertData) SetUnmappedHomeEndpointArrayElement(v string) error {
 	if _, isExist := supportingfunctions.SliceContainsElement(v, d.UnmappedHomeEndpointArray); !isExist {
 		d.UnmappedHomeEndpointArray = append(d.UnmappedHomeEndpointArray, v)
 	}
@@ -381,24 +381,24 @@ func (d *BiZoneIRPData) SetUnmappedHomeEndpointArrayElement(v string) error {
 }
 
 // SetAnyUnmappedHomeEndpointArray добавляет некоторое значение в список 'unmapped_home_endpoint_array'
-func (d *BiZoneIRPData) SetAnyUnmappedHomeEndpointArray(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyUnmappedHomeEndpointArray(a any) error {
 	return d.SetUnmappedHomeEndpointArrayElement(fmt.Sprint(a))
 }
 
 // GetDetectionPattern для поля 'detection_pattern'
-func (d *BiZoneIRPData) GetDetectionPattern() []uint64 {
+func (d *BiZoneIRPAlertData) GetDetectionPattern() []uint64 {
 	return d.DetectionPattern
 }
 
 // SetDetectionPattern для поля 'detection_pattern'
-func (d *BiZoneIRPData) SetDetectionPattern(v []uint64) error {
+func (d *BiZoneIRPAlertData) SetDetectionPattern(v []uint64) error {
 	d.DetectionPattern = v
 
 	return nil
 }
 
 // SetDetectionPatternElement добавляет значение 'detection_pattern' в список
-func (d *BiZoneIRPData) SetDetectionPatternElement(v uint64) error {
+func (d *BiZoneIRPAlertData) SetDetectionPatternElement(v uint64) error {
 	if _, isExist := supportingfunctions.SliceContainsElement(v, d.DetectionPattern); !isExist {
 		d.DetectionPattern = append(d.DetectionPattern, v)
 	}
@@ -407,7 +407,7 @@ func (d *BiZoneIRPData) SetDetectionPatternElement(v uint64) error {
 }
 
 // SetAnyDetectionPatternElement добавляет некоторое значение в список 'detection_pattern'
-func (d *BiZoneIRPData) SetAnyDetectionPatternElement(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyDetectionPatternElement(a any) error {
 	v, err := supportingfunctions.GetUint64(a)
 	if err != nil {
 		return err
@@ -417,19 +417,19 @@ func (d *BiZoneIRPData) SetAnyDetectionPatternElement(a any) error {
 }
 
 // GetUnmappedAgentArray для поля 'unmapped_agent_array'
-func (d *BiZoneIRPData) GetUnmappedAgentArray() []uint64 {
+func (d *BiZoneIRPAlertData) GetUnmappedAgentArray() []uint64 {
 	return d.UnmappedAgentArray
 }
 
 // SetUnmappedAgentArrayn для поля 'unmapped_agent_array'
-func (d *BiZoneIRPData) SetUnmappedAgentArrayn(v []uint64) error {
+func (d *BiZoneIRPAlertData) SetUnmappedAgentArrayn(v []uint64) error {
 	d.UnmappedAgentArray = v
 
 	return nil
 }
 
 // SetUnmappedAgentArrayElement добавляет значение 'unmapped_agent_array' в список
-func (d *BiZoneIRPData) SetUnmappedAgentArrayElement(v uint64) error {
+func (d *BiZoneIRPAlertData) SetUnmappedAgentArrayElement(v uint64) error {
 	if _, isExist := supportingfunctions.SliceContainsElement(v, d.UnmappedAgentArray); !isExist {
 		d.UnmappedAgentArray = append(d.UnmappedAgentArray, v)
 	}
@@ -438,7 +438,7 @@ func (d *BiZoneIRPData) SetUnmappedAgentArrayElement(v uint64) error {
 }
 
 // SetAnyUnmappedAgentArrayElement добавляет некоторое значение в список 'unmapped_agent_array'
-func (d *BiZoneIRPData) SetAnyUnmappedAgentArrayElement(a any) error {
+func (d *BiZoneIRPAlertData) SetAnyUnmappedAgentArrayElement(a any) error {
 	v, err := supportingfunctions.GetUint64(a)
 	if err != nil {
 		return err
@@ -448,26 +448,26 @@ func (d *BiZoneIRPData) SetAnyUnmappedAgentArrayElement(a any) error {
 }
 
 // GetDataSecurity для поля 'data_security'
-func (d *BiZoneIRPData) GetDataSecurity() map[string][]BiZoneIRPDataSecurity {
+func (d *BiZoneIRPAlertData) GetDataSecurity() map[string][]BiZoneIRPDataSecurity {
 	return d.DataSecurity
 }
 
 // SetDataSecurity для поля 'data_security'
-func (d *BiZoneIRPData) SetDataSecurity(v map[string][]BiZoneIRPDataSecurity) error {
+func (d *BiZoneIRPAlertData) SetDataSecurity(v map[string][]BiZoneIRPDataSecurity) error {
 	d.DataSecurity = v
 
 	return nil
 }
 
 // SetDataSecurityElement добавляет значение 'data_security' в список
-func (d *BiZoneIRPData) SetDataSecurityElement(k string, v []BiZoneIRPDataSecurity) error {
+func (d *BiZoneIRPAlertData) SetDataSecurityElement(k string, v []BiZoneIRPDataSecurity) error {
 	d.DataSecurity[k] = v
 
 	return nil
 }
 
 // ToStringBeautiful форматированный вывод
-func (d *BiZoneIRPData) ToStringBeautiful(num int) string {
+func (d *BiZoneIRPAlertData) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)

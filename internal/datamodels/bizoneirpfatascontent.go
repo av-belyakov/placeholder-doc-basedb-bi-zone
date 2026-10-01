@@ -16,36 +16,36 @@ func (d *BiZoneIRPSContent) Get() *BiZoneIRPSContent {
 	return d
 }
 
-// GetContent для поля content
+// GetContent для поля 'content'
 func (d *BiZoneIRPSContent) GetContent() string {
 	return d.Content
 }
 
-// SetContent для поля content
+// SetContent для поля 'content'
 func (d *BiZoneIRPSContent) SetContent(v string) error {
 	d.Content = v
 
 	return nil
 }
 
-// SetAnyContent для поля content
+// SetAnyContent для поля 'content'
 func (d *BiZoneIRPSContent) SetAnyContent(a any) error {
 	return d.SetContent(fmt.Sprint(a))
 }
 
-// GetNocase для поля nocase
+// GetNocase для поля 'nocase'
 func (d *BiZoneIRPSContent) GetNocase() bool {
 	return d.Nocase
 }
 
-// SetNocase для поля nocase
+// SetNocase для поля 'nocase'
 func (d *BiZoneIRPSContent) SetNocase(v bool) error {
 	d.Nocase = v
 
 	return nil
 }
 
-// SetAnyNocase для поля nocase
+// SetAnyNocase для поля 'nocase'
 func (d *BiZoneIRPSContent) SetAnyNocase(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -55,19 +55,19 @@ func (d *BiZoneIRPSContent) SetAnyNocase(a any) error {
 	return d.SetNocase(v)
 }
 
-// GetHTTPURI для поля http_uri
+// GetHTTPURI для поля 'http_uri'
 func (d *BiZoneIRPSContent) GetHTTPURI() bool {
 	return d.HTTPURI
 }
 
-// SetHTTPURI для поля http_uri
+// SetHTTPURI для поля 'http_uri'
 func (d *BiZoneIRPSContent) SetHTTPURI(v bool) error {
 	d.Nocase = v
 
 	return nil
 }
 
-// SetAnyHTTPURI для поля http_uri
+// SetAnyHTTPURI для поля 'http_uri'
 func (d *BiZoneIRPSContent) SetAnyHTTPURI(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -77,19 +77,19 @@ func (d *BiZoneIRPSContent) SetAnyHTTPURI(a any) error {
 	return d.SetHTTPURI(v)
 }
 
-// GetRawbytes для поля rawbytes
+// GetRawbytes для поля 'rawbytes'
 func (d *BiZoneIRPSContent) GetRawbytes() bool {
 	return d.Rawbytes
 }
 
-// SetRawbytes для поля rawbytes
+// SetRawbytes для поля 'rawbytes'
 func (d *BiZoneIRPSContent) SetRawbytes(v bool) error {
 	d.Rawbytes = v
 
 	return nil
 }
 
-// SetAnyRawbytes для поля rawbytes
+// SetAnyRawbytes для поля 'rawbytes'
 func (d *BiZoneIRPSContent) SetAnyRawbytes(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -99,19 +99,19 @@ func (d *BiZoneIRPSContent) SetAnyRawbytes(a any) error {
 	return d.SetRawbytes(v)
 }
 
-// GetHTTPCookie для поля http_cookie
+// GetHTTPCookie для поля 'http_cookie'
 func (d *BiZoneIRPSContent) GetHTTPCookie() bool {
 	return d.HTTPCookie
 }
 
-// SetHTTPCookie для поля http_cookie
+// SetHTTPCookie для поля 'http_cookie'
 func (d *BiZoneIRPSContent) SetHTTPCookie(v bool) error {
 	d.HTTPCookie = v
 
 	return nil
 }
 
-// SetAnyHTTPCookie для поля http_cookie
+// SetAnyHTTPCookie для поля 'http_cookie'
 func (d *BiZoneIRPSContent) SetAnyHTTPCookie(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -121,19 +121,19 @@ func (d *BiZoneIRPSContent) SetAnyHTTPCookie(a any) error {
 	return d.SetHTTPCookie(v)
 }
 
-// GetHTTPHeader для поля http_header
+// GetHTTPHeader для поля 'http_header'
 func (d *BiZoneIRPSContent) GetHTTPHeader() bool {
 	return d.HTTPHeader
 }
 
-// SetHTTPHeader для поля http_header
+// SetHTTPHeader для поля 'http_header'
 func (d *BiZoneIRPSContent) SetHTTPHeader(v bool) error {
 	d.HTTPHeader = v
 
 	return nil
 }
 
-// SetAnyHTTPHeader для поля http_header
+// SetAnyHTTPHeader для поля 'http_header'
 func (d *BiZoneIRPSContent) SetAnyHTTPHeader(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -143,19 +143,19 @@ func (d *BiZoneIRPSContent) SetAnyHTTPHeader(a any) error {
 	return d.SetHTTPHeader(v)
 }
 
-// GetHTTPMethod для поля http_method
+// GetHTTPMethod для поля 'http_method'
 func (d *BiZoneIRPSContent) GetHTTPMethod() bool {
 	return d.HTTPMethod
 }
 
-// SetHTTPMethod для поля http_method
+// SetHTTPMethod для поля 'http_method'
 func (d *BiZoneIRPSContent) SetHTTPMethod(v bool) error {
 	d.HTTPMethod = v
 
 	return nil
 }
 
-// SetAnyHTTPMethod для поля http_method
+// SetAnyHTTPMethod для поля 'http_method'
 func (d *BiZoneIRPSContent) SetAnyHTTPMethod(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -165,19 +165,19 @@ func (d *BiZoneIRPSContent) SetAnyHTTPMethod(a any) error {
 	return d.SetHTTPMethod(v)
 }
 
-// GetHTTPRawURI для поля http_raw_uri
+// GetHTTPRawURI для поля 'http_raw_uri'
 func (d *BiZoneIRPSContent) GetHTTPRawURI() bool {
 	return d.HTTPRawURI
 }
 
-// SetHTTPRawURI для поля http_raw_uri
+// SetHTTPRawURI для поля 'http_raw_uri'
 func (d *BiZoneIRPSContent) SetHTTPRawURI(v bool) error {
 	d.HTTPRawURI = v
 
 	return nil
 }
 
-// SetAnyHTTPRawURI для поля http_raw_uri
+// SetAnyHTTPRawURI для поля 'http_raw_uri'
 func (d *BiZoneIRPSContent) SetAnyHTTPRawURI(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -187,19 +187,19 @@ func (d *BiZoneIRPSContent) SetAnyHTTPRawURI(a any) error {
 	return d.SetHTTPRawURI(v)
 }
 
-// GetHTTPStatMsg для поля http_stat_msg
+// GetHTTPStatMsg для поля 'http_stat_msg'
 func (d *BiZoneIRPSContent) GetHTTPStatMsg() bool {
 	return d.HTTPStatMsg
 }
 
-// SetHTTPStatMsg для поля http_stat_msg
+// SetHTTPStatMsg для поля 'http_stat_msg'
 func (d *BiZoneIRPSContent) SetHTTPStatMsg(v bool) error {
 	d.HTTPStatMsg = v
 
 	return nil
 }
 
-// SetAnyHTTPStatMsg для поля http_stat_msg
+// SetAnyHTTPStatMsg для поля 'http_stat_msg'
 func (d *BiZoneIRPSContent) SetAnyHTTPStatMsg(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -209,19 +209,19 @@ func (d *BiZoneIRPSContent) SetAnyHTTPStatMsg(a any) error {
 	return d.SetHTTPStatMsg(v)
 }
 
-// GetHTTPStatCode для поля http_stat_code
+// GetHTTPStatCode для поля 'http_stat_code'
 func (d *BiZoneIRPSContent) GetHTTPStatCode() bool {
 	return d.HTTPStatCode
 }
 
-// SetHTTPStatCode для поля http_stat_code
+// SetHTTPStatCode для поля 'http_stat_code'
 func (d *BiZoneIRPSContent) SetHTTPStatCode(v bool) error {
 	d.HTTPStatCode = v
 
 	return nil
 }
 
-// SetAnyHTTPStatCode для поля http_stat_code
+// SetAnyHTTPStatCode для поля 'http_stat_code'
 func (d *BiZoneIRPSContent) SetAnyHTTPStatCode(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -231,19 +231,19 @@ func (d *BiZoneIRPSContent) SetAnyHTTPStatCode(a any) error {
 	return d.SetHTTPStatCode(v)
 }
 
-// GetHTTPRawCookie для поля http_raw_cookie
+// GetHTTPRawCookie для поля 'http_raw_cookie'
 func (d *BiZoneIRPSContent) GetHTTPRawCookie() bool {
 	return d.HTTPRawCookie
 }
 
-// SetHTTPRawCookie для поля http_raw_cookie
+// SetHTTPRawCookie для поля 'http_raw_cookie'
 func (d *BiZoneIRPSContent) SetHTTPRawCookie(v bool) error {
 	d.HTTPRawCookie = v
 
 	return nil
 }
 
-// SetAnyHTTPRawCookie для поля http_raw_cookie
+// SetAnyHTTPRawCookie для поля 'http_raw_cookie'
 func (d *BiZoneIRPSContent) SetAnyHTTPRawCookie(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -253,19 +253,19 @@ func (d *BiZoneIRPSContent) SetAnyHTTPRawCookie(a any) error {
 	return d.SetHTTPRawCookie(v)
 }
 
-// GetHTTPRawHeader для поля http_raw_header
+// GetHTTPRawHeader для поля 'http_raw_header'
 func (d *BiZoneIRPSContent) GetHTTPRawHeader() bool {
 	return d.HTTPRawHeader
 }
 
-// SetHTTPRawHeader для поля http_raw_header
+// SetHTTPRawHeader для поля 'http_raw_header'
 func (d *BiZoneIRPSContent) SetHTTPRawHeader(v bool) error {
 	d.HTTPRawHeader = v
 
 	return nil
 }
 
-// SetAnyHTTPRawHeader для поля http_raw_header
+// SetAnyHTTPRawHeader для поля 'http_raw_header'
 func (d *BiZoneIRPSContent) SetAnyHTTPRawHeader(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -275,19 +275,19 @@ func (d *BiZoneIRPSContent) SetAnyHTTPRawHeader(a any) error {
 	return d.SetHTTPRawHeader(v)
 }
 
-// GetHTTPClientBody для поля http_client_body
+// GetHTTPClientBody для поля 'http_client_body'
 func (d *BiZoneIRPSContent) GetHTTPClientBody() bool {
 	return d.HTTPClientBody
 }
 
-// SetHTTPClientBody для поля http_client_body
+// SetHTTPClientBody для поля 'http_client_body'
 func (d *BiZoneIRPSContent) SetHTTPClientBody(v bool) error {
 	d.HTTPClientBody = v
 
 	return nil
 }
 
-// SetAnyHTTPClientBody для поля http_client_body
+// SetAnyHTTPClientBody для поля 'http_client_body'
 func (d *BiZoneIRPSContent) SetAnyHTTPClientBody(a any) error {
 	v, ok := a.(bool)
 	if !ok {
@@ -297,19 +297,19 @@ func (d *BiZoneIRPSContent) SetAnyHTTPClientBody(a any) error {
 	return d.SetHTTPClientBody(v)
 }
 
-// GetDistance для поля distance
+// GetDistance для поля 'distance'
 func (d *BiZoneIRPSContent) GetDistance() *string {
 	return d.Distance
 }
 
-// SetDistance для поля distance
+// SetDistance для поля 'distance'
 func (d *BiZoneIRPSContent) SetDistance(v *string) error {
 	d.Distance = v
 
 	return nil
 }
 
-// SetAnyDistance для поля distance
+// SetAnyDistance для поля 'distance'
 func (d *BiZoneIRPSContent) SetAnyDistance(a any) error {
 	v, ok := a.(string)
 	if !ok {
@@ -319,19 +319,19 @@ func (d *BiZoneIRPSContent) SetAnyDistance(a any) error {
 	return d.SetDistance(&v)
 }
 
-// GetFastPattern для поля fast_pattern
+// GetFastPattern для поля 'fast_pattern'
 func (d *BiZoneIRPSContent) GetFastPattern() *string {
 	return d.FastPattern
 }
 
-// SetFastPattern для поля fast_pattern
+// SetFastPattern для поля 'fast_pattern'
 func (d *BiZoneIRPSContent) SetFastPattern(v *string) error {
 	d.FastPattern = v
 
 	return nil
 }
 
-// SetAnyFastPattern для поля fast_pattern
+// SetAnyFastPattern для поля 'fast_pattern'
 func (d *BiZoneIRPSContent) SetAnyFastPattern(a any) error {
 	v, ok := a.(string)
 	if !ok {
@@ -341,19 +341,19 @@ func (d *BiZoneIRPSContent) SetAnyFastPattern(a any) error {
 	return d.SetFastPattern(&v)
 }
 
-// GetDepth для поля depth
+// GetDepth для поля 'depth'
 func (d *BiZoneIRPSContent) GetDepth() *string {
 	return d.Depth
 }
 
-// SetDepth для поля depth
+// SetDepth для поля 'depth'
 func (d *BiZoneIRPSContent) SetDepth(v *string) error {
 	d.Depth = v
 
 	return nil
 }
 
-// SetAnyDepth для поля depth
+// SetAnyDepth для поля 'depth'
 func (d *BiZoneIRPSContent) SetAnyDepth(a any) error {
 	v, ok := a.(string)
 	if !ok {
@@ -363,19 +363,19 @@ func (d *BiZoneIRPSContent) SetAnyDepth(a any) error {
 	return d.SetDepth(&v)
 }
 
-// GetOffset для поля offset
+// GetOffset для поля 'offset'
 func (d *BiZoneIRPSContent) GetOffset() *string {
 	return d.Offset
 }
 
-// SetOffset для поля offset
+// SetOffset для поля 'offset'
 func (d *BiZoneIRPSContent) SetOffset(v *string) error {
 	d.Offset = v
 
 	return nil
 }
 
-// SetAnyOffset для поля offset
+// SetAnyOffset для поля 'offset'
 func (d *BiZoneIRPSContent) SetAnyOffset(a any) error {
 	v, ok := a.(string)
 	if !ok {
@@ -385,19 +385,19 @@ func (d *BiZoneIRPSContent) SetAnyOffset(a any) error {
 	return d.SetOffset(&v)
 }
 
-// GetWithin для поля within
+// GetWithin для поля 'within'
 func (d *BiZoneIRPSContent) GetWithin() *string {
 	return d.Within
 }
 
-// SetWithin для поля within
+// SetWithin для поля 'within'
 func (d *BiZoneIRPSContent) SetWithin(v *string) error {
 	d.Within = v
 
 	return nil
 }
 
-// SetAnyWithin для поля within
+// SetAnyWithin для поля 'within'
 func (d *BiZoneIRPSContent) SetAnyWithin(a any) error {
 	v, ok := a.(string)
 	if !ok {
