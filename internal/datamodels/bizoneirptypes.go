@@ -1,7 +1,5 @@
 package datamodels
 
-import "time"
-
 /***
 * Структуры относящиеся к типау Alert
 ***/
@@ -100,17 +98,31 @@ type BiZoneIRPSContent struct {
 * Структуры относящиеся к типау Case
 ***/
 
-// VerifiedBiZoneCase основной объект case
-type VerifiedBiZoneCase struct {
+// VerifiedBiZoneIRPCase основной объект case
+type VerifiedBiZoneIRPCase struct {
+	Data        BiZoneIRPCaseData `json:"data"`
 	ID          string            `json:"id"`
 	Type        string            `json:"type"`
 	Source      string            `json:"source"`
 	SpecVersion string            `json:"specversion"`
-	Time        time.Time         `json:"time"` //дата создания (формат RFC3339) или ISO 8601
-	Data        BiZoneIRPCaseData `json:"data"`
+	Time        string            `json:"time"` //дата создания (формат RFC3339) или ISO 8601
 	Subject     *string           `json:"subject"`
 	DataSchema  *string           `json:"dataschema"`
 }
+
+/*
+type VerifiedBiZoneIRPCase struct {
++	Data        BiZoneIRPCaseData `json:"data"`
++	ID          string            `json:"id"`
++	Type        string            `json:"type"`
++	Source      string            `json:"source"`
++	SpecVersion string            `json:"specversion"`
++	Time        string            `json:"time"` //дата создания (формат RFC3339) или ISO 8601
++	Subject     *string           `json:"subject"`
++	DataSchema  *string           `json:"dataschema"`
+}
+
+*/
 
 // BiZoneIRPCaseData полезная нагрузка события
 type BiZoneIRPCaseData struct {
@@ -124,6 +136,7 @@ type BiZoneIRPCaseData struct {
 	Status                    BiZoneIRPStatus     `json:"status"`
 	PrimaryCategory           BiZoneIRPCategory   `json:"primary_category"`
 	Tenant                    BiZoneIRPTenant     `json:"tenant"`
+	CreatedBy                 BiZoneIRPCreatedBy  `json:"created_by"`
 	Created                   string              `json:"created"`        // дата создания (формат RFC3339) или ISO 8601
 	Updated                   string              `json:"updated"`        // дата обновления (формат RFC3339) или ISO 8601
 	DetectionDate             string              `json:"detection_date"` // дата обнаружения (формат RFC3339) или ISO 8601
@@ -138,7 +151,6 @@ type BiZoneIRPCaseData struct {
 	StatusDescription         string              `json:"status_description"`
 	FpType                    string              `json:"fp_type"`
 	TLP                       string              `json:"tlp"`
-	CreatedBy                 BiZoneIRPCreatedBy  `json:"created_by"`
 	CustomerAssignee          *string             `json:"customer_assignee"`
 	Assignee                  *string             `json:"assignee"`
 	MitreCov                  *string             `json:"mitre_cov"`
@@ -153,13 +165,14 @@ type BiZoneIRPCaseData struct {
 	ActivityDetected          []any               `json:"activity_detected"`
 	Tags                      []BiZoneIRPTag      `json:"tags"`
 	SecondaryCategory         []BiZoneIRPCategory `json:"secondary_category"`
-	PlatformHostname          []string            `json:"platform_hostname"`
-	DetectionRules            []uint64            `json:"detection_rules"`
-	Type                      BiZoneIRPType       `json:"type"`
-	Priority                  BiZoneIRPPriority   `json:"priority"`
-	Status                    BiZoneIRPStatus     `json:"status"`
-	PrimaryCategory           BiZoneIRPCategory   `json:"primary_category"`
-	Tenant                    BiZoneIRPTenant     `json:"tenant"`
++	PlatformHostname          []string            `json:"platform_hostname"`
++	DetectionRules            []uint64            `json:"detection_rules"`
++	Type                      BiZoneIRPType       `json:"type"`
++	Priority                  BiZoneIRPPriority   `json:"priority"`
++	Status                    BiZoneIRPStatus     `json:"status"`
++	PrimaryCategory           BiZoneIRPCategory   `json:"primary_category"`
++	Tenant                    BiZoneIRPTenant     `json:"tenant"`
++	CreatedBy                 BiZoneIRPCreatedBy  `json:"created_by"`
 +	Created                   string              `json:"created"`        // дата создания (формат RFC3339) или ISO 8601
 +	Updated                   string              `json:"updated"`        // дата обновления (формат RFC3339) или ISO 8601
 +	DetectionDate             string              `json:"detection_date"` // дата обнаружения (формат RFC3339) или ISO 8601
@@ -174,7 +187,6 @@ type BiZoneIRPCaseData struct {
 +	StatusDescription         string              `json:"status_description"`
 +	FpType                    string              `json:"fp_type"`
 +	TLP                       string              `json:"tlp"`
-	CreatedBy                 BiZoneIRPCreatedBy  `json:"created_by"`
 +	CustomerAssignee          *string             `json:"customer_assignee"`
 +	Assignee                  *string             `json:"assignee"`
 +	MitreCov                  *string             `json:"mitre_cov"`

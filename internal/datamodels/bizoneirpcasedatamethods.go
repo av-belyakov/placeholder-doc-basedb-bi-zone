@@ -451,400 +451,157 @@ func (d *BiZoneIRPCaseData) SetAnyIsPublic(a any) error {
 	return d.SetIsPublic(v)
 }
 
-// GetDesc для поля 'desc'
-func (d *BiZoneIRPCaseData) GetDesc() string {
-	return d.Desc
+// GetActivityDetected для поля 'activity_detected'
+func (d *BiZoneIRPCaseData) GetActivityDetected() []any {
+	return d.ActivityDetected
 }
 
-// SetDesc для поля 'desc'
-func (d *BiZoneIRPCaseData) SetDesc(v string) error {
-	d.Desc = v
+// SetActivityDetected для поля 'activity_detected'
+func (d *BiZoneIRPCaseData) SetActivityDetected(v []any) error {
+	d.ActivityDetected = v
 
 	return nil
 }
 
-// SetAnyDesc для поля 'desc'
-func (d *BiZoneIRPCaseData) SetAnyDesc(a any) error {
-	return d.SetDesc(fmt.Sprint(a))
-}
-
-// GetQuery для поля 'query'
-func (d *BiZoneIRPCaseData) GetQuery() string {
-	return d.Query
-}
-
-// SetQuery для поля 'query'
-func (d *BiZoneIRPCaseData) SetQuery(v string) error {
-	d.Query = v
+// SetActivityDetected добавляет значение 'activity_detected' в список
+func (d *BiZoneIRPCaseData) SetActivityDetectedElement(v string) error {
+	//if _, isExist := supportingfunctions.SliceContainsElement(v, d.ActivityDetected); !isExist {
+	d.ActivityDetected = append(d.ActivityDetected, v)
+	//}
 
 	return nil
 }
 
-// SetAnyQuery для поля 'query'
-func (d *BiZoneIRPCaseData) SetAnyQuery(a any) error {
-	return d.SetQuery(fmt.Sprint(a))
+// SetAnyActivityDetected добавляет некоторое значение в список 'activity_detected'
+func (d *BiZoneIRPCaseData) SetAnyActivityDetected(a any) error {
+	return d.SetActivityDetectedElement(fmt.Sprint(a))
 }
 
-// GetEventUid для поля 'event_uid'
-func (d *BiZoneIRPCaseData) GetEventUid() string {
-	return d.EventUID
+// GetPlatformHostname для поля 'platform_hostname'
+func (d *BiZoneIRPCaseData) GetPlatformHostname() []string {
+	return d.PlatformHostname
 }
 
-// SetEventUid для поля 'event_uid'
-func (d *BiZoneIRPCaseData) SetEventUid(v string) error {
-	d.EventUID = v
+// SetPlatformHostname для поля 'platform_hostname'
+func (d *BiZoneIRPCaseData) SetPlatformHostname(v []string) error {
+	d.PlatformHostname = v
 
 	return nil
 }
 
-// SetAnyEventUid для поля 'event_uid'
-func (d *BiZoneIRPCaseData) SetAnyEventUid(a any) error {
-	return d.SetEventUid(fmt.Sprint(a))
-}
-
-// GetJobTitle для поля 'job_title'
-func (d *BiZoneIRPCaseData) GetJobTitle() string {
-	return d.JobTitle
-}
-
-// SetJobTitle для поля 'job_title'
-func (d *BiZoneIRPCaseData) SetJobTitle(v string) error {
-	d.JobTitle = v
-
-	return nil
-}
-
-// SetAnyJobTitle для поля 'job_title'
-func (d *BiZoneIRPCaseData) SetAnyJobTitle(a any) error {
-	return d.SetJobTitle(fmt.Sprint(a))
-}
-
-// GetMetadataProductName для поля 'metadata_product_name'
-func (d *BiZoneIRPCaseData) GetMetadataProductName() string {
-	return d.MetadataProductName
-}
-
-// SetMetadataProductName для поля 'metadata_product_name'
-func (d *BiZoneIRPCaseData) SetMetadataProductName(v string) error {
-	d.MetadataProductName = v
-
-	return nil
-}
-
-// SetAnyMetadataProductName для поля 'metadata_product_name'
-func (d *BiZoneIRPCaseData) SetAnyMetadataProductName(a any) error {
-	return d.SetMetadataProductName(fmt.Sprint(a))
-}
-
-// GetSourceIP для поля 'source_ip'
-func (d *BiZoneIRPCaseData) GetSourceIP() string {
-	return d.SourceIP
-}
-
-// SetSourceIP для поля 'source_ip'
-func (d *BiZoneIRPCaseData) SetSourceIP(v string) error {
-	d.SourceIP = v
-
-	return nil
-}
-
-// SetAnySourceIP для поля 'source_ip'
-func (d *BiZoneIRPCaseData) SetAnySourceIP(a any) error {
-	return d.SetSourceIP(fmt.Sprint(a))
-}
-
-// GetTargetIP для поля 'target_ip'
-func (d *BiZoneIRPCaseData) GetTargetIP() string {
-	return d.TargetIP
-}
-
-// SetTargetIP для поля 'target_ip'
-func (d *BiZoneIRPCaseData) SetTargetIP(v string) error {
-	d.TargetIP = v
-
-	return nil
-}
-
-// SetAnyTargetIP для поля 'target_ip'
-func (d *BiZoneIRPCaseData) SetAnyTargetIP(a any) error {
-	return d.SetTargetIP(fmt.Sprint(a))
-}
-
-// GetUnmappedEventCard для поля 'unmapped_event_card'
-func (d *BiZoneIRPCaseData) GetUnmappedEventCard() string {
-	return d.UnmappedEventCard
-}
-
-// SetUnmappedEventCard для поля 'unmapped_event_card'
-func (d *BiZoneIRPCaseData) SetUnmappedEventCard(v string) error {
-	d.UnmappedEventCard = v
-
-	return nil
-}
-
-// SetAnyUnmappedEventCard для поля 'unmapped_event_card'
-func (d *BiZoneIRPCaseData) SetAnyUnmappedEventCard(a any) error {
-	return d.SetUnmappedEventCard(fmt.Sprint(a))
-}
-
-// GetUnmappedHiveAlertID для поля 'unmapped_hive_alert_id'
-func (d *BiZoneIRPCaseData) GetUnmappedHiveAlertID() string {
-	return d.UnmappedHiveAlertID
-}
-
-// SetUnmappedHiveAlertID для поля 'unmapped_hive_alert_id'
-func (d *BiZoneIRPCaseData) SetUnmappedHiveAlertID(v string) error {
-	d.UnmappedHiveAlertID = v
-
-	return nil
-}
-
-// SetAnyUnmappedHiveAlertID для поля 'unmapped_hive_alert_id'
-func (d *BiZoneIRPCaseData) SetAnyUnmappedHiveAlertID(a any) error {
-	return d.SetUnmappedHiveAlertID(fmt.Sprint(a))
-}
-
-// GetUnmappedSensorIP для поля 'unmapped_sensor_ip'
-func (d *BiZoneIRPCaseData) GetUnmappedSensorIP() string {
-	return d.UnmappedSensorIP
-}
-
-// SetUnmappedSensorIP для поля 'unmapped_sensor_ip'
-func (d *BiZoneIRPCaseData) SetUnmappedSensorIP(v string) error {
-	d.UnmappedSensorIP = v
-
-	return nil
-}
-
-// SetAnyUnmappedSensorIP для поля 'unmapped_sensor_ip'
-func (d *BiZoneIRPCaseData) SetAnyUnmappedSensorIP(a any) error {
-	return d.SetUnmappedSensorIP(fmt.Sprint(a))
-}
-
-// GetUnmappedSensorName для поля 'unmapped_sensor_name'
-func (d *BiZoneIRPCaseData) GetUnmappedSensorName() string {
-	return d.UnmappedSensorName
-}
-
-// SetUnmappedSensorName для поля 'unmapped_sensor_name'
-func (d *BiZoneIRPCaseData) SetUnmappedSensorName(v string) error {
-	d.UnmappedSensorName = v
-
-	return nil
-}
-
-// SetAnyUnmappedSensorName для поля 'unmapped_sensor_name'
-func (d *BiZoneIRPCaseData) SetAnyUnmappedSensorName(a any) error {
-	return d.SetUnmappedSensorName(fmt.Sprint(a))
-}
-
-// GetFirstSeenTime для поля 'first_seen_time' (формат RFC3339)
-func (d *BiZoneIRPCaseData) GetFirstSeenTime() string {
-	return d.FirstSeenTime
-}
-
-// SetFirstSeenTime для поля 'first_seen_time' (преобразует в формат времени RFC3339)
-func (d *BiZoneIRPCaseData) SetFirstSeenTime(v string) error {
-	timeStr, err := supportingfunctions.SmartConvertToRFC3339(v)
-	if err != nil {
-		return err
-	}
-
-	d.FirstSeenTime = timeStr
-
-	return nil
-}
-
-// SetAnyFirstSeenTime для поля 'first_seen_time'
-func (d *BiZoneIRPCaseData) SetAnyFirstSeenTime(a any) error {
-	if v, ok := a.(string); ok {
-		return d.SetFirstSeenTime(v)
-	}
-
-	return errors.New("type conversion error for field 'first_seen_time'")
-}
-
-// GetLastSeenTime для поля 'last_seen_time' (формат RFC3339)
-func (d *BiZoneIRPCaseData) GetLastSeenTime() string {
-	return d.LastSeenTime
-}
-
-// SetLastSeenTime для поля 'last_seen_time' (преобразует в формат времени RFC3339)
-func (d *BiZoneIRPCaseData) SetLastSeenTime(v string) error {
-	timeStr, err := supportingfunctions.SmartConvertToRFC3339(v)
-	if err != nil {
-		return err
-	}
-
-	d.LastSeenTime = timeStr
-
-	return nil
-}
-
-// SetAnyLastSeenTime для поля 'last_seen_time'
-func (d *BiZoneIRPCaseData) SetAnyLastSeenTime(a any) error {
-	if v, ok := a.(string); ok {
-		return d.SetLastSeenTime(v)
-	}
-
-	return errors.New("type conversion error for field 'last_seen_time'")
-}
-
-// GetTags для поля 'tags'
-func (d *BiZoneIRPCaseData) GetTags() []string {
-	return d.Tags
-}
-
-// SetTags для поля 'tags'
-func (d *BiZoneIRPCaseData) SetTags(v []string) error {
-	d.Tags = v
-
-	return nil
-}
-
-// SetTag добавляет значение 'tag' в список
-func (d *BiZoneIRPCaseData) SetTag(v string) error {
-	if _, isExist := supportingfunctions.SliceContainsElement(v, d.Tags); !isExist {
-		d.Tags = append(d.Tags, v)
+// SetPlatformHostname добавляет значение 'platform_hostname' в список
+func (d *BiZoneIRPCaseData) SetPlatformHostnameElement(v string) error {
+	if _, isExist := supportingfunctions.SliceContainsElement(v, d.PlatformHostname); !isExist {
+		d.PlatformHostname = append(d.PlatformHostname, v)
 	}
 
 	return nil
 }
 
-// SetAnyTag добавляет некоторое значение в список 'tags'
-func (d *BiZoneIRPCaseData) SetAnyTag(a any) error {
-	return d.SetTag(fmt.Sprint(a))
+// SetAnyPlatformHostname добавляет некоторое значение в список 'detection_rules'
+func (d *BiZoneIRPCaseData) SetAnyPlatformHostname(a any) error {
+	return d.SetPlatformHostnameElement(fmt.Sprint(a))
 }
 
-// GetUnmappedDstEndpointArray для поля 'unmapped_dst_endpoint_array'
-func (d *BiZoneIRPCaseData) GetUnmappedDstEndpointArray() []string {
-	return d.UnmappedDstEndpointArray
+// GetDetectionRules для поля 'detection_rules'
+func (d *BiZoneIRPCaseData) GetDetectionRules() []uint64 {
+	return d.DetectionRules
 }
 
-// SetUnmappedDstEndpointArray для поля 'unmapped_dst_endpoint_array'
-func (d *BiZoneIRPCaseData) SetUnmappedDstEndpointArray(v []string) error {
-	d.UnmappedDstEndpointArray = v
+// SetDetectionRules для поля 'detection_rules'
+func (d *BiZoneIRPCaseData) SetDetectionRules(v []uint64) error {
+	d.DetectionRules = v
 
 	return nil
 }
 
-// SetUnmappedDstEndpointArrayElement добавляет значение 'unmapped_dst_endpoint_array' в список
-func (d *BiZoneIRPCaseData) SetUnmappedDstEndpointArrayElement(v string) error {
-	if _, isExist := supportingfunctions.SliceContainsElement(v, d.UnmappedDstEndpointArray); !isExist {
-		d.UnmappedDstEndpointArray = append(d.UnmappedDstEndpointArray, v)
+// SetDetectionRules добавляет значение 'detection_rules' в список
+func (d *BiZoneIRPCaseData) SetDetectionRulesElement(v uint64) error {
+	if _, isExist := supportingfunctions.SliceContainsElement(v, d.DetectionRules); !isExist {
+		d.DetectionRules = append(d.DetectionRules, v)
 	}
 
 	return nil
 }
 
-// SetAnyUnmappedDstEndpointArray добавляет некоторое значение в список 'unmapped_dst_endpoint_array'
-func (d *BiZoneIRPCaseData) SetAnyUnmappedDstEndpointArray(a any) error {
-	return d.SetUnmappedDstEndpointArrayElement(fmt.Sprint(a))
-}
-
-// GetUnmappedHomeEndpointArray для поля 'unmapped_home_endpoint_array'
-func (d *BiZoneIRPCaseData) GetUnmappedHomeEndpointArray() []string {
-	return d.UnmappedHomeEndpointArray
-}
-
-// SetUnmappedHomeEndpointArray для поля 'unmapped_home_endpoint_array'
-func (d *BiZoneIRPCaseData) SetUnmappedHomeEndpointArray(v []string) error {
-	d.UnmappedHomeEndpointArray = v
-
-	return nil
-}
-
-// SetUnmappedHomeEndpointArrayElement добавляет значение 'unmapped_home_endpoint_array' в список
-func (d *BiZoneIRPCaseData) SetUnmappedHomeEndpointArrayElement(v string) error {
-	if _, isExist := supportingfunctions.SliceContainsElement(v, d.UnmappedHomeEndpointArray); !isExist {
-		d.UnmappedHomeEndpointArray = append(d.UnmappedHomeEndpointArray, v)
-	}
-
-	return nil
-}
-
-// SetAnyUnmappedHomeEndpointArray добавляет некоторое значение в список 'unmapped_home_endpoint_array'
-func (d *BiZoneIRPCaseData) SetAnyUnmappedHomeEndpointArray(a any) error {
-	return d.SetUnmappedHomeEndpointArrayElement(fmt.Sprint(a))
-}
-
-// GetDetectionPattern для поля 'detection_pattern'
-func (d *BiZoneIRPCaseData) GetDetectionPattern() []uint64 {
-	return d.DetectionPattern
-}
-
-// SetDetectionPattern для поля 'detection_pattern'
-func (d *BiZoneIRPCaseData) SetDetectionPattern(v []uint64) error {
-	d.DetectionPattern = v
-
-	return nil
-}
-
-// SetDetectionPatternElement добавляет значение 'detection_pattern' в список
-func (d *BiZoneIRPCaseData) SetDetectionPatternElement(v uint64) error {
-	if _, isExist := supportingfunctions.SliceContainsElement(v, d.DetectionPattern); !isExist {
-		d.DetectionPattern = append(d.DetectionPattern, v)
-	}
-
-	return nil
-}
-
-// SetAnyDetectionPatternElement добавляет некоторое значение в список 'detection_pattern'
-func (d *BiZoneIRPCaseData) SetAnyDetectionPatternElement(a any) error {
+// SetAnyDetectionRules добавляет некоторое значение в список 'detection_rules'
+func (d *BiZoneIRPCaseData) SetAnyDetectionRules(a any) error {
 	v, err := supportingfunctions.GetUint64(a)
 	if err != nil {
 		return err
 	}
 
-	return d.SetDetectionPatternElement(v)
+	return d.SetDetectionRulesElement(v)
 }
 
-// GetUnmappedAgentArray для поля 'unmapped_agent_array'
-func (d *BiZoneIRPCaseData) GetUnmappedAgentArray() []uint64 {
-	return d.UnmappedAgentArray
+// GetType для поля 'type'
+func (d *BiZoneIRPCaseData) GetType() *BiZoneIRPType {
+	return &d.Type
 }
 
-// SetUnmappedAgentArrayn для поля 'unmapped_agent_array'
-func (d *BiZoneIRPCaseData) SetUnmappedAgentArrayn(v []uint64) error {
-	d.UnmappedAgentArray = v
+// SetType для поля 'type'
+func (d *BiZoneIRPCaseData) SetType(v BiZoneIRPType) error {
+	d.Type = v
 
 	return nil
 }
 
-// SetUnmappedAgentArrayElement добавляет значение 'unmapped_agent_array' в список
-func (d *BiZoneIRPCaseData) SetUnmappedAgentArrayElement(v uint64) error {
-	if _, isExist := supportingfunctions.SliceContainsElement(v, d.UnmappedAgentArray); !isExist {
-		d.UnmappedAgentArray = append(d.UnmappedAgentArray, v)
-	}
+// GetPriority для поля 'priority'
+func (d *BiZoneIRPCaseData) GetPriority() *BiZoneIRPPriority {
+	return &d.Priority
+}
+
+// SetPriority для поля 'priority'
+func (d *BiZoneIRPCaseData) SetPriority(v BiZoneIRPPriority) error {
+	d.Priority = v
 
 	return nil
 }
 
-// SetAnyUnmappedAgentArrayElement добавляет некоторое значение в список 'unmapped_agent_array'
-func (d *BiZoneIRPCaseData) SetAnyUnmappedAgentArrayElement(a any) error {
-	v, err := supportingfunctions.GetUint64(a)
-	if err != nil {
-		return err
-	}
-
-	return d.SetUnmappedAgentArrayElement(v)
+// GetStatus для поля 'status'
+func (d *BiZoneIRPCaseData) GetStatus() *BiZoneIRPStatus {
+	return &d.Status
 }
 
-// GetDataSecurity для поля 'data_security'
-func (d *BiZoneIRPCaseData) GetDataSecurity() map[string][]BiZoneIRPDataSecurity {
-	return d.DataSecurity
-}
-
-// SetDataSecurity для поля 'data_security'
-func (d *BiZoneIRPCaseData) SetDataSecurity(v map[string][]BiZoneIRPDataSecurity) error {
-	d.DataSecurity = v
+// SetStatus для поля 'status'
+func (d *BiZoneIRPCaseData) SetStatus(v BiZoneIRPStatus) error {
+	d.Status = v
 
 	return nil
 }
 
-// SetDataSecurityElement добавляет значение 'data_security' в список
-func (d *BiZoneIRPCaseData) SetDataSecurityElement(k string, v []BiZoneIRPDataSecurity) error {
-	d.DataSecurity[k] = v
+// GetPrimaryCategory для поля 'primary_category'
+func (d *BiZoneIRPCaseData) GetPrimaryCategory() *BiZoneIRPCategory {
+	return &d.PrimaryCategory
+}
+
+// SetPrimaryCategory для поля 'primary_category'
+func (d *BiZoneIRPCaseData) SetPrimaryCategory(v BiZoneIRPCategory) error {
+	d.PrimaryCategory = v
+
+	return nil
+}
+
+// GetTenant для поля 'tenant'
+func (d *BiZoneIRPCaseData) GetTenant() *BiZoneIRPTenant {
+	return &d.Tenant
+}
+
+// SetTenant для поля 'tenant'
+func (d *BiZoneIRPCaseData) SetTenant(v BiZoneIRPTenant) error {
+	d.Tenant = v
+
+	return nil
+}
+
+// GetCreatedBy для поля 'created_by'
+func (d *BiZoneIRPCaseData) GetCreatedBy() *BiZoneIRPCreatedBy {
+	return &d.CreatedBy
+}
+
+// SetCreatedBy для поля 'created_by'
+func (d *BiZoneIRPCaseData) SetCreatedBy(v BiZoneIRPCreatedBy) error {
+	d.CreatedBy = v
 
 	return nil
 }
@@ -854,37 +611,50 @@ func (d *BiZoneIRPCaseData) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)
-	wsStr := supportingfunctions.GetWhitespace(num + 1)
+	//wsStr := supportingfunctions.GetWhitespace(num + 1)
 	wsInt := supportingfunctions.GetWhitespace(num + 2)
 
-	fmt.Fprintf(&str, "%s'desc': '%s'\n", ws, d.Desc)
-	fmt.Fprintf(&str, "%s'query': '%s'\n", ws, d.Query)
-	fmt.Fprintf(&str, "%s'source_ip': '%s'\n", ws, d.SourceIP)
-	fmt.Fprintf(&str, "%s'target_ip': '%s'\n", ws, d.TargetIP)
-	fmt.Fprintf(&str, "%s'event_uid': '%s'\n", ws, d.EventUID)
-	fmt.Fprintf(&str, "%s'job_title': '%s'\n", ws, d.JobTitle)
-	fmt.Fprintf(&str, "%s'first_seen_time': '%s'\n", ws, d.FirstSeenTime)
-	fmt.Fprintf(&str, "%s'last_seen_time': '%s'\n", ws, d.LastSeenTime)
-	fmt.Fprintf(&str, "%s'unmapped_sensor_ip': '%s'\n", ws, d.UnmappedSensorIP)
-	fmt.Fprintf(&str, "%s'unmapped_event_card': '%s'\n", ws, d.UnmappedEventCard)
-	fmt.Fprintf(&str, "%s'metadata_product_name': '%s'\n", ws, d.MetadataProductName)
-	fmt.Fprintf(&str, "%s'unmapped_hive_alert_id': '%s'\n", ws, d.UnmappedHiveAlertID)
-	fmt.Fprintf(&str, "%s'unmapped_sensor_name': '%s'\n", ws, d.UnmappedSensorName)
-	fmt.Fprintf(&str, "%s'agent': '%d'\n", ws, d.Agent)
-	fmt.Fprintf(&str, "%s'severity_id': '%d'\n", ws, d.SeverityID)
-	fmt.Fprintf(&str, "%s'tags': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.Tags))
-	fmt.Fprintf(&str, "%s'unmapped_dst_endpoint_array': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.UnmappedDstEndpointArray))
-	fmt.Fprintf(&str, "%s'unmapped_home_endpoint_array': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.UnmappedHomeEndpointArray))
-	fmt.Fprintf(&str, "%s'detection_pattern': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.DetectionPattern))
-	fmt.Fprintf(&str, "%s'unmapped_agent_array': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.UnmappedAgentArray))
-	fmt.Fprintf(&str, "%s'data_security':\n", ws)
-	for k, v := range d.DataSecurity {
-		fmt.Fprintf(&str, "%s%s:\n", wsStr, k)
-
-		for item, value := range v {
-			fmt.Fprintf(&str, "%s%d.\n%s\n", wsInt, item, value.ToStringBeautiful(num+3))
-		}
+	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, d.ID)
+	fmt.Fprintf(&str, "%s'external_id': '%s'\n", ws, d.ExternalID)
+	fmt.Fprintf(&str, "%s'summary': '%s'\n", ws, d.Summary)
+	fmt.Fprintf(&str, "%s'description': '%s'\n", ws, d.Description)
+	fmt.Fprintf(&str, "%s'recommendations': '%s'\n", ws, d.Recommendations)
+	fmt.Fprintf(&str, "%s'created': '%s'\n", ws, d.Created)
+	fmt.Fprintf(&str, "%s'updated': '%s'\n", ws, d.Updated)
+	fmt.Fprintf(&str, "%s'detection_date': '%s'\n", ws, d.DetectionDate)
+	fmt.Fprintf(&str, "%s'resolution_date': '%s'\n", ws, d.ResolutionDate)
+	fmt.Fprintf(&str, "%s'resolution_detailed': '%s'\n", ws, d.ResolutionDetailed)
+	fmt.Fprintf(&str, "%s'customer_star_rating_comment': '%s'\n", ws, d.CustomerStarRatingComment)
+	fmt.Fprintf(&str, "%s'status_description': '%s'\n", ws, d.StatusDescription)
+	fmt.Fprintf(&str, "%s'fp_type': '%s'\n", ws, d.FpType)
+	fmt.Fprintf(&str, "%s'tlp': '%s'\n", ws, d.TLP)
+	fmt.Fprintf(&str, "%s'customer_assignee': '%s'\n", ws, *d.CustomerAssignee)
+	fmt.Fprintf(&str, "%s'assignee': '%s'\n", ws, *d.Assignee)
+	fmt.Fprintf(&str, "%s'mitre_cov': '%s'\n", ws, *d.MitreCov)
+	fmt.Fprintf(&str, "%s'resolution': '%s'\n", ws, *d.Resolution)
+	fmt.Fprintf(&str, "%s'response_team': '%s'\n", ws, *d.ResponseTeam)
+	fmt.Fprintf(&str, "%s'customer_star_rating': '%d'\n", ws, *d.CustomerStarRating)
+	fmt.Fprintf(&str, "%s'is_public': '%t'\n", ws, d.IsPublic)
+	fmt.Fprintf(&str, "%s'activity_detected':\n", ws)
+	for k, v := range d.ActivityDetected {
+		fmt.Fprintf(&str, "%s%d.\n%s%s%+v\n", wsInt, k, wsInt, wsInt, v)
 	}
+	fmt.Fprintf(&str, "%s'tags':\n", ws)
+	for k, v := range d.Tags {
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInt, k, v.ToStringBeautiful(num+2))
+	}
+	fmt.Fprintf(&str, "%s'secondary_category':\n", ws)
+	for k, v := range d.SecondaryCategory {
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInt, k, v.ToStringBeautiful(num+2))
+	}
+	fmt.Fprintf(&str, "%s'platform_hostname': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.PlatformHostname))
+	fmt.Fprintf(&str, "%s'detection_rules': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, d.DetectionRules))
+	fmt.Fprintf(&str, "%s'type':\n%s", ws, d.Type.ToStringBeautiful(num+1))
+	fmt.Fprintf(&str, "%s'priority':\n%s", ws, d.Priority.ToStringBeautiful(num+1))
+	fmt.Fprintf(&str, "%s'status':\n%s", ws, d.Status.ToStringBeautiful(num+1))
+	fmt.Fprintf(&str, "%s'primary_category':\n%s", ws, d.PrimaryCategory.ToStringBeautiful(num+1))
+	fmt.Fprintf(&str, "%s'tenant':\n%s", ws, d.Tenant.ToStringBeautiful(num+1))
+	fmt.Fprintf(&str, "%s'created_by':\n%s", ws, d.CreatedBy.ToStringBeautiful(num+1))
 
 	return str.String()
 }

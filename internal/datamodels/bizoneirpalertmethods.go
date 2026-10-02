@@ -520,7 +520,7 @@ func (va *VerifiedBiZoneIRPAlert) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)
-	wsInc := supportingfunctions.GetWhitespace(num + 1)
+	wsInt := supportingfunctions.GetWhitespace(num + 1)
 
 	fmt.Fprintf(&str, "%s'id': '%d'\n", ws, va.ID)
 	fmt.Fprintf(&str, "%s'uuid': '%s'\n", ws, va.UUID)
@@ -544,11 +544,11 @@ func (va *VerifiedBiZoneIRPAlert) ToStringBeautiful(num int) string {
 	fmt.Fprintf(&str, "%s'data':\n%s", ws, va.Data.ToStringBeautiful(num+1))
 	fmt.Fprintf(&str, "%s'tags':\n", ws)
 	for k, v := range va.Tags {
-		fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInt, k, v.ToStringBeautiful(num+2))
 	}
 	fmt.Fprintf(&str, "%s'snapshots':\n", ws)
 	for k, v := range va.Snapshots {
-		fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInt, k, v.ToStringBeautiful(num+2))
 	}
 	fmt.Fprintf(&str, "%s'@additional_information':\n%s", ws, va.AdditionalInformation.ToStringBeautiful(num+1))
 
