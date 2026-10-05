@@ -16,10 +16,10 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/test/documentsgenerator"
 )
 
-func TestAlertDocumentWithFile(t *testing.T) {
+func TestCaseDocumentWithFile(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 
-	alertRaw, err := os.ReadFile("../../test/test_json/alertmgr.json")
+	caseRaw, err := os.ReadFile("../../test/test_json/bizonecase.json")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -42,7 +42,7 @@ func TestAlertDocumentWithFile(t *testing.T) {
 		}
 	}()
 
-	id, verifedBiZoneAlert, listRawFields, err := documentgenerator.BiZoneAlertsGenerator(decoder.Start(alertRaw))
+	id, verifedBiZoneCase, listRawFields, err := documentgenerator.BiZoneCasesGenerator(decoder.Start(caseRaw))
 	assert.NoError(t, err)
 
 	fmt.Println("\nID:", id)
@@ -51,8 +51,8 @@ func TestAlertDocumentWithFile(t *testing.T) {
 		fmt.Printf("\t%s:%s\n", k, v)
 	}
 
-	fmt.Println("VerifedBiZoneAlert")
-	godump.DumpJSON(verifedBiZoneAlert)
+	fmt.Println("VerifedBiZoneCase")
+	godump.DumpJSON(verifedBiZoneCase)
 
 	t.Cleanup(func() {
 		cancel()

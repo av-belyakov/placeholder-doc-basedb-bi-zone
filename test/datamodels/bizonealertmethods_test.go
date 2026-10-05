@@ -158,7 +158,7 @@ func TestBiZoneIRPAlertMethods(t *testing.T) {
 		allSensors = append(allSensors, gofakeit.Uint64())
 	}
 
-	dataExample := datamodels.NewBiZoneIRPData()
+	dataExample := datamodels.NewBiZoneIRPAlertData()
 	assert.NoError(t, dataExample.SetAgent(gofakeit.Uint64()))
 	assert.NoError(t, dataExample.SetSeverityID(gofakeit.Uint64()))
 	assert.NoError(t, dataExample.SetDesc(gofakeit.Adjective()))
@@ -219,7 +219,7 @@ func TestBiZoneIRPAlertMethods(t *testing.T) {
 			biZoneIRPAlert.SetData(*dataExample)
 		},
 		GetFunc: func() {
-			data, ok := listTesting["Data"].ValueAny.(datamodels.BiZoneIRPData)
+			data, ok := listTesting["Data"].ValueAny.(datamodels.BiZoneIRPAlertData)
 			assert.True(t, ok)
 			assert.Equal(t, data, *biZoneIRPAlert.GetData())
 		},

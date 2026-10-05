@@ -63,7 +63,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			continue
 		}
 
-		//*** обработчик для под объекта 'alerts.data' ***
+		//*** обработчик для под объекта 'cases.data' ***
 		if funcs, ok := listHandlerData[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -76,7 +76,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 
 		//***** обработчики для вспомогательных объектов *****
 		//****************************************************
-		// объект 'tags'
+		// объект 'cases.tags'
 		if funcs, ok := listHandlerTags[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -87,7 +87,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			//			continue
 		}
 
-		// объект 'secondary_category'
+		// объект 'cases.secondary_category'
 		if funcs, ok := listHandlerSecondaryCategores[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -98,7 +98,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			//			continue
 		}
 
-		// объект 'type'
+		// объект 'cases.type'
 		if funcs, ok := listHandlerType[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -109,7 +109,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			//			continue
 		}
 
-		// объект 'status'
+		// объект 'cases.status'
 		if funcs, ok := listHandlerStatus[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -120,7 +120,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			//			continue
 		}
 
-		// объект 'priority'
+		// объект 'cases.priority'
 		if funcs, ok := listHandlerPriority[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -131,7 +131,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			//			continue
 		}
 
-		// объект 'primary_category'
+		// объект 'cases.primary_category'
 		if funcs, ok := listHandlerPrimaryCategory[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -142,7 +142,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			//			continue
 		}
 
-		// объект 'tenant'
+		// объект 'cases.tenant'
 		if funcs, ok := listHandlerTenant[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -153,7 +153,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			//			continue
 		}
 
-		// объект 'created_by'
+		// объект 'cases.created_by'
 		if funcs, ok := listHandlerCreatedBy[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 

@@ -94,6 +94,22 @@ type BiZoneIRPSContent struct {
 	Offset         *string `json:"offset:"`      // null или строка (например "0")
 }
 
+// BiZoneSnapshot структура для снимков
+type BiZoneIRPSnapshot struct {
+	IPAddresses  []string `json:"ip_addresses"`
+	MACAddresses []string `json:"mac_addresses"`
+	OS           string   `json:"os"`
+	Fqdn         string   `json:"fqdn"`
+	Title        string   `json:"title"`
+	Domain       string   `json:"domain"`
+	CmdbId       string   `json:"cmdb_id"`
+	OSType       string   `json:"os_type"`
+	Hostname     string   `json:"hostname"`
+	Severity     string   `json:"severity"`
+	UserCmdbName string   `json:"user_cmdb_name"`
+	UserCmdbId   *string  `json:"user_cmdb_id"`
+}
+
 /***
 * Структуры относящиеся к типу Case
 ***/
@@ -210,7 +226,7 @@ type BiZoneIRPTag struct {
 То что ниже пока не понятно нужно ли
 
 
-*/
+
 
 type BiZoneIRPCaseFieldData struct {
 	Tags              []BiZoneIRPFieldTagDescription `json:"tags"`
@@ -389,3 +405,4 @@ type BiZoneIRPSnapshot struct {
 	UserCmdbName string   `json:"user_cmdb_name"`
 	UserCmdbId   *string  `json:"user_cmdb_id"`
 }
+*/

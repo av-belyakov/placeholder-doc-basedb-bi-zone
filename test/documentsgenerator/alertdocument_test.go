@@ -1,4 +1,4 @@
-package documentsgenerator
+package documentsgenerator_test
 
 import (
 	"context"
