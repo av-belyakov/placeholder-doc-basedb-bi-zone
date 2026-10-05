@@ -22,16 +22,16 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 	)
 
 	verifiedMainObject := datamodels.NewVerifiedBiZoneIRPAlert()
-	verifiedData := datamodels.NewBiZoneIRPData()
+	verifiedData := datamodels.NewBiZoneIRPAlertData()
 
 	//********* основные обработчики **********
 	listHandlerAlerts := handlers.NewListBiZoneHandlerAlerts(verifiedMainObject)
-	listHandlerData := handlers.NewListBiZoneHandlerData(verifiedData)
+	listHandlerData := handlers.NewListBiZoneHandlerAlertData(verifiedData)
 
 	//******** вспомогательные объекты ********
 	supportObjectTags := handlers.NewSupportingStructureForTagsType()
 	supportObjectSnapshot := handlers.NewSupportingStructureForSnapshotsType()
-	supportObjectSContent := handlers.NewSupportingStructureForSContentType()
+	supportObjectSContent := handlers.NewSupportingStructureForSContentsType()
 	supportObjectDataSecurity := handlers.NewSupportingStructureForDataSecurityType()
 
 	// ********* обработчики для вспомогательных объектов ***********

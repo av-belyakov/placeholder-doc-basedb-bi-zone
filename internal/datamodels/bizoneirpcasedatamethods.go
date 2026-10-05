@@ -8,7 +8,7 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
-// NewBiZoneIRPData новый объект Data
+// NewBiZoneIRPCaseData новый объект Data родительского объекта VerifiedBiZoneIRPCase
 func NewBiZoneIRPCaseData() *BiZoneIRPCaseData {
 	return &BiZoneIRPCaseData{
 		Tags:              []BiZoneIRPTag(nil),
@@ -602,6 +602,30 @@ func (d *BiZoneIRPCaseData) GetCreatedBy() *BiZoneIRPCreatedBy {
 // SetCreatedBy для поля 'created_by'
 func (d *BiZoneIRPCaseData) SetCreatedBy(v BiZoneIRPCreatedBy) error {
 	d.CreatedBy = v
+
+	return nil
+}
+
+// GetTags для поля 'tags'
+func (d *BiZoneIRPCaseData) GetTags() []BiZoneIRPTag {
+	return d.Tags
+}
+
+// SetTags для поля 'tags'
+func (d *BiZoneIRPCaseData) SetTags(v []BiZoneIRPTag) error {
+	d.Tags = v
+
+	return nil
+}
+
+// GetSecondaryCategory для поля 'secondary_category'
+func (d *BiZoneIRPCaseData) GetSecondaryCategory() []BiZoneIRPCategory {
+	return d.SecondaryCategory
+}
+
+// SetSecondaryCategory для поля 'secondary_category'
+func (d *BiZoneIRPCaseData) SetSecondaryCategory(v []BiZoneIRPCategory) error {
+	d.SecondaryCategory = v
 
 	return nil
 }

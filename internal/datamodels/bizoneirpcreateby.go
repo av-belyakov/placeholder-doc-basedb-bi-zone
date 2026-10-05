@@ -33,21 +33,21 @@ func (cb *BiZoneIRPCreatedBy) SetAnyID(a any) error {
 	return cb.SetID(v)
 }
 
-// GetName для поля 'username'
-func (cb *BiZoneIRPCreatedBy) GetName() string {
+// GetUsername для поля 'username'
+func (cb *BiZoneIRPCreatedBy) GetUsername() string {
 	return cb.Username
 }
 
-// SetName для поля 'username'
-func (cb *BiZoneIRPCreatedBy) SetName(v string) error {
+// SetUsername для поля 'username'
+func (cb *BiZoneIRPCreatedBy) SetUsername(v string) error {
 	cb.Username = v
 
 	return nil
 }
 
-// SetAnyName для поля 'username'
-func (cb *BiZoneIRPCreatedBy) SetAnyName(a any) error {
-	return cb.SetName(fmt.Sprint(a))
+// SetAnyUsername для поля 'username'
+func (cb *BiZoneIRPCreatedBy) SetAnyUsername(a any) error {
+	return cb.SetUsername(fmt.Sprint(a))
 }
 
 // ToStringBeautiful форматированный вывод

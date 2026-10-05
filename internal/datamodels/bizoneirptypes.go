@@ -1,7 +1,7 @@
 package datamodels
 
 /***
-* Структуры относящиеся к типау Alert
+* Структуры относящиеся к типу Alert
 ***/
 
 // VerifiedBiZoneIRPAlert основной объект alert
@@ -95,7 +95,7 @@ type BiZoneIRPSContent struct {
 }
 
 /***
-* Структуры относящиеся к типау Case
+* Структуры относящиеся к типу Case
 ***/
 
 // VerifiedBiZoneIRPCase основной объект case
@@ -103,37 +103,23 @@ type VerifiedBiZoneIRPCase struct {
 	Data        BiZoneIRPCaseData `json:"data"`
 	ID          string            `json:"id"`
 	Type        string            `json:"type"`
+	Time        string            `json:"time"` //дата создания (формат RFC3339) или ISO 8601
 	Source      string            `json:"source"`
 	SpecVersion string            `json:"specversion"`
-	Time        string            `json:"time"` //дата создания (формат RFC3339) или ISO 8601
 	Subject     *string           `json:"subject"`
 	DataSchema  *string           `json:"dataschema"`
 }
 
-/*
-type VerifiedBiZoneIRPCase struct {
-+	Data        BiZoneIRPCaseData `json:"data"`
-+	ID          string            `json:"id"`
-+	Type        string            `json:"type"`
-+	Source      string            `json:"source"`
-+	SpecVersion string            `json:"specversion"`
-+	Time        string            `json:"time"` //дата создания (формат RFC3339) или ISO 8601
-+	Subject     *string           `json:"subject"`
-+	DataSchema  *string           `json:"dataschema"`
-}
-
-*/
-
 // BiZoneIRPCaseData полезная нагрузка события
 type BiZoneIRPCaseData struct {
-	ActivityDetected          []any               `json:"activity_detected"`
 	Tags                      []BiZoneIRPTag      `json:"tags"`
 	SecondaryCategory         []BiZoneIRPCategory `json:"secondary_category"`
+	ActivityDetected          []any               `json:"activity_detected"`
 	PlatformHostname          []string            `json:"platform_hostname"`
 	DetectionRules            []uint64            `json:"detection_rules"`
 	Type                      BiZoneIRPType       `json:"type"`
-	Priority                  BiZoneIRPPriority   `json:"priority"`
 	Status                    BiZoneIRPStatus     `json:"status"`
+	Priority                  BiZoneIRPPriority   `json:"priority"`
 	PrimaryCategory           BiZoneIRPCategory   `json:"primary_category"`
 	Tenant                    BiZoneIRPTenant     `json:"tenant"`
 	CreatedBy                 BiZoneIRPCreatedBy  `json:"created_by"`
@@ -142,60 +128,23 @@ type BiZoneIRPCaseData struct {
 	DetectionDate             string              `json:"detection_date"` // дата обнаружения (формат RFC3339) или ISO 8601
 	ResolutionDate            string              `json:"resolutiondate"` // дата принятия решения (формат RFC3339) или ISO 8601
 	ID                        string              `json:"id"`
+	TLP                       string              `json:"tlp"`
+	FpType                    string              `json:"fp_type"`
 	Summary                   string              `json:"summary"`
+	ExternalID                string              `json:"external_id"`
 	Description               string              `json:"description"`
 	Recommendations           string              `json:"recommendations"`
-	ExternalID                string              `json:"external_id"`
+	StatusDescription         string              `json:"status_description"`
 	ResolutionDetailed        string              `json:"resolution_detailed"`
 	CustomerStarRatingComment string              `json:"customer_star_rating_comment"`
-	StatusDescription         string              `json:"status_description"`
-	FpType                    string              `json:"fp_type"`
-	TLP                       string              `json:"tlp"`
-	CustomerAssignee          *string             `json:"customer_assignee"`
 	Assignee                  *string             `json:"assignee"`
 	MitreCov                  *string             `json:"mitre_cov"`
 	Resolution                *string             `json:"resolution"`
 	ResponseTeam              *string             `json:"response_team"`
+	CustomerAssignee          *string             `json:"customer_assignee"`
 	CustomerStarRating        *uint64             `json:"customer_star_rating"`
 	IsPublic                  bool                `json:"is_public"`
 }
-
-/*
-type BiZoneIRPCaseData struct {
-	ActivityDetected          []any               `json:"activity_detected"`
-	Tags                      []BiZoneIRPTag      `json:"tags"`
-	SecondaryCategory         []BiZoneIRPCategory `json:"secondary_category"`
-+	PlatformHostname          []string            `json:"platform_hostname"`
-+	DetectionRules            []uint64            `json:"detection_rules"`
-+	Type                      BiZoneIRPType       `json:"type"`
-+	Priority                  BiZoneIRPPriority   `json:"priority"`
-+	Status                    BiZoneIRPStatus     `json:"status"`
-+	PrimaryCategory           BiZoneIRPCategory   `json:"primary_category"`
-+	Tenant                    BiZoneIRPTenant     `json:"tenant"`
-+	CreatedBy                 BiZoneIRPCreatedBy  `json:"created_by"`
-+	Created                   string              `json:"created"`        // дата создания (формат RFC3339) или ISO 8601
-+	Updated                   string              `json:"updated"`        // дата обновления (формат RFC3339) или ISO 8601
-+	DetectionDate             string              `json:"detection_date"` // дата обнаружения (формат RFC3339) или ISO 8601
-+	ResolutionDate            string              `json:"resolutiondate"` // дата принятия решения (формат RFC3339) или ISO 8601
-+	ID                        string              `json:"id"`
-+	Summary                   string              `json:"summary"`
-+	Description               string              `json:"description"`
-+	Recommendations           string              `json:"recommendations"`
-+	ExternalID                string              `json:"external_id"`
-+	ResolutionDetailed        string              `json:"resolution_detailed"`
-+	CustomerStarRatingComment string              `json:"customer_star_rating_comment"`
-+	StatusDescription         string              `json:"status_description"`
-+	FpType                    string              `json:"fp_type"`
-+	TLP                       string              `json:"tlp"`
-+	CustomerAssignee          *string             `json:"customer_assignee"`
-+	Assignee                  *string             `json:"assignee"`
-+	MitreCov                  *string             `json:"mitre_cov"`
-+	Resolution                *string             `json:"resolution"`
-+	ResponseTeam              *string             `json:"response_team"`
-+	CustomerStarRating        *uint64             `json:"customer_star_rating"`
-+	IsPublic                  bool                `json:"is_public"`
-}
-*/
 
 // BiZoneIRPType тип инцидента
 type BiZoneIRPType struct {

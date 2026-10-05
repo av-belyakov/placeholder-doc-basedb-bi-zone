@@ -1,7 +1,7 @@
 package handlers
 
 // NewListBiZoneHandlerSContents начальный обработчик событий полей 'data.data_security.s_content.*'
-func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentType) map[string][]func(any) error {
+func NewListBiZoneHandlerSContents(sc *SupportingStructureForSContentsType) map[string][]func(any) error {
 	return map[string][]func(any) error{
 		// --- depth ---
 		"data.data_security.s_content.depth:": {

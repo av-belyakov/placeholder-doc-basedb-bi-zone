@@ -6,17 +6,17 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 )
 
-// SupportingStructureForSContentType вспомогательный тип для обработки 'data.data_security.scontent'
-type SupportingStructureForSContentType struct {
+// SupportingStructureForSContentsType вспомогательный тип для обработки 'data.data_security.scontent'
+type SupportingStructureForSContentsType struct {
 	sContentList       []datamodels.BiZoneIRPSContent
 	listAcceptedFields []string
 	sContentTmp        datamodels.BiZoneIRPSContent
 	isCompleted        bool
 }
 
-// NewSupportingStructureForSContentTypeType формирует вспомогательный объект для обработки объектов типа 'data.data_security.scontent'
-func NewSupportingStructureForSContentType() *SupportingStructureForSContentType {
-	return &SupportingStructureForSContentType{
+// NewSupportingStructureForSContentsTypeType формирует вспомогательный объект для обработки объектов типа 'data.data_security.scontent'
+func NewSupportingStructureForSContentsType() *SupportingStructureForSContentsType {
+	return &SupportingStructureForSContentsType{
 		listAcceptedFields: []string(nil),
 		sContentTmp:        *datamodels.NewBiZoneIRPSContent(),
 		sContentList:       make([]datamodels.BiZoneIRPSContent, 0),
@@ -28,7 +28,7 @@ func NewSupportingStructureForSContentType() *SupportingStructureForSContentType
 // sc.sContentList, так как sContentList автоматически пополняется только при
 // совпадении значений в listAcceptedFields. Соответственно при завершении
 // JSON объекта, последние добавленные значения остаются sc.sContentTmp
-func (sc *SupportingStructureForSContentType) GetSContent() []datamodels.BiZoneIRPSContent {
+func (sc *SupportingStructureForSContentsType) GetSContent() []datamodels.BiZoneIRPSContent {
 	if !sc.isCompleted {
 		// здесь можно выполнять постобработку некоторых пользовательский типов
 		// например, изменить содержимое какого нибудь поля.
@@ -45,12 +45,12 @@ func (sc *SupportingStructureForSContentType) GetSContent() []datamodels.BiZoneI
 }
 
 // GetSContentTmp возвращает временный объект
-func (sc *SupportingStructureForSContentType) GetSContentTmp() datamodels.BiZoneIRPSContent {
+func (sc *SupportingStructureForSContentsType) GetSContentTmp() datamodels.BiZoneIRPSContent {
 	return sc.sContentTmp
 }
 
 // HandlerValue функция обработчик значений
-func (sc *SupportingStructureForSContentType) HandlerValue(fieldBranch string, a any, f func(any) error) error {
+func (sc *SupportingStructureForSContentsType) HandlerValue(fieldBranch string, a any, f func(any) error) error {
 	//если поле повторяется то считается что это уже новый объект
 	if sc.isExistFieldBranch((fieldBranch)) {
 		// здесь можно выполнять постобработку некоторых пользовательский типов
@@ -69,6 +69,6 @@ func (sc *SupportingStructureForSContentType) HandlerValue(fieldBranch string, a
 }
 
 // isExistFieldBranch проверка существования ветки
-func (sc *SupportingStructureForSContentType) isExistFieldBranch(v string) bool {
+func (sc *SupportingStructureForSContentsType) isExistFieldBranch(v string) bool {
 	return slices.Contains(sc.listAcceptedFields, v)
 }

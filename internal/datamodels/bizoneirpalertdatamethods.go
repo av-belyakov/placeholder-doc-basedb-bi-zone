@@ -8,8 +8,8 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
-// NewBiZoneIRPData новый объект Data
-func NewBiZoneIRPData() *BiZoneIRPAlertData {
+// NewBiZoneIRPAlertData новый объект Data родительского объекта VerifiedBiZoneIRPAler
+func NewBiZoneIRPAlertData() *BiZoneIRPAlertData {
 	return &BiZoneIRPAlertData{
 		DataSecurity:              map[string][]BiZoneIRPDataSecurity(nil),
 		Tags:                      []string(nil),

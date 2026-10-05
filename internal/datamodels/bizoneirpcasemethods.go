@@ -17,21 +17,21 @@ func NewVerifiedBiZoneIRPCase() *VerifiedBiZoneIRPCase {
 	return &VerifiedBiZoneIRPCase{}
 }
 
-// GetID для поля 'id'
-func (c *VerifiedBiZoneIRPCase) GetID() string {
+// GetUUID для поля 'id' в формате UUID
+func (c *VerifiedBiZoneIRPCase) GetUUID() string {
 	return c.ID
 }
 
-// SetID для поля 'id'
-func (c *VerifiedBiZoneIRPCase) SetID(v string) error {
+// SetUUID для поля 'id' в формате UUID
+func (c *VerifiedBiZoneIRPCase) SetUUID(v string) error {
 	c.ID = v
 
 	return nil
 }
 
-// SetAnyID для поля 'id'
-func (c *VerifiedBiZoneIRPCase) SetAnyID(a any) error {
-	return c.SetID(fmt.Sprint(a))
+// SetAnyUUID для поля 'id' в формате UUID
+func (c *VerifiedBiZoneIRPCase) SetAnyUUID(a any) error {
+	return c.SetUUID(fmt.Sprint(a))
 }
 
 // GetType для поля 'type'
