@@ -5,7 +5,7 @@ import "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodel
 // NewListBiZoneHandlerPrimaryCategory начальный обработчик событий объекта 'primary_category.*' топика 'socd-soar-prod-issue-v1'
 func NewListBiZoneHandlerPrimaryCategory(t *datamodels.BiZoneIRPCategory) map[string][]func(any) error {
 	return map[string][]func(any) error{
-		"t.id":    {t.SetAnyID},
-		"t.title": {t.SetAnyTitleElement},
+		"data.primary_category.id":    {t.SetAnyID},
+		"data.primary_category.title": {t.SetAnyTitleElement},
 	}
 }

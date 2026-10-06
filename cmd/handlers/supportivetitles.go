@@ -1,16 +1,77 @@
 package handlers
 
 import (
+	"fmt"
 	"slices"
-
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 )
+
+// BiZoneIRPTitle локализованное значение
+type TitleTemporary struct {
+	ID, Value, Language string
+}
+
+func NewTitleTemporary() *TitleTemporary {
+	return &TitleTemporary{
+		Language: "ru",
+	}
+}
+
+// GetID
+func (t *TitleTemporary) GetID() string {
+	return t.ID
+}
+
+// SetID
+func (t *TitleTemporary) SetID(v string) error {
+	t.ID = v
+
+	return nil
+}
+
+// SetAnyID
+func (t *TitleTemporary) SetAnyID(a any) error {
+	return t.SetID(fmt.Sprint(a))
+}
+
+// GetValue
+func (t *TitleTemporary) GetValue() string {
+	return t.Value
+}
+
+// SetValue
+func (t *TitleTemporary) SetValue(v string) error {
+	t.Value = v
+
+	return nil
+}
+
+// SetAnyValue
+func (t *TitleTemporary) SetAnyValue(a any) error {
+	return t.SetValue(fmt.Sprint(a))
+}
+
+// GetLanguage
+func (t *TitleTemporary) GetLanguage() string {
+	return t.Language
+}
+
+// SetLanguage
+func (t *TitleTemporary) SetLanguage(v string) error {
+	t.Language = v
+
+	return nil
+}
+
+// SetAnyLanguage
+func (t *TitleTemporary) SetAnyLanguage(a any) error {
+	return t.SetLanguage(fmt.Sprint(a))
+}
 
 // SupportingStructureForTitlesType вспомогательный тип используемый для хранения объектов типа 'titles'
 type SupportingStructureForTitlesType struct {
-	titles             []datamodels.BiZoneIRPTitle
+	titles             []TitleTemporary
 	listAcceptedFields []string
-	titleTmp           datamodels.BiZoneIRPTitle
+	titleTmp           TitleTemporary
 	isCompleted        bool
 }
 
@@ -18,17 +79,17 @@ type SupportingStructureForTitlesType struct {
 func NewSupportingStructureForTitlesType() *SupportingStructureForTitlesType {
 	return &SupportingStructureForTitlesType{
 		listAcceptedFields: []string(nil),
-		titleTmp:           *datamodels.NewBiZoneIRPTitle(),
-		titles:             make([]datamodels.BiZoneIRPTitle, 0),
+		titleTmp:           *NewTitleTemporary(),
+		titles:             make([]TitleTemporary, 0),
 	}
 }
 
-// GetTitles возвращает []datamodels.BiZoneIRPTitle
+// GetTitles возвращает []TitleTemporary
 // Однако, метод выполняет еще очень важное действие, перемещает содержимое из tg.titleTmp в
 // tg.titles, так как titles автоматически пополняется только при
 // совпадении значений в listAcceptedFields. Соответственно при завершении
 // JSON объекта, последние добавленные значения остаются tg.titleTmp
-func (tl *SupportingStructureForTitlesType) GetTitles() []datamodels.BiZoneIRPTitle {
+func (tl *SupportingStructureForTitlesType) GetTitles() []TitleTemporary {
 	if !tl.isCompleted {
 		// здесь можно выполнять постобработку некоторых пользовательский типов
 		// например, изменить содержимое какого нибудь поля.
@@ -44,7 +105,7 @@ func (tl *SupportingStructureForTitlesType) GetTitles() []datamodels.BiZoneIRPTi
 }
 
 // GetTagTmp возвращает временный объект
-func (tl *SupportingStructureForTitlesType) GetTitleTmp() datamodels.BiZoneIRPTitle {
+func (tl *SupportingStructureForTitlesType) GetTitleTmp() TitleTemporary {
 	return tl.titleTmp
 }
 
@@ -58,7 +119,7 @@ func (tl *SupportingStructureForTitlesType) HandlerValue(fieldBranch string, a a
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&sc.tagTmp)
 		tl.titles = append(tl.titles, tl.titleTmp)
-		tl.titleTmp = *datamodels.NewBiZoneIRPTitle()
+		tl.titleTmp = *NewTitleTemporary()
 		tl.listAcceptedFields = []string(nil)
 	}
 

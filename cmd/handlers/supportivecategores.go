@@ -44,7 +44,7 @@ func (c *SupportingStructureForCategoresType) GetCategores() []datamodels.BiZone
 }
 
 // GetCategoryTmp возвращает временный объект
-func (c *SupportingStructureForCategoresType) GetTitleTmp() datamodels.BiZoneIRPCategory {
+func (c *SupportingStructureForCategoresType) GetCategoreTmp() datamodels.BiZoneIRPCategory {
 	return c.categoryTmp
 }
 

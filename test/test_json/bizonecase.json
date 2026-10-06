@@ -131,10 +131,154 @@
         ],
         "secondary_category": [
             {
+                "id": "Resource_Used_for_Attack",
+                "title": [
+                    {
+                        "value": "Использование контролируемого ресурса для проведения атак",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Social_Engineering",
+                "title": [
+                    {
+                        "value": "Социальная инженерия",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Network_Scanning",
+                "title": [
+                    {
+                        "value": "Сетевое сканирование",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Fraudulent_Content_Published",
+                "title": [
+                    {
+                        "value": "Публикация мошеннической информации",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Vuln_Exploit_Attempt",
+                "title": [
+                    {
+                        "value": "Попытки эксплуатации уязвимости",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Malware_Injection_Attempt",
+                "title": [
+                    {
+                        "value": "Попытки внедрения ВПО",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Auth_Failed",
+                "title": [
+                    {
+                        "value": "Неудачные попытки авторизации",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "DDoS_Attack",
+                "title": [
+                    {
+                        "value": "DDoS-атака",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Non_Cyber_Event",
+                "title": [
+                    {
+                        "value": "Событие не связано с компьютерной атакой",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Vuln_Exploited",
+                "title": [
+                    {
+                        "value": "Успешная эксплуатация уязвимости",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Prohibited_Content_Published_RU",
+                "title": [
+                    {
+                        "value": "Публикация на ресурсе запрещённой законодательством РФ информации",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Data_Leak",
+                "title": [
+                    {
+                        "value": "Несанкционированное разглашение информации",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Unauthorized_Modification",
+                "title": [
+                    {
+                        "value": "Несанкционированное изменение информации",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Account_Compromised",
+                "title": [
+                    {
+                        "value": "Компрометация учётной записи",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "Traffic_Interception",
+                "title": [
+                    {
+                        "value": "Захват сетевого трафика",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
                 "id": "Malware_Infection",
                 "title": [
                     {
                         "value": "Заражение ВПО",
+                        "language": "ru"
+                    }
+                ]
+            },
+            {
+                "id": "DDoS_Impact",
+                "title": [
+                    {
+                        "value": "Замедление работы ресурса в результате DDoS-атаки",
                         "language": "ru"
                     }
                 ]

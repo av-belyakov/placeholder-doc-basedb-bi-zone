@@ -2,6 +2,7 @@ package documentgenerator
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/handlers"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
@@ -36,11 +37,19 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 
 	//******** вспомогательные объекты ********
 	supportObjectTags := handlers.NewSupportingStructureForTagsType()
-	supportObjectCategores := handlers.NewSupportingStructureForCategoresType()
+	supportObjectSecondaryCategores := handlers.NewSupportingStructureForCategoresType()
+	supportObjectSecondaryCategoryTitle := handlers.NewSupportingStructureForTitlesType()
+
+	//supportObjectType := handlers.NewSupportingStructureForTitlesType()
+	//supportObjectStatus := handlers.NewSupportingStructureForTitlesType()
+	//supportObjectPriority := handlers.NewSupportingStructureForTitlesType()
+	//supportObjectPrimaryCategory := handlers.NewSupportingStructureForTitlesType()
 
 	// ********* обработчики для вспомогательных объектов ***********
 	listHandlerTags := handlers.NewListBiZoneHandlerTags(supportObjectTags)
-	listHandlerSecondaryCategores := handlers.NewListBiZoneHandlerSecondaryCategory(supportObjectCategores)
+	listHandlerSecondaryCategores := handlers.NewListBiZoneHandlerSecondaryCategory(supportObjectSecondaryCategores)
+	listHandlerSecondaryCategoresTitles := handlers.NewListBiZoneHandlerSecondaryCategoryTitle(supportObjectSecondaryCategoryTitle)
+	//listHandlerSecondaryCategoryTitle := handlers.NewListBiZoneHandlerSecondaryCategoryTitle(supportObjectSecondaryCategores)
 
 	listHandlerType := handlers.NewListBiZoneHandlerType(verifiedTypeObject)
 	listHandlerStatus := handlers.NewListBiZoneHandlerStatus(verifiedStatusObject)
@@ -52,7 +61,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 	for msg := range chInput {
 		var handlerIsExist bool
 
-		//*** обработчик для объекта 'cases' ***
+		//*** обработчик для основного объекта 'cases' ***
 		if funcs, ok := listHandlerCases[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -63,7 +72,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			continue
 		}
 
-		//*** обработчик для под объекта 'cases.data' ***
+		//*** обработчик для под объекта 'data' ***
 		if funcs, ok := listHandlerData[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -76,29 +85,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 
 		//***** обработчики для вспомогательных объектов *****
 		//****************************************************
-		// объект 'cases.tags'
-		if funcs, ok := listHandlerTags[msg.GetFieldBranch()]; ok {
-			handlerIsExist = true
-
-			for _, f := range funcs {
-				f(msg.GetValue())
-			}
-
-			//			continue
-		}
-
-		// объект 'cases.secondary_category'
-		if funcs, ok := listHandlerSecondaryCategores[msg.GetFieldBranch()]; ok {
-			handlerIsExist = true
-
-			for _, f := range funcs {
-				f(msg.GetValue())
-			}
-
-			//			continue
-		}
-
-		// объект 'cases.type'
+		// объект 'data.type'
 		if funcs, ok := listHandlerType[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -109,7 +96,43 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			//			continue
 		}
 
-		// объект 'cases.status'
+		// объект 'data.tags'
+		if funcs, ok := listHandlerTags[msg.GetFieldBranch()]; ok {
+			handlerIsExist = true
+
+			for _, f := range funcs {
+				f(msg.GetValue())
+			}
+
+			//			continue
+		}
+
+		//if strings.Contains(msg.GetFieldBranch(), "data.secondary_category") {
+		//	fmt.Printf("---=== msg.GetFieldBranch():'%s', value:'%v'\n", msg.GetFieldBranch(), msg.GetValue())
+		//}
+
+		// объект 'data.secondary_category'
+		if funcs, ok := listHandlerSecondaryCategores[msg.GetFieldBranch()]; ok {
+			handlerIsExist = true
+
+			for _, f := range funcs {
+				f(msg.GetValue())
+			}
+
+			//			continue
+		}
+		// объект 'data.secondary_category.title'
+		if funcs, ok := listHandlerSecondaryCategoresTitles[msg.GetFieldBranch()]; ok {
+			handlerIsExist = true
+
+			for _, f := range funcs {
+				f(msg.GetValue())
+			}
+
+			//			continue
+		}
+
+		// объект 'data.status'
 		if funcs, ok := listHandlerStatus[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
@@ -170,11 +193,38 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 		}
 	}
 
+	fmt.Println("--------------------------")
+	fmt.Println("supportObjectSecondaryCategores:")
+
+	categores := supportObjectSecondaryCategores.GetCategores()
+	titles := supportObjectSecondaryCategoryTitle.GetTitles()
+	for k, v := range categores {
+		fmt.Printf("%d.\n\tID:'%s', Title:'%v'\n", k, v.GetID(), v.GetTitle())
+
+		index := slices.IndexFunc(titles, func(ttemp handlers.TitleTemporary) bool {
+			return ttemp.GetID() == v.GetID()
+		})
+		if index != -1 {
+			categores[k].Title = append(categores[k].Title, datamodels.BiZoneIRPTitle{
+				Value:    titles[index].Value,
+				Language: titles[index].Language,
+			})
+		}
+	}
+	//fmt.Printf("func 'BiZoneCasesGenerator', supportObjectSecondaryCategores:'%+v'\n", supportObjectSecondaryCategores.GetCategores())
+
+	fmt.Println("\nsupportObjectSecondaryCategoryTitle:")
+	for k, v := range supportObjectSecondaryCategoryTitle.GetTitles() {
+		fmt.Printf("%d.\n\t'%s'\n", k, v)
+	}
+	//fmt.Printf("func 'BiZoneCasesGenerator', supportObjectSecondaryCategoryTitle:'%+v'\n", supportObjectSecondaryCategoryTitle.GetTitles())
+	fmt.Println("--------------------------")
+
 	// собираем все объекты в один
 	if errTmp := verifiedData.SetTags(supportObjectTags.GetTags()); errTmp != nil {
 		err = errTmp
 	}
-	if errTmp := verifiedData.SetSecondaryCategory(supportObjectCategores.GetCategores()); errTmp != nil {
+	if errTmp := verifiedData.SetSecondaryCategory(supportObjectSecondaryCategores.GetCategores()); errTmp != nil {
 		err = errTmp
 	}
 
