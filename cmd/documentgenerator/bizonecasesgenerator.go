@@ -2,7 +2,6 @@ package documentgenerator
 
 import (
 	"fmt"
-	"slices"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/handlers"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
@@ -38,7 +37,6 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 	//******** вспомогательные объекты ********
 	supportObjectTags := handlers.NewSupportingStructureForTagsType()
 	supportObjectSecondaryCategores := handlers.NewSupportingStructureForCategoresType()
-	supportObjectSecondaryCategoryTitle := handlers.NewSupportingStructureForTitlesType()
 
 	//supportObjectType := handlers.NewSupportingStructureForTitlesType()
 	//supportObjectStatus := handlers.NewSupportingStructureForTitlesType()
@@ -48,8 +46,6 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 	// ********* обработчики для вспомогательных объектов ***********
 	listHandlerTags := handlers.NewListBiZoneHandlerTags(supportObjectTags)
 	listHandlerSecondaryCategores := handlers.NewListBiZoneHandlerSecondaryCategory(supportObjectSecondaryCategores)
-	listHandlerSecondaryCategoresTitles := handlers.NewListBiZoneHandlerSecondaryCategoryTitle(supportObjectSecondaryCategoryTitle)
-	//listHandlerSecondaryCategoryTitle := handlers.NewListBiZoneHandlerSecondaryCategoryTitle(supportObjectSecondaryCategores)
 
 	listHandlerType := handlers.NewListBiZoneHandlerType(verifiedTypeObject)
 	listHandlerStatus := handlers.NewListBiZoneHandlerStatus(verifiedStatusObject)
@@ -107,22 +103,8 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 			//			continue
 		}
 
-		//if strings.Contains(msg.GetFieldBranch(), "data.secondary_category") {
-		//	fmt.Printf("---=== msg.GetFieldBranch():'%s', value:'%v'\n", msg.GetFieldBranch(), msg.GetValue())
-		//}
-
 		// объект 'data.secondary_category'
 		if funcs, ok := listHandlerSecondaryCategores[msg.GetFieldBranch()]; ok {
-			handlerIsExist = true
-
-			for _, f := range funcs {
-				f(msg.GetValue())
-			}
-
-			//			continue
-		}
-		// объект 'data.secondary_category.title'
-		if funcs, ok := listHandlerSecondaryCategoresTitles[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
 			for _, f := range funcs {
@@ -193,13 +175,13 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 		}
 	}
 
-	fmt.Println("--------------------------")
-	fmt.Println("supportObjectSecondaryCategores:")
+	//fmt.Println("--------------------------")
+	//fmt.Println("supportObjectSecondaryCategores:")
 
-	categores := supportObjectSecondaryCategores.GetCategores()
+	/*categores := supportObjectSecondaryCategores.GetCategores()
 	titles := supportObjectSecondaryCategoryTitle.GetTitles()
 	for k, v := range categores {
-		fmt.Printf("%d.\n\tID:'%s', Title:'%v'\n", k, v.GetID(), v.GetTitle())
+		//fmt.Printf("%d.\n\tID:'%s', Title:'%v'\n", k, v.GetID(), v.GetTitle())
 
 		index := slices.IndexFunc(titles, func(ttemp handlers.TitleTemporary) bool {
 			return ttemp.GetID() == v.GetID()
@@ -210,21 +192,33 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 				Language: titles[index].Language,
 			})
 		}
-	}
+	}*/
 	//fmt.Printf("func 'BiZoneCasesGenerator', supportObjectSecondaryCategores:'%+v'\n", supportObjectSecondaryCategores.GetCategores())
 
-	fmt.Println("\nsupportObjectSecondaryCategoryTitle:")
-	for k, v := range supportObjectSecondaryCategoryTitle.GetTitles() {
-		fmt.Printf("%d.\n\t'%s'\n", k, v)
-	}
+	//fmt.Println("\nsupportObjectSecondaryCategoryTitle verifiedSecondaryCategoryType:")
+	//for k, v := range supportObjectSecondaryCategoryTitle.GetIds() {
+	//for k, v := range verifiedSecondaryCategoryType {
+	//	fmt.Printf("%d.\n  %s\n", k, v.ID)
+	//	for i, item := range v.Title {
+	//		fmt.Printf("    %d. '%s'\n", i, item)
+	//	}
+	//}
+	//for k, v := range supportObjectSecondaryCategoryTitle.GetTitles() {
+	//	fmt.Printf("%d.\n\t'%s'\n", k, v)
+	//}
 	//fmt.Printf("func 'BiZoneCasesGenerator', supportObjectSecondaryCategoryTitle:'%+v'\n", supportObjectSecondaryCategoryTitle.GetTitles())
-	fmt.Println("--------------------------")
+	//fmt.Println("--------------------------")
 
 	// собираем все объекты в один
+	// собираем объект 'tags'
 	if errTmp := verifiedData.SetTags(supportObjectTags.GetTags()); errTmp != nil {
 		err = errTmp
 	}
-	if errTmp := verifiedData.SetSecondaryCategory(supportObjectSecondaryCategores.GetCategores()); errTmp != nil {
+
+	// верифицируем тип 'data.secondary_catigory' на основе правил установленных в функции verificationSecondaryCategoryType
+	verifiedSecondaryCategoryType := verificationSecondaryCategoryType(supportObjectSecondaryCategores.GetCategores())
+	// собираем объект 'secondary_category'
+	if errTmp := verifiedData.SetSecondaryCategory(verifiedSecondaryCategoryType); errTmp != nil {
 		err = errTmp
 	}
 
@@ -232,12 +226,24 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 	if errTmp := verifiedData.SetType(*verifiedTypeObject); errTmp != nil {
 		err = errTmp
 	}
+	// верифицируем тип 'data.status' на основе правил установленных в функции verificationStatusType
+	verifiedStatusType := verificationStatusType(*verifiedStatusObject.Get())
 	// собираем объект 'status'
-	if errTmp := verifiedData.SetStatus(*verifiedStatusObject); errTmp != nil {
+	/*
+			почему что здесь что в priority получается пустой срез если использовать функции верификации
+			и ещё следующие поля JSON не обрабатываются, видимо нет обработчиков
+				data.created_by.id:4
+		        data.created_by.username:803.a.egorov@cert.gov.ru
+		        data.tenant.id:8030064
+		        data.tenant.name:Рязань Радиозавод
+	*/
+	if errTmp := verifiedData.SetStatus(verifiedStatusType); errTmp != nil {
 		err = errTmp
 	}
+	// верифицируем тип 'data.priority' на основе правил установленных в функции verificationPriorityType
+	verifiedPriorityType := verificationPriorityType(*verifiedPriorityObject.Get())
 	// собираем объект 'priority'
-	if errTmp := verifiedData.SetPriority(*verifiedPriorityObject); errTmp != nil {
+	if errTmp := verifiedData.SetPriority(verifiedPriorityType); errTmp != nil {
 		err = errTmp
 	}
 	// собираем объект 'primary_category'

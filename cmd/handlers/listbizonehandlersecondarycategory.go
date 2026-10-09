@@ -12,5 +12,7 @@ func NewListBiZoneHandlerSecondaryCategory(cg *SupportingStructureForCategoresTy
 					cg.categoryTmp.SetAnyID,
 				)
 			}},
+		//ниже работа со срезам содержащими простые типы
+		"data.secondary_category.title.value": {cg.categoryTmp.SetAnyTitleElement},
 	}
 }

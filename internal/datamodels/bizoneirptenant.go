@@ -12,47 +12,47 @@ func NewBiZoneIRPTenant() *BiZoneIRPTenant {
 }
 
 // GetID для поля 'id'
-func (t *BiZoneIRPTenant) GetID() string {
-	return t.ID
+func (tnt *BiZoneIRPTenant) GetID() string {
+	return tnt.ID
 }
 
 // SetID для поля 'id'
-func (t *BiZoneIRPTenant) SetID(v string) error {
-	t.ID = v
+func (tnt *BiZoneIRPTenant) SetID(v string) error {
+	tnt.ID = v
 
 	return nil
 }
 
 // SetAnyID для поля 'id'
-func (t *BiZoneIRPTenant) SetAnyID(a any) error {
-	return t.SetID(fmt.Sprint(a))
+func (tnt *BiZoneIRPTenant) SetAnyID(a any) error {
+	return tnt.SetID(fmt.Sprint(a))
 }
 
 // GetName для поля 'name'
-func (t *BiZoneIRPTenant) GetName() string {
-	return t.Name
+func (tnt *BiZoneIRPTenant) GetName() string {
+	return tnt.Name
 }
 
 // SetName для поля 'name'
-func (t *BiZoneIRPTenant) SetName(v string) error {
-	t.Name = v
+func (tnt *BiZoneIRPTenant) SetName(v string) error {
+	tnt.Name = v
 
 	return nil
 }
 
 // SetAnyName для поля 'name'
-func (t *BiZoneIRPTenant) SetAnyName(a any) error {
-	return t.SetName(fmt.Sprint(a))
+func (tnt *BiZoneIRPTenant) SetAnyName(a any) error {
+	return tnt.SetName(fmt.Sprint(a))
 }
 
 // ToStringBeautiful форматированный вывод
-func (t *BiZoneIRPTenant) ToStringBeautiful(num int) string {
+func (tnt *BiZoneIRPTenant) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)
 
-	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, t.ID)
-	fmt.Fprintf(&str, "%s'name': '%s'\n", ws, t.Name)
+	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, tnt.ID)
+	fmt.Fprintf(&str, "%s'name': '%s'\n", ws, tnt.Name)
 
 	return str.String()
 }

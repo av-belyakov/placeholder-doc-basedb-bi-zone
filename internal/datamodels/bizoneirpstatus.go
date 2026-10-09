@@ -1,7 +1,6 @@
 package datamodels
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -10,71 +9,71 @@ import (
 
 func NewBiZoneIRPStatus() *BiZoneIRPStatus {
 	return &BiZoneIRPStatus{
-		Title: []BiZoneIRPTitle(nil),
+		Title: []string(nil),
 	}
 }
 
+// Get содержимое значения 'status'
+func (s *BiZoneIRPStatus) Get() *BiZoneIRPStatus {
+	return s
+}
+
 // GetID для поля 'id'
-func (t *BiZoneIRPStatus) GetID() string {
-	return t.ID
+func (s *BiZoneIRPStatus) GetID() string {
+	return s.ID
 }
 
 // SetID для поля 'id'
-func (t *BiZoneIRPStatus) SetID(v string) error {
-	t.ID = v
+func (s *BiZoneIRPStatus) SetID(v string) error {
+	s.ID = v
 
 	return nil
 }
 
 // SetAnyID для поля 'id'
-func (t *BiZoneIRPStatus) SetAnyID(a any) error {
-	return t.SetID(fmt.Sprint(a))
+func (s *BiZoneIRPStatus) SetAnyID(a any) error {
+	return s.SetID(fmt.Sprint(a))
 }
 
 // GetTitle для поля 'title'
-func (t *BiZoneIRPStatus) GetTitle() []BiZoneIRPTitle {
-	return t.Title
+func (s *BiZoneIRPStatus) GetTitle() []string {
+	return s.Title
 }
 
 // GetTitle для поля 'title'
-func (t *BiZoneIRPStatus) SetTitle(v []BiZoneIRPTitle) error {
-	t.Title = v
+func (s *BiZoneIRPStatus) SetTitle(v []string) error {
+	s.Title = v
 
 	return nil
 }
 
 // SetTitleElement добавляет значение 'title' в список
-func (t *BiZoneIRPStatus) SetTitleElement(v BiZoneIRPTitle) error {
-	if t.Title == nil {
-		t.Title = []BiZoneIRPTitle(nil)
+func (s *BiZoneIRPStatus) SetTitleElement(v string) error {
+	if s.Title == nil {
+		s.Title = []string(nil)
 	}
 
-	t.Title = append(t.Title, v)
+	s.Title = append(s.Title, v)
 
 	return nil
 }
 
 // SetAnyTitleElement добавляет значение 'title' в список
-func (ds *BiZoneIRPStatus) SetAnyTitleElement(a any) error {
-	if v, ok := a.(BiZoneIRPTitle); ok {
-		return ds.SetTitleElement(v)
-	}
-
-	return errors.New("type conversion error for field 'title'")
+func (s *BiZoneIRPStatus) SetAnyTitleElement(a any) error {
+	return s.SetTitleElement(fmt.Sprint(a))
 }
 
 // ToStringBeautiful форматированный вывод
-func (t *BiZoneIRPStatus) ToStringBeautiful(num int) string {
+func (s *BiZoneIRPStatus) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
-
 	ws := supportingfunctions.GetWhitespace(num)
-	wsInc := supportingfunctions.GetWhitespace(num + 1)
 
-	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, t.Title)
-	fmt.Fprintf(&str, "%s'title':\n", ws)
-	for k, v := range t.Title {
-		fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
-	}
+	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, s.Title)
+	fmt.Fprintf(&str, "%s'title': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, s.Title))
+	//fmt.Fprintf(&str, "%s'title':\n", ws)
+	//for k, v := range s.Title {
+	//	fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
+	//}
 
 	return str.String()
 }

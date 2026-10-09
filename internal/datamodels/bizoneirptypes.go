@@ -164,26 +164,30 @@ type BiZoneIRPCaseData struct {
 
 // BiZoneIRPType тип инцидента
 type BiZoneIRPType struct {
-	ID    string           `json:"id"`
-	Title []BiZoneIRPTitle `json:"title"`
+	ID    string   `json:"id"`
+	Title []string `json:"title"`
+	//Title []BiZoneIRPTitle `json:"title"`
 }
 
 // BiZoneIRPPriority приоритет
 type BiZoneIRPPriority struct {
-	ID    string           `json:"id"`
-	Title []BiZoneIRPTitle `json:"title"`
+	ID    string   `json:"id"`
+	Title []string `json:"title"`
+	//Title []BiZoneIRPTitle `json:"title"`
 }
 
 // BiZoneIRPStatus статус
 type BiZoneIRPStatus struct {
-	ID    string           `json:"id"`
-	Title []BiZoneIRPTitle `json:"title"`
+	ID    string   `json:"id"`
+	Title []string `json:"title"`
+	//Title []BiZoneIRPTitle `json:"title"`
 }
 
 // BiZoneIRPCategory категория (первичная/вторичная)
 type BiZoneIRPCategory struct {
-	ID    string           `json:"id"`
-	Title []BiZoneIRPTitle `json:"title"`
+	ID    string   `json:"id"`
+	Title []string `json:"title"`
+	//Title []BiZoneIRPTitle `json:"title"`
 }
 
 // BiZoneIRPTenant арендатор (СОА)

@@ -1,7 +1,6 @@
 package datamodels
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -10,46 +9,75 @@ import (
 
 func NewBiZoneIRPCategory() *BiZoneIRPCategory {
 	return &BiZoneIRPCategory{
-		Title: []BiZoneIRPTitle(nil),
+		//Title: []BiZoneIRPTitle(nil),
+		Title: []string(nil),
 	}
 }
 
 // GetID для поля 'id'
-func (t *BiZoneIRPCategory) GetID() string {
-	return t.ID
+func (c *BiZoneIRPCategory) GetID() string {
+	return c.ID
 }
 
 // SetID для поля 'id'
-func (t *BiZoneIRPCategory) SetID(v string) error {
-	t.ID = v
+func (c *BiZoneIRPCategory) SetID(v string) error {
+	c.ID = v
 
 	return nil
 }
 
 // SetAnyID для поля 'id'
-func (t *BiZoneIRPCategory) SetAnyID(a any) error {
-	return t.SetID(fmt.Sprint(a))
+func (c *BiZoneIRPCategory) SetAnyID(a any) error {
+	return c.SetID(fmt.Sprint(a))
 }
 
 // GetTitle для поля 'title'
-func (t *BiZoneIRPCategory) GetTitle() []BiZoneIRPTitle {
-	return t.Title
+func (c *BiZoneIRPCategory) GetTitle() []string {
+	return c.Title
 }
 
 // GetTitle для поля 'title'
-func (t *BiZoneIRPCategory) SetTitle(v []BiZoneIRPTitle) error {
-	t.Title = v
+func (c *BiZoneIRPCategory) SetTitle(v []string) error {
+	c.Title = v
 
 	return nil
 }
 
 // SetTitleElement добавляет значение 'title' в список
-func (t *BiZoneIRPCategory) SetTitleElement(v BiZoneIRPTitle) error {
-	if t.Title == nil {
-		t.Title = []BiZoneIRPTitle(nil)
+func (c *BiZoneIRPCategory) SetTitleElement(v string) error {
+	if c.Title == nil {
+		c.Title = []string(nil)
 	}
 
-	t.Title = append(t.Title, v)
+	c.Title = append(c.Title, v)
+
+	return nil
+}
+
+// SetAnyTitleElement добавляет значение 'title' в список
+func (c *BiZoneIRPCategory) SetAnyTitleElement(a any) error {
+	return c.SetTitleElement(fmt.Sprint(a))
+}
+
+/*// GetTitle для поля 'title'
+func (c *BiZoneIRPCategory) GetTitle() []BiZoneIRPTitle {
+	return c.Title
+}
+
+// GetTitle для поля 'title'
+func (c *BiZoneIRPCategory) SetTitle(v []BiZoneIRPTitle) error {
+	c.Title = v
+
+	return nil
+}
+
+// SetTitleElement добавляет значение 'title' в список
+func (c *BiZoneIRPCategory) SetTitleElement(v BiZoneIRPTitle) error {
+	if c.Title == nil {
+		c.Title = []BiZoneIRPTitle(nil)
+	}
+
+	c.Title = append(c.Title, v)
 
 	return nil
 }
@@ -61,20 +89,16 @@ func (ds *BiZoneIRPCategory) SetAnyTitleElement(a any) error {
 	}
 
 	return errors.New("type conversion error for field 'title'")
-}
+}*/
 
 // ToStringBeautiful форматированный вывод
-func (t *BiZoneIRPCategory) ToStringBeautiful(num int) string {
+func (c *BiZoneIRPCategory) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
-
 	ws := supportingfunctions.GetWhitespace(num)
-	wsInc := supportingfunctions.GetWhitespace(num + 1)
 
-	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, t.Title)
-	fmt.Fprintf(&str, "%s'title':\n", ws)
-	for k, v := range t.Title {
-		fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
-	}
+	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, c.Title)
+	fmt.Fprintf(&str, "%s'title': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, c.Title))
+	//fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
 
 	return str.String()
 }

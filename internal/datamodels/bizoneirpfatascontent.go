@@ -12,399 +12,399 @@ func NewBiZoneIRPSContent() *BiZoneIRPSContent {
 	return &BiZoneIRPSContent{}
 }
 
-func (d *BiZoneIRPSContent) Get() *BiZoneIRPSContent {
-	return d
+func (c *BiZoneIRPSContent) Get() *BiZoneIRPSContent {
+	return c
 }
 
 // GetContent для поля 'content'
-func (d *BiZoneIRPSContent) GetContent() string {
-	return d.Content
+func (c *BiZoneIRPSContent) GetContent() string {
+	return c.Content
 }
 
 // SetContent для поля 'content'
-func (d *BiZoneIRPSContent) SetContent(v string) error {
-	d.Content = v
+func (c *BiZoneIRPSContent) SetContent(v string) error {
+	c.Content = v
 
 	return nil
 }
 
 // SetAnyContent для поля 'content'
-func (d *BiZoneIRPSContent) SetAnyContent(a any) error {
-	return d.SetContent(fmt.Sprint(a))
+func (c *BiZoneIRPSContent) SetAnyContent(a any) error {
+	return c.SetContent(fmt.Sprint(a))
 }
 
 // GetNocase для поля 'nocase'
-func (d *BiZoneIRPSContent) GetNocase() bool {
-	return d.Nocase
+func (c *BiZoneIRPSContent) GetNocase() bool {
+	return c.Nocase
 }
 
 // SetNocase для поля 'nocase'
-func (d *BiZoneIRPSContent) SetNocase(v bool) error {
-	d.Nocase = v
+func (c *BiZoneIRPSContent) SetNocase(v bool) error {
+	c.Nocase = v
 
 	return nil
 }
 
 // SetAnyNocase для поля 'nocase'
-func (d *BiZoneIRPSContent) SetAnyNocase(a any) error {
+func (c *BiZoneIRPSContent) SetAnyNocase(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'nocase'")
 	}
 
-	return d.SetNocase(v)
+	return c.SetNocase(v)
 }
 
 // GetHTTPURI для поля 'http_uri'
-func (d *BiZoneIRPSContent) GetHTTPURI() bool {
-	return d.HTTPURI
+func (c *BiZoneIRPSContent) GetHTTPURI() bool {
+	return c.HTTPURI
 }
 
 // SetHTTPURI для поля 'http_uri'
-func (d *BiZoneIRPSContent) SetHTTPURI(v bool) error {
-	d.Nocase = v
+func (c *BiZoneIRPSContent) SetHTTPURI(v bool) error {
+	c.Nocase = v
 
 	return nil
 }
 
 // SetAnyHTTPURI для поля 'http_uri'
-func (d *BiZoneIRPSContent) SetAnyHTTPURI(a any) error {
+func (c *BiZoneIRPSContent) SetAnyHTTPURI(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'http_uri'")
 	}
 
-	return d.SetHTTPURI(v)
+	return c.SetHTTPURI(v)
 }
 
 // GetRawbytes для поля 'rawbytes'
-func (d *BiZoneIRPSContent) GetRawbytes() bool {
-	return d.Rawbytes
+func (c *BiZoneIRPSContent) GetRawbytes() bool {
+	return c.Rawbytes
 }
 
 // SetRawbytes для поля 'rawbytes'
-func (d *BiZoneIRPSContent) SetRawbytes(v bool) error {
-	d.Rawbytes = v
+func (c *BiZoneIRPSContent) SetRawbytes(v bool) error {
+	c.Rawbytes = v
 
 	return nil
 }
 
 // SetAnyRawbytes для поля 'rawbytes'
-func (d *BiZoneIRPSContent) SetAnyRawbytes(a any) error {
+func (c *BiZoneIRPSContent) SetAnyRawbytes(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'rawbytes'")
 	}
 
-	return d.SetRawbytes(v)
+	return c.SetRawbytes(v)
 }
 
 // GetHTTPCookie для поля 'http_cookie'
-func (d *BiZoneIRPSContent) GetHTTPCookie() bool {
-	return d.HTTPCookie
+func (c *BiZoneIRPSContent) GetHTTPCookie() bool {
+	return c.HTTPCookie
 }
 
 // SetHTTPCookie для поля 'http_cookie'
-func (d *BiZoneIRPSContent) SetHTTPCookie(v bool) error {
-	d.HTTPCookie = v
+func (c *BiZoneIRPSContent) SetHTTPCookie(v bool) error {
+	c.HTTPCookie = v
 
 	return nil
 }
 
 // SetAnyHTTPCookie для поля 'http_cookie'
-func (d *BiZoneIRPSContent) SetAnyHTTPCookie(a any) error {
+func (c *BiZoneIRPSContent) SetAnyHTTPCookie(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'http_cookie'")
 	}
 
-	return d.SetHTTPCookie(v)
+	return c.SetHTTPCookie(v)
 }
 
 // GetHTTPHeader для поля 'http_header'
-func (d *BiZoneIRPSContent) GetHTTPHeader() bool {
-	return d.HTTPHeader
+func (c *BiZoneIRPSContent) GetHTTPHeader() bool {
+	return c.HTTPHeader
 }
 
 // SetHTTPHeader для поля 'http_header'
-func (d *BiZoneIRPSContent) SetHTTPHeader(v bool) error {
-	d.HTTPHeader = v
+func (c *BiZoneIRPSContent) SetHTTPHeader(v bool) error {
+	c.HTTPHeader = v
 
 	return nil
 }
 
 // SetAnyHTTPHeader для поля 'http_header'
-func (d *BiZoneIRPSContent) SetAnyHTTPHeader(a any) error {
+func (c *BiZoneIRPSContent) SetAnyHTTPHeader(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'http_header'")
 	}
 
-	return d.SetHTTPHeader(v)
+	return c.SetHTTPHeader(v)
 }
 
 // GetHTTPMethod для поля 'http_method'
-func (d *BiZoneIRPSContent) GetHTTPMethod() bool {
-	return d.HTTPMethod
+func (c *BiZoneIRPSContent) GetHTTPMethod() bool {
+	return c.HTTPMethod
 }
 
 // SetHTTPMethod для поля 'http_method'
-func (d *BiZoneIRPSContent) SetHTTPMethod(v bool) error {
-	d.HTTPMethod = v
+func (c *BiZoneIRPSContent) SetHTTPMethod(v bool) error {
+	c.HTTPMethod = v
 
 	return nil
 }
 
 // SetAnyHTTPMethod для поля 'http_method'
-func (d *BiZoneIRPSContent) SetAnyHTTPMethod(a any) error {
+func (c *BiZoneIRPSContent) SetAnyHTTPMethod(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'http_method'")
 	}
 
-	return d.SetHTTPMethod(v)
+	return c.SetHTTPMethod(v)
 }
 
 // GetHTTPRawURI для поля 'http_raw_uri'
-func (d *BiZoneIRPSContent) GetHTTPRawURI() bool {
-	return d.HTTPRawURI
+func (c *BiZoneIRPSContent) GetHTTPRawURI() bool {
+	return c.HTTPRawURI
 }
 
 // SetHTTPRawURI для поля 'http_raw_uri'
-func (d *BiZoneIRPSContent) SetHTTPRawURI(v bool) error {
-	d.HTTPRawURI = v
+func (c *BiZoneIRPSContent) SetHTTPRawURI(v bool) error {
+	c.HTTPRawURI = v
 
 	return nil
 }
 
 // SetAnyHTTPRawURI для поля 'http_raw_uri'
-func (d *BiZoneIRPSContent) SetAnyHTTPRawURI(a any) error {
+func (c *BiZoneIRPSContent) SetAnyHTTPRawURI(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'http_raw_uri'")
 	}
 
-	return d.SetHTTPRawURI(v)
+	return c.SetHTTPRawURI(v)
 }
 
 // GetHTTPStatMsg для поля 'http_stat_msg'
-func (d *BiZoneIRPSContent) GetHTTPStatMsg() bool {
-	return d.HTTPStatMsg
+func (c *BiZoneIRPSContent) GetHTTPStatMsg() bool {
+	return c.HTTPStatMsg
 }
 
 // SetHTTPStatMsg для поля 'http_stat_msg'
-func (d *BiZoneIRPSContent) SetHTTPStatMsg(v bool) error {
-	d.HTTPStatMsg = v
+func (c *BiZoneIRPSContent) SetHTTPStatMsg(v bool) error {
+	c.HTTPStatMsg = v
 
 	return nil
 }
 
 // SetAnyHTTPStatMsg для поля 'http_stat_msg'
-func (d *BiZoneIRPSContent) SetAnyHTTPStatMsg(a any) error {
+func (c *BiZoneIRPSContent) SetAnyHTTPStatMsg(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'http_stat_msg'")
 	}
 
-	return d.SetHTTPStatMsg(v)
+	return c.SetHTTPStatMsg(v)
 }
 
 // GetHTTPStatCode для поля 'http_stat_code'
-func (d *BiZoneIRPSContent) GetHTTPStatCode() bool {
-	return d.HTTPStatCode
+func (c *BiZoneIRPSContent) GetHTTPStatCode() bool {
+	return c.HTTPStatCode
 }
 
 // SetHTTPStatCode для поля 'http_stat_code'
-func (d *BiZoneIRPSContent) SetHTTPStatCode(v bool) error {
-	d.HTTPStatCode = v
+func (c *BiZoneIRPSContent) SetHTTPStatCode(v bool) error {
+	c.HTTPStatCode = v
 
 	return nil
 }
 
 // SetAnyHTTPStatCode для поля 'http_stat_code'
-func (d *BiZoneIRPSContent) SetAnyHTTPStatCode(a any) error {
+func (c *BiZoneIRPSContent) SetAnyHTTPStatCode(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'http_stat_code'")
 	}
 
-	return d.SetHTTPStatCode(v)
+	return c.SetHTTPStatCode(v)
 }
 
 // GetHTTPRawCookie для поля 'http_raw_cookie'
-func (d *BiZoneIRPSContent) GetHTTPRawCookie() bool {
-	return d.HTTPRawCookie
+func (c *BiZoneIRPSContent) GetHTTPRawCookie() bool {
+	return c.HTTPRawCookie
 }
 
 // SetHTTPRawCookie для поля 'http_raw_cookie'
-func (d *BiZoneIRPSContent) SetHTTPRawCookie(v bool) error {
-	d.HTTPRawCookie = v
+func (c *BiZoneIRPSContent) SetHTTPRawCookie(v bool) error {
+	c.HTTPRawCookie = v
 
 	return nil
 }
 
 // SetAnyHTTPRawCookie для поля 'http_raw_cookie'
-func (d *BiZoneIRPSContent) SetAnyHTTPRawCookie(a any) error {
+func (c *BiZoneIRPSContent) SetAnyHTTPRawCookie(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'http_raw_cookie'")
 	}
 
-	return d.SetHTTPRawCookie(v)
+	return c.SetHTTPRawCookie(v)
 }
 
 // GetHTTPRawHeader для поля 'http_raw_header'
-func (d *BiZoneIRPSContent) GetHTTPRawHeader() bool {
-	return d.HTTPRawHeader
+func (c *BiZoneIRPSContent) GetHTTPRawHeader() bool {
+	return c.HTTPRawHeader
 }
 
 // SetHTTPRawHeader для поля 'http_raw_header'
-func (d *BiZoneIRPSContent) SetHTTPRawHeader(v bool) error {
-	d.HTTPRawHeader = v
+func (c *BiZoneIRPSContent) SetHTTPRawHeader(v bool) error {
+	c.HTTPRawHeader = v
 
 	return nil
 }
 
 // SetAnyHTTPRawHeader для поля 'http_raw_header'
-func (d *BiZoneIRPSContent) SetAnyHTTPRawHeader(a any) error {
+func (c *BiZoneIRPSContent) SetAnyHTTPRawHeader(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'http_raw_header'")
 	}
 
-	return d.SetHTTPRawHeader(v)
+	return c.SetHTTPRawHeader(v)
 }
 
 // GetHTTPClientBody для поля 'http_client_body'
-func (d *BiZoneIRPSContent) GetHTTPClientBody() bool {
-	return d.HTTPClientBody
+func (c *BiZoneIRPSContent) GetHTTPClientBody() bool {
+	return c.HTTPClientBody
 }
 
 // SetHTTPClientBody для поля 'http_client_body'
-func (d *BiZoneIRPSContent) SetHTTPClientBody(v bool) error {
-	d.HTTPClientBody = v
+func (c *BiZoneIRPSContent) SetHTTPClientBody(v bool) error {
+	c.HTTPClientBody = v
 
 	return nil
 }
 
 // SetAnyHTTPClientBody для поля 'http_client_body'
-func (d *BiZoneIRPSContent) SetAnyHTTPClientBody(a any) error {
+func (c *BiZoneIRPSContent) SetAnyHTTPClientBody(a any) error {
 	v, ok := a.(bool)
 	if !ok {
 		return errors.New("type conversion error for field 'http_client_body'")
 	}
 
-	return d.SetHTTPClientBody(v)
+	return c.SetHTTPClientBody(v)
 }
 
 // GetDistance для поля 'distance'
-func (d *BiZoneIRPSContent) GetDistance() *string {
-	return d.Distance
+func (c *BiZoneIRPSContent) GetDistance() *string {
+	return c.Distance
 }
 
 // SetDistance для поля 'distance'
-func (d *BiZoneIRPSContent) SetDistance(v *string) error {
-	d.Distance = v
+func (c *BiZoneIRPSContent) SetDistance(v *string) error {
+	c.Distance = v
 
 	return nil
 }
 
 // SetAnyDistance для поля 'distance'
-func (d *BiZoneIRPSContent) SetAnyDistance(a any) error {
+func (c *BiZoneIRPSContent) SetAnyDistance(a any) error {
 	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'distance'")
 	}
 
-	return d.SetDistance(&v)
+	return c.SetDistance(&v)
 }
 
 // GetFastPattern для поля 'fast_pattern'
-func (d *BiZoneIRPSContent) GetFastPattern() *string {
-	return d.FastPattern
+func (c *BiZoneIRPSContent) GetFastPattern() *string {
+	return c.FastPattern
 }
 
 // SetFastPattern для поля 'fast_pattern'
-func (d *BiZoneIRPSContent) SetFastPattern(v *string) error {
-	d.FastPattern = v
+func (c *BiZoneIRPSContent) SetFastPattern(v *string) error {
+	c.FastPattern = v
 
 	return nil
 }
 
 // SetAnyFastPattern для поля 'fast_pattern'
-func (d *BiZoneIRPSContent) SetAnyFastPattern(a any) error {
+func (c *BiZoneIRPSContent) SetAnyFastPattern(a any) error {
 	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'fast_pattern'")
 	}
 
-	return d.SetFastPattern(&v)
+	return c.SetFastPattern(&v)
 }
 
 // GetDepth для поля 'depth'
-func (d *BiZoneIRPSContent) GetDepth() *string {
-	return d.Depth
+func (c *BiZoneIRPSContent) GetDepth() *string {
+	return c.Depth
 }
 
 // SetDepth для поля 'depth'
-func (d *BiZoneIRPSContent) SetDepth(v *string) error {
-	d.Depth = v
+func (c *BiZoneIRPSContent) SetDepth(v *string) error {
+	c.Depth = v
 
 	return nil
 }
 
 // SetAnyDepth для поля 'depth'
-func (d *BiZoneIRPSContent) SetAnyDepth(a any) error {
+func (c *BiZoneIRPSContent) SetAnyDepth(a any) error {
 	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'depth'")
 	}
 
-	return d.SetDepth(&v)
+	return c.SetDepth(&v)
 }
 
 // GetOffset для поля 'offset'
-func (d *BiZoneIRPSContent) GetOffset() *string {
-	return d.Offset
+func (c *BiZoneIRPSContent) GetOffset() *string {
+	return c.Offset
 }
 
 // SetOffset для поля 'offset'
-func (d *BiZoneIRPSContent) SetOffset(v *string) error {
-	d.Offset = v
+func (c *BiZoneIRPSContent) SetOffset(v *string) error {
+	c.Offset = v
 
 	return nil
 }
 
 // SetAnyOffset для поля 'offset'
-func (d *BiZoneIRPSContent) SetAnyOffset(a any) error {
+func (c *BiZoneIRPSContent) SetAnyOffset(a any) error {
 	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'offset'")
 	}
 
-	return d.SetOffset(&v)
+	return c.SetOffset(&v)
 }
 
 // GetWithin для поля 'within'
-func (d *BiZoneIRPSContent) GetWithin() *string {
-	return d.Within
+func (c *BiZoneIRPSContent) GetWithin() *string {
+	return c.Within
 }
 
 // SetWithin для поля 'within'
-func (d *BiZoneIRPSContent) SetWithin(v *string) error {
-	d.Within = v
+func (c *BiZoneIRPSContent) SetWithin(v *string) error {
+	c.Within = v
 
 	return nil
 }
 
 // SetAnyWithin для поля 'within'
-func (d *BiZoneIRPSContent) SetAnyWithin(a any) error {
+func (c *BiZoneIRPSContent) SetAnyWithin(a any) error {
 	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'within'")
 	}
 
-	return d.SetWithin(&v)
+	return c.SetWithin(&v)
 }
 
 // ToStringBeautiful форматированный вывод

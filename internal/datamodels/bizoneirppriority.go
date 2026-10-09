@@ -1,7 +1,6 @@
 package datamodels
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -10,71 +9,95 @@ import (
 
 func NewBiZoneIRPPriority() *BiZoneIRPPriority {
 	return &BiZoneIRPPriority{
-		Title: []BiZoneIRPTitle(nil),
+		Title: []string(nil),
+		//Title: []BiZoneIRPTitle(nil),
 	}
 }
 
+// Get содержимое значения 'priority'
+func (p *BiZoneIRPPriority) Get() *BiZoneIRPPriority {
+	return p
+}
+
 // GetID для поля 'id'
-func (t *BiZoneIRPPriority) GetID() string {
-	return t.ID
+func (p *BiZoneIRPPriority) GetID() string {
+	return p.ID
 }
 
 // SetID для поля 'id'
-func (t *BiZoneIRPPriority) SetID(v string) error {
-	t.ID = v
+func (p *BiZoneIRPPriority) SetID(v string) error {
+	p.ID = v
 
 	return nil
 }
 
 // SetAnyID для поля 'id'
-func (t *BiZoneIRPPriority) SetAnyID(a any) error {
-	return t.SetID(fmt.Sprint(a))
+func (p *BiZoneIRPPriority) SetAnyID(a any) error {
+	return p.SetID(fmt.Sprint(a))
 }
 
 // GetTitle для поля 'title'
-func (t *BiZoneIRPPriority) GetTitle() []BiZoneIRPTitle {
-	return t.Title
+func (p *BiZoneIRPPriority) GetTitle() []string {
+	return p.Title
 }
 
 // GetTitle для поля 'title'
-func (t *BiZoneIRPPriority) SetTitle(v []BiZoneIRPTitle) error {
-	t.Title = v
+func (p *BiZoneIRPPriority) SetTitle(v []string) error {
+	p.Title = v
 
 	return nil
 }
 
 // SetTitleElement добавляет значение 'title' в список
-func (t *BiZoneIRPPriority) SetTitleElement(v BiZoneIRPTitle) error {
-	if t.Title == nil {
-		t.Title = []BiZoneIRPTitle(nil)
+func (p *BiZoneIRPPriority) SetTitleElement(v string) error {
+	if p.Title == nil {
+		p.Title = []string(nil)
 	}
 
-	t.Title = append(t.Title, v)
+	p.Title = append(p.Title, v)
 
 	return nil
 }
 
-// SetAnyTitleElement добавляет значение 'title' в список
-func (ds *BiZoneIRPPriority) SetAnyTitleElement(a any) error {
-	if v, ok := a.(BiZoneIRPTitle); ok {
-		return ds.SetTitleElement(v)
+/*// GetTitle для поля 'title'
+func (p *BiZoneIRPPriority) GetTitle() []BiZoneIRPTitle {
+	return p.Title
+}
+
+// GetTitle для поля 'title'
+func (p *BiZoneIRPPriority) SetTitle(v []BiZoneIRPTitle) error {
+	p.Title = v
+
+	return nil
+}
+
+// SetTitleElement добавляет значение 'title' в список
+func (p *BiZoneIRPPriority) SetTitleElement(v BiZoneIRPTitle) error {
+	if p.Title == nil {
+		p.Title = []BiZoneIRPTitle(nil)
 	}
 
-	return errors.New("type conversion error for field 'title'")
+	p.Title = append(p.Title, v)
+
+	return nil
+}*/
+
+// SetAnyTitleElement добавляет значение 'title' в список
+func (p *BiZoneIRPPriority) SetAnyTitleElement(a any) error {
+	return p.SetTitleElement(fmt.Sprint(a))
 }
 
 // ToStringBeautiful форматированный вывод
-func (t *BiZoneIRPPriority) ToStringBeautiful(num int) string {
+func (p *BiZoneIRPPriority) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
-
 	ws := supportingfunctions.GetWhitespace(num)
-	wsInc := supportingfunctions.GetWhitespace(num + 1)
 
-	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, t.Title)
-	fmt.Fprintf(&str, "%s'title':\n", ws)
-	for k, v := range t.Title {
-		fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
-	}
+	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, p.Title)
+	fmt.Fprintf(&str, "%s'title': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, p.Title))
+	//fmt.Fprintf(&str, "%s'title':\n", ws)
+	//for k, v := range p.Title {
+	//fmt.Fprintf(&str, "%s%d.\n%s", wsInc, k, v.ToStringBeautiful(num+2))
+	//}
 
 	return str.String()
 }
