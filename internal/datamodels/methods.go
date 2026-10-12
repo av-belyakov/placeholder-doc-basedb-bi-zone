@@ -8,29 +8,6 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
-var (
-	fieldsFroTagsRepresentedAsList []string = []string{
-		"tags.name",
-		"tags.color",
-		"tags.created",
-		"tags.created_by.id",
-		"tags.created_by.username",
-		"tags.is_visible_for_customer",
-	}
-
-	fieldsForSnapshotsRepresentedAsList []string = []string{
-		"os",
-		"fqdn",
-		"domain",
-		"cmdb_id",
-		"os_type",
-		"hostname",
-		"ip_addresses",
-		"mac_addresses",
-		"user_cmdb_name",
-	}
-)
-
 // GetSensorsInformation объекты с информацией о сенсоре
 func (ai *AdditionalInformation) GetSensorsInformation() []SensorInformation {
 	return ai.Sensors

@@ -297,6 +297,23 @@ func (d *BiZoneIRPCaseData) SetAnyTLP(a any) error {
 	return d.SetTLP(fmt.Sprint(a))
 }
 
+// GetTitle для поля 'title'
+func (d *BiZoneIRPCaseData) GetTitle() string {
+	return d.Title
+}
+
+// SetTitle для поля 'title'
+func (d *BiZoneIRPCaseData) SetTitle(v string) error {
+	d.Title = v
+
+	return nil
+}
+
+// SetAnyTitle для поля 'title'
+func (d *BiZoneIRPCaseData) SetAnyTitle(a any) error {
+	return d.SetTitle(fmt.Sprint(a))
+}
+
 // GetAssignee для поля 'assignee'
 func (d *BiZoneIRPCaseData) GetAssignee() *string {
 	return d.Assignee

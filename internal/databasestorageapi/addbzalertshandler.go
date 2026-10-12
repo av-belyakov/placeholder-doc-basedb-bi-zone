@@ -20,7 +20,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 
 	newDocument, ok := a.(*datamodels.VerifiedBiZoneIRPAlert)
 	if !ok {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("type conversion error")).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("'alert' type conversion error")).Error())
 
 		return
 	}

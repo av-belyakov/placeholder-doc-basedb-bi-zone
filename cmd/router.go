@@ -68,7 +68,7 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 							r.logger.Send("error", supportingfunctions.CustomError(err).Error())
 						}
 
-						r.logger.Send("info", fmt.Sprintf("an 'alerts' document has been generated, and the document has been transferred to the database (uuid document '%s')", id))
+						r.logger.Send("info", fmt.Sprintf("an 'ALERT' document has been generated, and the document has been transferred to the database (uuid document '%s')", id))
 
 						if len(listRawFields) > 0 {
 							r.logger.Send("alert_raw_fields", supportingfunctions.JoinRawFieldsToString(listRawFields, "id", id))
@@ -84,23 +84,26 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 					}()
 
 				case "cases":
-					// *************
-					// Здесь нужны разные обработчики
-					// *************
-
-					//soaralert_raw_fields
-
-					fmt.Println("\treceived message from topic: 'socd-soar-prod-issue-v1' (case)")
-
-					if str, err := supportingfunctions.NewReadReflectJSONSprint(msg.Data); err == nil {
-						if str != "" {
-							r.logger.Send("events", fmt.Sprintf("\n%s\n", str))
+					go func() {
+						id, verifedBiZoneCase, listRawFields, err := documentgenerator.BiZoneCasesGenerator(decoder.Start(msg.Data))
+						if err != nil {
+							r.logger.Send("error", supportingfunctions.CustomError(err).Error())
 						}
-					}
 
-					//для этого типа событий пока нет обработчиков, потому что я
-					// пока что не видел события этого типа
+						r.logger.Send("info", fmt.Sprintf("an 'CASE' document has been generated, and the document has been transferred to the database (uuid document '%s')", id))
 
+						if len(listRawFields) > 0 {
+							r.logger.Send("case_raw_fields", supportingfunctions.JoinRawFieldsToString(listRawFields, "id", id))
+						}
+
+						//передача объекта в модуль взаимодействия с базой данных для
+						//дальнейшей загрузки данных в базу
+						r.chToDBSApi <- databasestorageapi.SettingsChanInput{
+							Section: "handling bizone cases",
+							Command: "add cases",
+							Data:    verifedBiZoneCase,
+						}
+					}()
 				}
 
 			case msg := <-r.chFromDBSApi:

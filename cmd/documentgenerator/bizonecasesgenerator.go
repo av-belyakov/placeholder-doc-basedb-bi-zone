@@ -26,6 +26,7 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 	verifiedTypeObject := datamodels.NewBiZoneIRPType()
 	verifiedStatusObject := datamodels.NewBiZoneIRPStatus()
 	verifiedTenantObject := datamodels.NewBiZoneIRPTenant()
+	verifiedOrganization := datamodels.NewBiZoneIRPOrganization()
 	verifiedPriorityObject := datamodels.NewBiZoneIRPPriority()
 	verifiedCreatedByObject := datamodels.NewBiZoneIRPCreatedBy()
 	verifiedPrimaryCategoryObject := datamodels.NewBiZoneIRPCategory()
@@ -52,7 +53,14 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 	listHandlerTenant := handlers.NewListBiZoneHandlerTenant(verifiedTenantObject)
 	listHandlerPriority := handlers.NewListBiZoneHandlerPriority(verifiedPriorityObject)
 	listHandlerCreatedBy := handlers.NewListBiZoneHandlerCreatedBy(verifiedCreatedByObject)
+	listHandlerOrganization := handlers.NewListBiZoneHandlerOrganization(verifiedOrganization)
 	listHandlerPrimaryCategory := handlers.NewListBiZoneHandlerPrimaryCategory(verifiedPrimaryCategoryObject)
+
+	// объект с дополнительной информацией по сенсорам и ip адресам
+	additionalInformation := datamodels.AdditionalInformation{
+		Sensors:     []datamodels.SensorInformation(nil),
+		IpAddresses: []datamodels.IpAddressInformation(nil),
+	}
 
 	for msg := range chInput {
 		var handlerIsExist bool
@@ -94,6 +102,17 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 
 		// объект 'data.tags'
 		if funcs, ok := listHandlerTags[msg.GetFieldBranch()]; ok {
+			handlerIsExist = true
+
+			for _, f := range funcs {
+				f(msg.GetValue())
+			}
+
+			//			continue
+		}
+
+		// объект 'data.organization'
+		if funcs, ok := listHandlerOrganization[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
 			for _, f := range funcs {
@@ -228,15 +247,8 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 	}
 	// верифицируем тип 'data.status' на основе правил установленных в функции verificationStatusType
 	verifiedStatusType := verificationStatusType(*verifiedStatusObject.Get())
+
 	// собираем объект 'status'
-	/*
-			почему что здесь что в priority получается пустой срез если использовать функции верификации
-			и ещё следующие поля JSON не обрабатываются, видимо нет обработчиков
-				data.created_by.id:4
-		        data.created_by.username:803.a.egorov@cert.gov.ru
-		        data.tenant.id:8030064
-		        data.tenant.name:Рязань Радиозавод
-	*/
 	if errTmp := verifiedData.SetStatus(verifiedStatusType); errTmp != nil {
 		err = errTmp
 	}
@@ -263,29 +275,18 @@ func BiZoneCasesGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 		err = errTmp
 	}
 
-	/*
-		формирование дополнительной информации пока что не выполняется так как в кейсе нет ip адресов и id сенсоров
+	// формируем дополнительную информацию с идентификаторами сенсоров
+	additionalInformation.SetSensorInformation(CreateListSensorsForCases(verifiedData).GetSensorsInformation())
 
-			// объект с дополнительной информацией по сенсорам и ip адресам
-			additionalInformation := datamodels.AdditionalInformation{
-				Sensors:     []datamodels.SensorInformation(nil),
-				IpAddresses: []datamodels.IpAddressInformation(nil),
-			}
+	// формируем дополнительную информацию с ip адресами
+	additionalInformation.SetIpAddressesInformation(CreateListIpAddresesForCases(verifiedData).GetIpAddressesInformation())
 
-			// формируем дополнительную информацию с идентификаторами сенсоров
-			//additionalInformation.SetSensorInformation(CreateListSensorsForAlerts(verifiedData).GetSensorsInformation())
-			// формируем дополнительную информацию с ip адресами
-			//additionalInformation.SetIpAddressesInformation(CreateListIpAddresesForAlerts(verifiedData).GetIpAddressesInformation())
-			// добавляем специальный, общий идентификатор
-			// так как в alert и case uuid хранятся в разных местах и под разными названиями необходимо унифицировать
-			// место хранения идентификатора для разных объектов, это позволит унифицировать обработчик отвечающий
-			// за наполнение полей с доп. информацией по ip адресам и сенсорам
-			additionalInformation.SetSpecialUUID(verifiedMainObject.GetUUID())
+	// добавляем специальный, общий идентификатор
+	additionalInformation.SetSpecialUUID(verifiedMainObject.GetID())
 
-			if errTmp := verifiedMainObject.SetAdditionalInformation(additionalInformation); errTmp != nil {
-				err = errTmp
-			}
-	*/
+	if errTmp := verifiedMainObject.SetAdditionalInformation(additionalInformation); errTmp != nil {
+		err = errTmp
+	}
 
-	return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err
+	return verifiedMainObject.GetID(), verifiedMainObject, listRawFields, err
 }

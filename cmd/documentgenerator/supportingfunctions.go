@@ -2,6 +2,7 @@ package documentgenerator
 
 import (
 	"fmt"
+	"regexp"
 	"slices"
 	"strings"
 
@@ -76,6 +77,8 @@ func searchSContentFromSContents(content string, contents []datamodels.BiZoneIRP
 //
 // где id = "Fraudulent_Content_Published" должно содержать значение "Публикация мошеннической информации"
 func verificationSecondaryCategoryType(categores []datamodels.BiZoneIRPCategory) []datamodels.BiZoneIRPCategory {
+	//fmt.Printf("func 'verificationSecondaryCategoryType', categores:'%+v'", categores)
+
 	for i := range categores {
 		if categores[i].Title != nil || i == 0 {
 			continue
@@ -112,8 +115,6 @@ func verificationSecondaryCategoryType(categores []datamodels.BiZoneIRPCategory)
 func verificationStatusType(status datamodels.BiZoneIRPStatus) datamodels.BiZoneIRPStatus {
 	status.Title = supportingfunctions.SliceUniqueValues(status.Title)
 
-	fmt.Println("func 'verificationStatusType', status:", status)
-
 	return status
 }
 
@@ -135,12 +136,10 @@ func verificationStatusType(status datamodels.BiZoneIRPStatus) datamodels.BiZone
 func verificationPriorityType(priority datamodels.BiZoneIRPPriority) datamodels.BiZoneIRPPriority {
 	priority.Title = supportingfunctions.SliceUniqueValues(priority.Title)
 
-	fmt.Println("func 'verificationPriorityType', priority:", priority)
-
 	return priority
 }
 
-// CreateListSensorsForAlerts список с идентификаторами сенсоров из объекта 'alerts'
+// CreateListSensorsForAlerts список с идентификаторами сенсоров из объекта 'alert'
 func CreateListSensorsForAlerts(verifiedData *datamodels.BiZoneIRPAlertData) *datamodels.AdditionalInformation {
 	information := &datamodels.AdditionalInformation{
 		Sensors: []datamodels.SensorInformation(nil),
@@ -163,7 +162,7 @@ func CreateListSensorsForAlerts(verifiedData *datamodels.BiZoneIRPAlertData) *da
 	return information
 }
 
-// CreateListIpAddreses список с ip адресами из объекта 'alerts'
+// CreateListIpAddresesForAlerts список с ip адресами из объекта 'alert'
 func CreateListIpAddresesForAlerts(verifiedData *datamodels.BiZoneIRPAlertData) *datamodels.AdditionalInformation {
 	information := &datamodels.AdditionalInformation{
 		IpAddresses: []datamodels.IpAddressInformation(nil),
@@ -195,6 +194,68 @@ func CreateListIpAddresesForAlerts(verifiedData *datamodels.BiZoneIRPAlertData) 
 
 		information.AddIpAddressInformation(datamodels.IpAddressInformation{
 			Ip: tmp[0],
+		})
+	}
+
+	return information
+}
+
+// CreateListSensorsForCases список с идентификаторами сенсоров из объекта 'case'
+func CreateListSensorsForCases(verifiedData *datamodels.BiZoneIRPCaseData) *datamodels.AdditionalInformation {
+	information := &datamodels.AdditionalInformation{
+		Sensors: []datamodels.SensorInformation(nil),
+	}
+
+	// из свойства 'data.tenant.id'
+	if verifiedData.Tenant.ID != "" {
+		information.AddSensorInformation(datamodels.SensorInformation{
+			SensorId: verifiedData.Tenant.ID,
+		})
+	}
+
+	// из свойства 'data.tags'
+	reg := regexp.MustCompile(`\d`)
+	for _, v := range verifiedData.Tags {
+		name := strings.ToLower(v.Name)
+		if !strings.Contains(name, "sensor") {
+			continue
+		}
+
+		valueMatches := reg.FindStringSubmatch(name)
+		if valueMatches == nil {
+			continue
+		}
+
+		newMatches := supportingfunctions.SliceUniqueValues(valueMatches)
+		for _, v := range newMatches {
+			information.AddSensorInformation(datamodels.SensorInformation{
+				SensorId: v,
+			})
+		}
+	}
+
+	return information
+}
+
+// CreateListIpAddresesForCases список с ip адресами из объекта 'case'
+func CreateListIpAddresesForCases(verifiedData *datamodels.BiZoneIRPCaseData) *datamodels.AdditionalInformation {
+	information := &datamodels.AdditionalInformation{
+		IpAddresses: []datamodels.IpAddressInformation(nil),
+	}
+
+	reg := regexp.MustCompile(`\b(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\b`)
+	ipaddresses := reg.FindAllStringSubmatch(verifiedData.Description, -1)
+	ips := make([]string, 0, len(ipaddresses))
+
+	for _, ip := range ipaddresses {
+		ips = append(ips, ip[0])
+	}
+
+	ips = supportingfunctions.SliceUniqueValues(ips)
+
+	for _, ip := range ips {
+		information.AddIpAddressInformation(datamodels.IpAddressInformation{
+			Ip: ip,
 		})
 	}
 

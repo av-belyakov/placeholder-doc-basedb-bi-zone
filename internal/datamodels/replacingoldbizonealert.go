@@ -32,7 +32,7 @@ func (va *VerifiedBiZoneIRPAlert) RepalcingOldBiZoneAlert(incomingType VerifiedB
 
 			if typeOfCurrentStruct.Field(i).Name == "Tags" {
 				if tags, ok := newStruct.Field(j).Interface().([]BiZoneIRPTag); ok {
-					countReplacingFields += va.ReplacingOldBiZoneTags(tags)
+					countReplacingFields += va.ReplacingOldBiZoneAlertTags(tags)
 				}
 
 				continue

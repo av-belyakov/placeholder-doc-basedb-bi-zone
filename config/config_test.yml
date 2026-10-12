@@ -32,7 +32,7 @@ DATABASESTORAGE:
   namedb:
   storage_name_db:
     alerts: module_placeholderdb_bizone_alerts.test
-    soar-alerts: module_placeholderdb_bizone_soar-alerts.test
+    cases: module_placeholderdb_bizone_cases.test
 DATABASEWRITELOG:
   host: localhost
   port: 9211

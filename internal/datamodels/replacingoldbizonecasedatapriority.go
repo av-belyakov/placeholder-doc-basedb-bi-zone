@@ -6,11 +6,11 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
-// ReplacingOldBiZoneData заменяет старые значения типа BiZoneData новыми
-func (d *BiZoneIRPAlertData) ReplacingOldBiZoneData(incomingType BiZoneIRPAlertData) int {
+// ReplacingOldBiZoneCaseDataPriority заменяет старые значения типа BiZoneIRPPriority новыми
+func (tnt *BiZoneIRPPriority) ReplacingOldBiZoneCaseDataPriority(incomingType BiZoneIRPPriority) int {
 	var countReplacingFields int
 
-	currentStruct := reflect.ValueOf(d).Elem()
+	currentStruct := reflect.ValueOf(tnt).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
 
 	newStruct := reflect.ValueOf(incomingType)
@@ -22,28 +22,12 @@ func (d *BiZoneIRPAlertData) ReplacingOldBiZoneData(incomingType BiZoneIRPAlertD
 				continue
 			}
 
-			if typeOfCurrentStruct.Field(i).Name == "Tags" ||
-				typeOfCurrentStruct.Field(i).Name == "UnmappedDstEndpointArray" ||
-				typeOfCurrentStruct.Field(i).Name == "UnmappedHomeEndpointArray" {
+			if typeOfCurrentStruct.Field(i).Name == "Title" {
 				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
 					countReplacingFields++
 				}
 
-				continue
-			}
-
-			if typeOfCurrentStruct.Field(i).Name == "DetectionPattern" ||
-				typeOfCurrentStruct.Field(i).Name == "UnmappedAgentArray" {
-				if list, ok := supportingfunctions.ReplacingSlice[uint64](currentStruct.Field(i), newStruct.Field(j)); ok {
-					currentStruct.Field(i).Set(list)
-					countReplacingFields++
-				}
-
-				continue
-			}
-
-			if typeOfCurrentStruct.Field(i).Name == "DataSecurity" {
 				continue
 			}
 

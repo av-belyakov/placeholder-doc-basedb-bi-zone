@@ -4,8 +4,8 @@ import (
 	"reflect"
 )
 
-// ReplacingOldBiZoneTag заменяет старые значения типа BiZoneTag новыми
-func (t *BiZoneIRPTag) ReplacingOldBiZoneTag(incomingType BiZoneIRPTag) int {
+// ReplacingOldBiZoneCaseDataTag заменяет старые значения типа BiZoneTag новыми
+func (t *BiZoneIRPTag) ReplacingOldBiZoneCaseDataTag(incomingType BiZoneIRPTag) int {
 	var countReplacingFields int
 
 	currentStruct := reflect.ValueOf(t).Elem()

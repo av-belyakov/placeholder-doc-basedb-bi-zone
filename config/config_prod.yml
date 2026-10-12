@@ -32,7 +32,7 @@ DATABASESTORAGE: # хранилище принятой информации
   namedb:
   storage_name_db:
     alerts: module_placeholderdb_bizone_alerts
-    case: module_placeholderdb_bizone_case
+    cases: module_placeholderdb_bizone_cases
 DATABASEWRITELOG: # хранилище логов работы модуля
   host: datahook.cloud.gcm
   port: 9200

@@ -63,6 +63,26 @@ type PatternVerifiedBiZoneAlert struct {
 	ServiseOption
 }
 
+//****** для объектов типа VerifiedBiZoneCases *******
+
+// ResponseVerifiedBiZoneCases ответ от базы данных
+type ResponseVerifiedBiZoneCases struct {
+	Options ResponseVerifiedBiZoneCasesOptions `json:"hits"`
+}
+
+// ResponseVerifiedBiZoneCasesOptions опции ответа
+type ResponseVerifiedBiZoneCasesOptions struct {
+	Total    OptionsTotal                 `json:"total"`
+	Hits     []PatternVerifiedBiZoneAlert `json:"hits"`
+	MaxScore float64                      `json:"max_score"`
+}
+
+// PatternVerifiedBiZoneCase шаблон
+type PatternVerifiedBiZoneCase struct {
+	Source datamodels.VerifiedBiZoneIRPCase `json:"_source"`
+	ServiseOption
+}
+
 //****** для объектов типа AdditionalInformation *******
 
 // ResponseTemplateAdditionalInformation шаблон для дополнительной информации

@@ -11,6 +11,7 @@ func NewListBiZoneHandlerCaseData(data *datamodels.BiZoneIRPCaseData) map[string
 		"data.resolutiondate":               {data.SetAnyResolutionDate},
 		"data.id":                           {data.SetAnyID},
 		"data.tlp":                          {data.SetAnyTLP},
+		"data.title":                        {data.SetAnyTitle},
 		"data.fp_type":                      {data.SetAnyFpType},
 		"data.summary":                      {data.SetAnySummary},
 		"data.external_id":                  {data.SetAnyExternalID},

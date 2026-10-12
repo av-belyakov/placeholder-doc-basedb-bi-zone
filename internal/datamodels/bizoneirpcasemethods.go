@@ -16,161 +16,178 @@ func NewVerifiedBiZoneIRPCase() *VerifiedBiZoneIRPCase {
 	return &VerifiedBiZoneIRPCase{}
 }
 
-// GetUUID для поля 'id' в формате UUID
-func (c *VerifiedBiZoneIRPCase) GetUUID() string {
-	return c.ID
+func (vc *VerifiedBiZoneIRPCase) Get() *VerifiedBiZoneIRPCase {
+	return vc
 }
 
-// SetUUID для поля 'id' в формате UUID
-func (c *VerifiedBiZoneIRPCase) SetUUID(v string) error {
-	c.ID = v
+// GetID для поля 'id' в формате UUID
+func (vc *VerifiedBiZoneIRPCase) GetID() string {
+	return vc.ID
+}
+
+// SetID для поля 'id' в формате UUID
+func (vc *VerifiedBiZoneIRPCase) SetID(v string) error {
+	vc.ID = v
 
 	return nil
 }
 
-// SetAnyUUID для поля 'id' в формате UUID
-func (c *VerifiedBiZoneIRPCase) SetAnyUUID(a any) error {
-	return c.SetUUID(fmt.Sprint(a))
+// SetAnyID для поля 'id' в формате ID
+func (vc *VerifiedBiZoneIRPCase) SetAnyUUID(a any) error {
+	return vc.SetID(fmt.Sprint(a))
 }
 
 // GetType для поля 'type'
-func (c *VerifiedBiZoneIRPCase) GetType() string {
-	return c.Type
+func (vc *VerifiedBiZoneIRPCase) GetType() string {
+	return vc.Type
 }
 
 // SetType для поля 'type'
-func (c *VerifiedBiZoneIRPCase) SetType(v string) error {
-	c.Type = v
+func (vc *VerifiedBiZoneIRPCase) SetType(v string) error {
+	vc.Type = v
 
 	return nil
 }
 
 // SetAnyType для поля 'type'
-func (c *VerifiedBiZoneIRPCase) SetAnyType(a any) error {
-	return c.SetType(fmt.Sprint(a))
+func (vc *VerifiedBiZoneIRPCase) SetAnyType(a any) error {
+	return vc.SetType(fmt.Sprint(a))
 }
 
 // GetSource для поля 'source'
-func (c *VerifiedBiZoneIRPCase) GetSource() string {
-	return c.Source
+func (vc *VerifiedBiZoneIRPCase) GetSource() string {
+	return vc.Source
 }
 
 // SetSource для поля 'source'
-func (c *VerifiedBiZoneIRPCase) SetSource(v string) error {
-	c.Source = v
+func (vc *VerifiedBiZoneIRPCase) SetSource(v string) error {
+	vc.Source = v
 
 	return nil
 }
 
 // SetAnySource для поля 'source'
-func (c *VerifiedBiZoneIRPCase) SetAnySource(a any) error {
-	return c.SetSource(fmt.Sprint(a))
+func (vc *VerifiedBiZoneIRPCase) SetAnySource(a any) error {
+	return vc.SetSource(fmt.Sprint(a))
 }
 
 // GetSpecVersion для поля 'specversion'
-func (c *VerifiedBiZoneIRPCase) GetSpecVersion() string {
-	return c.SpecVersion
+func (vc *VerifiedBiZoneIRPCase) GetSpecVersion() string {
+	return vc.SpecVersion
 }
 
 // SetSpecVersion для поля 'specversion'
-func (c *VerifiedBiZoneIRPCase) SetSpecVersion(v string) error {
-	c.SpecVersion = v
+func (vc *VerifiedBiZoneIRPCase) SetSpecVersion(v string) error {
+	vc.SpecVersion = v
 
 	return nil
 }
 
 // SetAnySpecVersion для поля 'specversion'
-func (c *VerifiedBiZoneIRPCase) SetAnySpecVersion(a any) error {
-	return c.SetSpecVersion(fmt.Sprint(a))
+func (vc *VerifiedBiZoneIRPCase) SetAnySpecVersion(a any) error {
+	return vc.SetSpecVersion(fmt.Sprint(a))
 }
 
 // GetTime для поля 'time'
-func (c *VerifiedBiZoneIRPCase) GetTime() string {
-	return c.Time
+func (vc *VerifiedBiZoneIRPCase) GetTime() string {
+	return vc.Time
 }
 
 // SetTime для поля 'time'
-func (c *VerifiedBiZoneIRPCase) SetTime(v string) error {
-	c.Time = v
+func (vc *VerifiedBiZoneIRPCase) SetTime(v string) error {
+	vc.Time = v
 
 	return nil
 }
 
 // SetAnyTime для поля 'time'
-func (c *VerifiedBiZoneIRPCase) SetAnyTime(a any) error {
-	return c.SetTime(fmt.Sprint(a))
+func (vc *VerifiedBiZoneIRPCase) SetAnyTime(a any) error {
+	return vc.SetTime(fmt.Sprint(a))
 }
 
 // GetSubject для поля 'subject'
-func (c *VerifiedBiZoneIRPCase) GetSubject() *string {
-	return c.Subject
+func (vc *VerifiedBiZoneIRPCase) GetSubject() *string {
+	return vc.Subject
 }
 
 // SetSubject для поля 'subject'
-func (c *VerifiedBiZoneIRPCase) SetSubject(v *string) error {
-	c.Subject = v
+func (vc *VerifiedBiZoneIRPCase) SetSubject(v *string) error {
+	vc.Subject = v
 
 	return nil
 }
 
 // SetAnySubject для поля 'subject'
-func (c *VerifiedBiZoneIRPCase) SetAnySubject(a any) error {
+func (vc *VerifiedBiZoneIRPCase) SetAnySubject(a any) error {
 	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'subject'")
 	}
 
-	return c.SetSubject(&v)
+	return vc.SetSubject(&v)
 }
 
 // GetDataSchema для поля 'dataschema'
-func (c *VerifiedBiZoneIRPCase) GetDataSchema() *string {
-	return c.DataSchema
+func (vc *VerifiedBiZoneIRPCase) GetDataSchema() *string {
+	return vc.DataSchema
 }
 
 // SetDataSchema для поля 'dataschema'
-func (c *VerifiedBiZoneIRPCase) SetDataSchema(v *string) error {
-	c.DataSchema = v
+func (vc *VerifiedBiZoneIRPCase) SetDataSchema(v *string) error {
+	vc.DataSchema = v
 
 	return nil
 }
 
 // SetAnyDataSchema для поля 'dataschema'
-func (c *VerifiedBiZoneIRPCase) SetAnyDataSchema(a any) error {
+func (vc *VerifiedBiZoneIRPCase) SetAnyDataSchema(a any) error {
 	v, ok := a.(string)
 	if !ok {
 		return errors.New("type conversion error for field 'dataSchema'")
 	}
 
-	return c.SetDataSchema(&v)
+	return vc.SetDataSchema(&v)
 }
 
 // GetData для поля 'data'
-func (c *VerifiedBiZoneIRPCase) GetData() BiZoneIRPCaseData {
-	return c.Data
+func (vc *VerifiedBiZoneIRPCase) GetData() BiZoneIRPCaseData {
+	return vc.Data
 }
 
 // SetData для поля 'data'
-func (c *VerifiedBiZoneIRPCase) SetData(v BiZoneIRPCaseData) error {
-	c.Data = v
+func (vc *VerifiedBiZoneIRPCase) SetData(v BiZoneIRPCaseData) error {
+	vc.Data = v
+
+	return nil
+}
+
+// GetAdditionalInformation поле дополнительной информации
+func (vc *VerifiedBiZoneIRPCase) GetAdditionalInformation() *AdditionalInformation {
+	return &vc.AdditionalInformation
+}
+
+// SetAdditionalInformation для поля дополнительной информации
+func (vc *VerifiedBiZoneIRPCase) SetAdditionalInformation(v AdditionalInformation) error {
+	vc.AdditionalInformation = v
 
 	return nil
 }
 
 // ToStringBeautiful форматированный вывод
-func (c *VerifiedBiZoneIRPCase) ToStringBeautiful(num int) string {
+func (vc *VerifiedBiZoneIRPCase) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)
 
-	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, c.ID)
-	fmt.Fprintf(&str, "%s'type': '%s'\n", ws, c.Type)
-	fmt.Fprintf(&str, "%s'source': '%s'\n", ws, c.Source)
-	fmt.Fprintf(&str, "%s'specversion': '%s'\n", ws, c.SpecVersion)
-	fmt.Fprintf(&str, "%s'time': '%s'\n", ws, c.Time)
-	fmt.Fprintf(&str, "%s'subject': '%s'\n", ws, *c.Subject)
-	fmt.Fprintf(&str, "%s'dataschema': '%s'\n", ws, *c.DataSchema)
-	fmt.Fprintf(&str, "%s'data':\n%s", ws, c.Data.ToStringBeautiful(num+1))
+	fmt.Fprintf(&str, "%s'id': '%s'\n", ws, vc.ID)
+	fmt.Fprintf(&str, "%s'type': '%s'\n", ws, vc.Type)
+	fmt.Fprintf(&str, "%s'source': '%s'\n", ws, vc.Source)
+	fmt.Fprintf(&str, "%s'specversion': '%s'\n", ws, vc.SpecVersion)
+	fmt.Fprintf(&str, "%s'time': '%s'\n", ws, vc.Time)
+	fmt.Fprintf(&str, "%s'subject': '%s'\n", ws, *vc.Subject)
+	fmt.Fprintf(&str, "%s'dataschema': '%s'\n", ws, *vc.DataSchema)
+	fmt.Fprintf(&str, "%s'data':\n%s", ws, vc.Data.ToStringBeautiful(num+1))
+	fmt.Fprintf(&str, "%s'@additional_information':\n%s", ws, vc.AdditionalInformation.ToStringBeautiful(num+1))
 
 	return str.String()
 }

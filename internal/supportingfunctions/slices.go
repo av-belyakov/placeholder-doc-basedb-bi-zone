@@ -88,7 +88,7 @@ func SliceUniqueValues[T comparable](list []T) []T {
 	newList := make([]T, 0, len(list))
 
 	for _, v := range list {
-		if slices.Contains(list, v) {
+		if slices.Contains(newList, v) {
 			continue
 		}
 
