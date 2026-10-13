@@ -20,7 +20,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 
 	newDocument, ok := a.(*datamodels.VerifiedBiZoneIRPAlert)
 	if !ok {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("'alert' type conversion error")).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("note for type 'alert', type conversion error")).Error())
 
 		return
 	}
@@ -35,7 +35,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	//получаем наименование хранилища
 	indexName, isExist := dbs.settings.storages["alerts"]
 	if !isExist {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the identifier of the index name was not found")).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("note for type 'alert', the identifier of the index name was not found")).Error())
 
 		return
 	}
@@ -70,7 +70,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 			logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 		if ok {
-			logger.Send("info", fmt.Sprintf("we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
+			logger.Send("info", fmt.Sprintf("note for type 'alert', we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
 		}
 
 		//обогащение кейса дополнительной информацией по расположению сенсоров
@@ -80,7 +80,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 			logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 		if ok {
-			logger.Send("info", fmt.Sprintf("we are sending a request to search for information on the following list of sensors: %#v", listSensor))
+			logger.Send("info", fmt.Sprintf("note for type 'alert', we are sending a request to search for information on the following list of sensors: %#v", listSensor))
 		}
 	}(newDocument, dbs.GetChannelFromModule, dbs.logger)
 
@@ -104,7 +104,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 
 		//счетчик
 		dbs.counter.SendMessage("update count insert subject alerts to db", 1)
-		dbs.logger.Send("info", fmt.Sprintf("insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
+		dbs.logger.Send("info", fmt.Sprintf("note for type 'alert', insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
 
 		return
 	}
@@ -153,7 +153,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 
 		//счетчик
 		dbs.counter.SendMessage("update count insert subject alerts to db", 1)
-		dbs.logger.Send("info", fmt.Sprintf("insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
+		dbs.logger.Send("info", fmt.Sprintf("note for type 'alert', insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
 
 		//*******************************************
 		//*** здесь установка тегов, под вопросом ***
@@ -201,7 +201,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	dbs.logger.Send(
 		"info",
 		fmt.Sprintf(
-			"update document 'alerts' type, count delete:'%d', count replacing fields:'%d' for alerts with uuid:'%s', status code:'%d'",
+			"update document 'alert' type, count delete:'%d', count replacing fields:'%d' for alerts with uuid:'%s', status code:'%d'",
 			countDel,
 			countReplasedField,
 			newDocument.GetUUID(),

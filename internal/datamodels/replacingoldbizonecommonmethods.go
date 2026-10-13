@@ -1,5 +1,15 @@
 package datamodels
 
+func compareCategory(currentValue BiZoneIRPCategory, incomingValue []BiZoneIRPCategory) (int, bool) {
+	for k, v := range incomingValue {
+		if v.ID == currentValue.ID {
+			return k, true
+		}
+	}
+
+	return -1, false
+}
+
 func compareTag(currentValue BiZoneIRPTag, incomingValue []BiZoneIRPTag) (int, bool) {
 	for k, v := range incomingValue {
 		if v.Name == currentValue.Name {

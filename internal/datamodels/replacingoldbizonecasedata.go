@@ -79,9 +79,9 @@ func (cd *BiZoneIRPCaseData) ReplacingOldBiZoneCaseData(incomingType BiZoneIRPCa
 			}
 
 			if typeOfCurrentStruct.Field(i).Name == "SecondaryCategory" {
-				//if tenant, ok := newStruct.Field(j).Interface().(BiZoneIRPTenant); ok {
-				//	countReplacingFields += cd.Tenant.ReplacingOldBiZoneCaseDataTenant(tenant)
-				//}
+				if secondaryCategory, ok := newStruct.Field(j).Interface().([]BiZoneIRPCategory); ok {
+					countReplacingFields += cd.ReplacingOldBiZoneCaseDataSecondaryCategory(secondaryCategory)
+				}
 
 				continue
 			}

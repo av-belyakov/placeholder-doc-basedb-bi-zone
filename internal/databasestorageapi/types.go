@@ -72,9 +72,9 @@ type ResponseVerifiedBiZoneCases struct {
 
 // ResponseVerifiedBiZoneCasesOptions опции ответа
 type ResponseVerifiedBiZoneCasesOptions struct {
-	Total    OptionsTotal                 `json:"total"`
-	Hits     []PatternVerifiedBiZoneAlert `json:"hits"`
-	MaxScore float64                      `json:"max_score"`
+	Total    OptionsTotal                `json:"total"`
+	Hits     []PatternVerifiedBiZoneCase `json:"hits"`
+	MaxScore float64                     `json:"max_score"`
 }
 
 // PatternVerifiedBiZoneCase шаблон

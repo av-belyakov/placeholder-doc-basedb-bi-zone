@@ -20,7 +20,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 
 	newDocument, ok := a.(*datamodels.VerifiedBiZoneIRPCase)
 	if !ok {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("'case' type conversion error")).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("note for type 'case', type conversion error")).Error())
 
 		return
 	}
@@ -35,7 +35,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 	//получаем наименование хранилища
 	indexName, isExist := dbs.settings.storages["cases"]
 	if !isExist {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the identifier of the index name was not found")).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("note for type 'case', the identifier of the index name was not found")).Error())
 
 		return
 	}
@@ -61,6 +61,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 	}
 
 	defer func(document *datamodels.VerifiedBiZoneIRPCase, getChan func() chan SettingsChanOutput, logger interfaces.Logger) {
+		// уникальный идентификатор для поиска данных в БД
 		id := fmt.Sprintf("%s:%s", currentIndex, newDocument.GetID())
 
 		//обогащение кейса дополнительной информацией о локальном место положении ip адресов
@@ -70,7 +71,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 			logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 		if ok {
-			logger.Send("info", fmt.Sprintf("we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
+			logger.Send("info", fmt.Sprintf("note for type 'case', we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
 		}
 
 		//обогащение кейса дополнительной информацией по расположению сенсоров
@@ -80,7 +81,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 			logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 		if ok {
-			logger.Send("info", fmt.Sprintf("we are sending a request to search for information on the following list of sensors: %#v", listSensor))
+			logger.Send("info", fmt.Sprintf("note for type 'case', we are sending a request to search for information on the following list of sensors: %#v", listSensor))
 		}
 	}(newDocument, dbs.GetChannelFromModule, dbs.logger)
 
@@ -104,7 +105,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 
 		//счетчик
 		dbs.counter.SendMessage("update count insert subject cases to db", 1)
-		dbs.logger.Send("info", fmt.Sprintf("insert new document to cases id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetID(), statusCode))
+		dbs.logger.Send("info", fmt.Sprintf("note for type 'case', insert new document to cases id:'%s', status code:'%d'", newDocument.GetID(), statusCode))
 
 		return
 	}
@@ -140,6 +141,8 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 		return
 	}
 
+	fmt.Printf("--------========= DatabaseStorage.addBiZoneCases, ResponseVerifiedBiZoneCases:'%+v'\n", response)
+
 	//вставка выполняется только когда не найден искомый документ
 	if response.Options.Total.Value == 0 {
 		//
@@ -153,7 +156,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 
 		//счетчик
 		dbs.counter.SendMessage("update count insert subject cases to db", 1)
-		dbs.logger.Send("info", fmt.Sprintf("insert new document to cases id:'%d', status code:'%d'", newDocument.GetID(), statusCode))
+		dbs.logger.Send("info", fmt.Sprintf("note for type 'case', insert new document to cases id:'%s', status code:'%d'", newDocument.GetID(), statusCode))
 
 		//*******************************************
 		//*** здесь установка тегов, под вопросом ***
@@ -165,10 +168,10 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 	//*** при наличие искомого документа выполняем его замену ***
 	//***********************************************************
 	listDeleting := []ServiseOption(nil)
-	updateVerified := datamodels.NewVerifiedBiZoneIRPAlert()
+	updateVerified := datamodels.NewVerifiedBiZoneIRPCase()
 	//заполняем новый объект информацией из базы данных
 	for _, v := range response.Options.Hits {
-		updateVerified.RepalcingOldBiZoneAlert(*v.Source.Get())
+		updateVerified.RepalcingOldBiZoneCase(*v.Source.Get())
 		listDeleting = append(listDeleting, ServiseOption{
 			ID:    v.ID,
 			Index: v.Index,
@@ -179,7 +182,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 	}
 
 	//выполняем обновление нового объекта данными полученными от брокера сообщений
-	countReplasedField := updateVerified.RepalcingOldBiZoneAlert(*newDocument.Get())
+	countReplasedField := updateVerified.RepalcingOldBiZoneCase(*newDocument.Get())
 
 	//готовим обновлённый объект к загрузке в базу данных
 	nvbyte, err := json.Marshal(updateVerified)
@@ -192,7 +195,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 	//обновление в базе данных уже существующего документа
 	statusCode, countDel, err := dbs.UpdateDocument(ctx, currentIndex, listDeleting, nvbyte)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("uuid '%s' '%s'", newDocument.GetUUID(), err.Error())).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("uuid '%s' '%s'", newDocument.GetID(), err.Error())).Error())
 
 		return
 	}
@@ -201,10 +204,10 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 	dbs.logger.Send(
 		"info",
 		fmt.Sprintf(
-			"update document 'alerts' type, count delete:'%d', count replacing fields:'%d' for alerts with uuid:'%s', status code:'%d'",
+			"note for type 'case', update document 'case' type, count delete:'%d', count replacing fields:'%d' for alerts with uuid:'%s', status code:'%d'",
 			countDel,
 			countReplasedField,
-			newDocument.GetUUID(),
+			newDocument.GetID(),
 			statusCode,
 		))
 }

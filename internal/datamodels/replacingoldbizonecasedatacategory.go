@@ -2,15 +2,13 @@ package datamodels
 
 import (
 	"reflect"
-
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 // ReplacingOldBiZoneCaseDataCategory заменяет старые значения типа BiZoneIRPCategory новыми
-func (tnt *BiZoneIRPCategory) ReplacingOldBiZoneCaseDataCategory(incomingType BiZoneIRPCategory) int {
+func (t *BiZoneIRPCategory) ReplacingOldBiZoneCaseDataCategory(incomingType BiZoneIRPCategory) int {
 	var countReplacingFields int
 
-	currentStruct := reflect.ValueOf(tnt).Elem()
+	currentStruct := reflect.ValueOf(t).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
 
 	newStruct := reflect.ValueOf(incomingType)
@@ -22,12 +20,8 @@ func (tnt *BiZoneIRPCategory) ReplacingOldBiZoneCaseDataCategory(incomingType Bi
 				continue
 			}
 
+			// свойство 'title' пока сравнивать не будем
 			if typeOfCurrentStruct.Field(i).Name == "Title" {
-				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
-					currentStruct.Field(i).Set(list)
-					countReplacingFields++
-				}
-
 				continue
 			}
 
