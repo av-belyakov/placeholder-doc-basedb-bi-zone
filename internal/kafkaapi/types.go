@@ -1,6 +1,8 @@
 package kafkaapi
 
 import (
+	"sync"
+
 	"github.com/segmentio/kafka-go"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
@@ -8,11 +10,13 @@ import (
 
 // kafkaApiModule настройки для API Kafka
 type kafkaApiModule struct {
+	topics       map[string]string
+	settings     kafkaApiSettings
 	counter      interfaces.Counter
 	logger       interfaces.Logger
 	consumer     *kafka.Reader
-	topics       map[string]string
-	settings     kafkaApiSettings
+	stopOnce     sync.Once
+	wg           sync.WaitGroup
 	chFromModule chan SettingsChanOutput
 	chToModule   chan SettingsChanInput
 }

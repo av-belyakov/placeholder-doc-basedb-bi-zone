@@ -25,6 +25,14 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 		return
 	}
 
+	dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'case', accepted document type:'%s'", newDocument.Type))
+
+	if newDocument.Type == "soar.core.incident.status_changed.v1" {
+		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'case', document type '%s' is not added to the database as it is a status indicator", newDocument.Type))
+
+		return
+	}
+
 	binaryDocument, err := json.Marshal(newDocument.Get())
 	if err != nil {
 		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
@@ -35,7 +43,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 	//получаем наименование хранилища
 	indexName, isExist := dbs.settings.storages["cases"]
 	if !isExist {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("note for type 'case', the identifier of the index name was not found")).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("database storage - note for type 'case', the identifier of the index name was not found")).Error())
 
 		return
 	}
@@ -71,7 +79,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 			logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 		if ok {
-			logger.Send("info", fmt.Sprintf("note for type 'case', we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
+			logger.Send("info", fmt.Sprintf("database storage - note for type 'case', we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
 		}
 
 		//обогащение кейса дополнительной информацией по расположению сенсоров
@@ -81,7 +89,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 			logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 		if ok {
-			logger.Send("info", fmt.Sprintf("note for type 'case', we are sending a request to search for information on the following list of sensors: %#v", listSensor))
+			logger.Send("info", fmt.Sprintf("database storage - note for type 'case', we are sending a request to search for information on the following list of sensors: %#v", listSensor))
 		}
 	}(newDocument, dbs.GetChannelFromModule, dbs.logger)
 
@@ -105,7 +113,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 
 		//счетчик
 		dbs.counter.SendMessage("update count insert subject cases to db", 1)
-		dbs.logger.Send("info", fmt.Sprintf("note for type 'case', insert new document to cases id:'%s', status code:'%d'", newDocument.GetID(), statusCode))
+		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'case', insert new document to cases id:'%s', status code:'%d'", newDocument.GetID(), statusCode))
 
 		return
 	}
@@ -125,8 +133,8 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 				`{
 					"query": {
 						"bool": {
-							"must": [{"match": {"id": "%s"}}]}}}`,
-				newDocument.GetID())),
+							"must": [{"match": {"data.id": "%s"}}]}}}`,
+				newDocument.GetData().ID)),
 		0)
 	if err != nil {
 		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
@@ -156,7 +164,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 
 		//счетчик
 		dbs.counter.SendMessage("update count insert subject cases to db", 1)
-		dbs.logger.Send("info", fmt.Sprintf("note for type 'case', insert new document to cases id:'%s', status code:'%d'", newDocument.GetID(), statusCode))
+		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'case', insert new document to cases id:'%s', status code:'%d'", newDocument.GetID(), statusCode))
 
 		//*******************************************
 		//*** здесь установка тегов, под вопросом ***
@@ -204,7 +212,7 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 	dbs.logger.Send(
 		"info",
 		fmt.Sprintf(
-			"note for type 'case', update document 'case' type, count delete:'%d', count replacing fields:'%d' for alerts with uuid:'%s', status code:'%d'",
+			"database storage - note for type 'case', update document 'case' type, count delete:'%d', count replacing fields:'%d' for alerts with uuid:'%s', status code:'%d'",
 			countDel,
 			countReplasedField,
 			newDocument.GetID(),

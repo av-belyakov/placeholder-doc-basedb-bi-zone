@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
+	"log"
 	"maps"
 	"os"
 	"strings"
@@ -68,10 +69,44 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 
 	api.consumer = kafka.NewReader(kafkaReaderCfg)
 
+	api.wg.Add(1)
 	//обработчик подписок
 	go api.topicsHandler(ctx)
 
 	return nil
+}
+
+func (api *kafkaApiModule) StopConsumer(ctx context.Context) error {
+	var err error
+
+	api.stopOnce.Do(func() {
+		log.Println("kafka consumer shutdown...")
+
+		done := make(chan struct{})
+		go func() {
+			api.wg.Wait()
+			close(done)
+		}()
+
+		if api.consumer != nil {
+			if err := api.consumer.Close(); err != nil {
+				err = fmt.Errorf("consumer Kafka closure error: %w", err)
+			}
+		}
+
+		select {
+		case <-done:
+			log.Println("kafka consumer was successfully stopped")
+
+		case <-ctx.Done():
+			err = ctx.Err()
+
+		}
+
+		close(api.chFromModule)
+	})
+
+	return err
 }
 
 // GetChannelFromModule канал для приёма данных из модуля

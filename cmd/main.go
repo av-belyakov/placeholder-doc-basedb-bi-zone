@@ -3,20 +3,18 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"os/signal"
 	"syscall"
 )
 
 func main() {
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill, syscall.SIGINT)
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
+	defer stop()
 
 	go func() {
 		<-ctx.Done()
 
 		fmt.Println("placeholder_doc-base_db module is stop")
-
-		stop()
 	}()
 
 	NewApp().Start(ctx)

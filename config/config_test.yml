@@ -16,7 +16,7 @@ KAFKA:
   group_id: spring.kafka.bootstrap.servers
   topics:
     alerts: alertmgr-alerts
-    soar-alerts: socd-soar-prod-issue-v1
+    cases: socd-soar-prod-issue-v1
   sasl_mechanism: ANONYMOUS # PLAIN, SCRAM-SHA-256, SCRAM-SHA-512 или ANONYMOUS если аутентификации не требуется
   ssl_username: siem2
   ssl_ca_file: # ca.crt или truststore.jks # ca.crt или truststore.jks (определяет набор корневых центров сертификации которые клиенты используют при проверке сертификатов сервера)

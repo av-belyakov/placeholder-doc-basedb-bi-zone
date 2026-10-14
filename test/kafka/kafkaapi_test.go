@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/confighandler"
@@ -33,23 +34,19 @@ func TestKafkaApi(t *testing.T) {
 		log.Fatalln(err)
 	}
 
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill, syscall.SIGINT)
-
-	go func() {
-		<-ctx.Done()
-
-		fmt.Println("placeholder_doc-basedb-bi-zone module is Stop")
-
-		stop()
-	}()
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 3*time.Second)
 
 	logging := supporting.NewLogging()
 	counting := &supporting.Counting{}
 
+	doneLogging := make(chan struct{})
 	go func(ctx context.Context, l *supporting.Logging) {
 		for {
 			select {
-			case <-ctx.Done():
+			case <-doneLogging:
+				log.Println("placeholder_doc-basedb-bi-zone login module is Stop")
+
 				return
 
 			case msg := <-l.GetChan():
@@ -59,16 +56,34 @@ func TestKafkaApi(t *testing.T) {
 		}
 	}(ctx, logging)
 
-	//инициализация файла для записи входящих сообщений
-	f, err := os.OpenFile(
-		fmt.Sprintf("incoming_messages_%s.log", time.Now().Format(time.RFC3339)),
-		os.O_RDWR|os.O_CREATE,
-		0644,
-	)
-	if err != nil {
+	var fAlert, fCase *os.File
+
+	errGr := errgroup.Group{}
+	errGr.Go(func() error {
+		//инициализация файла для записи входящих сообщений типа alert
+		var err error
+		fAlert, err = os.OpenFile(
+			fmt.Sprintf("incoming_messages_type_alert_%s.log", time.Now().Format(time.RFC3339)),
+			os.O_RDWR|os.O_CREATE,
+			0644,
+		)
+
+		return err
+	})
+	errGr.Go(func() error {
+		//инициализация файла для записи входящих сообщений типа case
+		var err error
+		fCase, err = os.OpenFile(
+			fmt.Sprintf("incoming_messages_type_case_%s.log", time.Now().Format(time.RFC3339)),
+			os.O_RDWR|os.O_CREATE,
+			0644,
+		)
+
+		return err
+	})
+	if err := errGr.Wait(); err != nil {
 		log.Fatal(err)
 	}
-	defer f.Close()
 
 	//инициализация модуля
 	kafkaApiModule, err := kafkaapi.New(
@@ -95,8 +110,22 @@ func TestKafkaApi(t *testing.T) {
 		log.Fatal(err)
 	}
 
+	go func() {
+		<-ctx.Done()
+
+		if err := kafkaApiModule.StopConsumer(shutdownCtx); err != nil {
+			log.Println(fmt.Errorf("kafka consumer shutdown: %w", err).Error())
+		}
+
+		close(doneLogging)
+
+		log.Println("placeholder_doc-basedb-bi-zone module is Stop")
+	}()
+
 	for msg := range kafkaApiModule.GetChannelFromModule() {
-		//t.Logf("Received message:%s\n\n", string(msg.Data))
+
+		t.Logf("Received subject type:%s\n", string(msg.SubjectType))
+
 		str, err := supportingfunctions.NewReadReflectJSONSprint(msg.Data)
 		if err != nil {
 			t.Logf("Error: %+v\n", err)
@@ -104,15 +133,30 @@ func TestKafkaApi(t *testing.T) {
 			continue
 		}
 
-		//t.Logf("Received message:\n%s\n", str)
-		if _, err = fmt.Fprintf(f, "--- TOPIC - '%s' %s\n%s\n\n", msg.SubjectType, time.Now().Format(time.RFC3339), str); err != nil {
-			t.Logf("Error: %+v\n", err)
+		switch msg.SubjectType {
+		case "alerts":
+			if _, err = fmt.Fprintf(fAlert, "--- TOPIC - '%s' %s\n%s\n\n", msg.SubjectType, time.Now().Format(time.RFC3339), str); err != nil {
+				t.Logf("Error: %+v\n", err)
+			}
+
+		case "cases":
+			if _, err = fmt.Fprintf(fCase, "--- TOPIC - '%s' %s\n%s\n\n", msg.SubjectType, time.Now().Format(time.RFC3339), str); err != nil {
+				t.Logf("Error: %+v\n", err)
+			}
+
+		default:
+			t.Logf("an undefined type message was obtained, type message is '%s'\n", msg.SubjectType)
 		}
 	}
 
 	t.Cleanup(func() {
-		stop()
 		unsetAllEnviromentEnvAny()
+
+		fAlert.Close()
+		fCase.Close()
+
+		stop()
+		shutdownCancel()
 	})
 }
 
