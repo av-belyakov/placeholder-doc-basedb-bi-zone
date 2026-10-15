@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/segmentio/kafka-go"
 	"github.com/segmentio/kafka-go/sasl/plain"
 	"github.com/segmentio/kafka-go/sasl/scram"
@@ -80,7 +81,7 @@ func (api *kafkaApiModule) StopConsumer(ctx context.Context) error {
 	var err error
 
 	api.stopOnce.Do(func() {
-		log.Println("kafka consumer shutdown...")
+		log.Printf("%vkafka consumer stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
 
 		done := make(chan struct{})
 		go func() {

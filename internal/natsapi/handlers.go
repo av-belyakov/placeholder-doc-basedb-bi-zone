@@ -3,11 +3,13 @@ package natsapi
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/nats-io/nats.go"
 
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
@@ -35,6 +37,8 @@ func (api *apiNatsModule) incomingInformationHandler(ctx context.Context) {
 	for {
 		select {
 		case <-ctx.Done():
+			log.Printf("%vthe nats module, incoming information handler id stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
+
 			return
 
 		case incomingData := <-api.chToModule:

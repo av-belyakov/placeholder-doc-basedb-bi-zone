@@ -3,7 +3,9 @@ package logginghandler
 import (
 	"context"
 	"fmt"
+	"log"
 
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 )
 
@@ -24,6 +26,8 @@ func (lc *LoggingChan) Start(ctx context.Context) {
 		for {
 			select {
 			case <-ctx.Done():
+				log.Printf("%vthe logger module, router is stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
+
 				return
 
 			case msg := <-lc.chanLogging:

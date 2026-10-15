@@ -3,8 +3,10 @@ package natsapi
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 	"github.com/nats-io/nats.go"
 )
@@ -51,6 +53,12 @@ func (api *apiNatsModule) Start(ctx context.Context) error {
 	}
 
 	api.natsConn = nc
+	go func() {
+		<-ctx.Done()
+		log.Printf("%vthe nats module is stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
+
+		api.natsConn.Close()
+	}()
 
 	//обработчик подписок
 	go api.subscriptionHandler()

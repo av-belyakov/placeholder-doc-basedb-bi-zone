@@ -3,7 +3,9 @@ package databasestorageapi
 import (
 	"context"
 	"errors"
+	"log"
 
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
@@ -24,6 +26,8 @@ func (dbs *DatabaseStorage) router(ctx context.Context) {
 	for {
 		select {
 		case <-ctx.Done():
+			log.Printf("%vthe router database storage module? router is stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
+
 			return
 
 		case msg := <-dbs.chInput:

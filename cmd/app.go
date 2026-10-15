@@ -108,6 +108,7 @@ func (app *App) startDebugServer(ctx context.Context) {
 	})
 	g.Go(func() error {
 		<-gCtx.Done()
+		log.Printf("%vthe debugging server is stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
 
 		return httpServer.Shutdown(context.Background())
 	})

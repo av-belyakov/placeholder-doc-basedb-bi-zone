@@ -4,9 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/decoderjsondocuments"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/natsapi"
@@ -34,6 +36,8 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 		for {
 			select {
 			case <-ctx.Done():
+				log.Printf("%vthe major router is stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
+
 				return
 
 			case msg := <-r.chFromNatsApi:

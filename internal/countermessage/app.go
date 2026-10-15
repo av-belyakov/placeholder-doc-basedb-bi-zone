@@ -4,8 +4,10 @@ package countermessage
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/informationcountingstorage"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
@@ -26,7 +28,7 @@ func (c *CounterMessage) Start(ctx context.Context) {
 		for {
 			select {
 			case <-ctx.Done():
-				close(c.chInput)
+				log.Printf("%vthe counter module, handler message is stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
 
 				return
 
