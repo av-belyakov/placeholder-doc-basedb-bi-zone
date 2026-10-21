@@ -41,6 +41,12 @@ export GO_PHDOCBASEDBBZ_MAIN=test
 export GO_PHDOCBASEDBBZ_REGIONALOBJECT=gcm
 ```
 
+#### Переменные окружения отвечающие за настройку доступа к IRP (в данном случае к BI.ZONE SOAR)
+
+- GO_PHDOCBASEDBBZ_IRPHOST - ip или доменное имя;
+- GO_PHDOCBASEDBBZ_IRPPORT - сетевой порт;
+- GO_PHDOCBASEDBBZ_IRPAPITOKEN - токен для доступа к IRP.
+
 #### Переменные окружения отвечающие за подключение к NATS
 
 - GO_PHDOCBASEDBBZ_NHOST - ip или доменное имя;

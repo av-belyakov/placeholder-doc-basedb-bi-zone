@@ -1,5 +1,9 @@
 COMMONINFO:
   regional_object: gcm-test
+IRP:
+  host: irp.cloud.gcm
+  port: 443
+  connection_timeout: 5
 NATS:
   host: 192.168.9.208
   port: 4222
@@ -19,8 +23,8 @@ KAFKA:
     cases: socd-soar-prod-issue-v1
   sasl_mechanism: ANONYMOUS # PLAIN, SCRAM-SHA-256, SCRAM-SHA-512 или ANONYMOUS если аутентификации не требуется
   ssl_username: siem2
-  ssl_ca_file: # ca.crt или truststore.jks # ca.crt или truststore.jks (определяет набор корневых центров сертификации которые клиенты используют при проверке сертификатов сервера)
-  ssl_cert_file: # client.crt открытый сертификат клиента, параметр и только для тестов
+  ssl_ca_file: "/secrets/truststore.jks" # ca.crt или truststore.jks # ca.crt или truststore.jks (определяет набор корневых центров сертификации которые клиенты используют при проверке сертификатов сервера)
+  ssl_cert_file: "/secrets/ca.crt" # client.crt открытый сертификат клиента, параметр и только для тестов
   ssl_key_file: # client.key закрытый ключ для сертификата клиента, параметр и только для тестов
   # если ssl_ca_file, ssl_cert_file и ssl_key_file пустые то будут выполнятся поппытки соединения с сервером
   # kafka без использования протокола TLS

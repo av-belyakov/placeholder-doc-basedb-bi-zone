@@ -11,6 +11,11 @@ func (c *Config) GetCommon() Common {
 	return c.Common
 }
 
+// GetIRP настройки доступа к IRP
+func (c *Config) GetIRP() CfgIRP {
+	return c.IRP
+}
+
 // GetNATS настройки брокера сообщений NATS
 func (c *Config) GetNATS() CfgNats {
 	return c.NATS

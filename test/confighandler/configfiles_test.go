@@ -15,6 +15,7 @@ import (
 
 func TestConfigFileHandler(t *testing.T) {
 	const (
+		IRP_APITOKEN            = "bggh-1ekm4-13nnf-bnm8"
 		KAFKA_SSLPASSWD         = "687df-343rfs-1233f-aasq1"
 		DATABASESTORAGE_PASSWD  = "f990-gggr-02jfg-fww2"
 		DATABASEWRITELOG_PASSWD = "cjis8w-dff0w0-fy2y3"
@@ -31,6 +32,7 @@ func TestConfigFileHandler(t *testing.T) {
 	unsetAllEnviromentEnvAny()
 
 	os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test")
+	os.Setenv("GO_PHDOCBASEDBBZ_IRPAPITOKEN", IRP_APITOKEN)
 	os.Setenv("GO_PHDOCBASEDBBZ_KSSLPASSWORD", KAFKA_SSLPASSWD)
 	os.Setenv("GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD", DATABASESTORAGE_PASSWD)
 	os.Setenv("GO_PHDOCBASEDBBZ_DBWLOGPASSWD", DATABASEWRITELOG_PASSWD)
@@ -139,6 +141,34 @@ func TestConfigFileHandler(t *testing.T) {
 	testOptions.function()
 	listTesting = append(listTesting, testOptions)
 
+	// --- Настройки IRP ---
+	testOptions = TestOptions{
+		name: "Настройки доступа к IRP (чтение файла config_test.yml)",
+		function: func() {
+			cfg, err = confighandler.New(constants.Root_Dir)
+			testOptions.err = err
+			testOptions.items = []TestParametrs{
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetIRP().ApiToken},
+					expectedParameters: TestTypeElements{valueString: IRP_APITOKEN},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetIRP().Host},
+					expectedParameters: TestTypeElements{valueString: "irp.cloud.gcm"},
+				},
+				{
+					inputParameters:    TestTypeElements{valueInt: cfg.GetIRP().Port},
+					expectedParameters: TestTypeElements{valueInt: 443},
+				},
+				{
+					inputParameters:    TestTypeElements{valueInt: cfg.GetIRP().ConnectionTimeout},
+					expectedParameters: TestTypeElements{valueInt: 5},
+				},
+			}
+		}}
+	testOptions.function()
+	listTesting = append(listTesting, testOptions)
+
 	// --- Настройки NATS ---
 	testOptions = TestOptions{
 		name: "Настройки NATS (чтение файла config_test.yml)",
@@ -189,7 +219,7 @@ func TestConfigFileHandler(t *testing.T) {
 				},
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetKafka().Port},
-					expectedParameters: TestTypeElements{valueInt: 30932},
+					expectedParameters: TestTypeElements{valueInt: 32704},
 				},
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetKafka().CacheTTL},
@@ -197,23 +227,23 @@ func TestConfigFileHandler(t *testing.T) {
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().GroupId},
-					expectedParameters: TestTypeElements{valueString: "gcm-group"},
+					expectedParameters: TestTypeElements{valueString: "spring.kafka.bootstrap.servers"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Topics["alerts"]},
-					expectedParameters: TestTypeElements{valueString: "object.topicalerttype.test"},
+					expectedParameters: TestTypeElements{valueString: "alertmgr-alerts"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Topics["soar-alerts"]},
-					expectedParameters: TestTypeElements{valueString: "object.topicsoaralertstype.test"},
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Topics["cases"]},
+					expectedParameters: TestTypeElements{valueString: "socd-soar-prod-issue-v1"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().GroupId},
-					expectedParameters: TestTypeElements{valueString: "gcm-group"},
+					expectedParameters: TestTypeElements{valueString: "spring.kafka.bootstrap.servers"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SASLMechanism},
-					expectedParameters: TestTypeElements{valueString: "SCRAM-SHA-512"},
+					expectedParameters: TestTypeElements{valueString: "ANONYMOUS"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SSLUsername},
@@ -254,11 +284,11 @@ func TestConfigFileHandler(t *testing.T) {
 			testOptions.items = []TestParametrs{
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Host},
-					expectedParameters: TestTypeElements{valueString: "192.168.9.208"},
+					expectedParameters: TestTypeElements{valueString: "localhost"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetStorageDB().Port},
-					expectedParameters: TestTypeElements{valueInt: 9200},
+					expectedParameters: TestTypeElements{valueInt: 9211},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().User},
@@ -273,8 +303,8 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueString: "module_placeholderdb_bizone_alerts.test"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Storage["soar-alerts"]},
-					expectedParameters: TestTypeElements{valueString: "module_placeholderdb_bizone_soar-alerts.test"},
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Storage["cases"]},
+					expectedParameters: TestTypeElements{valueString: "module_placeholderdb_bizone_cases.test"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Passwd},
@@ -294,11 +324,11 @@ func TestConfigFileHandler(t *testing.T) {
 			testOptions.items = []TestParametrs{
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().Host},
-					expectedParameters: TestTypeElements{valueString: "192.168.9.208"},
+					expectedParameters: TestTypeElements{valueString: "localhost"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetLogDB().Port},
-					expectedParameters: TestTypeElements{valueInt: 9200},
+					expectedParameters: TestTypeElements{valueInt: 9211},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().NameDB},
@@ -310,7 +340,7 @@ func TestConfigFileHandler(t *testing.T) {
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().User},
-					expectedParameters: TestTypeElements{valueString: "user-placeholder-docbasedb-bizone_log"},
+					expectedParameters: TestTypeElements{valueString: "placeholder-docbasedb-bizone-log"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetLogDB().Passwd},
@@ -340,6 +370,38 @@ func TestConfigFileHandler(t *testing.T) {
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetDebugServer().Port},
 					expectedParameters: TestTypeElements{valueInt: 6565},
+				},
+			}
+		}}
+	testOptions.function()
+	listTesting = append(listTesting, testOptions)
+
+	// --- Настройки IRP (через переменные окружения) ---
+	testOptions = TestOptions{
+		name: "Настройки доступа к IRP (чтение файла config_test.yml)",
+		function: func() {
+			const (
+				HOST = "irp.cloud.gcm.test"
+				PORT = 4545
+			)
+
+			os.Setenv("GO_PHDOCBASEDBBZ_IRPHOST", HOST)
+			os.Setenv("GO_PHDOCBASEDBBZ_IRPPORT", strconv.Itoa(PORT))
+
+			cfg, err = confighandler.New(constants.Root_Dir)
+			testOptions.err = err
+			testOptions.items = []TestParametrs{
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetIRP().ApiToken},
+					expectedParameters: TestTypeElements{valueString: IRP_APITOKEN},
+				},
+				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetIRP().Host},
+					expectedParameters: TestTypeElements{valueString: HOST},
+				},
+				{
+					inputParameters:    TestTypeElements{valueInt: cfg.GetIRP().Port},
+					expectedParameters: TestTypeElements{valueInt: PORT},
 				},
 			}
 		}}
@@ -665,6 +727,7 @@ func TestConfigFileHandler(t *testing.T) {
 				v.expectedParameters.valueInt, v.inputParameters.valueInt,
 				v.expectedParameters.valueString, v.inputParameters.valueString)*/
 
+				assert.Equal(t, v.expectedParameters.valueBool, v.inputParameters.valueBool)
 				assert.Equal(t, v.expectedParameters.valueInt, v.inputParameters.valueInt)
 				assert.Equal(t, v.expectedParameters.valueString, v.inputParameters.valueString)
 			}
@@ -681,17 +744,22 @@ func TestConfigFileHandler(t *testing.T) {
 func unsetAllEnviromentEnvAny() {
 	os.Unsetenv("GO_PHDOCBASEDBBZ_MAIN")
 
-	//настройка наименования регионального объекта
+	// настройка наименования регионального объекта
 	os.Unsetenv("GO_PHDOCBASEDBBZ_REGIONALOBJECT")
 
-	//настройки NATS
+	// настройки IRP
+	os.Unsetenv("GO_PHDOCBASEDBBZ_IRPHOST")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_IRPPORT")
+	os.Unsetenv("GO_PHDOCBASEDBBZ_IRPAPITOKEN")
+
+	// настройки NATS
 	os.Unsetenv("GO_PHDOCBASEDBBZ_NHOST")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_NPORT")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_NCACHETTL")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_NSUBLISTENER")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_NENRICHINGQUER")
 
-	//настройки Kafka
+	// настройки Kafka
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KHOST")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KPORT")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KGROUPID")
@@ -705,7 +773,7 @@ func unsetAllEnviromentEnvAny() {
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLKEYFILE")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLSERVERNAME")
 
-	// Настройки доступа к БД в которую будут записыватся alert и case
+	// настройки доступа к БД в которую будут записыватся alert и case
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEHOST")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPORT")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGENAME")
@@ -713,7 +781,7 @@ func unsetAllEnviromentEnvAny() {
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGETABLES")
 
-	//настройки доступа к БД в которую будут записыватся логи
+	// настройки доступа к БД в которую будут записыватся логи
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGHOST")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGPORT")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBWLOGNAME")

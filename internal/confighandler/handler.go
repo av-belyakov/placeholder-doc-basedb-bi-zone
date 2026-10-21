@@ -24,14 +24,19 @@ func New(rootDir string) (*Config, error) {
 			"GO_PHDOCBASEDBBZ_MAIN":           "",
 			"GO_PHDOCBASEDBBZ_REGIONALOBJECT": "",
 
-			//Подключение к NATS
+			// подключение к IRP
+			"GO_PHDOCBASEDBBZ_IRPHOST":     "",
+			"GO_PHDOCBASEDBBZ_IRPPORT":     "",
+			"GO_PHDOCBASEDBBZ_IRPAPITOKEN": "",
+
+			// подключение к NATS
 			"GO_PHDOCBASEDBBZ_NHOST":          "",
 			"GO_PHDOCBASEDBBZ_NPORT":          "",
 			"GO_PHDOCBASEDBBZ_NCACHETTL":      "",
 			"GO_PHDOCBASEDBBZ_NSUBSCRIPTIONS": "",
 			"GO_PHDOCBASEDBBZ_NENRICHINGQUER": "",
 
-			//Подключение к Kafka
+			// подключение к Kafka
 			"GO_PHDOCBASEDBBZ_KHOST":          "",
 			"GO_PHDOCBASEDBBZ_KPORT":          "",
 			"GO_PHDOCBASEDBBZ_KGROUPID":       "",
@@ -46,7 +51,7 @@ func New(rootDir string) (*Config, error) {
 			"GO_PHDOCBASEDBBZ_KSSLKEYFILE":    "",
 			"GO_PHDOCBASEDBBZ_KSSLSERVERNAME": "",
 
-			//Настройки доступа к БД в которую будут записыватся полученные объекты
+			// настройки доступа к БД в которую будут записыватся полученные объекты
 			"GO_PHDOCBASEDBBZ_DBSTORAGEHOST":   "",
 			"GO_PHDOCBASEDBBZ_DBSTORAGEPORT":   "",
 			"GO_PHDOCBASEDBBZ_DBSTORAGENAME":   "",
@@ -54,7 +59,7 @@ func New(rootDir string) (*Config, error) {
 			"GO_PHDOCBASEDBBZ_DBSTORAGEPASSWD": "",
 			"GO_PHDOCBASEDBBZ_DBSTORAGETABLES": "",
 
-			//Настройки доступа к БД в которую будут записыватся логи
+			// настройки доступа к БД в которую будут записыватся логи
 			"GO_PHDOCBASEDBBZ_DBWLOGHOST":        "",
 			"GO_PHDOCBASEDBBZ_DBWLOGPORT":        "",
 			"GO_PHDOCBASEDBBZ_DBWLOGNAME":        "",
@@ -119,12 +124,23 @@ func New(rootDir string) (*Config, error) {
 			return err
 		}
 
-		//Настройка наименования регионального объекта
+		// настройка наименования регионального объекта
 		if viper.IsSet("COMMONINFO.regional_object") {
 			cfg.Common.RegionalObject = viper.GetString("COMMONINFO.regional_object")
 		}
 
-		//Настройки для модуля подключения к NATS
+		// настройки для модуля подключения к IRP
+		if viper.IsSet("IRP.host") {
+			cfg.IRP.Host = viper.GetString("IRP.host")
+		}
+		if viper.IsSet("IRP.port") {
+			cfg.IRP.Port = viper.GetInt("IRP.port")
+		}
+		if viper.IsSet("IRP.connection_timeout") {
+			cfg.IRP.ConnectionTimeout = viper.GetInt("IRP.connection_timeout")
+		}
+
+		// настройки для модуля подключения к NATS
 		if viper.IsSet("NATS.host") {
 			cfg.NATS.Host = viper.GetString("NATS.host")
 		}
@@ -141,7 +157,7 @@ func New(rootDir string) (*Config, error) {
 			cfg.NATS.EnrichingQueries = viper.GetStringMapString("NATS.enriching_queries")
 		}
 
-		//Настройки для модуля подключения к Kafka
+		// настройки для модуля подключения к Kafka
 		if viper.IsSet("KAFKA.host") {
 			cfg.Kafka.Host = viper.GetString("KAFKA.host")
 		}
@@ -176,7 +192,7 @@ func New(rootDir string) (*Config, error) {
 			cfg.Kafka.SSLServerName = viper.GetString("KAFKA.ssl_server_name")
 		}
 
-		// Настройки доступа к БД в которую будет записыватся основная информация
+		// настройки доступа к БД в которую будет записыватся основная информация
 		if viper.IsSet("DATABASESTORAGE.host") {
 			cfg.StorageDB.Host = viper.GetString("DATABASESTORAGE.host")
 		}
@@ -193,7 +209,7 @@ func New(rootDir string) (*Config, error) {
 			cfg.StorageDB.Storage = viper.GetStringMapString("DATABASESTORAGE.storage_name_db")
 		}
 
-		// Настройки доступа к БД в которую будут записыватся логи
+		// настройки доступа к БД в которую будут записыватся логи
 		if viper.IsSet("DATABASEWRITELOG.host") {
 			cfg.LogDB.Host = viper.GetString("DATABASEWRITELOG.host")
 		}
@@ -210,7 +226,7 @@ func New(rootDir string) (*Config, error) {
 			cfg.LogDB.StorageNameDB = viper.GetString("DATABASEWRITELOG.storage_name_db")
 		}
 
-		// Настройки для отладочного сервера
+		// настройки для отладочного сервера
 		if viper.IsSet("DEBUGSERVER.enable") {
 			cfg.DebugServer.Enable = viper.GetBool("DEBUGSERVER.enable")
 		}
@@ -248,7 +264,7 @@ func New(rootDir string) (*Config, error) {
 		return cfg, err
 	}
 
-	//читаем общий конфигурационный файл
+	// читаем общий конфигурационный файл
 	if err := setCommonSettings(fileNameCommon); err != nil {
 		return cfg, err
 	}
@@ -276,12 +292,25 @@ func New(rootDir string) (*Config, error) {
 		return cfg, err
 	}
 
-	//Настройка наименования регионального объекта
+	// настройка наименования регионального объекта
 	if envList["GO_PHDOCBASEDBBZ_REGIONALOBJECT"] != "" {
 		cfg.Common.RegionalObject = envList["GO_PHDOCBASEDBBZ_REGIONALOBJECT"]
 	}
 
-	//Настройки для модуля подключения к NATS
+	// настройки для модуля подключения к IRP
+	if envList["GO_PHDOCBASEDBBZ_IRPAPITOKEN"] != "" {
+		cfg.IRP.ApiToken = envList["GO_PHDOCBASEDBBZ_IRPAPITOKEN"]
+	}
+	if envList["GO_PHDOCBASEDBBZ_IRPHOST"] != "" {
+		cfg.IRP.Host = envList["GO_PHDOCBASEDBBZ_IRPHOST"]
+	}
+	if envList["GO_PHDOCBASEDBBZ_IRPPORT"] != "" {
+		if p, err := strconv.Atoi(envList["GO_PHDOCBASEDBBZ_IRPPORT"]); err == nil {
+			cfg.IRP.Port = p
+		}
+	}
+
+	// настройки для модуля подключения к NATS
 	if envList["GO_PHDOCBASEDBBZ_NHOST"] != "" {
 		cfg.NATS.Host = envList["GO_PHDOCBASEDBBZ_NHOST"]
 	}
@@ -324,7 +353,7 @@ func New(rootDir string) (*Config, error) {
 		}
 	}
 
-	//Настройки для модуля подключения к Kafka
+	// настройки для модуля подключения к Kafka
 	if envList["GO_PHDOCBASEDBBZ_KHOST"] != "" {
 		cfg.Kafka.Host = envList["GO_PHDOCBASEDBBZ_KHOST"]
 	}
@@ -380,7 +409,7 @@ func New(rootDir string) (*Config, error) {
 		cfg.Kafka.GroupId = envList["GO_PHDOCBASEDBBZ_KGROUPID"]
 	}
 
-	//Настройки доступа к БД в которую будет добавлятся информация по alert и case
+	// настройки доступа к БД в которую будет добавлятся информация по alert и case
 	if envList["GO_PHDOCBASEDBBZ_DBSTORAGEHOST"] != "" {
 		cfg.StorageDB.Host = envList["GO_PHDOCBASEDBBZ_DBSTORAGEHOST"]
 	}
@@ -413,7 +442,7 @@ func New(rootDir string) (*Config, error) {
 		}
 	}
 
-	//Настройки доступа к БД в которую будут записыватся логи
+	// настройки доступа к БД в которую будут записыватся логи
 	if envList["GO_PHDOCBASEDBBZ_DBWLOGHOST"] != "" {
 		cfg.LogDB.Host = envList["GO_PHDOCBASEDBBZ_DBWLOGHOST"]
 	}
@@ -435,7 +464,7 @@ func New(rootDir string) (*Config, error) {
 		cfg.LogDB.StorageNameDB = envList["GO_PHDOCBASEDBBZ_DBWLOGSTORAGENAME"]
 	}
 
-	//выполняем проверку заполненой структуры
+	// выполняем проверку заполненой структуры
 	if err = validate.Struct(cfg); err != nil {
 		return cfg, err
 	}

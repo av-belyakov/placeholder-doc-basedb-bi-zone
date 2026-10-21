@@ -1,5 +1,9 @@
 COMMONINFO:
   regional_object: gcm-prod
+IRP:
+  host: irp.cloud.gcm
+  port: 443
+  connection_timeout: 5
 NATS: # в основном используется для обогащения данных доп. информацией
   host: nats.cloud.gcm
   port: 4222
