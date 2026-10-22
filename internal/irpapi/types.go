@@ -2,17 +2,20 @@ package irpapi
 
 import (
 	"encoding/json"
+	"net/http"
 )
 
 type IrpApi struct {
+	client   *http.Client
 	settings ApiSettings
 }
 
 // settings настройки модуля
 type ApiSettings struct {
-	apiKey string
-	host   string
-	port   int
+	apiKey            string
+	host              string
+	port              int
+	connectionTimeout int
 }
 
 // options функциональные опции

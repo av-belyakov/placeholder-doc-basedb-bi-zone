@@ -1,0 +1,202 @@
+{
+    "id": 39,
+    "key": "INC-2039",
+    "issue_type": "Incident",
+    "issue_type_ref": {
+        "id": "Incident",
+        "title": "Incident",
+        "description": ""
+    },
+    "service": null,
+    "system": 214,
+    "tenant_id": "8030052",
+    "priority": "High",
+    "summary": "ПКИ на  ФАС",
+    "description": "<p>Зафиксированы ПКИ  </p>\n<p>Home IP: 194.226.26.224  (ФАС)</p>\n<p>Время первого обнаружения: 2026-10-13T10:16:41Z<br>\nВремя последнего обнаружения: 2026-10-13T10:16:42Z</p>\n<p>Техническая информация:</p>\n<p>Mining:</p>\n<p>3997 2026-10-19 09:34:09,567679  194.226.26.91       8.8.4.4     DNS 93  Standard query 0x2413 A xmr-ru.kryptex.network OPT<br>4000  2026-10-19 09:34:09,597096  8.8.4.4     194.226.26.91       DNS 141 Standard query response 0x2413 A xmr-ru.kryptex.network A 5.180.174.162 A 111.88.126.188 A 111.88.126.34 OPT</p>\n<p><span>$............xmr-ru.kryptex.network.......)........</span></p>\n<p><span>$............xmr-ru.kryptex.network..............&lt;...............&lt;..oX~..........&lt;..oX~\"..)........</span></p>\n<p><br></p>\n<p><br></p>\n<p><br></p>",
+    "rendered_description": "<p>Зафиксированы ПКИ  </p>\n<p>Home IP: 194.226.26.224  (ФАС)</p>\n<p>Время первого обнаружения: 2026-10-13T10:16:41Z<br>\nВремя последнего обнаружения: 2026-10-13T10:16:42Z</p>\n<p>Техническая информация:</p>\n<p>Mining:</p>\n<p>3997 2026-10-19 09:34:09,567679  194.226.26.91       8.8.4.4     DNS 93  Standard query 0x2413 A xmr-ru.kryptex.network OPT<br>4000  2026-10-19 09:34:09,597096  8.8.4.4     194.226.26.91       DNS 141 Standard query response 0x2413 A xmr-ru.kryptex.network A 5.180.174.162 A 111.88.126.188 A 111.88.126.34 OPT</p>\n<p><span>$............xmr-ru.kryptex.network.......)........</span></p>\n<p><span>$............xmr-ru.kryptex.network..............&lt;...............&lt;..oX~..........&lt;..oX~\"..)........</span></p>\n<p><br></p>\n<p><br></p>\n<p><br></p>",
+    "status": "В работе",
+    "status_description": "",
+    "assignee": 15,
+    "tags": [
+        {
+            "name": "ats:reason=\"sigma:dns query\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 2,
+                "username": "svc_alertmgr"
+            },
+            "created": "2026-08-24T12:56:33.018280+03:00"
+        },
+        {
+            "name": "ats:reason=\"sigma:exploit attempts\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 1,
+                "username": "admin@bi.zone"
+            },
+            "created": "2026-08-13T19:03:44.783959+03:00"
+        },
+        {
+            "name": "ats:reason=\"sigma:info controlled fgs\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 1,
+                "username": "admin@bi.zone"
+            },
+            "created": "2026-08-18T12:38:34.056330+03:00"
+        },
+        {
+            "name": "ats:reason=\"sigma:php - injection attempts\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 2,
+                "username": "svc_alertmgr"
+            },
+            "created": "2026-08-24T12:56:27.995675+03:00"
+        },
+        {
+            "name": "processed:2026-10-19",
+            "color": "#2196F3",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 8,
+                "username": "n8n_adding_info@cert.gov.ru"
+            },
+            "created": "2026-10-19T11:41:20.631392+03:00"
+        },
+        {
+            "name": "rule:inc_dns",
+            "color": "#FF6B6B",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 8,
+                "username": "n8n_adding_info@cert.gov.ru"
+            },
+            "created": "2026-10-19T12:17:22.308976+03:00"
+        },
+        {
+            "name": "sensor:8030052",
+            "color": "#9C27B0",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 8,
+                "username": "n8n_adding_info@cert.gov.ru"
+            },
+            "created": "2026-09-24T13:58:48.586763+03:00"
+        },
+        {
+            "name": "sensor:id=\"8030052\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 1,
+                "username": "admin@bi.zone"
+            },
+            "created": "2026-08-13T20:00:33.887400+03:00"
+        },
+        {
+            "name": "source:siem",
+            "color": "#4CAF50",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 8,
+                "username": "n8n_adding_info@cert.gov.ru"
+            },
+            "created": "2026-09-17T19:30:22.860157+03:00"
+        }
+    ],
+    "assignee_displayName": "Илья Монахов (803.i.monachov@avz-center.ru)",
+    "reporter_displayName": "Илья Монахов (803.i.monachov@avz-center.ru)",
+    "creator_displayName": "Илья Монахов (803.i.monachov@avz-center.ru)",
+    "reporter_emailAddress": "monachov@avz-center.ru",
+    "primary_category": "Malware_Infection",
+    "primary_category_ref": {
+        "id": "Malware_Infection",
+        "title": "Заражение ВПО",
+        "description": ""
+    },
+    "secondary_category": [
+        "Malware_Infection",
+        "ROOS"
+    ],
+    "secondary_category_ref": [
+        {
+            "id": "Malware_Infection",
+            "title": "Заражение ВПО",
+            "description": ""
+        },
+        {
+            "id": "ROOS",
+            "title": "РООС",
+            "description": "ПМКР"
+        }
+    ],
+    "created": "2026-10-19T12:17:03.935871+03:00",
+    "updated": "2026-10-19T12:56:55.082145+03:00",
+    "timestamp": "2026-10-19T12:56:55.082145+03:00",
+    "resolutiondate": null,
+    "resolution_name": null,
+    "resolution_name_ref": null,
+    "resolution_detailed": "",
+    "activity_detected": [],
+    "platform_url": "http://anisimova.cloud.gcm:8005/sessions?expression=ip%20%3D%3D%20194.226.26.224%20%7C%7C%20ip%20%3D%3D%2089.247.33.110&date=8760",
+    "attack_type": "",
+    "gossopka_id": null,
+    "gossopka_send_time": null,
+    "gti_id": null,
+    "gti_send_time": null,
+    "customer_star_rating": null,
+    "customer_star_rating_comment": "",
+    "detection_date": "2026-10-13T16:13:16+03:00",
+    "recommendations": "",
+    "platform_hostname": [
+        "DFL"
+    ],
+    "keyfield": [],
+    "observed_iocs": [
+        {
+            "ioc_type": "ipv4",
+            "category": [
+                "Malware"
+            ],
+            "ioc": "89.247.33.110"
+        }
+    ],
+    "parsed_activity_detected": [],
+    "affected_service": "",
+    "fake_as_path": "",
+    "fake_prefix": "",
+    "fp_type": "",
+    "looking_glass": "",
+    "spam_recipients": "",
+    "tlp": "amber",
+    "usual_prefix": "",
+    "usual_as_path": "",
+    "attachments": [],
+    "source": "SIEM",
+    "is_visible_for_customer": true,
+    "external_id": "",
+    "emls": [],
+    "slas": [],
+    "detection_rules": [
+        47
+    ],
+    "first_sent_notification_time": null,
+    "_source": "https://irp.cloud.gcm/api/v0/irp/issue/INC-2039/",
+    "mitre_cov": {},
+    "badges": [],
+    "response_team": null,
+    "watchers": [],
+    "watchers_id": [],
+    "updated_all": "2026-10-19T12:56:55.082000+03:00",
+    "gossopka_key": "",
+    "gossopka_errors": {},
+    "gossopka_key_link": null,
+    "show_gossopka_button": false,
+    "cancel_gossopka_send_button": false,
+    "show_gti_button": false
+}

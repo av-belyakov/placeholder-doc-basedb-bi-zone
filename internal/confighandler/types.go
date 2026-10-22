@@ -56,7 +56,7 @@ type CfgIRP struct {
 	ApiToken          string `validate:"required" yaml:"api_token"`
 	Host              string `validate:"required" yaml:"host"`
 	Port              int    `validate:"gt=0,lte=65535" yaml:"port"`
-	ConnectionTimeout int    `validate:"gt=1,lte=86400" yaml:"connection_timeout"`
+	ConnectionTimeout int    `validate:"gt=1,lte=900" yaml:"connection_timeout"`
 }
 
 type CfgNats struct {
