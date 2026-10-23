@@ -11,6 +11,7 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/countermessage"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/elasticsearchapi"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/irpapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/kafkaapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/logginghandler"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/natsapi"
@@ -195,4 +196,23 @@ func (d *DiContainer) KafkaConnecter(ctx context.Context) KafkaConnecter {
 	}
 
 	return d.kafkaConnecter
+}
+
+// IRPConnecter получение доступа к IRP
+func (d *DiContainer) IRPConnecter() IRPConnecter {
+	if d.irpConnecter == nil {
+		apiIrp, err := irpapi.New(
+			irpapi.WithAPIKey(d.Configer().GetIRP().ApiToken),
+			irpapi.WithHost(d.Configer().GetIRP().Host),
+			irpapi.WithPort(d.Configer().GetIRP().Port),
+			irpapi.WithConnectionTimeout(d.Configer().GetIRP().ConnectionTimeout),
+		)
+		if err != nil {
+			log.Fatal("error initialization module 'irpapi':", err)
+		}
+
+		d.irpConnecter = apiIrp
+	}
+
+	return d.irpConnecter
 }

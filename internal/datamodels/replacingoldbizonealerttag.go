@@ -5,7 +5,7 @@ import (
 )
 
 // ReplacingOldBiZoneAlertTag заменяет старые значения типа BiZoneTag новыми
-func (t *BiZoneIRPTag) ReplacingOldBiZoneAlertTag(incomingType BiZoneIRPTag) int {
+func (t *IRPTagType) ReplacingOldBiZoneAlertTag(incomingType IRPTagType) int {
 	var countReplacingFields int
 
 	currentStruct := reflect.ValueOf(t).Elem()

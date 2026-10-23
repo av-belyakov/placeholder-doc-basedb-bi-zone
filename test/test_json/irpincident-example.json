@@ -1,0 +1,186 @@
+{
+    "id": 35,
+    "key": "INC-2035",
+    "issue_type": "Incident",
+    "issue_type_ref": {
+        "id": "Incident",
+        "title": "Incident",
+        "description": ""
+    },
+    "service": null,
+    "system": 208,
+    "tenant_id": "8030059",
+    "priority": "High",
+    "summary": "Rule 'INC_Malware10' was triggering",
+    "description": "<p>{<br>\n  \"desc\": \"## \\u0414\\u0430\\u043d\\u043d\\u0430\\u044f \\u0437\\u0430\\u0434\\u0430\\u0447\\u0430 \\u0441\\u043e\\u0437\\u0434\\u0430\\u043d\\u0430 \\u0430\\u0432\\u0442\\u043e\\u043c\\u0430\\u0442\\u0438\\u0447\\u0435\\u0441\\u043a\\u0438\\n \\u0412\\u0440\\u0435\\u043c\\u044f \\u043d\\u0430\\u0447\\u0430\\u043b\\u0430: 2026-09-16 10:31:49\\n \\u0412\\u0440\\u0435\\u043c\\u044f \\u043e\\u043a\\u043e\\u043d\\u0447\\u0430\\u043d\\u0438\\u044f: 2026-09-16 10:31:49\\n \\u041f\\u0440\\u043e\\u0434\\u043e\\u043b\\u0436\\u0438\\u0442\\u0435\\u043b\\u044c\\u043d\\u043e\\u0441\\u0442\\u044c \\u0432\\u043e\\u0437\\u0434\\u0435\\u0439\\u0441\\u0442\\u0432\\u0438\\u0439: 0:00:00\",<br>\n  \"tags\": [<br>\n\"Sensor:id=\\\"8030059\\\"\",<br>\n\"ATs:reason=\\\"\\u0417\\u0430\\u0444\\u0438\\u043a\\u0441\\u0438\\u0440\\u043e\\u0432\\u0430\\u043d\\u0430 \\u043f\\u043e\\u0434\\u043e\\u0437\\u0440\\u0438\\u0442\\u0435\\u043b\\u044c\\u043d\\u0430\\u044f \\u0430\\u043a\\u0442\\u0438\\u0432\\u043d\\u043e\\u0441\\u0442\\u044c \\u043f\\u043e \\u043f\\u0440\\u0438\\u0437\\u043d\\u0430\\u043a\\u0430\\u043c \\u041d\\u041a\\u0426\\u041a\\u0418\\\"\",<br>\n\"ATs:reason=\\\"sigma:Exploit attempts\\\"\",<br>\n\"ATs:reason=\\\"sigma:Evidence Malware 10\\\"\",<br>\n\"ATs:reason=\\\"sigma:INFO Controlled FGS\\\"\"<br>\n  ],<br>\n  \"agent\": 8030059,<br>\n  \"event_uid\": \"TSK-8MSK-6-ZPM-260916-2926652\",<br>\n  \"job_title\": \"\\u0417\\u0430\\u0444\\u0438\\u043a\\u0441\\u0438\\u0440\\u043e\\u0432\\u0430\\u043d\\u0430 \\u043f\\u043e\\u0434\\u043e\\u0437\\u0440\\u0438\\u0442\\u0435\\u043b\\u044c\\u043d\\u0430\\u044f \\u0430\\u043a\\u0442\\u0438\\u0432\\u043d\\u043e\\u0441\\u0442\\u044c \\u043f\\u043e \\u043f\\u0440\\u0438\\u0437\\u043d\\u0430\\u043a\\u0430\\u043c \\u041d\\u041a\\u0426\\u041a\\u0418, sigma:Exploit attempts, sigma:Evidence Malware 10, sigma:INFO Controlled FGS \\u0441 176.59.32.57\",<br>\n  \"source_ip\": \"176.59.32.57\",<br>\n  \"target_ip\": \"95.173.148.243\",<br>\n  \"severity_id\": 3,<br>\n  \"data_security\": [<br>\n{<br>\n  \"i_rev\": 1,<br>\n  \"i_sid\": 90000116,<br>\n  \"s_msg\": \"Success auth on SMTP Server\",<br>\n  \"i_b_rec\": 1,<br>\n  \"s_content\": [<br>\n{<br>\n  \"depth:\": null,<br>\n  \"nocase\": false,<br>\n  \"content\": \"235\",<br>\n  \"offset:\": null,<br>\n  \"within:\": null,<br>\n  \"http_uri\": false,<br>\n  \"rawbytes\": false,<br>\n  \"distance:\": null,<br>\n  \"http_cookie\": false,<br>\n  \"http_header\": false,<br>\n  \"http_method\": false,<br>\n  \"fast_pattern\": null,<br>\n  \"http_raw_uri\": false,<br>\n  \"http_stat_msg\": false,<br>\n  \"http_stat_code\": false,<br>\n  \"http_raw_cookie\": false,<br>\n  \"http_raw_header\": false,<br>\n  \"http_client_body\": false<br>\n},<br>\n{<br>\n  \"depth:\": null,<br>\n  \"nocase\": true,<br>\n  \"content\": \"Authentication successful\",<br>\n  \"offset:\": null,<br>\n  \"within:\": null,<br>\n  \"http_uri\": false,<br>\n  \"rawbytes\": false,<br>\n  \"distance:\": null,<br>\n  \"http_cookie\": false,<br>\n  \"http_header\": false,<br>\n  \"http_method\": false,<br>\n  \"fast_pattern\": \"\",<br>\n  \"http_raw_uri\": false,<br>\n  \"http_stat_msg\": false,<br>\n  \"http_stat_code\": false,<br>\n  \"http_raw_cookie\": false,<br>\n  \"http_raw_header\": false,<br>\n  \"http_client_body\": false<br>\n}<br>\n  ],<br>\n  \"i_priority\": 1,<br>\n  \"s_add_date\": 1737367203,<br>\n  \"s_classtype\": \"attempted-user\",<br>\n  \"s_rule_body\": \"alert tcp $HOME_NET 25 -&gt; $EXTERNAL_NET any (msg:\\\"Success auth on SMTP Server\\\"; flow:from_server,established; content: \\\"235\\\"; content:\\\"Authentication successful\\\"; nocase; fast_pattern;classtype:attempted-user; sid:90000116; rev:1; metadata: author RCM_NVS, created 2025_01_20;)\",<br>\n  \"s_source_name\": \"rcm_sfo__nsk\"<br>\n},<br>\n{<br>\n  \"i_rev\": 1,<br>\n  \"i_sid\": 91003366,<br>\n  \"s_msg\": \"[NCCCI] Success authentication on SMTP from External\",<br>\n  \"i_b_rec\": 1,<br>\n  \"s_content\": [<br>\n{<br>\n  \"depth:\": null,<br>\n  \"nocase\": false,<br>\n  \"content\": \"235\",<br>\n  \"offset:\": null,<br>\n  \"within:\": null,<br>\n  \"http_uri\": false,<br>\n  \"rawbytes\": false,<br>\n  \"distance:\": null,<br>\n  \"http_cookie\": false,<br>\n  \"http_header\": false,<br>\n  \"http_method\": false,<br>\n  \"fast_pattern\": null,<br>\n  \"http_raw_uri\": false,<br>\n  \"http_stat_msg\": false,<br>\n  \"http_stat_code\": false,<br>\n  \"http_raw_cookie\": false,<br>\n  \"http_raw_header\": false,<br>\n  \"http_client_body\": false<br>\n},<br>\n{<br>\n  \"depth:\": null,<br>\n  \"nocase\": true,<br>\n  \"content\": \"Authentication successful\",<br>\n  \"offset:\": null,<br>\n  \"within:\": null,<br>\n  \"http_uri\": false,<br>\n  \"rawbytes\": false,<br>\n  \"distance:\": null,<br>\n  \"http_cookie\": false,<br>\n  \"http_header\": false,<br>\n  \"http_method\": false,<br>\n  \"fast_pattern\": \"\",<br>\n  \"http_raw_uri\": false,<br>\n  \"http_stat_msg\": false,<br>\n  \"http_stat_code\": false,<br>\n  \"http_raw_cookie\": false,<br>\n  \"http_raw_header\": false,<br>\n  \"http_client_body\": false<br>\n}<br>\n  ],<br>\n  \"i_priority\": 1,<br>\n  \"s_add_date\": 1716974571,<br>\n  \"s_classtype\": \"attempted-user\",<br>\n  \"s_rule_body\": \"alert tcp $SMTP_SERVERS 25 -&gt; $EXTERNAL_NET any (msg:\\\"[NCCCI] Success authentication on SMTP from External\\\"; flow:from_server,established; content: \\\"235\\\"; content:\\\"Authentication successful\\\"; nocase; fast_pattern;classtype:attempted-user; sid:91003366; rev:1;)\\n\",<br>\n  \"s_source_name\": \"rcm_dfo__hbr\"<br>\n}<br>\n  ],<br>\n  \"last_seen_time\": \"2026-09-16T07:31:49Z\",<br>\n  \"first_seen_time\": \"2026-09-16T07:31:49Z\",<br>\n  \"detection_pattern\": [<br>\n90000116,<br>\n91003366<br>\n  ],<br>\n  \"unmapped_sensor_ip\": \"10.20.0.59\",<br>\n  \"unmapped_agent_array\": [<br>\n8030059<br>\n  ],<br>\n  \"unmapped_sensor_name\": \"\\u0421\\u041a \\u0420\\u0424\",<br>\n  \"metadata_product_name\": \"Security Event Manager\",<br>\n  \"unmapped_hive_alert_id\": \"~92667740392\",<br>\n  \"unmapped_dst_endpoint_array\": [<br>\n\"176.59.32.57\"<br>\n  ],<br>\n  \"unmapped_home_endpoint_array\": [<br>\n\"95.173.148.243\"<br>\n  ]<br>\n}</p>",
+    "rendered_description": "<p>{<br>\n  \"desc\": \"## \\u0414\\u0430\\u043d\\u043d\\u0430\\u044f \\u0437\\u0430\\u0434\\u0430\\u0447\\u0430 \\u0441\\u043e\\u0437\\u0434\\u0430\\u043d\\u0430 \\u0430\\u0432\\u0442\\u043e\\u043c\\u0430\\u0442\\u0438\\u0447\\u0435\\u0441\\u043a\\u0438\\n \\u0412\\u0440\\u0435\\u043c\\u044f \\u043d\\u0430\\u0447\\u0430\\u043b\\u0430: 2026-09-16 10:31:49\\n \\u0412\\u0440\\u0435\\u043c\\u044f \\u043e\\u043a\\u043e\\u043d\\u0447\\u0430\\u043d\\u0438\\u044f: 2026-09-16 10:31:49\\n \\u041f\\u0440\\u043e\\u0434\\u043e\\u043b\\u0436\\u0438\\u0442\\u0435\\u043b\\u044c\\u043d\\u043e\\u0441\\u0442\\u044c \\u0432\\u043e\\u0437\\u0434\\u0435\\u0439\\u0441\\u0442\\u0432\\u0438\\u0439: 0:00:00\",<br>\n  \"tags\": [<br>\n\"Sensor:id=\\\"8030059\\\"\",<br>\n\"ATs:reason=\\\"\\u0417\\u0430\\u0444\\u0438\\u043a\\u0441\\u0438\\u0440\\u043e\\u0432\\u0430\\u043d\\u0430 \\u043f\\u043e\\u0434\\u043e\\u0437\\u0440\\u0438\\u0442\\u0435\\u043b\\u044c\\u043d\\u0430\\u044f \\u0430\\u043a\\u0442\\u0438\\u0432\\u043d\\u043e\\u0441\\u0442\\u044c \\u043f\\u043e \\u043f\\u0440\\u0438\\u0437\\u043d\\u0430\\u043a\\u0430\\u043c \\u041d\\u041a\\u0426\\u041a\\u0418\\\"\",<br>\n\"ATs:reason=\\\"sigma:Exploit attempts\\\"\",<br>\n\"ATs:reason=\\\"sigma:Evidence Malware 10\\\"\",<br>\n\"ATs:reason=\\\"sigma:INFO Controlled FGS\\\"\"<br>\n  ],<br>\n  \"agent\": 8030059,<br>\n  \"event_uid\": \"TSK-8MSK-6-ZPM-260916-2926652\",<br>\n  \"job_title\": \"\\u0417\\u0430\\u0444\\u0438\\u043a\\u0441\\u0438\\u0440\\u043e\\u0432\\u0430\\u043d\\u0430 \\u043f\\u043e\\u0434\\u043e\\u0437\\u0440\\u0438\\u0442\\u0435\\u043b\\u044c\\u043d\\u0430\\u044f \\u0430\\u043a\\u0442\\u0438\\u0432\\u043d\\u043e\\u0441\\u0442\\u044c \\u043f\\u043e \\u043f\\u0440\\u0438\\u0437\\u043d\\u0430\\u043a\\u0430\\u043c \\u041d\\u041a\\u0426\\u041a\\u0418, sigma:Exploit attempts, sigma:Evidence Malware 10, sigma:INFO Controlled FGS \\u0441 176.59.32.57\",<br>\n  \"source_ip\": \"176.59.32.57\",<br>\n  \"target_ip\": \"95.173.148.243\",<br>\n  \"severity_id\": 3,<br>\n  \"data_security\": [<br>\n{<br>\n  \"i_rev\": 1,<br>\n  \"i_sid\": 90000116,<br>\n  \"s_msg\": \"Success auth on SMTP Server\",<br>\n  \"i_b_rec\": 1,<br>\n  \"s_content\": [<br>\n{<br>\n  \"depth:\": null,<br>\n  \"nocase\": false,<br>\n  \"content\": \"235\",<br>\n  \"offset:\": null,<br>\n  \"within:\": null,<br>\n  \"http_uri\": false,<br>\n  \"rawbytes\": false,<br>\n  \"distance:\": null,<br>\n  \"http_cookie\": false,<br>\n  \"http_header\": false,<br>\n  \"http_method\": false,<br>\n  \"fast_pattern\": null,<br>\n  \"http_raw_uri\": false,<br>\n  \"http_stat_msg\": false,<br>\n  \"http_stat_code\": false,<br>\n  \"http_raw_cookie\": false,<br>\n  \"http_raw_header\": false,<br>\n  \"http_client_body\": false<br>\n},<br>\n{<br>\n  \"depth:\": null,<br>\n  \"nocase\": true,<br>\n  \"content\": \"Authentication successful\",<br>\n  \"offset:\": null,<br>\n  \"within:\": null,<br>\n  \"http_uri\": false,<br>\n  \"rawbytes\": false,<br>\n  \"distance:\": null,<br>\n  \"http_cookie\": false,<br>\n  \"http_header\": false,<br>\n  \"http_method\": false,<br>\n  \"fast_pattern\": \"\",<br>\n  \"http_raw_uri\": false,<br>\n  \"http_stat_msg\": false,<br>\n  \"http_stat_code\": false,<br>\n  \"http_raw_cookie\": false,<br>\n  \"http_raw_header\": false,<br>\n  \"http_client_body\": false<br>\n}<br>\n  ],<br>\n  \"i_priority\": 1,<br>\n  \"s_add_date\": 1737367203,<br>\n  \"s_classtype\": \"attempted-user\",<br>\n  \"s_rule_body\": \"alert tcp $HOME_NET 25 -&gt; $EXTERNAL_NET any (msg:\\\"Success auth on SMTP Server\\\"; flow:from_server,established; content: \\\"235\\\"; content:\\\"Authentication successful\\\"; nocase; fast_pattern;classtype:attempted-user; sid:90000116; rev:1; metadata: author RCM_NVS, created 2025_01_20;)\",<br>\n  \"s_source_name\": \"rcm_sfo__nsk\"<br>\n},<br>\n{<br>\n  \"i_rev\": 1,<br>\n  \"i_sid\": 91003366,<br>\n  \"s_msg\": \"[NCCCI] Success authentication on SMTP from External\",<br>\n  \"i_b_rec\": 1,<br>\n  \"s_content\": [<br>\n{<br>\n  \"depth:\": null,<br>\n  \"nocase\": false,<br>\n  \"content\": \"235\",<br>\n  \"offset:\": null,<br>\n  \"within:\": null,<br>\n  \"http_uri\": false,<br>\n  \"rawbytes\": false,<br>\n  \"distance:\": null,<br>\n  \"http_cookie\": false,<br>\n  \"http_header\": false,<br>\n  \"http_method\": false,<br>\n  \"fast_pattern\": null,<br>\n  \"http_raw_uri\": false,<br>\n  \"http_stat_msg\": false,<br>\n  \"http_stat_code\": false,<br>\n  \"http_raw_cookie\": false,<br>\n  \"http_raw_header\": false,<br>\n  \"http_client_body\": false<br>\n},<br>\n{<br>\n  \"depth:\": null,<br>\n  \"nocase\": true,<br>\n  \"content\": \"Authentication successful\",<br>\n  \"offset:\": null,<br>\n  \"within:\": null,<br>\n  \"http_uri\": false,<br>\n  \"rawbytes\": false,<br>\n  \"distance:\": null,<br>\n  \"http_cookie\": false,<br>\n  \"http_header\": false,<br>\n  \"http_method\": false,<br>\n  \"fast_pattern\": \"\",<br>\n  \"http_raw_uri\": false,<br>\n  \"http_stat_msg\": false,<br>\n  \"http_stat_code\": false,<br>\n  \"http_raw_cookie\": false,<br>\n  \"http_raw_header\": false,<br>\n  \"http_client_body\": false<br>\n}<br>\n  ],<br>\n  \"i_priority\": 1,<br>\n  \"s_add_date\": 1716974571,<br>\n  \"s_classtype\": \"attempted-user\",<br>\n  \"s_rule_body\": \"alert tcp $SMTP_SERVERS 25 -&gt; $EXTERNAL_NET any (msg:\\\"[NCCCI] Success authentication on SMTP from External\\\"; flow:from_server,established; content: \\\"235\\\"; content:\\\"Authentication successful\\\"; nocase; fast_pattern;classtype:attempted-user; sid:91003366; rev:1;)\\n\",<br>\n  \"s_source_name\": \"rcm_dfo__hbr\"<br>\n}<br>\n  ],<br>\n  \"last_seen_time\": \"2026-09-16T07:31:49Z\",<br>\n  \"first_seen_time\": \"2026-09-16T07:31:49Z\",<br>\n  \"detection_pattern\": [<br>\n90000116,<br>\n91003366<br>\n  ],<br>\n  \"unmapped_sensor_ip\": \"10.20.0.59\",<br>\n  \"unmapped_agent_array\": [<br>\n8030059<br>\n  ],<br>\n  \"unmapped_sensor_name\": \"\\u0421\\u041a \\u0420\\u0424\",<br>\n  \"metadata_product_name\": \"Security Event Manager\",<br>\n  \"unmapped_hive_alert_id\": \"~92667740392\",<br>\n  \"unmapped_dst_endpoint_array\": [<br>\n\"176.59.32.57\"<br>\n  ],<br>\n  \"unmapped_home_endpoint_array\": [<br>\n\"95.173.148.243\"<br>\n  ]<br>\n}</p>",
+    "status": "Компьютерный инцидент",
+    "status_description": "",
+    "assignee": null,
+    "tags": [
+        {
+            "name": "ats:reason=\"sigma:evidence malware 10\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 2,
+                "username": "svc_alertmgr"
+            },
+            "created": "2026-08-24T12:56:32.561562+03:00"
+        },
+        {
+            "name": "ats:reason=\"sigma:exploit attempts\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 1,
+                "username": "admin@bi.zone"
+            },
+            "created": "2026-08-13T19:03:44.783959+03:00"
+        },
+        {
+            "name": "ats:reason=\"sigma:info controlled fgs\"",
+            "color": "#DCDCDC",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 1,
+                "username": "admin@bi.zone"
+            },
+            "created": "2026-08-18T12:38:34.056330+03:00"
+        },
+        {
+            "name": "processed:2026-10-13",
+            "color": "#2196F3",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 8,
+                "username": "n8n_adding_info@cert.gov.ru"
+            },
+            "created": "2026-10-13T16:12:46.845895+03:00"
+        },
+        {
+            "name": "rule:inc_malware10",
+            "color": "#FF6B6B",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 8,
+                "username": "n8n_adding_info@cert.gov.ru"
+            },
+            "created": "2026-09-17T19:34:56.896678+03:00"
+        },
+        {
+            "name": "sensor:8030059",
+            "color": "#9C27B0",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 8,
+                "username": "n8n_adding_info@cert.gov.ru"
+            },
+            "created": "2026-09-26T20:49:56.780400+03:00"
+        },
+        {
+            "name": "source:siem",
+            "color": "#4CAF50",
+            "is_visible_for_customer": false,
+            "created_by": {
+                "id": 8,
+                "username": "n8n_adding_info@cert.gov.ru"
+            },
+            "created": "2026-09-17T19:30:22.860157+03:00"
+        }
+    ],
+    "assignee_displayName": null,
+    "reporter_displayName": "Артемий Беляков (803.a.belyakov@avz-center.ru)",
+    "creator_displayName": "Артемий Беляков (803.a.belyakov@avz-center.ru)",
+    "reporter_emailAddress": "803.a.belyakov@avz-center.ru",
+    "primary_category": "Malware_Infection",
+    "primary_category_ref": {
+        "id": "Malware_Infection",
+        "title": "Заражение ВПО",
+        "description": ""
+    },
+    "secondary_category": [
+        "Malware_Infection",
+        "ROOS"
+    ],
+    "secondary_category_ref": [
+        {
+            "id": "Malware_Infection",
+            "title": "Заражение ВПО",
+            "description": ""
+        },
+        {
+            "id": "ROOS",
+            "title": "РООС",
+            "description": "ПМКР"
+        }
+    ],
+    "created": "2026-10-13T16:12:29.152897+03:00",
+    "updated": "2026-10-13T16:16:15.737219+03:00",
+    "timestamp": "2026-10-13T16:16:15.737219+03:00",
+    "resolutiondate": null,
+    "resolution_name": "TP_With_Impact",
+    "resolution_name_ref": {
+        "id": "TP_With_Impact",
+        "title": "TP With Impact",
+        "description": "Компьютерный инцидент"
+    },
+    "resolution_detailed": "",
+    "activity_detected": [],
+    "platform_url": "http://anisimova.cloud.gcm:8005/sessions?expression=ip%20%3D%3D%2095.173.148.243%20%7C%7C%20ip%20%3D%3D%20176.59.32.57&date=8760",
+    "attack_type": "",
+    "gossopka_id": null,
+    "gossopka_send_time": null,
+    "gti_id": null,
+    "gti_send_time": null,
+    "customer_star_rating": null,
+    "customer_star_rating_comment": "",
+    "detection_date": "2026-09-16T10:41:57+03:00",
+    "recommendations": "",
+    "platform_hostname": [
+        "DFL"
+    ],
+    "keyfield": [],
+    "observed_iocs": [
+        {
+            "ioc_type": "ipv4",
+            "category": [
+                "Malware"
+            ],
+            "ioc": "176.59.32.57"
+        }
+    ],
+    "parsed_activity_detected": [],
+    "affected_service": "",
+    "fake_as_path": "",
+    "fake_prefix": "",
+    "fp_type": "",
+    "looking_glass": "",
+    "spam_recipients": "",
+    "tlp": "amber",
+    "usual_prefix": "",
+    "usual_as_path": "",
+    "attachments": [],
+    "source": "SIEM",
+    "is_visible_for_customer": true,
+    "external_id": "",
+    "emls": [],
+    "slas": [],
+    "detection_rules": [
+        10
+    ],
+    "first_sent_notification_time": null,
+    "_source": "https://irp.cloud.gcm/api/v0/irp/issue/INC-2035/",
+    "mitre_cov": {},
+    "badges": [],
+    "response_team": null,
+    "watchers": [],
+    "watchers_id": [],
+    "updated_all": "2026-10-13T16:16:15.737000+03:00",
+    "gossopka_key": "",
+    "gossopka_errors": {},
+    "gossopka_key_link": null,
+    "show_gossopka_button": false,
+    "cancel_gossopka_send_button": false,
+    "show_gti_button": false
+}

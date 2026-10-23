@@ -38,7 +38,7 @@ func TestIRPAPIRequests(t *testing.T) {
 		log.Fatalln(err)
 	}
 
-	data, statusCode, err := api.GetIncident(t.Context(), "INC-2040")
+	data, statusCode, err := api.GetIncident(t.Context(), "INC-2042")
 	assert.NoError(t, err)
 	assert.Equal(t, statusCode, http.StatusOK)
 

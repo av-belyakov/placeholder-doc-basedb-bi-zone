@@ -24,7 +24,7 @@ func NewVerifiedBiZoneIRPAlert() *VerifiedBiZoneIRPAlert {
 		LastDetectionTime:  oldTime,
 		FirstDetectionTime: oldTime,
 		AffectedLogSources: []string(nil),
-		Tags:               []BiZoneIRPTag(nil),
+		Tags:               []IRPTagType(nil),
 		Snapshots:          []BiZoneIRPSnapshot(nil),
 	}
 }
@@ -466,12 +466,12 @@ func (va *VerifiedBiZoneIRPAlert) SetSnapshots(v []BiZoneIRPSnapshot) error {
 }
 
 // GetTags для поля tags
-func (va *VerifiedBiZoneIRPAlert) GetTags() []BiZoneIRPTag {
+func (va *VerifiedBiZoneIRPAlert) GetTags() []IRPTagType {
 	return va.Tags
 }
 
 // SetTags для поля tags
-func (va *VerifiedBiZoneIRPAlert) SetTags(v []BiZoneIRPTag) error {
+func (va *VerifiedBiZoneIRPAlert) SetTags(v []IRPTagType) error {
 	va.Tags = v
 
 	return nil

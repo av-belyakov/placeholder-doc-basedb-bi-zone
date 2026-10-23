@@ -1,7 +1,7 @@
 package datamodels
 
 // ReplacingOldBiZoneAlertTags заменяет или добавляет значения свойства VerifiedBiZoneAlert.Tags
-func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlertTags(incomingTypes []BiZoneIRPTag) int {
+func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlertTags(incomingTypes []IRPTagType) int {
 	var countReplacingFields int
 
 	for _, incomingType := range incomingTypes {

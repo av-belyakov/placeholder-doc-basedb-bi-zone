@@ -45,3 +45,19 @@ type IpAddressInformation struct {
 	Country     string `json:"country"`      //страна
 	CountryCode string `json:"country_code"` //код страны
 }
+
+/***
+* Общие теги
+***/
+
+// IRPTagType структура для тегов
+type IRPTagType struct {
+	Name      string `json:"name"`
+	Color     string `json:"color"`
+	Created   string `json:"created"` //дата создания (формат RFC3339) или ISO 8601
+	CreatedBy struct {
+		Username string `json:"username"`
+		ID       uint64 `json:"id"`
+	} `json:"created_by"`
+	IsVisibleForCustomer bool `json:"is_visible_for_customer"`
+}

@@ -1,6 +1,8 @@
 package dicontainer
 
 import (
+	"context"
+
 	"github.com/av-belyakov/simplelogger"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
@@ -30,6 +32,7 @@ type SimpleLogger interface {
 type Configer interface {
 	Get() confighandler.Config
 	GetCommon() confighandler.Common
+	GetIRP() confighandler.CfgIRP
 	GetNATS() confighandler.CfgNats
 	GetKafka() confighandler.CfgKafka
 	GetListLogs() []*confighandler.LogSet
@@ -56,4 +59,8 @@ type DBConnecter interface {
 
 type DbLogger interface {
 	Write(msgType, msg string) error
+}
+
+type IRPConnecter interface {
+	GetIncident(ctx context.Context, incidentId string) ([]byte, int, error)
 }

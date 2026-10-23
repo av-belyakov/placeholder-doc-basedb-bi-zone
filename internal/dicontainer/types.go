@@ -11,6 +11,7 @@ type DiContainer struct {
 
 	dbLogger       DbLogger
 	dbConnecter    DBConnecter
+	irpConnecter   IRPConnecter
 	natsConnecter  NatsConnecter
 	kafkaConnecter KafkaConnecter
 

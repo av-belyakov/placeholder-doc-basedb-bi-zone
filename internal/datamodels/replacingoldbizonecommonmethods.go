@@ -10,7 +10,7 @@ func compareCategory(currentValue BiZoneIRPCategory, incomingValue []BiZoneIRPCa
 	return -1, false
 }
 
-func compareTag(currentValue BiZoneIRPTag, incomingValue []BiZoneIRPTag) (int, bool) {
+func compareTag(currentValue IRPTagType, incomingValue []IRPTagType) (int, bool) {
 	for k, v := range incomingValue {
 		if v.Name == currentValue.Name {
 			return k, true

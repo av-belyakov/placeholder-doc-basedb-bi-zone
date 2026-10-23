@@ -11,7 +11,7 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
-// GetIncident запрос информации по инциденту
+// GetIncident запрос основной информации по инциденту
 func (api *IrpApi) GetIncident(ctx context.Context, incidentId string) ([]byte, int, error) {
 	return api.query(ctx, "issue/"+incidentId, nil, "GET")
 }
@@ -24,8 +24,6 @@ func (api *IrpApi) query(ctx context.Context, reqPath string, query []byte, meth
 
 		err error
 	)
-
-	fmt.Printf("IrpApi.query URL:'%s'\n", url)
 
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(api.settings.connectionTimeout)*time.Second)
 	defer cancel()
@@ -44,7 +42,7 @@ func (api *IrpApi) query(ctx context.Context, reqPath string, query []byte, meth
 	}
 	defer supportingfunctions.CloseHTTPResponse(res)
 
-	if res.StatusCode == http.StatusOK || res.StatusCode == http.StatusCreated {
+	if res.Body != nil {
 		resBody, err := io.ReadAll(res.Body)
 		if err != nil {
 			return nil, res.StatusCode, err
@@ -53,10 +51,5 @@ func (api *IrpApi) query(ctx context.Context, reqPath string, query []byte, meth
 		return resBody, res.StatusCode, nil
 	}
 
-	/*var msg string
-	if m, err := supportingfunctions.GetDetailedMessage(res.Body); err == nil {
-		msg = m
-	}*/
-
-	return nil, res.StatusCode, fmt.Errorf("request execution, status is '%s'", res.Status)
+	return nil, res.StatusCode, nil
 }

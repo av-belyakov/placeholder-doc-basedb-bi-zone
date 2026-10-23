@@ -16,7 +16,7 @@ func injectSContentToDataSecurity(lds map[string][]datamodels.BiZoneIRPDataSecur
 		for k, v := range dataSecurity {
 			contents, err := supportingfunctions.GetContentFromSnortRule(v.SRuleBody)
 			if err != nil {
-				return err
+				return supportingfunctions.CustomError(err)
 			}
 
 			for _, content := range contents {

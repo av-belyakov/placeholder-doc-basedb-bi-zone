@@ -1,7 +1,7 @@
 package datamodels
 
 // ReplacingOldBiZoneCaseDataTags заменяет или добавляет значения свойства BiZoneIRPCaseData.Tags
-func (cd *BiZoneIRPCaseData) ReplacingOldBiZoneCaseDataTags(incomingTypes []BiZoneIRPTag) int {
+func (cd *BiZoneIRPCaseData) ReplacingOldBiZoneCaseDataTags(incomingTypes []IRPTagType) int {
 	var countReplacingFields int
 
 	for _, incomingType := range incomingTypes {

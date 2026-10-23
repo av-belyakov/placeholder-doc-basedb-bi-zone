@@ -43,17 +43,18 @@ func NewApp() *App {
 // Start инициализация запуска приложения
 func (app *App) Start(ctx context.Context) {
 	// инициализация внутреннего роутера
-	app.appRouter = NewRouter(
-		app.diContainer.Logger(ctx),
-		app.diContainer.Counter(ctx),
-		ApplicationRouterSettings{
-			ChanToNats:    app.diContainer.NatsConnecter(ctx).GetChannelToModule(),
-			ChanFromNats:  app.diContainer.NatsConnecter(ctx).GetChannelFromModule(),
-			ChanToKafka:   app.diContainer.KafkaConnecter(ctx).GetChannelToModule(),
-			ChanFromKafka: app.diContainer.KafkaConnecter(ctx).GetChannelFromModule(),
-			ChanToDBS:     app.diContainer.DbConnecter(ctx).GetChannelToModule(),
-			ChanFromDBS:   app.diContainer.DbConnecter(ctx).GetChannelFromModule(),
-		})
+	/*app.appRouter = NewRouter(
+	app.diContainer.Logger(ctx),
+	app.diContainer.Counter(ctx),
+	ApplicationRouterSettings{
+		ChanToNats:    app.diContainer.NatsConnecter(ctx).GetChannelToModule(),
+		ChanFromNats:  app.diContainer.NatsConnecter(ctx).GetChannelFromModule(),
+		ChanToKafka:   app.diContainer.KafkaConnecter(ctx).GetChannelToModule(),
+		ChanFromKafka: app.diContainer.KafkaConnecter(ctx).GetChannelFromModule(),
+		ChanToDBS:     app.diContainer.DbConnecter(ctx).GetChannelToModule(),
+		ChanFromDBS:   app.diContainer.DbConnecter(ctx).GetChannelFromModule(),
+	})*/
+	app.appRouter = NewRouter(app.diContainer)
 
 	// настройка обёртки для взаимодействия с Zabbix
 	zabbixSettings := wrappers.WrappersZabbixInteractionSettings{
@@ -113,7 +114,7 @@ func (app *App) startDebugServer(ctx context.Context) {
 		return httpServer.Shutdown(context.Background())
 	})
 
-	app.appRouter.logger.Send(
+	app.diContainer.Logger(ctx).Send(
 		"info",
 		fmt.Sprintf(
 			"start debug server with address '%s' port '%d'",
@@ -122,6 +123,6 @@ func (app *App) startDebugServer(ctx context.Context) {
 		))
 
 	if err := g.Wait(); err != nil {
-		app.appRouter.logger.Send("error", fmt.Sprintf("error debugging server: '%s'", err.Error()))
+		app.diContainer.Logger(ctx).Send("error", fmt.Sprintf("start debug server - '%s'", err.Error()))
 	}
 }

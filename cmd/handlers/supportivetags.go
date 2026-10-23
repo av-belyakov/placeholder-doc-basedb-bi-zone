@@ -8,9 +8,9 @@ import (
 
 // SupportingStructureForTagsType вспомогательный тип используемый для хранения объектов типа 'tags'
 type SupportingStructureForTagsType struct {
-	tags               []datamodels.BiZoneIRPTag
+	tags               []datamodels.IRPTagType
 	listAcceptedFields []string
-	tagTmp             datamodels.BiZoneIRPTag
+	tagTmp             datamodels.IRPTagType
 	isCompleted        bool
 }
 
@@ -19,7 +19,7 @@ func NewSupportingStructureForTagsType() *SupportingStructureForTagsType {
 	return &SupportingStructureForTagsType{
 		listAcceptedFields: []string(nil),
 		tagTmp:             *datamodels.NewBiZoneIRPTag(),
-		tags:               make([]datamodels.BiZoneIRPTag, 0),
+		tags:               make([]datamodels.IRPTagType, 0),
 	}
 }
 
@@ -28,7 +28,7 @@ func NewSupportingStructureForTagsType() *SupportingStructureForTagsType {
 // tg.tags, так как tags автоматически пополняется только при
 // совпадении значений в listAcceptedFields. Соответственно при завершении
 // JSON объекта, последние добавленные значения остаются tg.tagTmp
-func (tg *SupportingStructureForTagsType) GetTags() []datamodels.BiZoneIRPTag {
+func (tg *SupportingStructureForTagsType) GetTags() []datamodels.IRPTagType {
 	if !tg.isCompleted {
 		// здесь можно выполнять постобработку некоторых пользовательский типов
 		// например, изменить содержимое какого нибудь поля.
@@ -44,7 +44,7 @@ func (tg *SupportingStructureForTagsType) GetTags() []datamodels.BiZoneIRPTag {
 }
 
 // GetTagTmp возвращает временный объект
-func (tg *SupportingStructureForTagsType) GetTagTmp() datamodels.BiZoneIRPTag {
+func (tg *SupportingStructureForTagsType) GetTagTmp() datamodels.IRPTagType {
 	return tg.tagTmp
 }
 

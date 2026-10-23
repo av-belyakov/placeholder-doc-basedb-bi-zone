@@ -6,6 +6,7 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/handlers"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 // BiZoneAlertsGenerator генерирует верифицированный объект типа 'alerts'.
@@ -130,19 +131,19 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 
 	// собираем объект 'data_security'
 	if errTmp := verifiedData.SetDataSecurity(listDataSecurity); errTmp != nil {
-		err = errTmp
+		err = supportingfunctions.CustomError(errTmp)
 	}
 	// собираем объект 'data'
 	if errTmp := verifiedMainObject.SetData(*verifiedData.Get()); errTmp != nil {
-		err = errTmp
+		err = supportingfunctions.CustomError(errTmp)
 	}
 	// собираем объект 'tags'
 	if errTmp := verifiedMainObject.SetTags(supportObjectTags.GetTags()); errTmp != nil {
-		err = errTmp
+		err = supportingfunctions.CustomError(errTmp)
 	}
 	// собираем объект 'snapshots'
 	if errTmp := verifiedMainObject.SetSnapshots(supportObjectSnapshot.GetSnapshots()); errTmp != nil {
-		err = errTmp
+		err = supportingfunctions.CustomError(errTmp)
 	}
 
 	// формируем дополнительную информацию с идентификаторами сенсоров
@@ -156,7 +157,7 @@ func BiZoneAlertsGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string,
 	additionalInformation.SetSpecialUUID(verifiedMainObject.GetUUID())
 
 	if errTmp := verifiedMainObject.SetAdditionalInformation(additionalInformation); errTmp != nil {
-		err = errTmp
+		err = supportingfunctions.CustomError(errTmp)
 	}
 
 	return verifiedMainObject.GetUUID(), verifiedMainObject, listRawFields, err

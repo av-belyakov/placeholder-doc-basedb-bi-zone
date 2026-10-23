@@ -11,7 +11,7 @@ import (
 // NewBiZoneIRPCaseData новый объект Data родительского объекта VerifiedBiZoneIRPCase
 func NewBiZoneIRPCaseData() *BiZoneIRPCaseData {
 	return &BiZoneIRPCaseData{
-		Tags:              []BiZoneIRPTag(nil),
+		Tags:              []IRPTagType(nil),
 		DetectionRules:    []uint64(nil),
 		PlatformHostname:  []string(nil),
 		SecondaryCategory: []BiZoneIRPCategory(nil),
@@ -624,12 +624,12 @@ func (d *BiZoneIRPCaseData) SetCreatedBy(v BiZoneIRPCreatedBy) error {
 }
 
 // GetTags для поля 'tags'
-func (d *BiZoneIRPCaseData) GetTags() []BiZoneIRPTag {
+func (d *BiZoneIRPCaseData) GetTags() []IRPTagType {
 	return d.Tags
 }
 
 // SetTags для поля 'tags'
-func (d *BiZoneIRPCaseData) SetTags(v []BiZoneIRPTag) error {
+func (d *BiZoneIRPCaseData) SetTags(v []IRPTagType) error {
 	d.Tags = v
 
 	return nil
