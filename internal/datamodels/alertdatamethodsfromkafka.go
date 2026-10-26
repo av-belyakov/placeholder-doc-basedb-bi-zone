@@ -199,8 +199,8 @@ func (d *BiZoneIRPAlertData) SetUnmappedEventCard(v string) error {
 	return nil
 }
 
-// SetAnyUnmappedEventCard для поля 'unmapped_event_card'
-func (d *BiZoneIRPAlertData) SetAnyUnmappedEventCard(a any) error {
+// SetAnyUnmappedEventCardElement для поля 'unmapped_event_card'
+func (d *BiZoneIRPAlertData) SetAnyUnmappedEventCardElement(a any) error {
 	return d.SetUnmappedEventCard(fmt.Sprint(a))
 }
 
@@ -354,8 +354,8 @@ func (d *BiZoneIRPAlertData) SetUnmappedDstEndpointArrayElement(v string) error 
 	return nil
 }
 
-// SetAnyUnmappedDstEndpointArray добавляет некоторое значение в список 'unmapped_dst_endpoint_array'
-func (d *BiZoneIRPAlertData) SetAnyUnmappedDstEndpointArray(a any) error {
+// SetAnyUnmappedDstEndpointArrayElement добавляет некоторое значение в список 'unmapped_dst_endpoint_array'
+func (d *BiZoneIRPAlertData) SetAnyUnmappedDstEndpointArrayElement(a any) error {
 	return d.SetUnmappedDstEndpointArrayElement(fmt.Sprint(a))
 }
 
@@ -380,8 +380,8 @@ func (d *BiZoneIRPAlertData) SetUnmappedHomeEndpointArrayElement(v string) error
 	return nil
 }
 
-// SetAnyUnmappedHomeEndpointArray добавляет некоторое значение в список 'unmapped_home_endpoint_array'
-func (d *BiZoneIRPAlertData) SetAnyUnmappedHomeEndpointArray(a any) error {
+// SetAnyUnmappedHomeEndpointArrayElement добавляет некоторое значение в список 'unmapped_home_endpoint_array'
+func (d *BiZoneIRPAlertData) SetAnyUnmappedHomeEndpointArrayElement(a any) error {
 	return d.SetUnmappedHomeEndpointArrayElement(fmt.Sprint(a))
 }
 

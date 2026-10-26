@@ -18,7 +18,7 @@ type SupportingStructureForTagsType struct {
 func NewSupportingStructureForTagsType() *SupportingStructureForTagsType {
 	return &SupportingStructureForTagsType{
 		listAcceptedFields: []string(nil),
-		tagTmp:             *datamodels.NewBiZoneIRPTag(),
+		tagTmp:             *datamodels.NewIRPTagType(),
 		tags:               make([]datamodels.IRPTagType, 0),
 	}
 }
@@ -58,7 +58,7 @@ func (tg *SupportingStructureForTagsType) HandlerValue(fieldBranch string, a any
 		// на основании которых было бы понятно что нужно менять.
 		//_, _ = supportingfunctions.PostProcessingUserType(&sc.tagTmp)
 		tg.tags = append(tg.tags, tg.tagTmp)
-		tg.tagTmp = *datamodels.NewBiZoneIRPTag()
+		tg.tagTmp = *datamodels.NewIRPTagType()
 		tg.listAcceptedFields = []string(nil)
 	}
 

@@ -22,9 +22,9 @@ func NewListBiZoneHandlerAlertData(data *datamodels.BiZoneIRPAlertData) map[stri
 		//ниже работа со срезам содержащими простые типы
 		"data.tags":                         {data.SetAnyTag},
 		"data.detection_pattern":            {data.SetAnyDetectionPatternElement},
-		"data.unmapped_event_card":          {data.SetAnyUnmappedEventCard},
+		"data.unmapped_event_card":          {data.SetAnyUnmappedEventCardElement},
 		"data.unmapped_agent_array":         {data.SetAnyUnmappedAgentArrayElement},
-		"data.unmapped_dst_endpoint_array":  {data.SetAnyUnmappedDstEndpointArray},
-		"data.unmapped_home_endpoint_array": {data.SetAnyUnmappedHomeEndpointArray},
+		"data.unmapped_dst_endpoint_array":  {data.SetAnyUnmappedDstEndpointArrayElement},
+		"data.unmapped_home_endpoint_array": {data.SetAnyUnmappedHomeEndpointArrayElement},
 	}
 }

@@ -956,21 +956,21 @@ func (i *VerifiedBiZoneIRPIncident) SetAnyPrimaryCategory(a any) error {
 	return i.SetPrimaryCategory(fmt.Sprint(a))
 }
 
-// GetResolutiondate для поля 'resolutiondate'
-func (i *VerifiedBiZoneIRPIncident) GetResolutiondate() string {
-	return i.Resolutiondate
+// GetResolutionDate для поля 'resolutiondate'
+func (i *VerifiedBiZoneIRPIncident) GetResolutionDate() string {
+	return i.ResolutionDate
 }
 
-// SetResolutiondate для поля 'resolutiondate'
-func (i *VerifiedBiZoneIRPIncident) SetResolutiondate(v string) error {
-	i.Resolutiondate = v
+// SetResolutionDate для поля 'resolutiondate'
+func (i *VerifiedBiZoneIRPIncident) SetResolutionDate(v string) error {
+	i.ResolutionDate = v
 
 	return nil
 }
 
-// SetAnyResolutiondate для поля 'resolutiondate'
-func (i *VerifiedBiZoneIRPIncident) SetAnyResolutiondate(a any) error {
-	return i.SetResolutiondate(fmt.Sprint(a))
+// SetAnyResolutionDate для поля 'resolutiondate'
+func (i *VerifiedBiZoneIRPIncident) SetAnyResolutionDate(a any) error {
+	return i.SetResolutionDate(fmt.Sprint(a))
 }
 
 // GetResolutionName для поля 'resolution_name'
@@ -1488,7 +1488,7 @@ func (i *VerifiedBiZoneIRPIncident) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
 	ws := supportingfunctions.GetWhitespace(num)
-	wsStr := supportingfunctions.GetWhitespace(num + 1)
+	//wsStr := supportingfunctions.GetWhitespace(num + 1)
 	wsInt := supportingfunctions.GetWhitespace(num + 2)
 
 	fmt.Fprintf(&str, "%s'created': '%s'\n", ws, i.Created)
@@ -1523,7 +1523,7 @@ func (i *VerifiedBiZoneIRPIncident) ToStringBeautiful(num int) string {
 	fmt.Fprintf(&str, "%s'affected_service': '%s'\n", ws, i.AffectedService)
 	fmt.Fprintf(&str, "%s'fake_as_path': '%s'\n", ws, i.FakeAsPath)
 	fmt.Fprintf(&str, "%s'fake_prefix': '%s'\n", ws, i.FakePrefix)
-	fmt.Fprintf(&str, "%s'fp_type': '%s'\n", ws, i.fp_type)
+	fmt.Fprintf(&str, "%s'fp_type': '%s'\n", ws, i.FpType)
 	fmt.Fprintf(&str, "%s'looking_glass': '%s'\n", ws, i.LookingGlass)
 	fmt.Fprintf(&str, "%s'spam_recipients': '%s'\n", ws, i.SpamRecipients)
 	fmt.Fprintf(&str, "%s'tlp': '%s'\n", ws, i.TLP)
@@ -1552,43 +1552,30 @@ func (i *VerifiedBiZoneIRPIncident) ToStringBeautiful(num int) string {
 	for k, v := range i.Tags {
 		fmt.Fprintf(&str, "%s%d.\n%s", wsInt, k, v.ToStringBeautiful(num+2))
 	}
-
-	fmt.Fprintf(&str, "%s'observed_iocs': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.ObservedIocs))
-	fmt.Fprintf(&str, "%s'secondary_category_ref': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.SecondaryCategoryRef))
-	fmt.Fprintf(&str, "%s'detection_pattern': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.DetectionPattern))
-	fmt.Fprintf(&str, "%s'unmapped_agent_array': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.UnmappedAgentArray))
-	fmt.Fprintf(&str, "%s'data_security':\n", ws)
-	for k, v := range i.DataSecurity {
-		fmt.Fprintf(&str, "%s%s:\n", wsStr, k)
-
-		for item, value := range v {
-			fmt.Fprintf(&str, "%s%d.\n%s\n", wsInt, item, value.ToStringBeautiful(num+3))
-		}
+	fmt.Fprintf(&str, "%s'observed_iocs':\n", ws)
+	for k, v := range i.ObservedIocs {
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInt, k, v.ToStringBeautiful(num+2))
 	}
+	fmt.Fprintf(&str, "%s'secondary_category_ref':\n", ws)
+	for k, v := range i.SecondaryCategoryRef {
+		fmt.Fprintf(&str, "%s%d.\n%s", wsInt, k, v.ToStringBeautiful(num+2))
+	}
+	fmt.Fprintf(&str, "%s'keyfield': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.KeyField))
+	fmt.Fprintf(&str, "%s'activity_detected': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.ActivityDetected))
+	fmt.Fprintf(&str, "%s'secondary_category': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.SecondaryCategory))
+	fmt.Fprintf(&str, "%s'platform_hostname': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.PlatformHostname))
+	fmt.Fprintf(&str, "%s'detection_rules': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.DetectionRules))
+	fmt.Fprintf(&str, "%s'parsed_activity_detected': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.ParsedActivityDetected))
+	fmt.Fprintf(&str, "%s'attachments': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.Attachments))
+	fmt.Fprintf(&str, "%s'emls': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.Emls))
+	fmt.Fprintf(&str, "%s'slas': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.Slas))
+	fmt.Fprintf(&str, "%s'badges': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.Badges))
+	fmt.Fprintf(&str, "%s'watchers': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.Watchers))
+	fmt.Fprintf(&str, "%s'watchers_id': \n%s", ws, supportingfunctions.ToStringBeautifulSlice(num, i.WatchersId))
+	fmt.Fprintf(&str, "%s'issue_type_ref':\n%s", ws, i.IssueTypeRef.ToStringBeautiful(num+1))
+
+	fmt.Fprintf(&str, "%s'primary_category_ref':\n%s", ws, i.PrimaryCategoryRef.ToStringBeautiful(num+1))
+	fmt.Fprintf(&str, "%s'resolution_name_ref':\n%s", ws, i.ResolutionNameRef.ToStringBeautiful(num+1))
 
 	return str.String()
 }
-
-/*
-надо написать методы для еще этих типов
-
-
-type IssueTypeRefType struct {
-	Id          string `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-}
-
-type CategoryRefType struct {
-	Id          string `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-}
-
-type ObservedIocsType struct {
-	Category []string `json:"category"`
-	Ioc      string   `json:"ioc"`
-	IocType  string   `json:"ioc_type"`
-}
-
-*/
