@@ -117,7 +117,7 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 								return
 							}
 
-							id, verifedBiZoneIncident, listRawFields, err := documentgenerator.BiZoneCasesGenerator(decoder.Start(msg.Data))
+							id, verifiedBiZoneIncident, listRawFields, err := documentgenerator.BiZoneCasesGenerator(decoder.Start(msg.Data))
 							if err != nil {
 								logger.Send("error", supportingfunctions.CustomError(err).Error())
 							}
@@ -133,7 +133,7 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 							r.chToDBSApi <- databasestorageapi.SettingsChanInput{
 								Section: "handling bizone cases",
 								Command: "add cases",
-								Data:    verifedBiZoneCase,
+								Data:    verifiedBiZoneCase,
 							}
 						}()
 

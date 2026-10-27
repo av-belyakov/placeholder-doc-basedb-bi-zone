@@ -2,26 +2,21 @@ package documentgenerator
 
 import (
 	"fmt"
+	"uuid"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/handlers"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 )
 
-// IRPIncidentGenerator генерирует верифицированный объект типа 'incident' получаемый при запросе к IRP, не от Kafka
-func IRPIncidentGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, *datamodels.VerifiedBiZoneIRPCase, map[string]string, error) {
+// GeneratingVerifiedDocumentFromIncident генерирует верифицированный документ типа 'incident' получаемый при запросе к IRP, не от Kafka
+func GeneratingVerifiedDocumentFromIncident(chInput <-chan interfaces.CustomJsonDecoder) (string, *datamodels.VerifiedBiZoneIRPIncident, map[string]string, error) {
 	// список не обработанных полей
 	var (
 		listRawFields map[string]string = make(map[string]string)
 
 		err error
 	)
-
-	/*
-
-	   Всё что ниже, нужно заменить на новые обработчики
-
-	*/
 
 	verifiedMainObject := datamodels.NewVerifiedBiZoneIRPIncident()
 	verifiedIssueTypeRef := datamodels.NewIssueTypeRefType()
@@ -36,11 +31,13 @@ func IRPIncidentGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 
 	//******** вспомогательные объекты ********
 	supportObjectTags := handlers.NewSupportingStructureForTagsType()
+	supportObjectWatchers := handlers.NewSupportingStructureForWatchersType()
 	supportObjectObservedIocs := handlers.NewSupportingStructureForObservedIocsType()
 	supportObjectSecondaryCategoreRefs := handlers.NewSupportingStructureForCategoreRefsType()
 
 	// ********* обработчики для вспомогательных объектов ***********
 	listHandlerTags := handlers.NewListBiZoneHandlerTags(supportObjectTags)
+	listHandlerWatchers := handlers.NewListBiZoneHandlerWatchers(supportObjectWatchers)
 	listHandlerObservedIocs := handlers.NewListBiZoneHandlerObservedIocs(supportObjectObservedIocs)
 	listHandlerSecondaryCategoresRef := handlers.NewListBiZoneHandlerSecondaryCategoryRef(supportObjectSecondaryCategoreRefs)
 
@@ -88,6 +85,17 @@ func IRPIncidentGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 
 		// объект 'secondary_category.*'
 		if funcs, ok := listHandlerSecondaryCategoresRef[msg.GetFieldBranch()]; ok {
+			handlerIsExist = true
+
+			for _, f := range funcs {
+				f(msg.GetValue())
+			}
+
+			//			continue
+		}
+
+		// объект 'watchers.*'
+		if funcs, ok := listHandlerWatchers[msg.GetFieldBranch()]; ok {
 			handlerIsExist = true
 
 			for _, f := range funcs {
@@ -152,6 +160,11 @@ func IRPIncidentGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 		err = errTmp
 	}
 
+	// объект 'watchers'
+	if errTmp := verifiedMainObject.SetWatchers(supportObjectWatchers.GetWatchers()); errTmp != nil {
+		err = errTmp
+	}
+
 	// объект 'issue_type_ref'
 	if errTmp := verifiedMainObject.SetIssueTypeRef(*verifiedIssueTypeRef); errTmp != nil {
 		err = errTmp
@@ -173,17 +186,17 @@ func IRPIncidentGenerator(chInput <-chan interfaces.CustomJsonDecoder) (string, 
 	*/
 
 	// формируем дополнительную информацию с идентификаторами сенсоров
-	additionalInformation.SetSensorInformation(CreateListSensorsForCases(verifiedData).GetSensorsInformation())
+	additionalInformation.SetSensorInformation(CreateListTenantForIncident(verifiedMainObject).GetSensorsInformation())
 
 	// формируем дополнительную информацию с ip адресами
-	additionalInformation.SetIpAddressesInformation(CreateListIpAddresesForCases(verifiedData).GetIpAddressesInformation())
+	additionalInformation.SetIpAddressesInformation(CreateListIpAddresesForIncident(verifiedMainObject).GetIpAddressesInformation())
 
 	// добавляем специальный, общий идентификатор
-	additionalInformation.SetSpecialUUID(verifiedMainObject.GetID())
+	additionalInformation.SetSpecialUUID(uuid.New().String())
 
 	if errTmp := verifiedMainObject.SetAdditionalInformation(additionalInformation); errTmp != nil {
 		err = errTmp
 	}
 
-	return verifiedMainObject.GetID(), verifiedMainObject, listRawFields, err
+	return verifiedMainObject.GetSpecialUUID(), verifiedMainObject, listRawFields, err
 }

@@ -75,7 +75,6 @@ func NewListBiZoneHandlerIncident(i *datamodels.VerifiedBiZoneIRPIncident) map[s
 		"emls":                     {i.SetAnyEmlsElement},
 		"slas":                     {i.SetAnySlasElement},
 		"badges":                   {i.SetAnyBadgesElement},
-		"watchers":                 {i.SetAnyWatchersElement},
 		"watchers_id":              {i.SetAnyWatchersIdElement},
 	}
 }

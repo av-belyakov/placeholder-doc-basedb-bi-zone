@@ -262,6 +262,78 @@ func CreateListIpAddresesForCases(verifiedData *datamodels.BiZoneIRPCaseData) *d
 	return information
 }
 
+// CreateListTenantForIncident список с тенатами (идентификаторами сенсоров) из объекта 'incident'
+func CreateListTenantForIncident(verifiedData *datamodels.VerifiedBiZoneIRPIncident) *datamodels.AdditionalInformation {
+	information := &datamodels.AdditionalInformation{
+		Sensors: []datamodels.SensorInformation(nil),
+	}
+
+	// из свойства 'tenant_id'
+	if verifiedData.TenantId != "" {
+		information.AddSensorInformation(datamodels.SensorInformation{
+			SensorId: verifiedData.TenantId,
+		})
+	}
+
+	// из свойства 'tags'
+	reg := regexp.MustCompile(`\d`)
+	for _, v := range verifiedData.Tags {
+		name := strings.ToLower(v.Name)
+		if !strings.Contains(name, "sensor") {
+			continue
+		}
+
+		valueMatches := reg.FindStringSubmatch(name)
+		if valueMatches == nil {
+			continue
+		}
+
+		newMatches := supportingfunctions.SliceUniqueValues(valueMatches)
+		for _, v := range newMatches {
+			information.AddSensorInformation(datamodels.SensorInformation{
+				SensorId: v,
+			})
+		}
+	}
+
+	return information
+}
+
+// CreateListIpAddresesForIncident список с ip адресами из объекта 'incident'
+func CreateListIpAddresesForIncident(verifiedData *datamodels.VerifiedBiZoneIRPIncident) *datamodels.AdditionalInformation {
+	reg := regexp.MustCompile(`\b(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\b`)
+	ips := make([]string, 0)
+	information := &datamodels.AdditionalInformation{
+		IpAddresses: []datamodels.IpAddressInformation(nil),
+	}
+
+	// из поля description
+	for _, ip := range reg.FindAllStringSubmatch(verifiedData.Description, -1) {
+		ips = append(ips, ip[0])
+	}
+
+	// из поля observed_iocs.ioc
+	for _, v := range verifiedData.ObservedIocs {
+		if v.Ioc == "" {
+			continue
+		}
+
+		if !reg.MatchString(v.Ioc) {
+			continue
+		}
+
+		ips = append(ips, v.Ioc)
+	}
+
+	for _, ip := range supportingfunctions.SliceUniqueValues(ips) {
+		information.AddIpAddressInformation(datamodels.IpAddressInformation{
+			Ip: ip,
+		})
+	}
+
+	return information
+}
+
 // GetListIPAddr список ip адресов из элементов объекта
 func GetListIPAddr(objects []datamodels.IpAddressInformation) []string {
 	newList := make([]string, 0, len(objects))

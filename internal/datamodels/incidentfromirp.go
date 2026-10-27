@@ -17,6 +17,7 @@ func NewVerifiedBiZoneIRPIncident() *VerifiedBiZoneIRPIncident {
 		Tags:                   []IRPTagType(nil),
 		ObservedIocs:           []ObservedIocsType(nil),
 		SecondaryCategoryRef:   []CategoryRefType(nil),
+		Watchers:               []WatchersType(nil),
 		ActivityDetected:       []string(nil),
 		SecondaryCategory:      []string(nil),
 		PlatformHostname:       []string(nil),
@@ -27,7 +28,6 @@ func NewVerifiedBiZoneIRPIncident() *VerifiedBiZoneIRPIncident {
 		Emls:                   []any(nil),
 		Slas:                   []any(nil),
 		Badges:                 []any(nil),
-		Watchers:               []any(nil),
 		WatchersId:             []any(nil),
 		Created:                oldTime,
 		Updated:                oldTime,
@@ -73,6 +73,18 @@ func (i *VerifiedBiZoneIRPIncident) GetSecondaryCategoryRef() []CategoryRefType 
 // SetSecondaryCategoryRef для поля 'secondary_category_ref'
 func (i *VerifiedBiZoneIRPIncident) SetSecondaryCategoryRef(v []CategoryRefType) error {
 	i.SecondaryCategoryRef = v
+
+	return nil
+}
+
+// GetWatchers для поля 'watchers'
+func (i *VerifiedBiZoneIRPIncident) GetWatchers() []WatchersType {
+	return i.Watchers
+}
+
+// SetWatchers для поля 'watchers'
+func (i *VerifiedBiZoneIRPIncident) SetWatchers(v []WatchersType) error {
+	i.Watchers = v
 
 	return nil
 }
@@ -340,32 +352,6 @@ func (i *VerifiedBiZoneIRPIncident) SetBadgesElement(v string) error {
 // SetAnyBadgesElement добавляет некоторое значение в список 'badges'
 func (i *VerifiedBiZoneIRPIncident) SetAnyBadgesElement(a any) error {
 	return i.SetBadgesElement(fmt.Sprint(a))
-}
-
-// GetWatchers для поля 'watchers'
-func (i *VerifiedBiZoneIRPIncident) GetWatchers() []any {
-	return i.Watchers
-}
-
-// SetWatchers для поля 'watchers'
-func (i *VerifiedBiZoneIRPIncident) SetWatchers(v []any) error {
-	i.Watchers = v
-
-	return nil
-}
-
-// SetWatchersElement добавляет значение 'watchers' в список
-func (i *VerifiedBiZoneIRPIncident) SetWatchersElement(v string) error {
-	//if _, isExist := supportingfunctions.SliceContainsElement(v, i.ActivityDetected); !isExist {
-	i.Watchers = append(i.Watchers, v)
-	//}
-
-	return nil
-}
-
-// SetAnyWatchersElement добавляет некоторое значение в список 'watchers'
-func (i *VerifiedBiZoneIRPIncident) SetAnyWatchersElement(a any) error {
-	return i.SetWatchersElement(fmt.Sprint(a))
 }
 
 // GetWatchersId для поля 'watchers_id'
@@ -1481,6 +1467,18 @@ func (i *VerifiedBiZoneIRPIncident) SetGossopkaKeyLink(v string) error {
 // SetAnyGossopkaKeyLink для поля 'gossopka_key_link'
 func (i *VerifiedBiZoneIRPIncident) SetAnyGossopkaKeyLink(a any) error {
 	return i.SetGossopkaKeyLink(fmt.Sprint(a))
+}
+
+// GetAdditionalInformation поле дополнительной информации
+func (va *VerifiedBiZoneIRPIncident) GetAdditionalInformation() *AdditionalInformation {
+	return &va.AdditionalInformation
+}
+
+// SetAdditionalInformation для поля дополнительной информации
+func (va *VerifiedBiZoneIRPIncident) SetAdditionalInformation(v AdditionalInformation) error {
+	va.AdditionalInformation = v
+
+	return nil
 }
 
 // ToStringBeautiful форматированный вывод

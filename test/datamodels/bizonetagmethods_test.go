@@ -13,7 +13,7 @@ import (
 )
 
 func TestBiZoneTag(t *testing.T) {
-	tag := &datamodels.BiZoneIRPTag{}
+	tag := &datamodels.IRPTagType{}
 
 	listTesting := map[string]datamodeltest.TestOptions{}
 

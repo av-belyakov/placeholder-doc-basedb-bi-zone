@@ -4,6 +4,14 @@ package handlers
 func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]func(any) error {
 	return map[string][]func(any) error{
 		//--- name ---
+		"tags.name": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.name",
+					a,
+					tg.tagTmp.SetAnyName,
+				)
+			}},
 		"data.tags.name": {
 			func(a any) error {
 				return tg.HandlerValue(
@@ -13,6 +21,14 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				)
 			}},
 		//--- color ---
+		"tags.color": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.color",
+					a,
+					tg.tagTmp.SetAnyColor,
+				)
+			}},
 		"data.tags.color": {
 			func(a any) error {
 				return tg.HandlerValue(
@@ -22,6 +38,14 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				)
 			}},
 		//--- created ---
+		"tags.created": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.created",
+					a,
+					tg.tagTmp.SetAnyCreated,
+				)
+			}},
 		"data.tags.created": {
 			func(a any) error {
 				return tg.HandlerValue(
@@ -31,6 +55,14 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				)
 			}},
 		//--- created_by.id ---
+		"tags.created_by.id": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.created_by.id",
+					a,
+					tg.tagTmp.SetAnyCreatedByID,
+				)
+			}},
 		"data.tags.created_by.id": {
 			func(a any) error {
 				return tg.HandlerValue(
@@ -40,6 +72,14 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				)
 			}},
 		//--- created_by.username ---
+		"tags.created_by.username": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.created_by.username",
+					a,
+					tg.tagTmp.SetAnyCreatedByUsername,
+				)
+			}},
 		"data.tags.created_by.username": {
 			func(a any) error {
 				return tg.HandlerValue(
@@ -49,6 +89,14 @@ func NewListBiZoneHandlerTags(tg *SupportingStructureForTagsType) map[string][]f
 				)
 			}},
 		//--- is_visible_for_customer ---
+		"tags.is_visible_for_customer": {
+			func(a any) error {
+				return tg.HandlerValue(
+					"tags.is_visible_for_customer",
+					a,
+					tg.tagTmp.SetAnyCreatedByID,
+				)
+			}},
 		"data.tags.is_visible_for_customer": {
 			func(a any) error {
 				return tg.HandlerValue(

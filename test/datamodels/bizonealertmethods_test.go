@@ -115,9 +115,9 @@ func TestBiZoneIRPAlertMethods(t *testing.T) {
 
 	// ---- Tags ----
 	size = 14
-	tagsExample := make([]datamodels.BiZoneIRPTag, 0, size)
+	tagsExample := make([]datamodels.IRPTagType, 0, size)
 	for range size {
-		tag := datamodels.NewBiZoneIRPTag()
+		tag := datamodels.NewIRPTagType()
 		assert.NoError(t, tag.SetAnyName(gofakeit.EmojiTag()))
 		assert.NoError(t, tag.SetAnyColor(gofakeit.Color()))
 		assert.NoError(t, tag.SetAnyCreated(gofakeit.Date().String()))
@@ -134,7 +134,7 @@ func TestBiZoneIRPAlertMethods(t *testing.T) {
 			biZoneIRPAlert.SetTags(tagsExample)
 		},
 		GetFunc: func() {
-			tags, ok := listTesting["Tags"].ValueAny.([]datamodels.BiZoneIRPTag)
+			tags, ok := listTesting["Tags"].ValueAny.([]datamodels.IRPTagType)
 			assert.True(t, ok)
 
 			assert.Equal(t, tags, biZoneIRPAlert.GetTags())

@@ -10,6 +10,7 @@ type VerifiedBiZoneIRPIncident struct {
 	Tags                      []IRPTagType       `json:"tags"`
 	ObservedIocs              []ObservedIocsType `json:"observed_iocs"`
 	SecondaryCategoryRef      []CategoryRefType  `json:"secondary_category_ref"`
+	Watchers                  []WatchersType     `json:"watchers"`
 	KeyField                  []string           `json:"keyfield"`
 	ActivityDetected          []string           `json:"activity_detected"`
 	SecondaryCategory         []string           `json:"secondary_category"`
@@ -20,7 +21,6 @@ type VerifiedBiZoneIRPIncident struct {
 	Emls                      []any              `json:"emls"`
 	Slas                      []any              `json:"slas"`
 	Badges                    []any              `json:"badges"`
-	Watchers                  []any              `json:"watchers"`
 	WatchersId                []any              `json:"watchers_id"`
 	IssueTypeRef              IssueTypeRefType   `json:"issue_type_ref"`
 	PrimaryCategoryRef        CategoryRefType    `json:"primary_category_ref"`
@@ -100,4 +100,14 @@ type ObservedIocsType struct {
 	Category []string `json:"category"`
 	Ioc      string   `json:"ioc"`
 	IocType  string   `json:"ioc_type"`
+}
+
+type WatchersType struct {
+	Email      string `json:"email"`
+	LastName   string `json:"last_name"`
+	Username   string `json:"username"`
+	FirstName  string `json:"first_name"`
+	Patronimic string `json:"patronimic"`
+	Id         uint64 `json:"id"`
+	IsActive   bool   `json:"is_active"`
 }

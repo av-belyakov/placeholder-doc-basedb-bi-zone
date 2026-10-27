@@ -52,12 +52,12 @@ func (itr *CategoryRefType) SetAnyTitle(a any) error {
 
 // GetDescription для поля 'description'
 func (itr *CategoryRefType) GetDescription() string {
-	return itr.Id
+	return itr.Description
 }
 
 // SetDescription для поля 'description'
 func (itr *CategoryRefType) SetDescription(v string) error {
-	itr.Id = v
+	itr.Description = v
 
 	return nil
 }
