@@ -234,7 +234,7 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueString: "alertmgr-alerts"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Topics["cases"]},
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Topics["incidents"]},
 					expectedParameters: TestTypeElements{valueString: "socd-soar-prod-issue-v1"},
 				},
 				{
@@ -303,8 +303,8 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueString: "module_placeholderdb_bizone_alerts.test"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Storage["cases"]},
-					expectedParameters: TestTypeElements{valueString: "module_placeholderdb_bizone_cases.test"},
+					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Storage["incidents"]},
+					expectedParameters: TestTypeElements{valueString: "module_placeholderdb_bizone_incidents.test"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetStorageDB().Passwd},
@@ -773,7 +773,7 @@ func unsetAllEnviromentEnvAny() {
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLKEYFILE")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_KSSLSERVERNAME")
 
-	// настройки доступа к БД в которую будут записыватся alert и case
+	// настройки доступа к БД в которую будут записыватся alert и incidents
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEHOST")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGEPORT")
 	os.Unsetenv("GO_PHDOCBASEDBBZ_DBSTORAGENAME")

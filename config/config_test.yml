@@ -20,7 +20,7 @@ KAFKA:
   group_id: spring.kafka.bootstrap.servers
   topics:
     alerts: alertmgr-alerts
-    cases: socd-soar-prod-issue-v1
+    incidents: socd-soar-prod-issue-v1
   sasl_mechanism: ANONYMOUS # PLAIN, SCRAM-SHA-256, SCRAM-SHA-512 или ANONYMOUS если аутентификации не требуется
   ssl_username: siem2
   ssl_ca_file: "/secrets/truststore.jks" # ca.crt или truststore.jks # ca.crt или truststore.jks (определяет набор корневых центров сертификации которые клиенты используют при проверке сертификатов сервера)
@@ -36,7 +36,7 @@ DATABASESTORAGE:
   namedb:
   storage_name_db:
     alerts: module_placeholderdb_bizone_alerts.test
-    cases: module_placeholderdb_bizone_cases.test
+    incidents: module_placeholderdb_bizone_incidents.test
 DATABASEWRITELOG:
   host: localhost
   port: 9211

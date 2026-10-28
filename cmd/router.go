@@ -19,7 +19,6 @@ import (
 
 // NewRouter маршрутизатор сообщений внутри приложения
 func NewRouter(dic *dicontainer.DiContainer) *ApplicationRouter {
-	//func NewRouter(logger interfaces.Logger, counter interfaces.Counter, settings ApplicationRouterSettings) *ApplicationRouter {
 	return &ApplicationRouter{
 		diContainer: dic,
 	}
@@ -32,9 +31,8 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 	chToNats := r.diContainer.NatsConnecter(ctx).GetChannelToModule()
 	chFromNats := r.diContainer.NatsConnecter(ctx).GetChannelFromModule()
 	chFromKafka := r.diContainer.KafkaConnecter(ctx).GetChannelFromModule()
-	chToDBS := r.diContainer.DbConnecter(ctx).GetChannelToModule()
-	chFromDBS := r.diContainer.DbConnecter(ctx).GetChannelFromModule()
-	//chToKafka := r.diContainer.KafkaConnecter(ctx).GetChannelToModule()
+	chToDB := r.diContainer.DbConnecter(ctx).GetChannelToModule()
+	chFromDB := r.diContainer.DbConnecter(ctx).GetChannelFromModule()
 
 	go func() {
 		decoder := decoderjsondocuments.New(counter, logger)
@@ -49,8 +47,8 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 			case msg := <-chFromNats:
 				switch msg.SubjectType {
 				case "geoip information":
-					//передача информации о географическом местоположении ip адресов
-					chToDBS <- databasestorageapi.SettingsChanInput{
+					// передача информации о географическом местоположении ip адресов
+					chToDB <- databasestorageapi.SettingsChanInput{
 						Section: "information handling",
 						Command: "add geoip information",
 						Data:    msg.Data,
@@ -58,7 +56,7 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 
 				case "sensor information":
 					// местоположении и принадлежности сенсоров
-					chToDBS <- databasestorageapi.SettingsChanInput{
+					chToDB <- databasestorageapi.SettingsChanInput{
 						Section: "information handling",
 						Command: "add sensor information",
 						Data:    msg.Data,
@@ -84,16 +82,15 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 							logger.Send("alert_raw_fields", supportingfunctions.JoinRawFieldsToString(listRawFields, "id", id))
 						}
 
-						//передача объекта в модуль взаимодействия с базой данных для
-						//дальнейшей загрузки данных в базу
-						chToDBS <- databasestorageapi.SettingsChanInput{
+						// передача объекта в модуль взаимодействия с базой данных для дальнейшей загрузки данных в базу
+						chToDB <- databasestorageapi.SettingsChanInput{
 							Section: "handling bizone alerts",
 							Command: "add alerts",
 							Data:    verifedBiZoneAlert,
 						}
 					}()
 
-				case "cases":
+				case "incidents":
 					data, err := handlers.GetTypeIncidentDocument(msg.Data)
 					if err != nil {
 						logger.Send("error", fmt.Sprintf("unpacking a json incident document - %s", err.Error()))
@@ -104,7 +101,8 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 					switch data.Type {
 					case "soar.core.incident.created.v1":
 						go func() {
-							res, statusCode, err := r.diContainer.IRPConnecter().GetIncident(ctx, data.Id)
+							// делаем запроос к IRP что бы получить дополнительную информации по инциденту
+							response, statusCode, err := r.diContainer.IRPConnecter().GetIncident(ctx, data.Id)
 							if err != nil {
 								logger.Send("error", fmt.Sprintf("incident request id '%s' from the IRP - %s", data.Id, err.Error()))
 
@@ -117,28 +115,28 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 								return
 							}
 
-							id, verifiedBiZoneIncident, listRawFields, err := documentgenerator.BiZoneCasesGenerator(decoder.Start(msg.Data))
+							// генерируем проверенную структуру
+							generatedUuid, verifiedBiZoneIncident, listRawFields, err := documentgenerator.GeneratingVerifiedDocumentFromIncident(decoder.Start(response))
 							if err != nil {
 								logger.Send("error", supportingfunctions.CustomError(err).Error())
 							}
 
-							logger.Send("info", fmt.Sprintf("an 'CASE' document has been generated, and the document has been transferred to the database (uuid document '%s')", id))
+							logger.Send("info", fmt.Sprintf("an 'INCIDENT' document has been generated, and the document has been transferred to the database (generated uuid document '%s')", generatedUuid))
 
 							if len(listRawFields) > 0 {
-								logger.Send("case_raw_fields", supportingfunctions.JoinRawFieldsToString(listRawFields, "id", id))
+								logger.Send("incident_raw_fields", supportingfunctions.JoinRawFieldsToString(listRawFields, "id", generatedUuid))
 							}
 
-							//передача объекта в модуль взаимодействия с базой данных для
-							//дальнейшей загрузки данных в базу
-							r.chToDBSApi <- databasestorageapi.SettingsChanInput{
-								Section: "handling bizone cases",
-								Command: "add cases",
-								Data:    verifiedBiZoneCase,
+							// передача объекта в модуль взаимодействия с базой данных для дальнейшей загрузки данных в базу
+							chToDB <- databasestorageapi.SettingsChanInput{
+								Section: "handling irp incident",
+								Command: "add incident",
+								Data:    verifiedBiZoneIncident,
 							}
 						}()
 
 					case "soar.core.incident.changed.v1":
-
+						log.Printf("Получена информация об изменении инцидента '%s'\n", data.Id)
 					}
 					/*
 						go func() {
@@ -164,8 +162,8 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 					*/
 				}
 
-			case msg := <-chFromDBS:
-				//пересылаются запросы на установку тега в TheHive, geoip информации
+			case msg := <-chFromDB:
+				// пересылаются запросы на установку тега в TheHive, geoip информации
 				// информации о место располажения и принадлежности сенсоров
 				chToNats <- natsapi.SettingsChanInput{
 					Command: msg.Command,

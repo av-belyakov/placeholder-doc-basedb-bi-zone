@@ -63,7 +63,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	}
 
 	defer func(document *datamodels.VerifiedBiZoneIRPAlert, getChan func() chan SettingsChanOutput, logger interfaces.Logger) {
-		id := fmt.Sprintf("%s:%s", currentIndex, newDocument.GetUUID())
+		id := fmt.Sprintf("%s:%s", currentIndex, newDocument.GetSpecialUUID())
 
 		//обогащение кейса дополнительной информацией о локальном место положении ip адресов
 		listIp := documentgenerator.GetListIPAddr(document.GetAdditionalInformation().GetIpAddressesInformation())
@@ -170,7 +170,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	updateVerified := datamodels.NewVerifiedBiZoneIRPAlert()
 	//заполняем новый объект информацией из базы данных
 	for _, v := range response.Options.Hits {
-		updateVerified.RepalcingOldBiZoneAlert(*v.Source.Get())
+		updateVerified.ReplacingOldBiZoneAlert(*v.Source.Get())
 		listDeleting = append(listDeleting, ServiseOption{
 			ID:    v.ID,
 			Index: v.Index,
@@ -181,7 +181,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	}
 
 	//выполняем обновление нового объекта данными полученными от брокера сообщений
-	countReplasedField := updateVerified.RepalcingOldBiZoneAlert(*newDocument.Get())
+	countReplasedField := updateVerified.ReplacingOldBiZoneAlert(*newDocument.Get())
 
 	//готовим обновлённый объект к загрузке в базу данных
 	nvbyte, err := json.Marshal(updateVerified)

@@ -63,6 +63,26 @@ type PatternVerifiedBiZoneAlert struct {
 	ServiseOption
 }
 
+//****** для объектов типа VerifiedBiZoneIncidents *******
+
+// ResponseVerifiedIRPIncidents ответ от базы данных содержащий список найденных инцидентов
+type ResponseVerifiedIRPIncidents struct {
+	Options ResponseIncidentsOptions `json:"hits"`
+}
+
+// ResponseIncidentsOptions опции ответа
+type ResponseIncidentsOptions struct {
+	Total    OptionsTotal       `json:"total"`
+	Hits     []PatternIncidents `json:"hits"`
+	MaxScore float64            `json:"max_score"`
+}
+
+// PatternIncidents шаблон ответа
+type PatternIncidents struct {
+	Source datamodels.VerifiedBiZoneIRPIncident `json:"_source"`
+	ServiseOption
+}
+
 //****** для объектов типа VerifiedBiZoneCases *******
 
 // ResponseVerifiedBiZoneCases ответ от базы данных

@@ -14,8 +14,8 @@ func (dbs *DatabaseStorage) router(ctx context.Context) {
 		"handling bizone alerts": {
 			"add alerts": dbs.addBiZoneAlerts,
 		},
-		"handling bizone cases": {
-			"add cases": dbs.addBiZoneCases,
+		"handling irp incident": {
+			"add incident": dbs.addIRPIncident,
 		},
 		"information handling": {
 			"add geoip information":  dbs.addGeoIPInformation,

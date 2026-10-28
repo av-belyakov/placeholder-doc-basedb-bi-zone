@@ -8,20 +8,20 @@ package datamodels
 type VerifiedBiZoneIRPIncident struct {
 	AdditionalInformation
 	Tags                      []IRPTagType       `json:"tags"`
+	Watchers                  []WatchersType     `json:"watchers"`
 	ObservedIocs              []ObservedIocsType `json:"observed_iocs"`
 	SecondaryCategoryRef      []CategoryRefType  `json:"secondary_category_ref"`
-	Watchers                  []WatchersType     `json:"watchers"`
 	KeyField                  []string           `json:"keyfield"`
 	ActivityDetected          []string           `json:"activity_detected"`
-	SecondaryCategory         []string           `json:"secondary_category"`
 	PlatformHostname          []string           `json:"platform_hostname"`
+	SecondaryCategory         []string           `json:"secondary_category"`
 	DetectionRules            []uint64           `json:"detection_rules"`
-	ParsedActivityDetected    []any              `json:"parsed_activity_detected"`
-	Attachments               []any              `json:"attachments"`
 	Emls                      []any              `json:"emls"`
 	Slas                      []any              `json:"slas"`
 	Badges                    []any              `json:"badges"`
 	WatchersId                []any              `json:"watchers_id"`
+	Attachments               []any              `json:"attachments"`
+	ParsedActivityDetected    []any              `json:"parsed_activity_detected"`
 	IssueTypeRef              IssueTypeRefType   `json:"issue_type_ref"`
 	PrimaryCategoryRef        CategoryRefType    `json:"primary_category_ref"`
 	ResolutionNameRef         CategoryRefType    `json:"resolution_name_ref"`

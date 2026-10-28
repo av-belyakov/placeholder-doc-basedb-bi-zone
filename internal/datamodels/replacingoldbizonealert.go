@@ -6,8 +6,8 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
-// RepalcingOldBiZoneAlert заменяет старые значения типа VerifiedBiZoneAlert новыми
-func (va *VerifiedBiZoneIRPAlert) RepalcingOldBiZoneAlert(incomingType VerifiedBiZoneIRPAlert) int {
+// ReplacingOldBiZoneAlert заменяет старые значения типа VerifiedBiZoneAlert новыми
+func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlert(incomingType VerifiedBiZoneIRPAlert) int {
 	var countReplacingFields int
 
 	currentStruct := reflect.ValueOf(va).Elem()

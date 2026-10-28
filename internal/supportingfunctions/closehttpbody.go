@@ -2,8 +2,8 @@ package supportingfunctions
 
 import "net/http"
 
-// CloseHTTPRequest закрытие http соединения с предварительной проверкой
-func CloseHTTPRequest(req *http.Request) {
+// CloseBodyHTTPRequest закрытие http.Body запроса с предварительной проверкой
+func CloseBodyHTTPRequest(req *http.Request) {
 	if req == nil || req.Body == nil {
 		return
 	}
@@ -11,8 +11,8 @@ func CloseHTTPRequest(req *http.Request) {
 	req.Body.Close()
 }
 
-// CloseHTTPResponse закрытие http соединения с предварительной проверкой
-func CloseHTTPResponse(res *http.Response) {
+// CloseBodyHTTPResponse закрытие http.Body ответа с предварительной проверкой
+func CloseBodyHTTPResponse(res *http.Response) {
 	if res == nil || res.Body == nil {
 		return
 	}

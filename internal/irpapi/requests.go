@@ -40,7 +40,7 @@ func (api *IrpApi) query(ctx context.Context, reqPath string, query []byte, meth
 	if err != nil {
 		return nil, 0, fmt.Errorf("attempts to establish a network connection - %w", err)
 	}
-	defer supportingfunctions.CloseHTTPResponse(res)
+	defer supportingfunctions.CloseBodyHTTPResponse(res)
 
 	if res.Body != nil {
 		resBody, err := io.ReadAll(res.Body)

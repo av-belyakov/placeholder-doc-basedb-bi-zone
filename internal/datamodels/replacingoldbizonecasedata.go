@@ -106,7 +106,7 @@ func (cd *BiZoneIRPCaseData) ReplacingOldBiZoneCaseData(incomingType BiZoneIRPCa
 
 			if typeOfCurrentStruct.Field(i).Name == "Tags" {
 				if tags, ok := newStruct.Field(j).Interface().([]IRPTagType); ok {
-					countReplacingFields += cd.ReplacingOldBiZoneCaseDataTags(tags)
+					countReplacingFields += cd.ReplacingOldIRPTags(tags)
 				}
 
 				continue

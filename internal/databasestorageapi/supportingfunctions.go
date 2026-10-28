@@ -8,12 +8,8 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/request"
 )
 
-// sendGeoIpRequest запрос для обогащения кейса дополнительной информацией о
-// локальном местоположении ip адресов
-func sendGeoIpRequest(
-	id string,
-	list []string,
-	getChan func() chan SettingsChanOutput) (bool, error) {
+// sendGeoIpRequest запрос для обогащения кейса дополнительной информацией о локальном местоположении ip адресов
+func sendGeoIpRequest(id string, list []string, getChan func() chan SettingsChanOutput) (bool, error) {
 	if len(list) == 0 {
 		return false, nil
 	}
@@ -36,12 +32,8 @@ func sendGeoIpRequest(
 	return true, nil
 }
 
-// sendSensorInformationRequest запрос для обогащения кейса дополнительной информацией по
-// расположению сенсоров
-func sendSensorInformationRequest(
-	id string,
-	list []string,
-	getChan func() chan SettingsChanOutput) (bool, error) {
+// sendSensorInformationRequest запрос для обогащения кейса дополнительной информацией по расположению сенсоров
+func sendSensorInformationRequest(id string, list []string, getChan func() chan SettingsChanOutput) (bool, error) {
 	if len(list) == 0 {
 		return false, nil
 	}
