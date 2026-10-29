@@ -105,6 +105,12 @@ func (vi *VerifiedBiZoneIRPIncident) ReplacingOldIRPIncident(incomingType Verifi
 				continue
 			}
 
+			//поле с дополнительной информацией пропускаем, так как заменять эту
+			//информацию не будем, а будет выполнятся добавление новой информации
+			if typeOfCurrentStruct.Field(i).Name == "AdditionalInformation" {
+				continue
+			}
+
 			// далее анализ только строковых полей, числовые или булевы поля пока не рассматриваем так как либо они
 			// не должны менятся, например, поле ID, либо никак не влияют на подсчет статистики по инциденту
 			if !currentStruct.Field(i).Equal(newStruct.Field(j)) {

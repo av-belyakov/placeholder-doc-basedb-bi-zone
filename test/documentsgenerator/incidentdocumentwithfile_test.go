@@ -42,7 +42,7 @@ func TestIncidentDocumentGenerationWithFile(t *testing.T) {
 		}
 	}()
 
-	id, verifedData, listRawFields, err := documentgenerator.IRPIncidentGenerator(decoder.Start(caseRaw))
+	id, verifedData, listRawFields, err := documentgenerator.GeneratingVerifiedDocumentFromIncident(decoder.Start(caseRaw))
 	assert.NoError(t, err)
 
 	fmt.Println("\nID:", id)

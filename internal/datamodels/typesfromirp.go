@@ -65,23 +65,24 @@ type VerifiedBiZoneIRPIncident struct {
 	UsualAsPath               string             `json:"usual_as_path"`
 	Source                    string             `json:"source"`
 	ExternalId                string             `json:"external_id"`
-	UnderlineSource           string             `json:"_source"`
-	GossopkaKey               string             `json:"gossopka_key"`
-	Service                   string             `json:"service"`
-	Assignee                  string             `json:"assignee"`
-	GtiId                     string             `json:"gti_id"`
-	CustomerStarRating        string             `json:"customer_star_rating"`
-	GossopkaId                string             `json:"gossopka_id"`
-	MitreCov                  string             `json:"mitre_cov"`
-	ResponseTeam              string             `json:"response_team"`
-	GossopkaErrors            string             `json:"gossopka_errors"`
-	GossopkaKeyLink           string             `json:"gossopka_key_link"`
-	ID                        uint64             `json:"id"`
-	System                    uint64             `json:"system"`
-	IsVisibleForCustomer      bool               `json:"is_visible_for_customer"`
-	ShowGossopkaButton        bool               `json:"show_gossopka_button"`
-	CancelGossopkaSendButton  bool               `json:"cancel_gossopka_send_button"`
-	ShowGtiButton             bool               `json:"show_gti_button"`
+	UnderlineSource           string             `json:"underline_source"` // добавил underline, возможно поможет, если _source то
+	// ошибка 2026-10-28 16:05:54 ERR - /home/artemiy/go/src/placeholder-doc-basedb-bi-zone - [1:3886] failed to parse field [_source] of type [_source] in document with id 'txGdgqEBcfH0hhBl--SK'. Preview of field's value: 'https://irp.cloud.gcm:443/api/v0/irp/issue/INC-2045/' /home/artemiy/go/src/placeholder-doc-basedb-bi-zone/internal/databasestorageapi/addirpincidenthandler.go:96
+	GossopkaKey              string `json:"gossopka_key"`
+	Service                  string `json:"service"`
+	Assignee                 string `json:"assignee"`
+	GtiId                    string `json:"gti_id"`
+	CustomerStarRating       string `json:"customer_star_rating"`
+	GossopkaId               string `json:"gossopka_id"`
+	MitreCov                 string `json:"mitre_cov"`
+	ResponseTeam             string `json:"response_team"`
+	GossopkaErrors           string `json:"gossopka_errors"`
+	GossopkaKeyLink          string `json:"gossopka_key_link"`
+	ID                       uint64 `json:"id"`
+	System                   uint64 `json:"system"`
+	IsVisibleForCustomer     bool   `json:"is_visible_for_customer"`
+	ShowGossopkaButton       bool   `json:"show_gossopka_button"`
+	CancelGossopkaSendButton bool   `json:"cancel_gossopka_send_button"`
+	ShowGtiButton            bool   `json:"show_gti_button"`
 }
 
 type IssueTypeRefType struct {

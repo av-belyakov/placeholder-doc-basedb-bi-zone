@@ -231,10 +231,10 @@ func (dbs *DatabaseStorage) SetMaxTotalFieldsLimit(ctx context.Context, indexes 
 	}
 
 	getIndexLimit := func(ctx context.Context, indexName string) (string, bool, error) {
-		ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*60)
-		defer ctxCancel()
+		ctx, cancel := context.WithTimeout(ctx, time.Second*60)
+		defer cancel()
 
-		indexSettings, err := dbs.GetIndexSetting(ctxTimeout, indexName)
+		indexSettings, err := dbs.GetIndexSetting(ctx, indexName)
 		if err != nil {
 			return "", false, err
 		}
@@ -288,14 +288,13 @@ func (dbs *DatabaseStorage) SetMaxTotalFieldsLimit(ctx context.Context, indexes 
 
 // GetUnderlineId поиск объекта по его '@special_uuid'
 func (dbs *DatabaseStorage) GetUnderlineId(ctx context.Context, indexName, specialUuid string) (string, error) {
-	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*60)
-	defer ctxCancel()
-
-	query := strings.NewReader(fmt.Sprintf("{\"query\": {\"bool\": {\"must\": [{\"match\": {\"@special_uuid\": \"%s\"}}]}}}", specialUuid))
+	ctx, cancel := context.WithTimeout(ctx, time.Second*15)
+	defer cancel()
 
 	//выполняем поиск _id индекса
+	query := strings.NewReader(fmt.Sprintf("{\"query\": {\"bool\": {\"must\": [{\"match\": {\"@special_uuid\": \"%s\"}}]}}}", specialUuid))
 	res, err := dbs.client.Search(
-		dbs.client.Search.WithContext(ctxTimeout),
+		dbs.client.Search.WithContext(ctx),
 		dbs.client.Search.WithIndex(indexName),
 		dbs.client.Search.WithBody(query),
 	)
@@ -309,13 +308,22 @@ func (dbs *DatabaseStorage) GetUnderlineId(ctx context.Context, indexName, speci
 		return "", err
 	}
 
+	//fmt.Printf("********** method DatabaseStorage.GetUnderlineId, bodyRes '%+v'******\n", string(bodyRes))
+
 	result, err := supportingfunctions.GetElementsFromJSON(ctx, bodyRes)
 	if err != nil {
 		return "", err
 	}
 
+	//fmt.Printf("********** method DatabaseStorage.GetUnderlineId, result '%+v'******\n", result)
+
 	for k, v := range result {
+		//fmt.Printf("********** method DatabaseStorage.GetUnderlineId, key:'%s' value:'%+v'\n", k, v)
+
 		if k == "hits.hits._id" {
+			fmt.Printf("********** method DatabaseStorage.GetUnderlineId, key:'%s' value:'%+v'\n", k, v)
+			fmt.Printf("********** method DatabaseStorage.GetUnderlineId, fmt.Sprint(v.Value):'%s'\n", fmt.Sprint(v.Value))
+
 			return fmt.Sprint(v.Value), nil
 		}
 	}
@@ -326,7 +334,7 @@ func (dbs *DatabaseStorage) GetUnderlineId(ctx context.Context, indexName, speci
 // SearchGeoIPInformation поиск объекта по его '@special_uuid'
 // возвращает _id объекта под которым он находится в БД и объект типа []IpAddressInformation
 func (dbs *DatabaseStorage) SearchGeoIPInformation(ctx context.Context, indexName, specialUuid string) (string, []datamodels.IpAddressInformation, error) {
-	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*60)
+	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*15)
 	defer ctxCancel()
 
 	geoIpInformation := make([]datamodels.IpAddressInformation, 0)

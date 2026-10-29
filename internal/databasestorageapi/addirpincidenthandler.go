@@ -37,7 +37,7 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 	// получаем наименование хранилища
 	indexName, isExist := dbs.settings.storages["incidents"]
 	if !isExist {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("database storage - note for type 'incidents', the identifier of the index name was not found")).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("database storage - note for type 'incident', the identifier of the index name was not found")).Error())
 
 		return
 	}
@@ -73,7 +73,7 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 			logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 		if ok {
-			logger.Send("info", fmt.Sprintf("database storage - note for type 'incidents', we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
+			logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
 		}
 
 		// обогащение кейса дополнительной информацией по расположению сенсоров
@@ -83,7 +83,7 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 			logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 		if ok {
-			logger.Send("info", fmt.Sprintf("database storage - note for type 'incidents', we are sending a request to search for information on the following list of sensors: %#v", listSensor))
+			logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', we are sending a request to search for information on the following list of sensors: %#v", listSensor))
 		}
 	}(newDocument, dbs.GetChannelFromModule, dbs.logger)
 
@@ -106,8 +106,8 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 		}
 
 		// счетчик
-		dbs.counter.SendMessage("update count insert subject incidents to db", 1)
-		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'incidents', insert new document to incidents key (id) '%s', status code '%d'", newDocument.GetKey(), statusCode))
+		dbs.counter.SendMessage("update count insert subject incident to db", 1)
+		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', insert new document to incidents key (id) '%s', status code '%d'", newDocument.GetKey(), statusCode))
 
 		return
 	}
@@ -127,7 +127,7 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 				`{
 					"query": {
 						"bool": {
-							"must": [{"match": {"data.key": "%s"}}]}}}`,
+							"must": [{"match": {"key": "%s"}}]}}}`,
 				newDocument.GetKey())),
 		0)
 	if err != nil {
@@ -143,7 +143,7 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 		return
 	}
 
-	fmt.Printf("--------========= DatabaseStorage.addIRPIncident, ResponseVerifiedIRPIncidents:'%+v'\n", response)
+	fmt.Printf("--------========= DatabaseStorage.addIRPIncident, response.Options.Total:'%+v'\n", response.Options.Total)
 
 	// вставка выполняется только когда не найден искомый документ
 	if response.Options.Total.Value == 0 {

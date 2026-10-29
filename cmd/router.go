@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/decoderjsondocuments"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
@@ -70,7 +71,8 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 			case msg := <-chFromKafka:
 				switch msg.SubjectType {
 				case "alerts":
-					go func() {
+					//log.Println("Обработка алертов пока выключена")
+					/*go func() {
 						id, verifedBiZoneAlert, listRawFields, err := documentgenerator.BiZoneAlertsGenerator(decoder.Start(msg.Data))
 						if err != nil {
 							logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("generating a document of type irp bizone alert - %w", err)).Error())
@@ -88,7 +90,7 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 							Command: "add alerts",
 							Data:    verifedBiZoneAlert,
 						}
-					}()
+					}()*/
 
 				case "incidents":
 					data, err := handlers.GetTypeIncidentDocument(msg.Data)
@@ -98,46 +100,50 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 						return
 					}
 
-					switch data.Type {
-					case "soar.core.incident.created.v1":
-						go func() {
-							// делаем запроос к IRP что бы получить дополнительную информации по инциденту
-							response, statusCode, err := r.diContainer.IRPConnecter().GetIncident(ctx, data.Id)
-							if err != nil {
-								logger.Send("error", fmt.Sprintf("incident request id '%s' from the IRP - %s", data.Id, err.Error()))
+					// Для ТЕСТОВ пока убираем разделение на вновь созданный инцидент и обновляемый !!!
+					//switch data.Type {
+					//case "soar.core.incident.created.v1":
+					go func() {
+						startTime := time.Now()
+						// делаем запроос к IRP что бы получить дополнительную информации по инциденту
+						response, statusCode, err := r.diContainer.IRPConnecter().GetIncident(ctx, data.Data.Id)
+						if err != nil {
+							logger.Send("error", fmt.Sprintf("incident request id '%s' from the IRP - %s", data.Data.Id, err.Error()))
 
-								return
-							}
+							return
+						}
 
-							if statusCode != http.StatusOK {
-								logger.Send("warning", fmt.Sprintf("requesting incident id '%s' from the IRP returned the status code %s", data.Id, statusCode))
+						logger.Send("info", fmt.Sprintf("the request for incident '%s' was completed in %d", data.Data.Id, (time.Since(startTime)/time.Millisecond)))
 
-								return
-							}
+						if statusCode != http.StatusOK {
+							logger.Send("warning", fmt.Sprintf("requesting incident '%s' from the IRP returned the status code %d", data.Data.Id, statusCode))
 
-							// генерируем проверенную структуру
-							generatedUuid, verifiedBiZoneIncident, listRawFields, err := documentgenerator.GeneratingVerifiedDocumentFromIncident(decoder.Start(response))
-							if err != nil {
-								logger.Send("error", supportingfunctions.CustomError(err).Error())
-							}
+							return
+						}
 
-							logger.Send("info", fmt.Sprintf("an 'INCIDENT' document has been generated, and the document has been transferred to the database (generated uuid document '%s')", generatedUuid))
+						// генерируем проверенную структуру
+						_, verifiedBiZoneIncident, listRawFields, err := documentgenerator.GeneratingVerifiedDocumentFromIncident(decoder.Start(response))
+						if err != nil {
+							logger.Send("error", supportingfunctions.CustomError(err).Error())
+						}
 
-							if len(listRawFields) > 0 {
-								logger.Send("incident_raw_fields", supportingfunctions.JoinRawFieldsToString(listRawFields, "id", generatedUuid))
-							}
+						logger.Send("info", fmt.Sprintf("the incident '%s' document was successfully generated and transferred to the database", data.Data.Id))
 
-							// передача объекта в модуль взаимодействия с базой данных для дальнейшей загрузки данных в базу
-							chToDB <- databasestorageapi.SettingsChanInput{
-								Section: "handling irp incident",
-								Command: "add incident",
-								Data:    verifiedBiZoneIncident,
-							}
-						}()
+						if len(listRawFields) > 0 {
+							logger.Send("incident_raw_fields", supportingfunctions.JoinRawFieldsToString(listRawFields, "incident key (id)", data.Data.Id))
+						}
 
-					case "soar.core.incident.changed.v1":
-						log.Printf("Получена информация об изменении инцидента '%s'\n", data.Id)
-					}
+						// передача объекта в модуль взаимодействия с базой данных для дальнейшей загрузки данных в базу
+						chToDB <- databasestorageapi.SettingsChanInput{
+							Section: "handling irp incident",
+							Command: "add incident",
+							Data:    verifiedBiZoneIncident,
+						}
+					}()
+
+					//case "soar.core.incident.changed.v1":
+					//	log.Printf("Получена информация об изменении инцидента '%s'\n", data.Id)
+					//}
 					/*
 						go func() {
 							id, verifedBiZoneCase, listRawFields, err := documentgenerator.BiZoneCasesGenerator(decoder.Start(msg.Data))

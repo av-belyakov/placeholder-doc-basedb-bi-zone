@@ -7,8 +7,17 @@ import (
 	"fmt"
 	"maps"
 	"reflect"
+	"slices"
 	"sync"
 )
+
+// ElementsFromJson элементы полученные при обработки JSON объекта
+type ElementsFromJson struct {
+	elements           []map[string]Element
+	elementTmp         map[string]Element
+	listAcceptedFields []string
+	isCompleted        bool
+}
 
 // ElementsFromJSON элементы полученные при обработки JSON объекта
 type ElementsFromJSON struct {
@@ -33,9 +42,132 @@ type chResult struct {
 	FieldBranch string //'путь' до значения в как в JSON формате, например 'event.details.customFields.class'
 }
 
-// GetElementsFromJSON читает JSON объект методом рефлексии, возвращает результат,
-// содержащий перечень путей до элемента и значение элемента с указанием его имени
-// и типа
+func NewElementsFromJson() *ElementsFromJson {
+	return &ElementsFromJson{
+		elements:           make([]map[string]Element, 0),
+		elementTmp:         make(map[string]Element, 0),
+		listAcceptedFields: make([]string, 0),
+	}
+}
+
+func (ej *ElementsFromJson) GetElementTmp() map[string]Element {
+	return ej.elementTmp
+}
+
+func (ej *ElementsFromJson) GetElements() []map[string]Element {
+	if !ej.isCompleted {
+		ej.elements = append(ej.elements, ej.elementTmp)
+		ej.listAcceptedFields = []string(nil)
+		ej.isCompleted = true
+	}
+
+	return ej.elements
+}
+
+// HandlerValue функция обработчик значений
+func (ej *ElementsFromJson) HandlerValue(fieldBranch string, valueType string, value any) {
+	//если поле повторяется то считается что это уже новый объект
+	if ej.isExistFieldBranch((fieldBranch)) {
+		ej.elements = append(ej.elements, ej.elementTmp)
+		ej.elementTmp = map[string]Element{}
+		ej.listAcceptedFields = []string(nil)
+	}
+
+	ej.elementTmp[fieldBranch] = Element{
+		FieldName: fieldBranch,
+		ValueType: valueType,
+		Value:     value,
+	}
+
+	ej.listAcceptedFields = append(ej.listAcceptedFields, fieldBranch)
+}
+
+// isExistFieldBranch проверка существования ветки
+func (ej *ElementsFromJson) isExistFieldBranch(v string) bool {
+	return slices.Contains(ej.listAcceptedFields, v)
+}
+
+// GetElementsFromJson читает JSON объект методом рефлексии, возвращает результат, содержащий перечень путей
+// до элемента и значение элемента с указанием его имени и типа
+func GetElementsFromJson(ctx context.Context, data []byte) ([]map[string]Element, error) {
+	ctx, cancel := context.WithCancel(ctx)
+
+	chRes := make(chan chResult)
+	defer close(chRes)
+
+	newElements := NewElementsFromJson()
+
+	//result := ElementsFromJson{Data: make([]map[string]Element, 0),}
+	//copyResult := map[string]Element{}
+
+	//обработчик входящих данных
+	go func(ctx context.Context, rst *ElementsFromJson, ch <-chan chResult) {
+		//rst.mutex.Lock()
+		//defer rst.mutex.Unlock()
+
+		for {
+			select {
+			case <-ctx.Done():
+				return
+
+			case data, ok := <-ch:
+				if !ok {
+					return
+				}
+
+				newElements.HandlerValue(data.FieldBranch, data.ValueType, data.Value)
+
+				//rst.Data[data.FieldBranch] = Element{
+				//	CommonValues{
+				//		FieldName: data.FieldName,
+				//		ValueType: data.ValueType,
+				//		Value:     data.Value,
+				//	},
+				//}
+			}
+		}
+	}(ctx, newElements, chRes)
+
+	listMap := map[string]any{}
+	if err := json.Unmarshal(data, &listMap); err == nil {
+		//для карт
+		if len(listMap) == 0 {
+			cancel()
+
+			return copyResult, errors.New("error decoding the json file, it may be empty")
+		}
+
+		_ = processingReflectMap(chRes, listMap, "")
+
+	} else {
+		// для срезов
+		listSlice := []any{}
+		if err = json.Unmarshal(data, &listSlice); err != nil {
+			cancel()
+
+			return copyResult, err
+		}
+
+		if len(listSlice) == 0 {
+			cancel()
+
+			return copyResult, errors.New("error decoding the json message, it may be empty")
+		}
+
+		_ = processingReflectSlice(chRes, listSlice, "")
+	}
+
+	cancel()
+
+	result.mutex.RLock()
+	maps.Copy(copyResult, result.Data)
+	result.mutex.RUnlock()
+
+	return copyResult, nil
+}
+
+// GetElementsFromJSON читает JSON объект методом рефлексии, возвращает результат, содержащий перечень путей
+// до элемента и значение элемента с указанием его имени и типа
 func GetElementsFromJSON(ctx context.Context, data []byte) (map[string]Element, error) {
 	ctxCancel, cancel := context.WithCancel(ctx)
 

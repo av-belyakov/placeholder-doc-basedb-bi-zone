@@ -160,7 +160,7 @@ func TestUpdateIndexBiZoneVerifiedAlert(t *testing.T) {
 		updateVerified := datamodels.NewVerifiedBiZoneIRPAlert()
 		//заполняем новый объект информацией из базы данных
 		for _, v := range response.Options.Hits {
-			countReplacingFields += updateVerified.RepalcingOldBiZoneAlert(*v.Source.Get())
+			countReplacingFields += updateVerified.ReplacingOldBiZoneAlert(*v.Source.Get())
 			listDeleting = append(listDeleting, databasestorageapi.ServiseOption{
 				ID:    v.ID,
 				Index: v.Index,
@@ -172,7 +172,7 @@ func TestUpdateIndexBiZoneVerifiedAlert(t *testing.T) {
 		}
 
 		//выполняем обновление нового объекта данными полученными от брокера сообщений
-		num := updateVerified.RepalcingOldBiZoneAlert(*verifedBiZoneAlert.Get())
+		num := updateVerified.ReplacingOldBiZoneAlert(*verifedBiZoneAlert.Get())
 		assert.NotEqual(t, num, 0)
 
 		t.Log("\nCOUNT replacing:", num)

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -50,11 +51,7 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 		return
 	}
 
-	currentIndex := tmp[0]
-	specialUUID := tmp[1]
-
-	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*15)
-	defer ctxCancel()
+	currentIndex, specialUUID := tmp[0], tmp[1]
 
 	//добавляем небольшую задержку что бы СУБД успела добавить индекс
 	//***************************************************************
@@ -90,7 +87,7 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 		return
 	}
 
-	underlineId, geoIpInfo, err := dbs.SearchGeoIPInformation(ctxTimeout, currentIndex, specialUUID)
+	underlineId, geoIpInfo, err := dbs.SearchGeoIPInformation(ctx, currentIndex, specialUUID)
 	if err != nil {
 		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("the identifier of the index name '%s' was not found", currentIndex)).Error())
 
@@ -125,11 +122,11 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 	bodyUpdate := strings.NewReader(fmt.Sprintf("{\"doc\": %s}", string(request)))
 	res, err := dbs.client.Update(currentIndex, underlineId, bodyUpdate)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@specail_uuid:'%s', '%w'", specialUUID, err)).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUUID, err)).Error())
 
 		return
 	}
-	defer res.Body.Close()
+	defer bodyClose(res)
 
 	if res != nil && res.StatusCode != http.StatusOK {
 		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUUID, err)).Error())
@@ -175,13 +172,9 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 		return
 	}
 
-	currentIndex := tmp[0]
-	specialUUID := tmp[1]
+	currentIndex, specialUUID := tmp[0], tmp[1]
 
-	fmt.Printf("\t---DatabaseStorage.addSensorInformation taskId:'%s' elasticsearch index:'%s', UUID:'%s'\n", newDocument.TaskId, currentIndex, specialUUID)
-
-	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*15)
-	defer ctxCancel()
+	fmt.Printf("\t---DatabaseStorage.addSensorInformation elasticsearch index:'%s', UUID:'%s'\n", currentIndex, specialUUID)
 
 	//добавляем небольшую задержку что бы СУБД успела добавить индекс
 	//***************************************************************
@@ -189,12 +182,14 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 	//***************************************************************
 
 	//поиск _id объекта по его '@special_uuid'
-	underlineId, err := dbs.GetUnderlineId(ctxTimeout, currentIndex, specialUUID)
+	underlineId, err := dbs.GetUnderlineId(ctx, currentIndex, specialUUID)
 	if err != nil {
 		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the identifier of the index name was not found")).Error())
 
 		return
 	}
+
+	fmt.Printf("\t---DatabaseStorage.addSensorInformation в базе данных был найден объект с underlineId:'%s'\n", underlineId)
 
 	//формируется список с информацией по сенсорам
 	var sensorInfoList []datamodels.SensorInformation
@@ -225,23 +220,39 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 
 	request, err := json.MarshalIndent(datamodels.AdditionalInformationSensors{Sensors: sensorInfoList}, "", " ")
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId:'%s', '%w'", newDocument.TaskId, err)).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', json unmarshal - '%w'", newDocument.TaskId, err)).Error())
 
 		return
 	}
 
 	//обновление информации в БД
 	bodyUpdate := strings.NewReader(fmt.Sprintf("{\"doc\": %s}", string(request)))
+
+	fmt.Printf("\t---DatabaseStorage.addSensorInformation обновление информации о сенсорах, готовый объект:'%s'\n", fmt.Sprintf("{\"doc\": %s}", string(request)))
+
 	res, err := dbs.client.Update(currentIndex, underlineId, bodyUpdate)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId:'%s', '%w'", newDocument.TaskId, err)).Error())
+		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', update database - '%w'", newDocument.TaskId, err)).Error())
 
 		return
 	}
-	defer res.Body.Close()
+	defer bodyClose(res)
 
 	if res != nil && res.StatusCode != http.StatusOK {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId:'%s', '%w'", newDocument.TaskId, err)).Error())
+		if res.Body == nil {
+			dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', update database status code '%d'", newDocument.TaskId, res.StatusCode)).Error())
+
+			return
+		}
+
+		resInfo, err := io.ReadAll(res.Body)
+		if err != nil {
+			dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', status code '%d', body reading - '%w'", newDocument.TaskId, res.StatusCode, err)).Error())
+
+			return
+		}
+
+		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', status code '%d', data base responsed '%s'", newDocument.TaskId, res.StatusCode, string(resInfo))).Error())
 
 		return
 	}

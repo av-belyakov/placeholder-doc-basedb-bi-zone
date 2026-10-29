@@ -22,7 +22,7 @@ func TestBiZoneIRPCaseMethods(t *testing.T) {
 		valueAny  any
 	)
 
-	biZoneIRPCase := &datamodels.VerifiedIRPBiZoneCase{}
+	biZoneIRPCase := &datamodels.VerifiedBiZoneIRPCase{}
 	listTesting := map[string]datamodelstest.TestOptions{}
 
 	// ---- GossopkaErrors ----
