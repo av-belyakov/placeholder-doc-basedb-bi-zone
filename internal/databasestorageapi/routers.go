@@ -10,7 +10,7 @@ import (
 )
 
 func (dbs *DatabaseStorage) router(ctx context.Context) {
-	handlersList := map[string]map[string]func(context.Context, any){
+	handlersList := map[string]map[string]func(context.Context, any) error{
 		"handling bizone alerts": {
 			"add alerts": dbs.addBiZoneAlerts,
 		},

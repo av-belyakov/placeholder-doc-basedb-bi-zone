@@ -331,6 +331,54 @@ func (dbs *DatabaseStorage) GetUnderlineId(ctx context.Context, indexName, speci
 	return "", nil
 }
 
+// GetUnderlineIds поиск объектов по его '@special_uuid'
+func (dbs *DatabaseStorage) GetUnderlineIds(ctx context.Context, indexName, specialUuid string) ([]string, error) {
+	ctx, cancel := context.WithTimeout(ctx, time.Second*15)
+	defer cancel()
+
+	var ids []string
+
+	//выполняем поиск _id индекса
+	query := strings.NewReader(fmt.Sprintf("{\"query\": {\"bool\": {\"must\": [{\"match\": {\"@special_uuid\": \"%s\"}}]}}}", specialUuid))
+	res, err := dbs.client.Search(
+		dbs.client.Search.WithContext(ctx),
+		dbs.client.Search.WithIndex(indexName),
+		dbs.client.Search.WithBody(query),
+	)
+	if err != nil {
+		return ids, err
+	}
+	defer bodyClose(res)
+
+	bodyRes, err := io.ReadAll(res.Body)
+	if err != nil {
+		return ids, err
+	}
+
+	//fmt.Printf("********** method DatabaseStorage.GetUnderlineId, bodyRes '%+v'******\n", string(bodyRes))
+
+	result, err := supportingfunctions.GetElementsFromJson(ctx, bodyRes)
+	if err != nil {
+		return ids, err
+	}
+
+	//fmt.Printf("********** method DatabaseStorage.GetUnderlineId, result '%+v'******\n", result)
+
+	for _, v := range result {
+		//fmt.Printf("********** method DatabaseStorage.GetUnderlineId, key:'%s' value:'%+v'\n", k, v)
+		for name, element := range v {
+			if name == "hits.hits._id" {
+				//fmt.Printf("********** method DatabaseStorage.GetUnderlineId, key:'%s' value:'%+v'\n", k, v)
+				//fmt.Printf("********** method DatabaseStorage.GetUnderlineId, fmt.Sprint(v.Value):'%s'\n", fmt.Sprint(v.Value))
+
+				ids = append(ids, fmt.Sprint(element.Value))
+			}
+		}
+	}
+
+	return supportingfunctions.SliceUniqueValues(ids), nil
+}
+
 // SearchGeoIPInformation поиск объекта по его '@special_uuid'
 // возвращает _id объекта под которым он находится в БД и объект типа []IpAddressInformation
 func (dbs *DatabaseStorage) SearchGeoIPInformation(ctx context.Context, indexName, specialUuid string) (string, []datamodels.IpAddressInformation, error) {

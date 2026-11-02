@@ -15,37 +15,41 @@ import (
 )
 
 // addBiZoneAlerts добавление объекта типа 'alerts'
-func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
+func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 	t := time.Now()
 
 	newDocument, ok := a.(*datamodels.VerifiedBiZoneIRPAlert)
 	if !ok {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("database storage - note for type 'alert', type conversion error")).Error())
+		err := supportingfunctions.CustomError(errors.New("database storage - note for type 'alert', type conversion error"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	binaryDocument, err := json.Marshal(newDocument.Get())
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err = supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	//получаем наименование хранилища
 	indexName, isExist := dbs.settings.storages["alerts"]
 	if !isExist {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("database storage - note for type 'alert', the identifier of the index name was not found")).Error())
+		err := supportingfunctions.CustomError(errors.New("database storage - note for type 'alert', the identifier of the index name was not found"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	//получаем существующие индексы
 	existingIndexes, err := dbs.GetExistingIndexes(ctx, indexName)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err = supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	//формируем наименование индекса
@@ -92,23 +96,26 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 		//вставка документа
 		statusCode, err := dbs.InsertDocument(ctx, currentIndex, binaryDocument)
 		if err != nil {
-			dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+			err := supportingfunctions.CustomError(err)
+			dbs.logger.Send("error", err.Error())
 
-			return
+			return err
 		}
 
 		existingIndexes = append(existingIndexes, currentIndex)
 		//устанавливаем максимальный лимит количества полей для всех индексов которые
 		//содержат значение по умолчанию в 1000 полей
-		if err := dbs.SetMaxTotalFieldsLimit(ctx, existingIndexes); err != nil {
-			dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err = dbs.SetMaxTotalFieldsLimit(ctx, existingIndexes)
+		if err != nil {
+			err = supportingfunctions.CustomError(err)
+			dbs.logger.Send("error", err.Error())
 		}
 
 		//счетчик
 		dbs.counter.SendMessage("update count insert subject alerts to db", 1)
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'alert', insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
 
-		return
+		return err
 	}
 
 	//устанавливаем максимальный лимит количества полей для всех индексов которые
@@ -130,16 +137,18 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 				newDocument.GetUUID())),
 		0)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err = supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	response := ResponseVerifiedBiZoneAlerts{}
 	if err = json.Unmarshal(res, &response); err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err = supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	//вставка выполняется только когда не найден искомый документ
@@ -148,9 +157,10 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 		//вставка документа
 		statusCode, err := dbs.InsertDocument(ctx, currentIndex, binaryDocument)
 		if err != nil {
-			dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+			err = supportingfunctions.CustomError(err)
+			dbs.logger.Send("error", err.Error())
 
-			return
+			return err
 		}
 
 		//счетчик
@@ -161,7 +171,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 		//*** здесь установка тегов, под вопросом ***
 		//*******************************************
 
-		return
+		return nil
 	}
 
 	//*** при наличие искомого документа выполняем его замену ***
@@ -186,17 +196,19 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 	//готовим обновлённый объект к загрузке в базу данных
 	nvbyte, err := json.Marshal(updateVerified)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err = supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	//обновление в базе данных уже существующего документа
 	statusCode, countDel, err := dbs.UpdateDocument(ctx, currentIndex, listDeleting, nvbyte)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("uuid '%s' '%s'", newDocument.GetUUID(), err.Error())).Error())
+		err = supportingfunctions.CustomError(fmt.Errorf("uuid '%s' '%s'", newDocument.GetUUID(), err.Error()))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	dbs.counter.SendMessage("update count insert subject alerts to db", 1)
@@ -209,6 +221,8 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) {
 			newDocument.GetUUID(),
 			statusCode,
 		))
+
+	return nil
 }
 
 // TestAddBiZoneAlerts использовать только в тестах

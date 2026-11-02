@@ -56,6 +56,11 @@ func (dbs *DatabaseStorage) GetChannelFromModule() chan SettingsChanOutput {
 	return dbs.chOutput
 }
 
+// GetClientDB нативный клиент Elasticsearch
+func (dbs *DatabaseStorage) GetClientDB() *elasticsearch.Client {
+	return dbs.client
+}
+
 // Ping проверка соединения
 func (dbs *DatabaseStorage) Ping() error {
 	res, err := dbs.client.Ping()

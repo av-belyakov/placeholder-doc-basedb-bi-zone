@@ -2,6 +2,7 @@ package databasestorageapi_test
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -17,6 +18,7 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/confighandler"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/response"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/test/helpers"
 )
 
@@ -95,9 +97,38 @@ func TestSearchUnderlineId(t *testing.T) {
 	}
 
 	t.Run("Поиск инцидента по его @special_uuid", func(t *testing.T) {
-		underlineId, err := apiDBS.GetUnderlineId(ctx, Elasticsearch_Index, Special_UUID)
+		underlineIds, err := apiDBS.GetUnderlineIds(ctx, Elasticsearch_Index, Special_UUID)
 		assert.NoError(t, err)
-		assert.NotEqual(t, underlineId, "")
+		assert.NotEmpty(t, underlineIds)
+
+		for k, v := range underlineIds {
+			fmt.Printf("%d. %v\n", k, v)
+		}
+	})
+
+	t.Run("Добавление в инциденты хранящиеся в БД дополнительной информации о сенсорах", func(t *testing.T) {
+		responseSensorsInformation := response.ResponseSensorsInformation{
+			Source: "test source",
+			TaskId: fmt.Sprintf("%s:%s", Elasticsearch_Index, Special_UUID),
+			Informations: []response.SensorInformation{
+				{
+					INN:                      "7703602065",
+					GeoCode:                  "RU",
+					SensorID:                 "570009",
+					ObjectArea:               "Агропромышленный комплекс",
+					SpecialSensorID:          "1234",
+					OrganizationName:         "РусАгроКомплекс",
+					FullOrganizationName:     "АО 'РусАгроКомплекс'",
+					SubjectRussianFederation: "Производство",
+				},
+			},
+		}
+
+		b, err := json.Marshal(responseSensorsInformation)
+		assert.NoError(t, err)
+
+		err = apiDBS.AddSensorInformation_Test(ctx, b)
+		assert.NoError(t, err)
 	})
 
 	/*t.Run("Поиск информации GeoIP", func(t *testing.T) {

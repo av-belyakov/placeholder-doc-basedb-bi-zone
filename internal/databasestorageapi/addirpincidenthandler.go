@@ -15,39 +15,43 @@ import (
 )
 
 // addIRPIncident добавление объекта типа 'incident'
-func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
+func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 	t := time.Now()
 
 	newDocument, ok := a.(*datamodels.VerifiedBiZoneIRPIncident)
 	if !ok {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("note for type 'incident', type conversion error")).Error())
+		err := supportingfunctions.CustomError(errors.New("note for type 'incident', type conversion error"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', accepted document with key (id):'%s'", newDocument.Key))
 
 	binaryDocument, err := json.Marshal(newDocument.Get())
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err := supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	// получаем наименование хранилища
 	indexName, isExist := dbs.settings.storages["incidents"]
 	if !isExist {
-		dbs.logger.Send("error", supportingfunctions.CustomError(errors.New("database storage - note for type 'incident', the identifier of the index name was not found")).Error())
+		err := supportingfunctions.CustomError(errors.New("database storage - note for type 'incident', the identifier of the index name was not found"))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	// получаем существующие индексы
 	existingIndexes, err := dbs.GetExistingIndexes(ctx, indexName)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err := supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
 	// формируем наименование индекса
@@ -93,23 +97,27 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 		// вставка документа
 		statusCode, err := dbs.InsertDocument(ctx, currentIndex, binaryDocument)
 		if err != nil {
-			dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+			err := supportingfunctions.CustomError(err)
+			dbs.logger.Send("error", err.Error())
 
-			return
+			return err
 		}
 
 		existingIndexes = append(existingIndexes, currentIndex)
 		// устанавливаем максимальный лимит количества полей для всех индексов которые
 		// содержат значение по умолчанию в 1000 полей
-		if err := dbs.SetMaxTotalFieldsLimit(ctx, existingIndexes); err != nil {
+		err = dbs.SetMaxTotalFieldsLimit(ctx, existingIndexes)
+		if err != nil {
 			dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 
 		// счетчик
 		dbs.counter.SendMessage("update count insert subject incident to db", 1)
-		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', insert new document to incidents key (id) '%s', status code '%d'", newDocument.GetKey(), statusCode))
+		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', insert new document to incidents key (id) '%s', special_uuid '%s', status code '%d'", newDocument.GetKey(), newDocument.GetSpecialUUID(), statusCode))
 
-		return
+		fmt.Printf("----||| DatabaseStorage.addIRPIncident, индексов нет, вставка нового документа для Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
+
+		return supportingfunctions.CustomError(err)
 	}
 
 	// устанавливаем максимальный лимит количества полей для всех индексов которые
@@ -117,6 +125,8 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 	if err := dbs.SetMaxTotalFieldsLimit(ctx, existingIndexes); err != nil {
 		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
 	}
+
+	fmt.Printf("----||| DatabaseStorage.addIRPIncident, ищем объект с таким же идентификатором как и принятый в обработку объект Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
 
 	// ищем объект с таким же идентификатором как и принятый в обработку объект
 	res, err := dbs.GetDocument(
@@ -131,29 +141,37 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 				newDocument.GetKey())),
 		0)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err = supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
+
+	fmt.Printf("--*** --||| DatabaseStorage.addIRPIncident, Key '%s' special_uuid '%s' получаем список найденных объектов '%+v'\n", newDocument.GetKey(), newDocument.GetSpecialUUID(), string(res))
 
 	response := ResponseVerifiedIRPIncidents{}
 	if err = json.Unmarshal(res, &response); err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err := supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
 
-	fmt.Printf("--------========= DatabaseStorage.addIRPIncident, response.Options.Total:'%+v'\n", response.Options.Total)
+	fmt.Printf("----||| DatabaseStorage.addIRPIncident, Key '%s' special_uuid '%s' получаем список найденных объектов, всего найдено '%d'\n", newDocument.GetKey(), newDocument.GetSpecialUUID(), response.Options.Total.Value)
 
 	// вставка выполняется только когда не найден искомый документ
 	if response.Options.Total.Value == 0 {
+
+		fmt.Printf("----||| DatabaseStorage.addIRPIncident, вставка нового документа так как документа с Key '%s' special_uuid '%s' ещё нет\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
+
 		//
 		// вставка документа
 		statusCode, err := dbs.InsertDocument(ctx, currentIndex, binaryDocument)
 		if err != nil {
-			dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+			err := supportingfunctions.CustomError(err)
+			dbs.logger.Send("error", err.Error())
 
-			return
+			return err
 		}
 
 		// счетчик
@@ -164,8 +182,10 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 		//*** здесь установка тегов, под вопросом ***
 		//*******************************************
 
-		return
+		return err
 	}
+
+	fmt.Printf("----||| DatabaseStorage.addIRPIncident, при наличие искомого документа выполняем его замену Key '%s' special_uuid '%s' ещё нет\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
 
 	//*** при наличие искомого документа выполняем его замену ***
 	//***********************************************************
@@ -183,24 +203,32 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 		updateVerified.SetAdditionalInformation(*v.Source.GetAdditionalInformation())
 	}
 
+	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 111 Key '%s' special_uuid '%s' ещё нет\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
+
 	// выполняем обновление нового объекта данными полученными от IRP
 	countReplasedField := updateVerified.ReplacingOldIRPIncident(*newDocument.Get())
 
 	// готовим обновлённый объект к загрузке в базу данных
 	nvbyte, err := json.Marshal(updateVerified)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
+		err := supportingfunctions.CustomError(err)
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
+
+	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 222 Key '%s' special_uuid '%s' ещё нет\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
 
 	// обновление в базе данных уже существующего документа
 	statusCode, countDel, err := dbs.UpdateDocument(ctx, currentIndex, listDeleting, nvbyte)
 	if err != nil {
-		dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("key (id) '%s' '%s'", newDocument.GetKey(), err.Error())).Error())
+		err := supportingfunctions.CustomError(fmt.Errorf("key (id) '%s' '%s'", newDocument.GetKey(), err.Error()))
+		dbs.logger.Send("error", err.Error())
 
-		return
+		return err
 	}
+
+	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 333 Key '%s' special_uuid '%s' ещё нет\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
 
 	dbs.counter.SendMessage("update count insert subject incident to db", 1)
 	dbs.logger.Send(
@@ -212,9 +240,11 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) {
 			newDocument.GetKey(),
 			statusCode,
 		))
+
+	return nil
 }
 
 // TestAddIRPIncident использовать только в тестах
-func (dbs *DatabaseStorage) TestAddIRPIncident(ctx context.Context, a any) {
-	dbs.addIRPIncident(ctx, a)
+func (dbs *DatabaseStorage) TestAddIRPIncident(ctx context.Context, a any) error {
+	return dbs.addIRPIncident(ctx, a)
 }

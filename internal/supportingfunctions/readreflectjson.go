@@ -91,20 +91,15 @@ func (ej *ElementsFromJson) isExistFieldBranch(v string) bool {
 // до элемента и значение элемента с указанием его имени и типа
 func GetElementsFromJson(ctx context.Context, data []byte) ([]map[string]Element, error) {
 	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
 
 	chRes := make(chan chResult)
 	defer close(chRes)
 
 	newElements := NewElementsFromJson()
 
-	//result := ElementsFromJson{Data: make([]map[string]Element, 0),}
-	//copyResult := map[string]Element{}
-
 	//обработчик входящих данных
 	go func(ctx context.Context, rst *ElementsFromJson, ch <-chan chResult) {
-		//rst.mutex.Lock()
-		//defer rst.mutex.Unlock()
-
 		for {
 			select {
 			case <-ctx.Done():
@@ -116,14 +111,6 @@ func GetElementsFromJson(ctx context.Context, data []byte) ([]map[string]Element
 				}
 
 				newElements.HandlerValue(data.FieldBranch, data.ValueType, data.Value)
-
-				//rst.Data[data.FieldBranch] = Element{
-				//	CommonValues{
-				//		FieldName: data.FieldName,
-				//		ValueType: data.ValueType,
-				//		Value:     data.Value,
-				//	},
-				//}
 			}
 		}
 	}(ctx, newElements, chRes)
@@ -134,7 +121,7 @@ func GetElementsFromJson(ctx context.Context, data []byte) ([]map[string]Element
 		if len(listMap) == 0 {
 			cancel()
 
-			return copyResult, errors.New("error decoding the json file, it may be empty")
+			return nil, errors.New("error decoding the json file, it may be empty")
 		}
 
 		_ = processingReflectMap(chRes, listMap, "")
@@ -145,25 +132,19 @@ func GetElementsFromJson(ctx context.Context, data []byte) ([]map[string]Element
 		if err = json.Unmarshal(data, &listSlice); err != nil {
 			cancel()
 
-			return copyResult, err
+			return nil, err
 		}
 
 		if len(listSlice) == 0 {
 			cancel()
 
-			return copyResult, errors.New("error decoding the json message, it may be empty")
+			return nil, errors.New("error decoding the json message, it may be empty")
 		}
 
 		_ = processingReflectSlice(chRes, listSlice, "")
 	}
 
-	cancel()
-
-	result.mutex.RLock()
-	maps.Copy(copyResult, result.Data)
-	result.mutex.RUnlock()
-
-	return copyResult, nil
+	return newElements.GetElements(), nil
 }
 
 // GetElementsFromJSON читает JSON объект методом рефлексии, возвращает результат, содержащий перечень путей
