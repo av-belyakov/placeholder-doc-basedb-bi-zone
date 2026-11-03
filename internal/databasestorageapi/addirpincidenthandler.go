@@ -147,7 +147,7 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	fmt.Printf("--*** --||| DatabaseStorage.addIRPIncident, Key '%s' special_uuid '%s' получаем список найденных объектов '%+v'\n", newDocument.GetKey(), newDocument.GetSpecialUUID(), string(res))
+	//fmt.Printf("--*** --||| DatabaseStorage.addIRPIncident, Key '%s' special_uuid '%s' получаем список найденных объектов '%+v'\n", newDocument.GetKey(), newDocument.GetSpecialUUID(), string(res))
 
 	response := ResponseVerifiedIRPIncidents{}
 	if err = json.Unmarshal(res, &response); err != nil {
@@ -185,7 +185,7 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	fmt.Printf("----||| DatabaseStorage.addIRPIncident, при наличие искомого документа выполняем его замену Key '%s' special_uuid '%s' ещё нет\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
+	fmt.Printf("----||| DatabaseStorage.addIRPIncident, при наличие искомого документа выполняем его замену Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
 
 	//*** при наличие искомого документа выполняем его замену ***
 	//***********************************************************
@@ -203,10 +203,10 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		updateVerified.SetAdditionalInformation(*v.Source.GetAdditionalInformation())
 	}
 
-	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 111 Key '%s' special_uuid '%s' ещё нет\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
+	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 111 Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
 
 	// выполняем обновление нового объекта данными полученными от IRP
-	countReplasedField := updateVerified.ReplacingOldIRPIncident(*newDocument.Get())
+	replasedField := updateVerified.ReplacingOldIRPIncident(*newDocument.Get())
 
 	// готовим обновлённый объект к загрузке в базу данных
 	nvbyte, err := json.Marshal(updateVerified)
@@ -217,7 +217,7 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 222 Key '%s' special_uuid '%s' ещё нет\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
+	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 222 Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
 
 	// обновление в базе данных уже существующего документа
 	statusCode, countDel, err := dbs.UpdateDocument(ctx, currentIndex, listDeleting, nvbyte)
@@ -228,18 +228,22 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 333 Key '%s' special_uuid '%s' ещё нет\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
+	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 333 Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
 
 	dbs.counter.SendMessage("update count insert subject incident to db", 1)
 	dbs.logger.Send(
 		"info",
 		fmt.Sprintf(
-			"database storage - note for type 'incident', update document 'incident' type, count delete '%d', count replacing fields '%d' for object with key (id) '%s', status code '%d'",
+			"database storage - note for type 'incident', update document, count delete documents '%d', count replacing fields '%d' for object with key (id) '%s', status code '%d'",
 			countDel,
-			countReplasedField,
+			len(replasedField),
 			newDocument.GetKey(),
 			statusCode,
 		))
+
+	for _, v := range replasedField {
+		dbs.logger.Send("info", fmt.Sprintf("database storage - update field '%s' to document 'incident' with key (id) '%s'", v, newDocument.GetKey()))
+	}
 
 	return nil
 }

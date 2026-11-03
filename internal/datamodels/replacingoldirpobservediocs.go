@@ -1,33 +1,34 @@
 package datamodels
 
 import (
+	"fmt"
 	"reflect"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 // ReplacingOldIRPObservedIocs заменяет или добавляет значения свойства []ObservedIocsType
-func (vi *VerifiedBiZoneIRPIncident) ReplacingOldIRPObservedIocs(incomingTypes []ObservedIocsType) int {
-	var countReplacingFields int
+func (vi *VerifiedBiZoneIRPIncident) ReplacingOldIRPObservedIocs(incomingTypes []ObservedIocsType) []string {
+	var replacingFields []string
 
 	for _, incomingType := range incomingTypes {
 		index, isExist := compareObservedIocs(incomingType, vi.ObservedIocs)
 		if isExist {
-			countReplacingFields += vi.ObservedIocs[index].ReplacingOldIRPObservedIocsType(incomingType)
+			replacingFields = append(replacingFields, vi.ObservedIocs[index].ReplacingOldIRPObservedIocsType(incomingType)...)
 
 			continue
 		}
 
 		vi.ObservedIocs = append(vi.ObservedIocs, incomingType)
-		countReplacingFields++
+		replacingFields = append(replacingFields, fmt.Sprintf("added object with ioc '%s'", incomingType.Ioc))
 	}
 
-	return countReplacingFields
+	return replacingFields
 }
 
 // ReplacingOldIRPObservedIocsType заменяет старые значения типа ObservedIocs новыми
-func (iocs *ObservedIocsType) ReplacingOldIRPObservedIocsType(incomingType ObservedIocsType) int {
-	var countReplacingFields int
+func (iocs *ObservedIocsType) ReplacingOldIRPObservedIocsType(incomingType ObservedIocsType) []string {
+	var replacingFields []string
 
 	currentStruct := reflect.ValueOf(iocs).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
@@ -42,9 +43,9 @@ func (iocs *ObservedIocsType) ReplacingOldIRPObservedIocsType(incomingType Obser
 			}
 
 			if typeOfCurrentStruct.Field(i).Name == "Category" {
-				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
+				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); !ok {
 					currentStruct.Field(i).Set(list)
-					countReplacingFields++
+					replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 				}
 
 				continue
@@ -63,10 +64,10 @@ func (iocs *ObservedIocsType) ReplacingOldIRPObservedIocsType(incomingType Obser
 				}
 
 				currentStruct.Field(i).Set(newStruct.Field(j))
-				countReplacingFields++
+				replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 			}
 		}
 	}
 
-	return countReplacingFields
+	return replacingFields
 }

@@ -33,8 +33,8 @@ func ReplacingSlice[T comparable](current, new reflect.Value) (list reflect.Valu
 		return list, false
 	}
 
-	currentTags, okCurr := current.Interface().([]T)
-	newTags, okNew := new.Interface().([]T)
+	currentTags, okCurr := reflect.TypeAssert[[]T](current)
+	newTags, okNew := reflect.TypeAssert[[]T](new)
 	if !okCurr || !okNew {
 		return list, false
 	}

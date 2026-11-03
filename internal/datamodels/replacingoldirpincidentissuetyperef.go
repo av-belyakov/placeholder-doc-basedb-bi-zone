@@ -5,8 +5,8 @@ import (
 )
 
 // ReplacingOldIRPIncidentIssueTypeRef заменяет старые значения типа IssueTypeRefType новыми
-func (tnt *IssueTypeRefType) ReplacingOldIRPIncidentIssueTypeRef(incomingType IssueTypeRefType) int {
-	var countReplacingFields int
+func (tnt *IssueTypeRefType) ReplacingOldIRPIncidentIssueTypeRef(incomingType IssueTypeRefType) []string {
+	var replacingFields []string
 
 	currentStruct := reflect.ValueOf(tnt).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
@@ -33,10 +33,10 @@ func (tnt *IssueTypeRefType) ReplacingOldIRPIncidentIssueTypeRef(incomingType Is
 				}
 
 				currentStruct.Field(i).Set(newStruct.Field(j))
-				countReplacingFields++
+				replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 			}
 		}
 	}
 
-	return countReplacingFields
+	return replacingFields
 }

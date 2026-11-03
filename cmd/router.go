@@ -113,7 +113,7 @@ func (r *ApplicationRouter) Start(ctx context.Context) {
 							return
 						}
 
-						logger.Send("info", fmt.Sprintf("the request for incident '%s' was completed in %d", data.Data.Id, (time.Since(startTime)/time.Millisecond)))
+						logger.Send("info", fmt.Sprintf("the request to irp to receive the full incident '%s' was completed in %d ms", data.Data.Id, (time.Since(startTime)/time.Millisecond)))
 
 						if statusCode != http.StatusOK {
 							logger.Send("warning", fmt.Sprintf("requesting incident '%s' from the IRP returned the status code %d", data.Data.Id, statusCode))

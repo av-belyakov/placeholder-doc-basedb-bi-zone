@@ -1,29 +1,32 @@
 package datamodels
 
-import "reflect"
+import (
+	"fmt"
+	"reflect"
+)
 
 // ReplacingOldIRPWatchers заменяет или добавляет значения свойства []WatchersType
-func (vi *VerifiedBiZoneIRPIncident) ReplacingOldIRPWatchers(incomingTypes []WatchersType) int {
-	var countReplacingFields int
+func (vi *VerifiedBiZoneIRPIncident) ReplacingOldIRPWatchers(incomingTypes []WatchersType) []string {
+	var replacingFields []string
 
 	for _, incomingType := range incomingTypes {
 		index, isExist := compareWatcher(incomingType, vi.Watchers)
 		if isExist {
-			countReplacingFields += vi.Watchers[index].ReplacingOldIRPWatcher(incomingType)
+			replacingFields = append(replacingFields, vi.Watchers[index].ReplacingOldIRPWatcher(incomingType)...)
 
 			continue
 		}
 
 		vi.Watchers = append(vi.Watchers, incomingType)
-		countReplacingFields++
+		replacingFields = append(replacingFields, fmt.Sprintf("added object with id '%d'", incomingType.Id))
 	}
 
-	return countReplacingFields
+	return replacingFields
 }
 
 // ReplacingOldIRPWatcher заменяет или добавляет значения свойства WatchersType
-func (w *WatchersType) ReplacingOldIRPWatcher(incomingType WatchersType) int {
-	var countReplacingFields int
+func (w *WatchersType) ReplacingOldIRPWatcher(incomingType WatchersType) []string {
+	var replacingFields []string
 
 	currentStruct := reflect.ValueOf(w).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
@@ -50,10 +53,10 @@ func (w *WatchersType) ReplacingOldIRPWatcher(incomingType WatchersType) int {
 				}
 
 				currentStruct.Field(i).Set(newStruct.Field(j))
-				countReplacingFields++
+				replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 			}
 		}
 	}
 
-	return countReplacingFields
+	return replacingFields
 }

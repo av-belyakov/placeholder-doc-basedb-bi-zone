@@ -5,8 +5,8 @@ import (
 )
 
 // ReplacingOldIRPIncidentCategoryRef заменяет старые значения типа CategoryRefType новыми
-func (tnt *CategoryRefType) ReplacingOldIRPIncidentCategoryRef(incomingType CategoryRefType) int {
-	var countReplacingFields int
+func (tnt *CategoryRefType) ReplacingOldIRPIncidentCategoryRef(incomingType CategoryRefType) []string {
+	var replacingFields []string
 
 	currentStruct := reflect.ValueOf(tnt).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
@@ -33,10 +33,10 @@ func (tnt *CategoryRefType) ReplacingOldIRPIncidentCategoryRef(incomingType Cate
 				}
 
 				currentStruct.Field(i).Set(newStruct.Field(j))
-				countReplacingFields++
+				replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 			}
 		}
 	}
 
-	return countReplacingFields
+	return replacingFields
 }

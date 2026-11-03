@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/signal"
+	"strings"
+	"syscall"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -24,7 +27,7 @@ func TestUpdateIncidentFromFile(t *testing.T) {
 		Incident_File_Name = "incident-key-inc-2105.json"
 	)
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 
 	incidentRaw, err := os.ReadFile("../../test/test_json/" + Incident_File_Name)
 	if err != nil {
@@ -37,17 +40,35 @@ func TestUpdateIncidentFromFile(t *testing.T) {
 	}
 
 	if err = os.Setenv("GO_PHDOCBASEDBBZ_MAIN", "test"); err != nil {
-		log.Fatal("error module 'confighandler':", err)
+		log.Fatal(err)
 	}
 
 	cfg, err := confighandler.New(rootPath)
 	if err != nil {
-		log.Fatal("error module 'confighandler':", err)
+		log.Fatal("start module 'confighandler':", err)
 	}
 
 	logging := documentsgenerator.NewLogging()
 	counting := countermessage.New(logging.GetChanToData())
 	counting.Start(ctx)
+
+	apiDBS, err := databasestorageapi.New(
+		logging,
+		counting,
+		databasestorageapi.WithHost(cfg.GetStorageDB().Host),
+		databasestorageapi.WithPort(cfg.GetStorageDB().Port),
+		databasestorageapi.WithNameDB(cfg.GetStorageDB().NameDB),
+		databasestorageapi.WithUser(cfg.GetStorageDB().User),
+		databasestorageapi.WithPasswd(cfg.GetStorageDB().Passwd),
+		databasestorageapi.WithStorage(cfg.GetStorageDB().Storage),
+		databasestorageapi.WithMaxGetDocumentSize(15))
+	if err != nil {
+		log.Fatal("start module 'databasestorageapi':", err)
+	}
+
+	if err = apiDBS.Start(ctx); err != nil {
+		log.Fatal("start module 'databasestorageapi':", err)
+	}
 
 	decoder := decoderjsondocuments.New(counting, logging)
 	go func() {
@@ -57,7 +78,11 @@ func TestUpdateIncidentFromFile(t *testing.T) {
 				return
 
 			case msg := <-logging.GetChan():
-				fmt.Println("Log:", msg)
+				if strings.Contains(msg.GetMessage(), "update field") {
+					fmt.Printf("Log:\n\ttype:'%s'\n\tmessage:'%s'\n", msg.GetType(), msg.GetMessage())
+				}
+
+			case <-apiDBS.GetChannelFromModule():
 
 			}
 		}
@@ -76,19 +101,6 @@ func TestUpdateIncidentFromFile(t *testing.T) {
 	})
 
 	t.Run("Тест 2. Добавление инцидента в БД", func(t *testing.T) {
-		apiDBS, err := databasestorageapi.New(
-			logging,
-			counting,
-			databasestorageapi.WithHost(cfg.GetStorageDB().Host),
-			databasestorageapi.WithPort(cfg.GetStorageDB().Port),
-			databasestorageapi.WithNameDB(cfg.GetStorageDB().NameDB),
-			databasestorageapi.WithUser(cfg.GetStorageDB().User),
-			databasestorageapi.WithPasswd(cfg.GetStorageDB().Passwd),
-			databasestorageapi.WithStorage(cfg.GetStorageDB().Storage),
-			databasestorageapi.WithMaxGetDocumentSize(15))
-		assert.NoError(t, err)
-		assert.NoError(t, apiDBS.Start(ctx))
-
 		apiDBS.TestAddIRPIncident(ctx, <-chData)
 	})
 

@@ -26,7 +26,7 @@ func (dbs *DatabaseStorage) router(ctx context.Context) {
 	for {
 		select {
 		case <-ctx.Done():
-			log.Printf("%vthe router database storage module? router is stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
+			log.Printf("%vthe router database storage module is stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
 
 			return
 

@@ -104,7 +104,7 @@
         {
             "name": "source:siem",
             "color": "#4CAF50",
-            "created": "2026-09-17T19:30:22+03:00",
+            "created": "2026-09-23T19:31:22+03:00",
             "created_by": {
                 "username": "n8n_adding_info@cert.gov.ru",
                 "id": 8
@@ -165,12 +165,12 @@
     "issue_type_ref": {
         "id": "Incident",
         "title": "Incident",
-        "description": ""
+        "description": "Новое описание инцидента"
     },
     "primary_category_ref": {
         "id": "Vuln_Exploited",
         "title": "Успешная эксплуатация уязвимости",
-        "description": ""
+        "description": "Подробное описание компьютерной атаки"
     },
     "resolution_name_ref": {
         "id": "",
