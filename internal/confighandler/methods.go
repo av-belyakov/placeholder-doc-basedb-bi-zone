@@ -31,6 +31,11 @@ func (c *Config) GetStorageDB() CfgStorageDB {
 	return c.StorageDB
 }
 
+// GetTemporaryStorage настройки для временного хранилища
+func (c *Config) GetTemporaryStorage() CfgTemporaryStorage {
+	return c.TemporaryStorage
+}
+
 // GetLogDB настройки для БД обеспечивающей логирование данных
 func (c *Config) GetLogDB() CfgWriteLogDB {
 	return c.LogDB

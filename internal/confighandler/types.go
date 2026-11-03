@@ -1,13 +1,14 @@
 package confighandler
 
 type Config struct {
-	Common      Common
-	IRP         CfgIRP
-	NATS        CfgNats
-	Kafka       CfgKafka
-	LogDB       CfgWriteLogDB
-	StorageDB   CfgStorageDB
-	DebugServer CfgDebugServer
+	Common           Common
+	IRP              CfgIRP
+	NATS             CfgNats
+	Kafka            CfgKafka
+	LogDB            CfgWriteLogDB
+	StorageDB        CfgStorageDB
+	DebugServer      CfgDebugServer
+	TemporaryStorage CfgTemporaryStorage
 }
 
 type Common struct {
@@ -104,4 +105,10 @@ type CfgDebugServer struct {
 	Host   string `yaml:"host"`
 	Port   int    `validate:"gt=0,lte=65535" yaml:"port"`
 	Enable bool   `yaml:"enabled"`
+}
+
+type CfgTemporaryStorage struct {
+	StorageObjectTTL            int `validate:"gte=10,lte=43200" yaml:"storage_object_ttl"`
+	StorageDelayToSendAlert     int `validate:"gte=1,lte=600" yaml:"storage_delay_to_send_alert"`
+	StorageDelayToSendIncidents int `validate:"gte=1,lte=600" yaml:"storage_delay_to_send_case"`
 }

@@ -178,7 +178,7 @@ func TestConfigFileHandler(t *testing.T) {
 			testOptions.items = []TestParametrs{
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetNATS().Host},
-					expectedParameters: TestTypeElements{valueString: "192.168.9.208"},
+					expectedParameters: TestTypeElements{valueString: "nats.cloud.gcm"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetNATS().Port},
@@ -194,11 +194,11 @@ func TestConfigFileHandler(t *testing.T) {
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetNATS().EnrichingQueries["get_geoip_info"]},
-					expectedParameters: TestTypeElements{valueString: "object.geoip-request.test"},
+					expectedParameters: TestTypeElements{valueString: "object.geoip-request"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetNATS().EnrichingQueries["get_sensor_info"]},
-					expectedParameters: TestTypeElements{valueString: "object.sensor-info-request.test"},
+					expectedParameters: TestTypeElements{valueString: "object.sensor-info-request"},
 				},
 			}
 		},
@@ -370,6 +370,30 @@ func TestConfigFileHandler(t *testing.T) {
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetDebugServer().Port},
 					expectedParameters: TestTypeElements{valueInt: 6565},
+				},
+			}
+		}}
+	testOptions.function()
+	listTesting = append(listTesting, testOptions)
+
+	// --- Настройки TEMPORARYSTORAGE ---
+	testOptions = TestOptions{
+		name: "Настройки TEMPORARYSTORAGE (чтение файла config_test.yml)",
+		function: func() {
+			cfg, err = confighandler.New(constants.Root_Dir)
+			testOptions.err = err
+			testOptions.items = []TestParametrs{
+				{
+					inputParameters:    TestTypeElements{valueInt: cfg.GetTemporaryStorage().StorageObjectTTL},
+					expectedParameters: TestTypeElements{valueInt: 180},
+				},
+				{
+					inputParameters:    TestTypeElements{valueInt: cfg.GetTemporaryStorage().StorageDelayToSendAlert},
+					expectedParameters: TestTypeElements{valueInt: 1},
+				},
+				{
+					inputParameters:    TestTypeElements{valueInt: cfg.GetTemporaryStorage().StorageDelayToSendIncidents},
+					expectedParameters: TestTypeElements{valueInt: 5},
 				},
 			}
 		}}
