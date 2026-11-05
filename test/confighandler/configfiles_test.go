@@ -388,11 +388,7 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueInt: 180},
 				},
 				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetTemporaryStorage().StorageDelayToSendAlert},
-					expectedParameters: TestTypeElements{valueInt: 1},
-				},
-				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetTemporaryStorage().StorageDelayToSendIncidents},
+					inputParameters:    TestTypeElements{valueInt: cfg.GetTemporaryStorage().StorageDelayToSendObject},
 					expectedParameters: TestTypeElements{valueInt: 5},
 				},
 			}

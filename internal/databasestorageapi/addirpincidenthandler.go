@@ -115,8 +115,6 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		dbs.counter.SendMessage("update count insert subject incident to db", 1)
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', insert new document to incidents key (id) '%s', special_uuid '%s', status code '%d'", newDocument.GetKey(), newDocument.GetSpecialUUID(), statusCode))
 
-		fmt.Printf("----||| DatabaseStorage.addIRPIncident, индексов нет, вставка нового документа для Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
-
 		return supportingfunctions.CustomError(err)
 	}
 
@@ -125,8 +123,6 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 	if err := dbs.SetMaxTotalFieldsLimit(ctx, existingIndexes); err != nil {
 		dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
 	}
-
-	fmt.Printf("----||| DatabaseStorage.addIRPIncident, ищем объект с таким же идентификатором как и принятый в обработку объект Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
 
 	// ищем объект с таким же идентификатором как и принятый в обработку объект
 	res, err := dbs.GetDocument(
@@ -147,8 +143,6 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	//fmt.Printf("--*** --||| DatabaseStorage.addIRPIncident, Key '%s' special_uuid '%s' получаем список найденных объектов '%+v'\n", newDocument.GetKey(), newDocument.GetSpecialUUID(), string(res))
-
 	response := ResponseVerifiedIRPIncidents{}
 	if err = json.Unmarshal(res, &response); err != nil {
 		err := supportingfunctions.CustomError(err)
@@ -157,13 +151,8 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	fmt.Printf("----||| DatabaseStorage.addIRPIncident, Key '%s' special_uuid '%s' получаем список найденных объектов, всего найдено '%d'\n", newDocument.GetKey(), newDocument.GetSpecialUUID(), response.Options.Total.Value)
-
 	// вставка выполняется только когда не найден искомый документ
 	if response.Options.Total.Value == 0 {
-
-		fmt.Printf("----||| DatabaseStorage.addIRPIncident, вставка нового документа так как документа с Key '%s' special_uuid '%s' ещё нет\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
-
 		//
 		// вставка документа
 		statusCode, err := dbs.InsertDocument(ctx, currentIndex, binaryDocument)
@@ -185,8 +174,6 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	fmt.Printf("----||| DatabaseStorage.addIRPIncident, при наличие искомого документа выполняем его замену Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
-
 	//*** при наличие искомого документа выполняем его замену ***
 	//***********************************************************
 	listDeleting := []ServiseOption(nil)
@@ -203,8 +190,6 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		updateVerified.SetAdditionalInformation(*v.Source.GetAdditionalInformation())
 	}
 
-	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 111 Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
-
 	// выполняем обновление нового объекта данными полученными от IRP
 	replasedField := updateVerified.ReplacingOldIRPIncident(*newDocument.Get())
 
@@ -217,8 +202,6 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 222 Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
-
 	// обновление в базе данных уже существующего документа
 	statusCode, countDel, err := dbs.UpdateDocument(ctx, currentIndex, listDeleting, nvbyte)
 	if err != nil {
@@ -227,8 +210,6 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 
 		return err
 	}
-
-	fmt.Printf("----||| DatabaseStorage.addIRPIncident, замена документа 333 Key '%s' special_uuid '%s'\n", newDocument.GetKey(), newDocument.GetSpecialUUID())
 
 	dbs.counter.SendMessage("update count insert subject incident to db", 1)
 	dbs.logger.Send(

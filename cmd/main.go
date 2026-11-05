@@ -38,5 +38,4 @@ func main() {
 
 	<-done
 	log.Printf("%vstopping module 'placeholder_doc-base_db'...%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
-
 }

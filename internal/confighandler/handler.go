@@ -241,11 +241,8 @@ func New(rootDir string) (*Config, error) {
 		if viper.IsSet("TEMPORARYSTORAGE.storage_object_ttl") {
 			cfg.TemporaryStorage.StorageObjectTTL = viper.GetInt("TEMPORARYSTORAGE.storage_object_ttl")
 		}
-		if viper.IsSet("TEMPORARYSTORAGE.storage_delay_to_send_alerts") {
-			cfg.TemporaryStorage.StorageDelayToSendAlert = viper.GetInt("TEMPORARYSTORAGE.storage_delay_to_send_alerts")
-		}
-		if viper.IsSet("TEMPORARYSTORAGE.storage_delay_to_send_incidents") {
-			cfg.TemporaryStorage.StorageDelayToSendIncidents = viper.GetInt("TEMPORARYSTORAGE.storage_delay_to_send_incidents")
+		if viper.IsSet("TEMPORARYSTORAGE.storage_delay_to_send_object") {
+			cfg.TemporaryStorage.StorageDelayToSendObject = viper.GetInt("TEMPORARYSTORAGE.storage_delay_to_send_object")
 		}
 
 		return nil

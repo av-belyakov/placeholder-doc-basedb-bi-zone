@@ -28,7 +28,7 @@ type App struct {
 func NewApp() *App {
 	rootDirPath, err := supportingfunctions.GetPathRoot(constants.Root_Dir)
 	if err != nil {
-		log.Fatalf("error, it is impossible to form root dir path (%s)", err.Error())
+		log.Fatalf("getting the root directory %s", err.Error())
 	}
 
 	ch := make(chan interfaces.Messager)
@@ -75,7 +75,9 @@ func (app *App) Start(ctx context.Context) {
 	msg := getInformationMessage(app.diContainer.Configer().Get())
 	app.diContainer.SimpleLogger(ctx).Write("info", strings.ToLower(msg))
 
-	app.appRouter.Start(ctx)
+	if err := app.appRouter.Start(ctx); err != nil {
+		log.Fatalf("launching the application router %s", err.Error())
+	}
 
 	<-ctx.Done()
 }

@@ -7,8 +7,8 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
-// GetTypeIncidentDocument получает тип документа описывающего инцидент
-func GetTypeIncidentDocument(data []byte) (datamodels.IrpIncidentType, error) {
+// UnmarshalIncidentDocument частичный разбор документа описывающего инцидент
+func UnmarshalIncidentDocument(data []byte) (datamodels.IrpIncidentType, error) {
 	caseTypeElement := datamodels.IrpIncidentType{}
 
 	if err := json.Unmarshal(data, &caseTypeElement); err != nil {

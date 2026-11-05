@@ -31,8 +31,7 @@ KAFKA:
   ssl_server_name: kafka-cluster-kafka-bootstrap # имя сервера kafka указанное в сертификате клиента
 TEMPORARYSTORAGE:
   storage_object_ttl: 180
-  storage_delay_to_send_alerts: 1
-  storage_delay_to_send_incidents: 5
+  storage_delay_to_send_object: 5
 DATABASESTORAGE:
   host: localhost
   port: 9211

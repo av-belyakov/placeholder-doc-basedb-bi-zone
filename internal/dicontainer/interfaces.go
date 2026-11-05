@@ -40,6 +40,7 @@ type Configer interface {
 	GetLogDB() confighandler.CfgWriteLogDB
 	GetZabbix() confighandler.ZabbixOptions
 	GetDebugServer() confighandler.CfgDebugServer
+	GetTemporaryStorage() confighandler.CfgTemporaryStorage
 }
 
 type NatsConnecter interface {

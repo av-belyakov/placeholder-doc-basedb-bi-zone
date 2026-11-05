@@ -108,7 +108,6 @@ type CfgDebugServer struct {
 }
 
 type CfgTemporaryStorage struct {
-	StorageObjectTTL            int `validate:"gte=10,lte=43200" yaml:"storage_object_ttl"`
-	StorageDelayToSendAlert     int `validate:"gte=1,lte=600" yaml:"storage_delay_to_send_alert"`
-	StorageDelayToSendIncidents int `validate:"gte=1,lte=600" yaml:"storage_delay_to_send_case"`
+	StorageObjectTTL         int `validate:"gte=10,lte=43200" yaml:"storage_object_ttl"`
+	StorageDelayToSendObject int `validate:"gte=1,lte=600" yaml:"storage_delay_to_send_object"`
 }
