@@ -242,6 +242,10 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueString: "spring.kafka.bootstrap.servers"},
 				},
 				{
+					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().ClientId},
+					expectedParameters: TestTypeElements{valueString: "placeholder-doc-basedb-bizone.test"},
+				},
+				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SASLMechanism},
 					expectedParameters: TestTypeElements{valueString: "ANONYMOUS"},
 				},

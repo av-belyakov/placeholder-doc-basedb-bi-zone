@@ -1,6 +1,7 @@
 package kafkaapi
 
 import (
+	"cmp"
 	"context"
 	"crypto/tls"
 	"crypto/x509"
@@ -11,10 +12,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/segmentio/kafka-go"
 	"github.com/segmentio/kafka-go/sasl/plain"
 	"github.com/segmentio/kafka-go/sasl/scram"
+
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 )
 
 // StartConsumer инициализирует новый модуль-потребитель Kafka,
@@ -32,6 +34,7 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 	}
 
 	dialer := &kafka.Dialer{
+		ClientID:  cmp.Or(api.settings.clientId, "placeholder-doc-basedb-bizone"),
 		Timeout:   10 * time.Second,
 		DualStack: true, // использовать или IPv4 или IPv6
 	}
@@ -63,9 +66,16 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 
 	kafkaReaderCfg := kafka.ReaderConfig{
 		Brokers:     []string{fmt.Sprintf("%s:%d", api.settings.host, api.settings.port)},
-		GroupID:     api.settings.groupId,
+		GroupID:     api.settings.groupId, // параметр 'StartOffset' не работает, для тестов лучше менять GroupId на произвольный
 		GroupTopics: topics,
 		Dialer:      dialer,
+		// ниже параметр только для тестов, он сообщает Kafka что потребитель готов принимать
+		// все данные повторно, с самого начала
+		StartOffset: kafka.FirstOffset,
+	}
+
+	if err := kafkaReaderCfg.Validate(); err != nil {
+		return err
 	}
 
 	api.consumer = kafka.NewReader(kafkaReaderCfg)

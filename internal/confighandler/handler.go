@@ -170,6 +170,9 @@ func New(rootDir string) (*Config, error) {
 		if viper.IsSet("KAFKA.group_id") {
 			cfg.Kafka.GroupId = viper.GetString("KAFKA.group_id")
 		}
+		if viper.IsSet("KAFKA.client_id") {
+			cfg.Kafka.ClientId = viper.GetString("KAFKA.client_id")
+		}
 		if viper.IsSet("KAFKA.topics") {
 			cfg.Kafka.Topics = viper.GetStringMapString("KAFKA.topics")
 		}

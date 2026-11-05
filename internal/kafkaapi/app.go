@@ -84,6 +84,15 @@ func WithGroupId(v string) KafkaApiOptions {
 	}
 }
 
+// WithClientId имя потребителя Kafka
+func WithClientId(v string) KafkaApiOptions {
+	return func(api *kafkaApiModule) error {
+		api.settings.clientId = v
+
+		return nil
+	}
+}
+
 // WithTopicsSubscription 'слушатель' разных топиков
 func WithTopicsSubscription(v map[string]string) KafkaApiOptions {
 	return func(api *kafkaApiModule) error {

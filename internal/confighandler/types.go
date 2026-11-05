@@ -70,6 +70,7 @@ type CfgNats struct {
 
 type CfgKafka struct {
 	GroupId       string            `yaml:"group_id"`
+	ClientId      string            `yaml:"client_id"`
 	Topics        map[string]string `yaml:"topics"`
 	SASLMechanism string            `validate:"oneof=ANONYMOUS PLAIN SCRAM-SHA-256 SCRAM-SHA-512"`
 	SSLUsername   string            `yaml:"ssl_username"`

@@ -25,6 +25,7 @@ type kafkaApiSettings struct {
 	nameRegionalObject string
 	command            string
 	groupId            string
+	clientId           string
 	saslMechanism      string
 	sslUsername        string
 	sslPassword        string

@@ -18,6 +18,7 @@ KAFKA:
   port: 32704
   cache_ttl: 3601
   group_id: spring.kafka.bootstrap.servers
+  client_id: placeholder-doc-basedb-bizone.dev
   topics:
     alerts: alertmgr-alerts
     incidents: socd-soar-prod-issue-v1
