@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/av-belyakov/simplelogger"
+	"github.com/av-belyakov/simplelogger/v2"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/confighandler"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/countermessage"
