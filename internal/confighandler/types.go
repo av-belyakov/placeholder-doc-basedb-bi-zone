@@ -14,7 +14,6 @@ type Config struct {
 type Common struct {
 	RegionalObject string
 	Logs           []*LogSet
-	Zabbix         ZabbixOptions
 }
 
 type Logs struct {
@@ -28,17 +27,6 @@ type LogSet struct {
 	WritingStdout bool   `validate:"required" yaml:"writingStdout"`
 	WritingFile   bool   `validate:"required" yaml:"writingFile"`
 	WritingDB     bool   `validate:"required" yaml:"writingDB"`
-}
-
-type ZabbixSet struct {
-	Zabbix ZabbixOptions
-}
-
-type ZabbixOptions struct {
-	EventTypes  []EventType `yaml:"eventType"`
-	NetworkHost string      `validate:"required" yaml:"networkHost"`
-	ZabbixHost  string      `validate:"required" yaml:"zabbixHost"`
-	NetworkPort int         `validate:"gt=0,lte=65535" yaml:"networkPort"`
 }
 
 type EventType struct {

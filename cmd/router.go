@@ -27,7 +27,6 @@ func NewRouter(dic *dicontainer.DiContainer) *ApplicationRouter {
 }
 
 func (r *ApplicationRouter) Start(ctx context.Context) error {
-	counter := r.diContainer.Counter(ctx)
 	logger := r.diContainer.Logger(ctx)
 
 	chToNats := r.diContainer.NatsConnecter(ctx).GetChannelToModule()
@@ -49,7 +48,7 @@ func (r *ApplicationRouter) Start(ctx context.Context) error {
 	storage.Start(ctx)
 
 	go func() {
-		decoder := decoderjsondocuments.New(counter, logger)
+		decoder := decoderjsondocuments.New(logger)
 
 		for {
 			select {

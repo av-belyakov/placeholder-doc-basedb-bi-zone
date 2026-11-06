@@ -5,8 +5,7 @@ import (
 )
 
 type DecoderJsonDocuments struct {
-	logger  interfaces.Logger
-	counter interfaces.Counter
+	logger interfaces.Logger
 }
 
 // ChanInputSettings параметры канала декодера JSON документов

@@ -48,8 +48,7 @@ var (
 		},
 	}
 
-	logging  *helpers.Logging
-	counting *helpers.Counting
+	logging *helpers.Logging
 )
 
 func CreateTestCase(ctx context.Context, filePath string) (string, *datamodels.VerifiedBiZoneIRPAlert, error) {
@@ -66,20 +65,16 @@ func CreateTestCase(ctx context.Context, filePath string) (string, *datamodels.V
 		return rootId, verifiedAlert, err
 	}
 
-	decoder := decoderjsondocuments.New(counting, logging)
+	decoder := decoderjsondocuments.New(logging)
 	chDecode := decoder.Start(b)
 
 	logging := helpers.NewLogging()
-	counting := helpers.NewCounting()
 
-	go func(ctx context.Context, l interfaces.Logger, c *helpers.Counting) {
+	go func(ctx context.Context, l interfaces.Logger) {
 		for {
 			select {
 			case <-ctx.Done():
 				return
-
-			case count := <-c.GetChan():
-				fmt.Println("count.message:", count.Message, " count.Count", count.Count)
 
 			case msg := <-l.GetChan():
 				if msg.GetType() == "error" {
@@ -92,7 +87,7 @@ func CreateTestCase(ctx context.Context, filePath string) (string, *datamodels.V
 
 			}
 		}
-	}(ctx, logging, counting)
+	}(ctx, logging)
 
 	rootId, verifiedAlert, _, err = documentgenerator.BiZoneAlertsGenerator(chDecode)
 	if err != nil {
@@ -114,7 +109,6 @@ func TestUpdateIndexCaseGeoIp(t *testing.T) {
 	apiDBS, err := helpers.DataBaseConnectionInitialization(
 		ctx,
 		logging,
-		counting,
 		databasestorageapi.WithHost("datahook.cloud.gcm"),
 		databasestorageapi.WithPort(9200),
 		databasestorageapi.WithUser("writer"),

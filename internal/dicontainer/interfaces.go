@@ -18,10 +18,6 @@ type Logger interface {
 	Close()
 }
 
-type Counter interface {
-	SendMessage(msgType string, count int)
-}
-
 type SimpleLogger interface {
 	SetDataBaseInteraction(dbi simplelogger.DataBaseInteractor)
 	GetCountFileDescription() int
@@ -38,7 +34,6 @@ type Configer interface {
 	GetListLogs() []*confighandler.LogSet
 	GetStorageDB() confighandler.CfgStorageDB
 	GetLogDB() confighandler.CfgWriteLogDB
-	GetZabbix() confighandler.ZabbixOptions
 	GetDebugServer() confighandler.CfgDebugServer
 	GetTemporaryStorage() confighandler.CfgTemporaryStorage
 }

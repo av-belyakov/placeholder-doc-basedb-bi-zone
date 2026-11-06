@@ -95,25 +95,6 @@ func New(rootDir string) (*Config, error) {
 			cfg.Common.Logs = ls.Logging
 		}
 
-		z := ZabbixSet{}
-		if ok := viper.IsSet("ZABBIX"); ok {
-			if err := viper.GetViper().Unmarshal(&z); err != nil {
-				return err
-			}
-
-			np := 10051
-			if z.Zabbix.NetworkPort != 0 && z.Zabbix.NetworkPort < 65536 {
-				np = z.Zabbix.NetworkPort
-			}
-
-			cfg.Common.Zabbix = ZabbixOptions{
-				NetworkPort: np,
-				NetworkHost: z.Zabbix.NetworkHost,
-				ZabbixHost:  z.Zabbix.ZabbixHost,
-				EventTypes:  z.Zabbix.EventTypes,
-			}
-		}
-
 		return nil
 	}
 

@@ -38,7 +38,6 @@ func TestKafkaApi(t *testing.T) {
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 3*time.Second)
 
 	logging := supporting.NewLogging()
-	counting := &supporting.Counting{}
 
 	doneLogging := make(chan struct{})
 	go func(ctx context.Context, l *supporting.Logging) {
@@ -88,7 +87,6 @@ func TestKafkaApi(t *testing.T) {
 	//инициализация модуля
 	kafkaApiModule, err := kafkaapi.New(
 		logging,
-		counting,
 		kafkaapi.WithHost(cfg.GetKafka().Host),
 		kafkaapi.WithPort(cfg.GetKafka().Port),
 		kafkaapi.WithGroupId(cfg.GetKafka().GroupId),

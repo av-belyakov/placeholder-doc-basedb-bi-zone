@@ -12,7 +12,6 @@ import (
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/decoderjsondocuments"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/countermessage"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/test/documentsgenerator"
 )
 
@@ -25,10 +24,8 @@ func TestAlertDocumentWithFile(t *testing.T) {
 	}
 
 	logging := documentsgenerator.NewLogging()
-	counting := countermessage.New(logging.GetChanToData())
-	counting.Start(ctx)
 
-	decoder := decoderjsondocuments.New(counting, logging)
+	decoder := decoderjsondocuments.New(logging)
 	go func() {
 		for {
 			select {

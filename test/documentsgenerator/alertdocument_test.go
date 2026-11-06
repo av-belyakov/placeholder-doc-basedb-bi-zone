@@ -35,7 +35,6 @@ func TestAlertDocument(t *testing.T) {
 	}()
 
 	logging := supporting.NewLogging()
-	counting := &supporting.Counting{}
 
 	go func(ctx context.Context, l *supporting.Logging) {
 		for {
@@ -65,7 +64,6 @@ func TestAlertDocument(t *testing.T) {
 		//инициализация модуля
 		kafkaApiModule, err := kafkaapi.New(
 			logging,
-			counting,
 			kafkaapi.WithNameRegionalObject("GCM-TEST"),
 			kafkaapi.WithHost("192.168.9.71"),
 			kafkaapi.WithPort(31792),
@@ -85,7 +83,7 @@ func TestAlertDocument(t *testing.T) {
 		for msg := range kafkaApiModule.GetChannelFromModule() {
 			t.Log("Received new message...")
 			t.Logf("Received message:%s\n\n", string(msg.Data))
-			decoder := decoderjsondocuments.New(counting, logging)
+			decoder := decoderjsondocuments.New(logging)
 			id, verifedBiZoneAlert, listRawFields, err := documentgenerator.BiZoneAlertsGenerator(decoder.Start(msg.Data))
 			assert.NoError(t, err)
 

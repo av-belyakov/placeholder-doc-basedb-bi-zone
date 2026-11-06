@@ -8,13 +8,11 @@ import (
 )
 
 // New настраивает новый модуль взаимодействия с API NATS
-func New(logger interfaces.Logger, counter interfaces.Counter, opts ...NatsApiOptions) (*apiNatsModule, error) {
+func New(logger interfaces.Logger, opts ...NatsApiOptions) (*apiNatsModule, error) {
 	api := &apiNatsModule{
 		settings: apiNatsSettings{
 			cachettl: 10,
 		},
-		//для подсчёта
-		counter: counter,
 		//для логирования
 		logger: logger,
 		//запросы в модуль

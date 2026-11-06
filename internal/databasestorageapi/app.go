@@ -7,9 +7,8 @@ import (
 )
 
 // New настраивает новый модуль взаимодействия с API Database
-func New(logger interfaces.Logger, counter interfaces.Counter, opts ...DatabaseStorageOptions) (*DatabaseStorage, error) {
+func New(logger interfaces.Logger, opts ...DatabaseStorageOptions) (*DatabaseStorage, error) {
 	dbs := &DatabaseStorage{
-		counter:  counter,
 		logger:   logger,
 		chInput:  make(chan SettingsChanInput),
 		chOutput: make(chan SettingsChanOutput),

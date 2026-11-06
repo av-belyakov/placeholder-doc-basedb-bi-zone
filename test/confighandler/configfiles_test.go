@@ -44,81 +44,13 @@ func TestConfigFileHandler(t *testing.T) {
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.NetworkHost},
-					expectedParameters: TestTypeElements{valueString: "192.168.9.45"},
-				},
-				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetCommon().Zabbix.NetworkPort},
-					expectedParameters: TestTypeElements{valueInt: 10051},
-				},
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.ZabbixHost},
-					expectedParameters: TestTypeElements{valueString: "test-uchet-db.cloud.gcm"},
-				},
-				// для отслеживания ошибок
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[0].EventType},
-					expectedParameters: TestTypeElements{valueString: "error"},
-				},
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[0].ZabbixKey},
-					expectedParameters: TestTypeElements{valueString: "placeholder_db_bizone.error"},
-				},
-				{
-					inputParameters:    TestTypeElements{valueBool: cfg.GetCommon().Zabbix.EventTypes[0].IsTransmit},
-					expectedParameters: TestTypeElements{valueBool: true},
-				},
-				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetCommon().Zabbix.EventTypes[0].Handshake.TimeInterval},
-					expectedParameters: TestTypeElements{valueInt: 0},
-				},
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[0].Handshake.Message},
-					expectedParameters: TestTypeElements{valueString: ""},
-				},
-				// для информационных сообщений о выполненной работе
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[1].EventType},
-					expectedParameters: TestTypeElements{valueString: "info"},
-				},
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[1].ZabbixKey},
-					expectedParameters: TestTypeElements{valueString: "placeholder_db_bizone.info"},
-				},
-				{
-					inputParameters:    TestTypeElements{valueBool: cfg.GetCommon().Zabbix.EventTypes[1].IsTransmit},
-					expectedParameters: TestTypeElements{valueBool: true},
-				},
-				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetCommon().Zabbix.EventTypes[1].Handshake.TimeInterval},
-					expectedParameters: TestTypeElements{valueInt: 0},
-				},
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[1].Handshake.Message},
-					expectedParameters: TestTypeElements{valueString: "I'm still alive"},
-				},
-				// для регулярного отстукивания что модуль еще работает
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[2].EventType},
-					expectedParameters: TestTypeElements{valueString: "handshake"},
-				},
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[2].ZabbixKey},
-					expectedParameters: TestTypeElements{valueString: "placeholder_db_bizone.handshake"},
-				},
-				{
-					inputParameters:    TestTypeElements{valueBool: cfg.GetCommon().Zabbix.EventTypes[2].IsTransmit},
-					expectedParameters: TestTypeElements{valueBool: true},
-				},
-				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetCommon().Zabbix.EventTypes[2].Handshake.TimeInterval},
-					expectedParameters: TestTypeElements{valueInt: 1},
-				},
-				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetCommon().Zabbix.EventTypes[2].Handshake.Message},
-					expectedParameters: TestTypeElements{valueString: "0"},
-				},
+				// тип логов info
+				// тип логов warning
+				// тип логов error
+
+				// тип логов events
+				// тип логов alert_raw_fields
+				// тип логов incident_raw_fields
 			}
 		},
 	}

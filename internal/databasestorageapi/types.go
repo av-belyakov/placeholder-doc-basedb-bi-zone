@@ -8,7 +8,6 @@ import (
 )
 
 type DatabaseStorage struct {
-	counter  interfaces.Counter
 	logger   interfaces.Logger
 	client   *elasticsearch.Client
 	settings settingsDatabaseStorage

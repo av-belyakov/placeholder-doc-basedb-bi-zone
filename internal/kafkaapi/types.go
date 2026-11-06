@@ -12,7 +12,6 @@ import (
 type kafkaApiModule struct {
 	topics       map[string]string
 	settings     kafkaApiSettings
-	counter      interfaces.Counter
 	logger       interfaces.Logger
 	consumer     *kafka.Reader
 	stopOnce     sync.Once

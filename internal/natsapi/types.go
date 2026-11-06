@@ -8,7 +8,6 @@ import (
 
 // apiNatsSettings настройки для API NATS
 type apiNatsModule struct {
-	counter       interfaces.Counter
 	logger        interfaces.Logger
 	natsConn      *nats.Conn
 	requests      map[string]string

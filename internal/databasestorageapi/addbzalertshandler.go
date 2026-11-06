@@ -111,8 +111,6 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 			dbs.logger.Send("error", err.Error())
 		}
 
-		//счетчик
-		dbs.counter.SendMessage("update count insert subject alerts to db", 1)
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'alert', insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
 
 		return err
@@ -163,8 +161,6 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 			return err
 		}
 
-		//счетчик
-		dbs.counter.SendMessage("update count insert subject alerts to db", 1)
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'alert', insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
 
 		//*******************************************
@@ -211,7 +207,6 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 		return err
 	}
 
-	dbs.counter.SendMessage("update count insert subject alerts to db", 1)
 	dbs.logger.Send(
 		"info",
 		fmt.Sprintf(

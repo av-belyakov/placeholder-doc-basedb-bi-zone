@@ -15,7 +15,6 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/dicontainer"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/wrappers"
 )
 
 type App struct {
@@ -44,27 +43,6 @@ func NewApp() *App {
 func (app *App) Start(ctx context.Context) {
 	// инициализация внутреннего роутера
 	app.appRouter = NewRouter(app.diContainer)
-
-	// настройка обёртки для взаимодействия с Zabbix
-	zabbixSettings := wrappers.WrappersZabbixInteractionSettings{
-		NetworkPort: app.diContainer.Configer().GetCommon().Zabbix.NetworkPort,
-		NetworkHost: app.diContainer.Configer().GetCommon().Zabbix.NetworkHost,
-		ZabbixHost:  app.diContainer.Configer().GetCommon().Zabbix.ZabbixHost,
-		EventTypes:  make([]wrappers.EventType, len(app.diContainer.Configer().GetCommon().Zabbix.EventTypes)),
-	}
-	for _, v := range app.diContainer.Configer().GetCommon().Zabbix.EventTypes {
-		zabbixSettings.EventTypes = append(zabbixSettings.EventTypes, wrappers.EventType{
-			IsTransmit: v.IsTransmit,
-			EventType:  v.EventType,
-			ZabbixKey:  v.ZabbixKey,
-			Handshake: wrappers.Handshake{
-				TimeInterval: v.Handshake.TimeInterval,
-				Message:      v.Handshake.Message,
-			},
-		})
-	}
-	// обертка для взаимодействия с Zabbix
-	wrappers.WrappersZabbixInteraction(ctx, zabbixSettings, app.diContainer.SimpleLogger(ctx), app.chanMessage)
 
 	// запуск сервера отладки
 	if app.diContainer.Configer().GetDebugServer().Enable {

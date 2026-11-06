@@ -7,10 +7,9 @@ import (
 )
 
 // New настраивает модуль взаимодействия с API Kafka
-func New(logger interfaces.Logger, counter interfaces.Counter, opts ...KafkaApiOptions) (*kafkaApiModule, error) {
+func New(logger interfaces.Logger, opts ...KafkaApiOptions) (*kafkaApiModule, error) {
 	api := &kafkaApiModule{
-		counter: counter,
-		logger:  logger,
+		logger: logger,
 		settings: kafkaApiSettings{
 			cachettl: 15,
 		},

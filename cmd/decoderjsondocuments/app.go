@@ -9,8 +9,8 @@ import (
 )
 
 // New конструктор нового обработчика JSON сообщения
-func New(counter interfaces.Counter, logger interfaces.Logger) *DecoderJsonDocuments {
-	return &DecoderJsonDocuments{logger: logger, counter: counter}
+func New(logger interfaces.Logger) *DecoderJsonDocuments {
+	return &DecoderJsonDocuments{logger: logger}
 }
 
 // Start инициализация обработки
@@ -45,9 +45,6 @@ func (s *DecoderJsonDocuments) Start(b []byte) chan interfaces.CustomJsonDecoder
 
 			_ = processingReflectSlice(chanInput, listSlice, "")
 		}
-
-		// счетчик обработанных событий
-		s.counter.SendMessage("update processed events", 1)
 
 		close(chanInput)
 	}()

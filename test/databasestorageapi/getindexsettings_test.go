@@ -34,16 +34,12 @@ func TestGetIndexSettings(t *testing.T) {
 	}()
 
 	logging := helpers.NewLogging()
-	counting := helpers.NewCounting()
 
-	go func(ctx context.Context, l interfaces.Logger, c *helpers.Counting) {
+	go func(ctx context.Context, l interfaces.Logger) {
 		for {
 			select {
 			case <-ctx.Done():
 				return
-
-			case count := <-c.GetChan():
-				fmt.Println("count.message:", count.Message, " count.Count", count.Count)
 
 			case msg := <-l.GetChan():
 				if msg.GetType() == "error" {
@@ -56,12 +52,11 @@ func TestGetIndexSettings(t *testing.T) {
 
 			}
 		}
-	}(ctx, logging, counting)
+	}(ctx, logging)
 
 	apiDBS, err := helpers.DataBaseConnectionInitialization(
 		ctx,
 		logging,
-		counting,
 		databasestorageapi.WithHost("datahook.cloud.gcm"),
 		databasestorageapi.WithPort(9200),
 		databasestorageapi.WithUser("writer"),

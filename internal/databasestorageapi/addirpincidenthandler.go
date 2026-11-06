@@ -111,8 +111,6 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 			dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 
-		// счетчик
-		dbs.counter.SendMessage("update count insert subject incident to db", 1)
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', insert new document to incidents key (id) '%s', special_uuid '%s', status code '%d'", newDocument.GetKey(), newDocument.GetSpecialUUID(), statusCode))
 
 		return supportingfunctions.CustomError(err)
@@ -163,8 +161,6 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 			return err
 		}
 
-		// счетчик
-		dbs.counter.SendMessage("update count insert subject incident to db", 1)
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', insert new document to incident key (id) '%s', status code '%d'", newDocument.GetKey(), statusCode))
 
 		//*******************************************
@@ -211,7 +207,6 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	dbs.counter.SendMessage("update count insert subject incident to db", 1)
 	dbs.logger.Send(
 		"info",
 		fmt.Sprintf(

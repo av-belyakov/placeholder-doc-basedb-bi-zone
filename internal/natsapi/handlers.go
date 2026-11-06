@@ -22,9 +22,6 @@ func (api *apiNatsModule) subscriptionHandler() {
 				SubjectType: k,
 				Data:        m.Data,
 			}
-
-			//счетчик принятых событий
-			api.counter.SendMessage("update accepted events", 1)
 		})
 		if err != nil {
 			api.logger.Send("error", supportingfunctions.CustomError(err).Error())

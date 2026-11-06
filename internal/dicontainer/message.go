@@ -8,7 +8,6 @@ import (
 	"github.com/av-belyakov/simplelogger/v2"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/confighandler"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/countermessage"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/elasticsearchapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/irpapi"
@@ -72,18 +71,6 @@ func (d *DiContainer) Logger(ctx context.Context) Logger {
 	return d.logger
 }
 
-// Counter счетчик сообщений
-func (d *DiContainer) Counter(ctx context.Context) Counter {
-	if d.counter == nil {
-		counter := countermessage.New(d.ch)
-		counter.Start(ctx)
-
-		d.counter = counter
-	}
-
-	return d.counter
-}
-
 // DbLogger запись логов в БД
 func (d *DiContainer) DbLogger() DbLogger {
 	if d.dbLogger == nil {
@@ -115,7 +102,6 @@ func (d *DiContainer) DbConnecter(ctx context.Context) DBConnecter {
 	if d.dbConnecter == nil {
 		apiDBS, err := databasestorageapi.New(
 			d.Logger(ctx),
-			d.Counter(ctx),
 			databasestorageapi.WithHost(d.Configer().GetStorageDB().Host),
 			databasestorageapi.WithPort(d.Configer().GetStorageDB().Port),
 			databasestorageapi.WithNameDB(d.Configer().GetStorageDB().NameDB),
@@ -142,7 +128,6 @@ func (d *DiContainer) NatsConnecter(ctx context.Context) NatsConnecter {
 	if d.natsConnecter == nil {
 		apiNats, err := natsapi.New(
 			d.Logger(ctx),
-			d.Counter(ctx),
 			natsapi.WithHost(d.Configer().GetNATS().Host),
 			natsapi.WithPort(d.Configer().GetNATS().Port),
 			natsapi.WithCacheTTL(d.Configer().GetNATS().CacheTTL),
@@ -169,7 +154,6 @@ func (d *DiContainer) KafkaConnecter(ctx context.Context) KafkaConnecter {
 	if d.kafkaConnecter == nil {
 		apiKafka, err := kafkaapi.New(
 			d.Logger(ctx),
-			d.Counter(ctx),
 			kafkaapi.WithHost(d.Configer().GetKafka().Host),
 			kafkaapi.WithPort(d.Configer().GetKafka().Port),
 			kafkaapi.WithCacheTTL(d.Configer().GetKafka().CacheTTL),

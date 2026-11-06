@@ -111,8 +111,6 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 			dbs.logger.Send("error", supportingfunctions.CustomError(err).Error())
 		}
 
-		//счетчик
-		dbs.counter.SendMessage("update count insert subject cases to db", 1)
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'case', insert new document to cases id:'%s', status code:'%d'", newDocument.GetID(), statusCode))
 
 		return
@@ -162,8 +160,6 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 			return
 		}
 
-		//счетчик
-		dbs.counter.SendMessage("update count insert subject cases to db", 1)
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'case', insert new document to cases id:'%s', status code:'%d'", newDocument.GetID(), statusCode))
 
 		//*******************************************
@@ -208,7 +204,6 @@ func (dbs *DatabaseStorage) addBiZoneCases(ctx context.Context, a any) {
 		return
 	}
 
-	dbs.counter.SendMessage("update count insert subject alerts to db", 1)
 	dbs.logger.Send(
 		"info",
 		fmt.Sprintf(

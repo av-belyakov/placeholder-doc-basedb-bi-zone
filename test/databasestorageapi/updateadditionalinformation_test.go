@@ -58,16 +58,12 @@ func TestUpdateSensorInformationToIncident(t *testing.T) {
 	}()
 
 	logging := helpers.NewLogging()
-	counting := helpers.NewCounting()
 
-	go func(ctx context.Context, l interfaces.Logger, c *helpers.Counting) {
+	go func(ctx context.Context, l interfaces.Logger) {
 		for {
 			select {
 			case <-ctx.Done():
 				return
-
-			case count := <-c.GetChan():
-				fmt.Println("count.message:", count.Message, " count.Count", count.Count)
 
 			case msg := <-l.GetChan():
 				if msg.GetType() == "error" {
@@ -80,11 +76,10 @@ func TestUpdateSensorInformationToIncident(t *testing.T) {
 
 			}
 		}
-	}(ctx, logging, counting)
+	}(ctx, logging)
 
 	apiDBS, err := databasestorageapi.New(
 		logging,
-		counting,
 		databasestorageapi.WithHost(cfg.StorageDB.Host),
 		databasestorageapi.WithPort(cfg.StorageDB.Port),
 		databasestorageapi.WithNameDB(cfg.StorageDB.NameDB),

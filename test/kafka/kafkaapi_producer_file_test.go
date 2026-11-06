@@ -47,16 +47,12 @@ func TestKafkaProducerFile(t *testing.T) {
 	}()
 
 	logging := helpers.NewLogging()
-	counting := helpers.NewCounting()
 
-	go func(ctx context.Context, l interfaces.Logger, c *helpers.Counting) {
+	go func(ctx context.Context, l interfaces.Logger) {
 		for {
 			select {
 			case <-ctx.Done():
 				return
-
-			case count := <-c.GetChan():
-				fmt.Println("count.message:", count.Message, " count.Count", count.Count)
 
 			case msg := <-l.GetChan():
 				fmt.Println("LOG:", msg)
@@ -67,7 +63,7 @@ func TestKafkaProducerFile(t *testing.T) {
 
 			}
 		}
-	}(ctx, logging, counting)
+	}(ctx, logging)
 
 	t.Run("Тест 2. Чтение тестового файла с объектом типа 'alerts'", func(t *testing.T) {
 		fb, err = os.ReadFile("../kafka/incoming_alert_1.json")
@@ -77,7 +73,7 @@ func TestKafkaProducerFile(t *testing.T) {
 	})
 
 	t.Run("Тест 3. Генерирование нового объекта типа datamodels.VerifiedBiZoneAlert", func(t *testing.T) {
-		decoder := decoderjsondocuments.New(counting, logging)
+		decoder := decoderjsondocuments.New(logging)
 		id, verifedBiZoneAlert, _, err = documentgenerator.BiZoneAlertsGenerator(decoder.Start(fb))
 		assert.NoError(t, err)
 		assert.NotEqual(t, id, "")

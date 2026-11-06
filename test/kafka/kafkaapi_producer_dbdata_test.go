@@ -54,17 +54,11 @@ func TestProducerDBData(t *testing.T) {
 	}()
 
 	logging := helpers.NewLogging()
-	counting := helpers.NewCounting()
 
-	go func(ctx context.Context, l interfaces.Logger, c *helpers.Counting) {
+	go func(ctx context.Context, l interfaces.Logger) {
 		for {
 			select {
 			case <-ctx.Done():
-				return
-
-			case count := <-c.GetChan():
-				fmt.Println("count.message:", count.Message, " count.Count", count.Count)
-
 				return
 
 			case msg := <-l.GetChan():
@@ -78,13 +72,12 @@ func TestProducerDBData(t *testing.T) {
 
 			}
 		}
-	}(ctx, logging, counting)
+	}(ctx, logging)
 
 	t.Run("Тест 1. Подключение к БД", func(t *testing.T) {
 		apiDBS, err = helpers.DataBaseConnectionInitialization(
 			ctx,
 			logging,
-			counting,
 			databasestorageapi.WithHost("192.168.9.208"),
 			databasestorageapi.WithPort(9200),
 			databasestorageapi.WithUser("placeholder-docbase-db"),

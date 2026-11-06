@@ -8,35 +8,6 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
 )
 
-// *** для счётчика ***
-type Counting struct {
-	ch chan struct {
-		Message string
-		Count   int
-	}
-}
-
-func NewCounting() *Counting {
-	return &Counting{ch: make(chan struct {
-		Message string
-		Count   int
-	})}
-}
-
-func (c *Counting) SendMessage(msg string, count int) {
-	c.ch <- struct {
-		Message string
-		Count   int
-	}{Message: msg, Count: count}
-}
-
-func (c *Counting) GetChan() <-chan struct {
-	Message string
-	Count   int
-} {
-	return c.ch
-}
-
 // *** для сообщений ***
 type Message struct {
 	Type, Message string
@@ -80,7 +51,6 @@ func (l *Logging) Send(msgType, msgData string) {
 func DataBaseConnectionInitialization(
 	ctx context.Context,
 	logging interfaces.Logger,
-	counting interfaces.Counter,
 	opts ...databasestorageapi.DatabaseStorageOptions,
 ) (*databasestorageapi.DatabaseStorage, error) {
 	var (
@@ -88,7 +58,7 @@ func DataBaseConnectionInitialization(
 		err    error
 	)
 
-	apiDBS, err = databasestorageapi.New(logging, counting, opts...)
+	apiDBS, err = databasestorageapi.New(logging, opts...)
 	if err != nil {
 		return apiDBS, err
 	}

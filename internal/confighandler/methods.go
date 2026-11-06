@@ -46,11 +46,6 @@ func (c *Config) GetListLogs() []*LogSet {
 	return c.Common.Logs
 }
 
-// GetZabbix настройки взаимодействия с Zabbix
-func (c *Config) GetZabbix() ZabbixOptions {
-	return c.Common.Zabbix
-}
-
 // GetDebugServer настройки доступа к БД для логирования данных
 func (cfg *Config) GetDebugServer() CfgDebugServer {
 	return cfg.DebugServer

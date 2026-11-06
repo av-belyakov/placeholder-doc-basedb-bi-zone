@@ -16,7 +16,6 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/confighandler"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/countermessage"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/databasestorageapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/test/documentsgenerator"
@@ -49,12 +48,9 @@ func TestUpdateIncidentFromFile(t *testing.T) {
 	}
 
 	logging := documentsgenerator.NewLogging()
-	counting := countermessage.New(logging.GetChanToData())
-	counting.Start(ctx)
 
 	apiDBS, err := databasestorageapi.New(
 		logging,
-		counting,
 		databasestorageapi.WithHost(cfg.GetStorageDB().Host),
 		databasestorageapi.WithPort(cfg.GetStorageDB().Port),
 		databasestorageapi.WithNameDB(cfg.GetStorageDB().NameDB),
@@ -70,7 +66,7 @@ func TestUpdateIncidentFromFile(t *testing.T) {
 		log.Fatal("start module 'databasestorageapi':", err)
 	}
 
-	decoder := decoderjsondocuments.New(counting, logging)
+	decoder := decoderjsondocuments.New(logging)
 	go func() {
 		for {
 			select {
