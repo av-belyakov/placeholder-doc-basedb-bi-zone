@@ -1,7 +1,5 @@
 package dicontainer
 
-import "github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
-
 // DiContainer DI контейнер
 type DiContainer struct {
 	logger       Logger
@@ -15,5 +13,4 @@ type DiContainer struct {
 	kafkaConnecter KafkaConnecter
 
 	rootDir string
-	ch      chan interfaces.Messager
 }

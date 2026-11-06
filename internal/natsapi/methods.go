@@ -66,6 +66,8 @@ func (api *apiNatsModule) Start(ctx context.Context) error {
 	//обработчик информации полученной изнутри приложения
 	go api.incomingInformationHandler(ctx)
 
+	api.logger.Send("info", fmt.Sprintf("start client for interacting with the NATS server %s:%d", api.settings.host, api.settings.port))
+
 	context.AfterFunc(ctx, func() {
 		nc.Drain()
 	})

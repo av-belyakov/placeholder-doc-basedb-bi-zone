@@ -62,7 +62,7 @@ func (d *DiContainer) SimpleLogger(ctx context.Context) SimpleLogger {
 // Logger основное логирование
 func (d *DiContainer) Logger(ctx context.Context) Logger {
 	if d.logger == nil {
-		logger := logginghandler.New(d.SimpleLogger(ctx), d.ch)
+		logger := logginghandler.New(d.SimpleLogger(ctx))
 		logger.Start(ctx)
 
 		d.logger = logger

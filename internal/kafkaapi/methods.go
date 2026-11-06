@@ -66,12 +66,14 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 
 	kafkaReaderCfg := kafka.ReaderConfig{
 		Brokers:     []string{fmt.Sprintf("%s:%d", api.settings.host, api.settings.port)},
-		GroupID:     api.settings.groupId, // параметр 'StartOffset' не работает, для тестов лучше менять GroupId на произвольный
+		GroupID:     api.settings.groupId, // fmt.Sprintf("test-group-%s", uuid.New().String()), параметр 'StartOffset' не работает, для тестов лучше менять GroupId на произвольный
 		GroupTopics: topics,
 		Dialer:      dialer,
 		// ниже параметр только для тестов, он сообщает Kafka что потребитель готов принимать
 		// все данные повторно, с самого начала
-		StartOffset: kafka.FirstOffset,
+		//StartOffset: kafka.FirstOffset,
+		//Logger:      kafka.LoggerFunc(api.logFunc),    // использовать исключительно для отладки
+		//ErrorLogger: kafka.LoggerFunc(api.logFuncErr), // использовать исключительно для отладки
 	}
 
 	if err := kafkaReaderCfg.Validate(); err != nil {
@@ -83,6 +85,8 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 	api.wg.Add(1)
 	//обработчик подписок
 	go api.topicsHandler(ctx)
+
+	api.logger.Send("info", fmt.Sprintf("start kafka consumer clientId '%s', groupId '%s'", dialer.ClientID, kafkaReaderCfg.GroupID))
 
 	return nil
 }

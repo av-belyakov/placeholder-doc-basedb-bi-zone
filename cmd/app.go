@@ -12,13 +12,11 @@ import (
 	"golang.org/x/sync/errgroup"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/dicontainer"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 type App struct {
-	chanMessage chan interfaces.Messager
 	diContainer *dicontainer.DiContainer
 	appRouter   *ApplicationRouter
 }
@@ -30,10 +28,8 @@ func NewApp() *App {
 		log.Fatalf("getting the root directory %s", err.Error())
 	}
 
-	ch := make(chan interfaces.Messager)
 	app := &App{
-		chanMessage: ch,
-		diContainer: dicontainer.NewDIContainer(rootDirPath, ch),
+		diContainer: dicontainer.NewDIContainer(rootDirPath),
 	}
 
 	return app
@@ -51,7 +47,7 @@ func (app *App) Start(ctx context.Context) {
 
 	// вывод информационного сообщения при старте приложения
 	msg := getInformationMessage(app.diContainer.Configer().Get())
-	app.diContainer.SimpleLogger(ctx).Write("info", strings.ToLower(msg))
+	app.diContainer.Logger(ctx).Send("info", strings.ToLower(msg))
 
 	if err := app.appRouter.Start(ctx); err != nil {
 		log.Fatalf("launching the application router %s", err.Error())

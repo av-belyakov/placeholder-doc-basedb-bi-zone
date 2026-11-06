@@ -62,3 +62,13 @@ func (api *kafkaApiModule) topicsHandler(ctx context.Context) {
 		}
 	}
 }
+
+// logFunc запись информационных логов
+func (api *kafkaApiModule) logFunc(msg string, a ...any) {
+	api.logger.Send("info", fmt.Sprintf(msg, a...))
+}
+
+// logFuncErr запись логов ошибок
+func (api *kafkaApiModule) logFuncErr(msg string, a ...any) {
+	api.logger.Send("error", fmt.Sprintf(msg, a...))
+}
