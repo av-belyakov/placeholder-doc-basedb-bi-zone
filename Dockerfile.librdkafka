@@ -1,4 +1,4 @@
-ARG BUILD_IMAGE_NAME=golang:1.26.5-alpine
+ARG BUILD_IMAGE_NAME=golang:1.27.1-alpine
 ARG IMAGE_NAME=alpine
 
 FROM ${BUILD_IMAGE_NAME} AS packages_image
@@ -35,7 +35,8 @@ RUN git clone -b ${BRANCH} http://${USERNAME}:${USERPASSWD}@192.168.9.33/a.belya
     #git clone -b ${BRANCH} http://${USERNAME}:${USERPASSWD}@gitlab.cloud.gcm/a.belyakov/placeholder_doc-basedb_bi.zone.git ./src/${VERSION}/ && \
     # брать исходный код с репозитория на github.com 
     #git clone -b ${BRANCH} https://github.com/av-belyakov/placeholder_doc-basedb_bi.zone.git  ./src/${VERSION}/ && \
-    go build -C ./src/${VERSION}/cmd/ -o ../app -tags musl
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    go build -trimpath -ldflags="-s -w -X main.version=$(git describe --tags)" -C ./src/${VERSION}/cmd/ -o ../app -tags musl
 
 FROM ${IMAGE_NAME}
 LABEL author="Artemij Belyakov"

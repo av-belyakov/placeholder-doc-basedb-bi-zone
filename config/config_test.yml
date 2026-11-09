@@ -17,8 +17,8 @@ KAFKA:
   host: 192.168.9.73
   port: 32704
   cache_ttl: 3600
-  group_id: spring.kafka.bootstrap.servers
-  client_id: placeholder-doc-basedb-bizone.test
+  group_id: placeholder-doc-basedb-bizone.group
+  client_id: placeholder-doc-basedb-bizone.client
   topics:
     alerts: alertmgr-alerts
     incidents: socd-soar-prod-issue-v1

@@ -256,15 +256,13 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) err
 	//обновление информации в БД
 	bodyUpdate := strings.NewReader(fmt.Sprintf("{\"doc\": %s}", string(request)))
 
-	fmt.Printf("\t---DatabaseStorage.addSensorInformation обновление информации о сенсорах, готовый объект:'%s'\n", fmt.Sprintf("{\"doc\": %s}", string(request)))
+	//fmt.Printf("\t---DatabaseStorage.addSensorInformation обновление информации о сенсорах, готовый объект:'%s'\n", fmt.Sprintf("{\"doc\": %s}", string(request)))
 
 	for _, underlineId := range underlineIds {
 		res, err := dbs.client.Update(currentIndex, underlineId, bodyUpdate)
 		if err != nil {
 			dbs.logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("'rootId '%s', update database - '%w'", newDocument.TaskId, err)).Error())
 		}
-
-		fmt.Printf("\t---DatabaseStorage.addSensorInformation статус код ответа:'%d', response:'%+v'\n", res.StatusCode, res.Body)
 
 		if res != nil && res.StatusCode != http.StatusOK {
 			if res.Body == nil {

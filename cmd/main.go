@@ -9,7 +9,10 @@ import (
 	"time"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/appversion"
 )
+
+var version string
 
 func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
@@ -34,6 +37,7 @@ func main() {
 		close(done)
 	}()
 
+	version, _ = appversion.GetAppVersion()
 	NewApp().Start(ctx)
 
 	<-done

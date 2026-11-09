@@ -116,6 +116,8 @@ func (r *ApplicationRouter) Start(ctx context.Context) error {
 						return
 					}
 
+					fmt.Printf("--- ApplicationRouter.Start id: %s, type: '%s'\n", data.Data.Id, data.Type)
+
 					// сохраняем объект для отложеного выполнения
 					// ожидание истечения времени из параметра storageObject[n].timeSending
 					storage.AddObject(

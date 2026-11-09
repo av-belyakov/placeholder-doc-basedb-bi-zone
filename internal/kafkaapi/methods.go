@@ -11,6 +11,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"uuid"
 
 	"github.com/segmentio/kafka-go"
 	"github.com/segmentio/kafka-go/sasl/plain"
@@ -33,7 +34,11 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 		topics = append(topics, topic)
 	}
 
+	fmt.Println("kafkaApiModule.StartConsumer api.settings.clientId:", api.settings.clientId)
+	fmt.Println("kafkaApiModule.StartConsumer api.settings.groupId:", api.settings.groupId)
+
 	dialer := &kafka.Dialer{
+		//ClientID: fmt.Sprintf("test-group-%s", uuid.New().String()), // изменение ClientID на произвольный к сожалению не стимулирует kafka отправлять сообщения повторно
 		ClientID:  cmp.Or(api.settings.clientId, "placeholder-doc-basedb-bizone"),
 		Timeout:   10 * time.Second,
 		DualStack: true, // использовать или IPv4 или IPv6
@@ -65,15 +70,22 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 	}
 
 	kafkaReaderCfg := kafka.ReaderConfig{
-		Brokers:     []string{fmt.Sprintf("%s:%d", api.settings.host, api.settings.port)},
-		GroupID:     api.settings.groupId, // fmt.Sprintf("test-group-%s", uuid.New().String()), параметр 'StartOffset' не работает, для тестов лучше менять GroupId на произвольный
+		Brokers: []string{fmt.Sprintf("%s:%d", api.settings.host, api.settings.port)},
+		//GroupID: api.settings.groupId,
+		GroupID:     fmt.Sprintf("placeholder-test-group-%s", uuid.New().String()), // параметр 'StartOffset' не работает, для тестов лучше менять GroupId на произвольный
 		GroupTopics: topics,
 		Dialer:      dialer,
 		// ниже параметр только для тестов, он сообщает Kafka что потребитель готов принимать
 		// все данные повторно, с самого начала
 		//StartOffset: kafka.FirstOffset,
-		//Logger:      kafka.LoggerFunc(api.logFunc),    // использовать исключительно для отладки
-		//ErrorLogger: kafka.LoggerFunc(api.logFuncErr), // использовать исключительно для отладки
+
+		// инициализация записи логов соединения, лучше использовать только для отладки
+		//Logger: kafka.LoggerFunc(func(msg string, a ...any) {
+		//	api.logger.Send("info", fmt.Sprintf(msg, a...))
+		//}), // logFunc запись информационных логов
+		//ErrorLogger: kafka.LoggerFunc(func(msg string, a ...any) {
+		//	api.logger.Send("error", fmt.Sprintf(msg, a...))
+		//}), // logFuncErr запись логов ош
 	}
 
 	if err := kafkaReaderCfg.Validate(); err != nil {
