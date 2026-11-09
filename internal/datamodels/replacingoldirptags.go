@@ -5,25 +5,6 @@ import (
 	"reflect"
 )
 
-// ReplacingOldIRPTags заменяет или добавляет значения свойства []IRPTagType
-func (cd *BiZoneIRPCaseData) ReplacingOldIRPTags(incomingTypes []IRPTagType) int {
-	var countReplacingFields int
-
-	for _, incomingType := range incomingTypes {
-		index, isExist := compareTag(incomingType, cd.Tags)
-		if isExist {
-			countReplacingFields += cd.Tags[index].ReplacingOldIrpTag(incomingType)
-
-			continue
-		}
-
-		cd.Tags = append(cd.Tags, incomingType)
-		countReplacingFields++
-	}
-
-	return countReplacingFields
-}
-
 // ReplacingOldIrpTag заменяет старые значения типа BiZoneTag новыми
 func (t *IRPTagType) ReplacingOldIrpTag(incomingType IRPTagType) int {
 	var countReplacingFields int
