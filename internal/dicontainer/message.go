@@ -22,12 +22,12 @@ func (d *DiContainer) Configer() Configer {
 	if d.configer == nil {
 		rootPath, err := supportingfunctions.GetPathRoot(d.rootDir)
 		if err != nil {
-			log.Fatalf("error, it is impossible to form root path (%s)", err.Error())
+			log.Fatalf("it is impossible to form root path (%s)", err.Error())
 		}
 
 		cfg, err := confighandler.New(rootPath)
 		if err != nil {
-			log.Fatal("error module 'confighandler':", err)
+			log.Fatal("module 'confighandler', reading the configuration file ", err)
 		}
 
 		d.configer = cfg
@@ -47,7 +47,7 @@ func (d *DiContainer) SimpleLogger(ctx context.Context) SimpleLogger {
 		opts := simplelogger.CreateOptions(listLog...)
 		simpleLogger, err := simplelogger.NewSimpleLogger(ctx, d.rootDir, opts)
 		if err != nil {
-			log.Fatal("error module 'simplelogger':", err)
+			log.Fatal("module 'simplelogger' ", err)
 		}
 
 		d.simpleLogger = simpleLogger
@@ -88,7 +88,7 @@ func (d *DiContainer) DbLogger() DbLogger {
 			NameRegionalObject: nameRegionalObject,
 		})
 		if err != nil {
-			log.Fatal("error module 'elasticsearchapi':", err)
+			log.Fatal("module 'elasticsearchapi' ", err)
 		}
 
 		d.dbLogger = conn
@@ -110,11 +110,11 @@ func (d *DiContainer) DbConnecter(ctx context.Context) DBConnecter {
 			databasestorageapi.WithStorage(d.Configer().GetStorageDB().Storage),
 			databasestorageapi.WithMaxGetDocumentSize(15))
 		if err != nil {
-			log.Fatal("error initialization module 'db':", err)
+			log.Fatal("initialization module 'db' ", err)
 		}
 
 		if err := apiDBS.Start(ctx); err != nil {
-			log.Fatal("error start module 'db':", err)
+			log.Fatal("start module 'db' ", err)
 		}
 
 		d.dbConnecter = apiDBS
@@ -136,11 +136,11 @@ func (d *DiContainer) NatsConnecter(ctx context.Context) NatsConnecter {
 			natsapi.WithNameRegionalObject(d.Configer().GetCommon().RegionalObject),
 		)
 		if err != nil {
-			log.Fatal("error initialization module 'natsapi':", err)
+			log.Fatal("initialization module 'natsapi' ", err)
 		}
 
 		if err = apiNats.Start(ctx); err != nil {
-			log.Fatal("error start module 'natsapi':", err)
+			log.Fatal("start module 'natsapi' ", err)
 		}
 
 		d.natsConnecter = apiNats
@@ -169,11 +169,11 @@ func (d *DiContainer) KafkaConnecter(ctx context.Context) KafkaConnecter {
 			kafkaapi.WithNameRegionalObject(d.Configer().GetCommon().RegionalObject),
 		)
 		if err != nil {
-			log.Fatal("error initialization module 'kafkaapi':", err)
+			log.Fatal("initialization module 'kafkaapi' ", err)
 		}
 
 		if err = apiKafka.StartConsumer(ctx); err != nil {
-			log.Fatal("error start module 'kafkaapi':", err)
+			log.Fatal("start module 'kafkaapi' ", err)
 		}
 
 		d.kafkaConnecter = apiKafka
@@ -192,7 +192,7 @@ func (d *DiContainer) IRPConnecter() IRPConnecter {
 			irpapi.WithConnectionTimeout(d.Configer().GetIRP().ConnectionTimeout),
 		)
 		if err != nil {
-			log.Fatal("error initialization module 'irpapi':", err)
+			log.Fatal("initialization module 'irpapi' ", err)
 		}
 
 		d.irpConnecter = apiIrp
