@@ -35,8 +35,6 @@ func TestAppWithOutKafka(t *testing.T) {
 		log.Fatalln(err)
 	}
 
-	fmt.Println("config storage DB:", cfg.StorageDB)
-
 	apiIrp, err := irpapi.New(
 		irpapi.WithAPIKey(cfg.GetIRP().ApiToken),
 		irpapi.WithHost(cfg.GetIRP().Host),
@@ -77,7 +75,10 @@ func TestAppWithOutKafka(t *testing.T) {
 				return
 
 			case msg := <-logger.GetChan():
-				fmt.Printf("%s %s", msg.GetType(), msg.GetMessage())
+				fmt.Printf("LOG: %s %s\n", msg.GetType(), msg.GetMessage())
+
+			case <-apiDBS.GetChannelFromModule():
+				// так как нужно принимать из модуля запросы на обогащение информации
 
 			}
 		}
@@ -102,7 +103,11 @@ func TestAppWithOutKafka(t *testing.T) {
 			case <-ctx.Done():
 				return
 
-			case id := <-ch:
+			case id, ok := <-ch:
+				if !ok {
+					return
+				}
+
 				time.Sleep(time.Second)
 
 				if ctx.Err() != nil {
@@ -114,13 +119,13 @@ func TestAppWithOutKafka(t *testing.T) {
 				if err != nil {
 					fmt.Println(err)
 
-					return
+					continue
 				}
 
 				if statusCode != http.StatusOK {
-					fmt.Printf("status code %d %s", statusCode, string(response))
+					fmt.Printf("принят код статуса %d %s\n", statusCode, string(response))
 
-					return
+					continue
 				}
 
 				fmt.Printf("генерируем проверенную структуру для инцидента '%s'\n", id)
@@ -128,15 +133,13 @@ func TestAppWithOutKafka(t *testing.T) {
 				if err != nil {
 					fmt.Println(err)
 
-					return
+					continue
 				}
 
 				fmt.Printf("загрузка инцидента '%s' в базу данных\n", id)
 				err = apiDBS.TestAddIRPIncident(ctx, verifiedBiZoneIncident)
 				if err != nil {
 					fmt.Println(err)
-
-					return
 				}
 
 				numberIncidentsHandled++
@@ -145,8 +148,6 @@ func TestAppWithOutKafka(t *testing.T) {
 	})
 
 	wg.Wait()
-
-	fmt.Println("111")
 
 	chDone <- struct{}{}
 
@@ -183,7 +184,7 @@ func getIncidentsId(ctx context.Context, file string, count int, ch chan<- strin
 			default:
 				if scanner.Scan() {
 					if count != 0 && num == count {
-						break
+						return
 					}
 
 					num++
@@ -196,7 +197,6 @@ func getIncidentsId(ctx context.Context, file string, count int, ch chan<- strin
 				}
 			}
 		}
-
 	}()
 
 	return nil
