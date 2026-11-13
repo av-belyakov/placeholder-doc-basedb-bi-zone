@@ -123,17 +123,16 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 	}
 
 	//ищем объект с таким же идентификатором как и принятый в обработку объект
-	res, err := dbs.GetDocument(
-		ctx,
-		indexesOnlyCurrentYear,
-		strings.NewReader(
-			fmt.Sprintf(
-				`{
-					"query": {
-						"bool": {
-							"must": [{"match": {"uuid": "%s"}}]}}}`,
-				newDocument.GetUUID())),
-		0)
+	query := strings.NewReader(fmt.Sprintf(
+		`{
+		    "query": {
+			  "term": {
+			    "uuid.keyword": "%s"
+			  }
+		    }
+		}`,
+		newDocument.GetUUID()))
+	res, err := dbs.GetDocument(ctx, indexesOnlyCurrentYear, query, 0)
 	if err != nil {
 		err = supportingfunctions.CustomError(err)
 		dbs.logger.Send("error", err.Error())

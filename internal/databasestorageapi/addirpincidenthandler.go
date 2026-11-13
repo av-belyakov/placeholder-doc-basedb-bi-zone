@@ -123,23 +123,24 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 	}
 
 	// ищем объект с таким же идентификатором как и принятый в обработку объект
-	res, err := dbs.GetDocument(
-		ctx,
-		indexesOnlyCurrentYear,
-		strings.NewReader(
-			fmt.Sprintf(
-				`{
-					"query": {
-						"bool": {
-							"must": [{"match": {"key": "%s"}}]}}}`,
-				newDocument.GetKey())),
-		0)
+	query := strings.NewReader(fmt.Sprintf(
+		`{
+		    "query": {
+			  "term": {
+			    "key.keyword": "%s"
+			  }
+		    }
+		}`,
+		newDocument.GetKey()))
+	res, err := dbs.GetDocument(ctx, indexesOnlyCurrentYear, query, 0)
 	if err != nil {
 		err = supportingfunctions.CustomError(err)
 		dbs.logger.Send("error", err.Error())
 
 		return err
 	}
+
+	fmt.Printf("---- ищем инцидент с идентификатором '%s'\n", newDocument.Key)
 
 	response := ResponseVerifiedIRPIncidents{}
 	if err = json.Unmarshal(res, &response); err != nil {
@@ -149,7 +150,9 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	// вставка выполняется только когда не найден искомый документ
+	fmt.Printf("---- вставка выполняется только когда не найден искомый инцидент, в результате поиска инцидента '%s' совпадений найдено %d\n", newDocument.Key, response.Options.Total.Value)
+
+	// вставка выполняется только когда не найден искомый инцидент
 	if response.Options.Total.Value == 0 {
 		//
 		// вставка документа

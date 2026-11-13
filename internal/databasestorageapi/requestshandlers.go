@@ -291,8 +291,22 @@ func (dbs *DatabaseStorage) GetUnderlineId(ctx context.Context, indexName, speci
 	ctx, cancel := context.WithTimeout(ctx, time.Second*15)
 	defer cancel()
 
+	/*
+		поправил запрос для поиска информации об инциденте, теперь надо тестировать дальше
+
+		кроме того таже ошибка есть и в другом модуле, добавления кейсов в эластик, нужно тоже поправить
+	*/
+
 	//выполняем поиск _id индекса
-	query := strings.NewReader(fmt.Sprintf("{\"query\": {\"bool\": {\"must\": [{\"match\": {\"@special_uuid\": \"%s\"}}]}}}", specialUuid))
+	query := strings.NewReader(fmt.Sprintf(
+		`{
+		    "query": {
+			  "term": {
+			    "@special_uuid.keyword": "%s"
+			  }
+		    }
+		}`,
+		specialUuid))
 	res, err := dbs.client.Search(
 		dbs.client.Search.WithContext(ctx),
 		dbs.client.Search.WithIndex(indexName),
@@ -339,7 +353,15 @@ func (dbs *DatabaseStorage) GetUnderlineIds(ctx context.Context, indexName, spec
 	var ids []string
 
 	//выполняем поиск _id индекса
-	query := strings.NewReader(fmt.Sprintf("{\"query\": {\"bool\": {\"must\": [{\"match\": {\"@special_uuid\": \"%s\"}}]}}}", specialUuid))
+	query := strings.NewReader(fmt.Sprintf(
+		`{
+		    "query": {
+			  "term": {
+			    "@special_uuid.keyword": "%s"
+			  }
+		    }
+		}`,
+		specialUuid))
 	res, err := dbs.client.Search(
 		dbs.client.Search.WithContext(ctx),
 		dbs.client.Search.WithIndex(indexName),
@@ -386,7 +408,15 @@ func (dbs *DatabaseStorage) SearchGeoIPInformation(ctx context.Context, indexNam
 	defer ctxCancel()
 
 	geoIpInformation := make([]datamodels.IpAddressInformation, 0)
-	query := strings.NewReader(fmt.Sprintf("{\"query\": {\"bool\": {\"must\": [{\"match\": {\"@special_uuid\": \"%s\"}}]}}}", specialUuid))
+	query := strings.NewReader(fmt.Sprintf(
+		`{
+		    "query": {
+			  "term": {
+			    "@special_uuid.keyword": "%s"
+			  }
+		    }
+		}`,
+		specialUuid))
 
 	//выполняем поиск _id индекса
 	res, err := dbs.client.Search(

@@ -23,6 +23,11 @@ func (vi *VerifiedBiZoneIRPIncident) ReplacingOldIRPIncident(incomingType Verifi
 				continue
 			}
 
+			// пропускае поле 'key' так как оно содержит уникальный идентификатор инцидента
+			if typeOfCurrentStruct.Field(i).Name == "key" {
+				continue
+			}
+
 			if typeOfCurrentStruct.Field(i).Name == "IssueTypeRef" {
 				if data, ok := newStruct.Field(j).Interface().(IssueTypeRefType); ok {
 					replacingFields = append(replacingFields, vi.IssueTypeRef.ReplacingOldIRPIncidentIssueTypeRef(data)...)
