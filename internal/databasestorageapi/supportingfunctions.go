@@ -2,11 +2,43 @@ package databasestorageapi
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/elastic/go-elasticsearch/v9/esapi"
 
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/request"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
+
+// sendAdditionalInformationRequest
+func sendAdditionalInformationRequest(
+	id string,
+	doc *datamodels.VerifiedBiZoneIRPIncident,
+	getChan func() chan SettingsChanOutput,
+	logger interfaces.Logger) {
+	// обогащение кейса дополнительной информацией о локальном место положении ip адресов
+	listIp := documentgenerator.GetListIPAddr(doc.GetAdditionalInformation().GetIpAddressesInformation())
+	ok, err := sendGeoIpRequest(id, listIp, getChan)
+	if err != nil {
+		logger.Send("error", supportingfunctions.CustomError(err).Error())
+	}
+	if ok {
+		logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
+	}
+
+	// обогащение кейса дополнительной информацией по расположению сенсоров
+	listSensor := documentgenerator.GetListSensorId(doc.GetAdditionalInformation().GetSensorsInformation())
+	ok, err = sendSensorInformationRequest(id, listSensor, getChan)
+	if err != nil {
+		logger.Send("error", supportingfunctions.CustomError(err).Error())
+	}
+	if ok {
+		logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', we are sending a request to search for information on the following list of sensors: %#v", listSensor))
+	}
+}
 
 // sendGeoIpRequest запрос для обогащения кейса дополнительной информацией о локальном местоположении ip адресов
 func sendGeoIpRequest(id string, list []string, getChan func() chan SettingsChanOutput) (bool, error) {

@@ -8,11 +8,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
+
+// TestAddIRPIncident использовать только в тестах
+func (dbs *DatabaseStorage) TestAddIRPIncident(ctx context.Context, a any) error {
+	return dbs.addIRPIncident(ctx, a)
+}
 
 // addIRPIncident добавление объекта типа 'incident'
 func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
@@ -66,30 +69,10 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		}
 	}
 
-	defer func(document *datamodels.VerifiedBiZoneIRPIncident, getChan func() chan SettingsChanOutput, logger interfaces.Logger) {
-		// уникальный идентификатор для поиска данных в БД
-		id := fmt.Sprintf("%s:%s", currentIndex, newDocument.GetSpecialUUID())
-
-		// обогащение кейса дополнительной информацией о локальном место положении ip адресов
-		listIp := documentgenerator.GetListIPAddr(document.GetAdditionalInformation().GetIpAddressesInformation())
-		ok, err := sendGeoIpRequest(id, listIp, getChan)
-		if err != nil {
-			logger.Send("error", supportingfunctions.CustomError(err).Error())
-		}
-		if ok {
-			logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
-		}
-
-		// обогащение кейса дополнительной информацией по расположению сенсоров
-		listSensor := documentgenerator.GetListSensorId(newDocument.GetAdditionalInformation().GetSensorsInformation())
-		ok, err = sendSensorInformationRequest(id, listSensor, getChan)
-		if err != nil {
-			logger.Send("error", supportingfunctions.CustomError(err).Error())
-		}
-		if ok {
-			logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', we are sending a request to search for information on the following list of sensors: %#v", listSensor))
-		}
-	}(newDocument, dbs.GetChannelFromModule, dbs.logger)
+	// создаём уникальный идентификатор дополнительной информации для поиска инцидентов по нему в БД
+	// однако, вновь созданный идентификатор можно использовать только в том случае если инцидента
+	// ещё нет в БД, если инциденто уже загружен в БД нужно брать уже сущетсвующий id
+	idAddInfo := fmt.Sprintf("%s:%s", currentIndex, newDocument.GetSpecialUUID())
 
 	// если похожих индексов нет
 	if len(indexesOnlyCurrentYear) == 0 {
@@ -112,6 +95,9 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		}
 
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', insert new document to incidents key (id) '%s', special_uuid '%s', status code '%d'", newDocument.GetKey(), newDocument.GetSpecialUUID(), statusCode))
+
+		// запрос на обогащение документа дополнительной информацией
+		go sendAdditionalInformationRequest(idAddInfo, newDocument, dbs.GetChannelFromModule, dbs.logger)
 
 		return supportingfunctions.CustomError(err)
 	}
@@ -150,7 +136,7 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		return err
 	}
 
-	fmt.Printf("---- вставка выполняется только когда не найден искомый инцидент, в результате поиска инцидента '%s' совпадений найдено %d\n", newDocument.Key, response.Options.Total.Value)
+	fmt.Printf("---- в результате поиска инцидента '%s' совпадений найдено %d\n", newDocument.Key, response.Options.Total.Value)
 
 	// вставка выполняется только когда не найден искомый инцидент
 	if response.Options.Total.Value == 0 {
@@ -165,6 +151,9 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		}
 
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'incident', insert new document to incident key (id) '%s', status code '%d'", newDocument.GetKey(), statusCode))
+
+		// запрос на обогащение документа дополнительной информацией
+		go sendAdditionalInformationRequest(idAddInfo, newDocument, dbs.GetChannelFromModule, dbs.logger)
 
 		//*******************************************
 		//*** здесь установка тегов, под вопросом ***
@@ -224,10 +213,10 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		dbs.logger.Send("info", fmt.Sprintf("database storage - update field '%s' to document 'incident' with key (id) '%s'", v, newDocument.GetKey()))
 	}
 
-	return nil
-}
+	idAddInfo = fmt.Sprintf("%s:%s", currentIndex, updateVerified.GetAdditionalInformation().SpecialUUID)
 
-// TestAddIRPIncident использовать только в тестах
-func (dbs *DatabaseStorage) TestAddIRPIncident(ctx context.Context, a any) error {
-	return dbs.addIRPIncident(ctx, a)
+	// запрос на обогащение документа дополнительной информацией
+	go sendAdditionalInformationRequest(idAddInfo, newDocument, dbs.GetChannelFromModule, dbs.logger)
+
+	return nil
 }

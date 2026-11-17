@@ -29,7 +29,7 @@ func (dbs *DatabaseStorage) GetExistingIndexes(ctx context.Context, pattern stri
 		Index string `json:"index"`
 	}(nil)
 
-	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*60)
+	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*5)
 	defer ctxCancel()
 
 	res, err := dbs.client.Cat.Indices(
@@ -141,7 +141,7 @@ func (dbs *DatabaseStorage) DelIndexSetting(ctx context.Context, indexes []strin
 func (dbs *DatabaseStorage) GetDocument(ctx context.Context, indexes []string, query *strings.Reader, offset int) ([]byte, error) {
 	var response []byte
 
-	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*60)
+	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*5)
 	defer ctxCancel()
 
 	res, err := dbs.client.Search(
@@ -182,7 +182,7 @@ func (dbs *DatabaseStorage) InsertDocument(ctx context.Context, index string, b 
 		return res.StatusCode, err
 	}
 
-	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*60)
+	ctxTimeout, ctxCancel := context.WithTimeout(ctx, time.Second*10)
 	defer ctxCancel()
 
 	result, err := supportingfunctions.GetElementsFromJSON(ctxTimeout, bodyRes)
@@ -231,7 +231,7 @@ func (dbs *DatabaseStorage) SetMaxTotalFieldsLimit(ctx context.Context, indexes 
 	}
 
 	getIndexLimit := func(ctx context.Context, indexName string) (string, bool, error) {
-		ctx, cancel := context.WithTimeout(ctx, time.Second*60)
+		ctx, cancel := context.WithTimeout(ctx, time.Second*5)
 		defer cancel()
 
 		indexSettings, err := dbs.GetIndexSetting(ctx, indexName)

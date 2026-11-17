@@ -30,6 +30,8 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) erro
 		return err
 	}
 
+	fmt.Println("***=== DatabaseStorage.addGeoIPInformation, 111.1")
+
 	var newDocument response.ResponseGeoIpInformation
 	if err := json.Unmarshal(newData, &newDocument); err != nil {
 		err := supportingfunctions.CustomError(err)
@@ -37,6 +39,8 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) erro
 
 		return err
 	}
+
+	fmt.Println("***=== DatabaseStorage.addGeoIPInformation, 111.2")
 
 	dbs.logger.Send("info", fmt.Sprintf("section:'information handling', command:'add geoip information', accepted object:'%#v'", newDocument))
 
@@ -48,6 +52,8 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) erro
 
 		return err
 	}
+
+	fmt.Println("***=== DatabaseStorage.addGeoIPInformation, 111.3")
 
 	//получаем наименование хранилища
 	// так как id для выполяемой задачи по поиску информации о месторасположении ip адресов
@@ -87,6 +93,9 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) erro
 			CountryCode: ipAddress.Code,
 		})
 	}
+
+	fmt.Println("***=== DatabaseStorage.addGeoIPInformation, 111.4")
+	fmt.Printf("\t'%+v'\n", ipInfoList)
 
 	//обновляемый список не должен быть пустым, а то получается что полу пустой
 	//список в котором есть хотя бы ip адреса затирается вообще пустым списком

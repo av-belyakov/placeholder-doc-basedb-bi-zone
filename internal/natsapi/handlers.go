@@ -63,7 +63,6 @@ func (api *apiNatsModule) incomingInformationHandler(ctx context.Context) {
 					}
 
 					api.logger.Send("info", fmt.Sprintf("a response was received to a request for geoip information for an object with rootId:'%s'", incomingData.RootId))
-
 					api.chFromModule <- SettingsChanOutput{
 						SubjectType: "geoip information",
 						Data:        res.Data,
@@ -87,7 +86,6 @@ func (api *apiNatsModule) incomingInformationHandler(ctx context.Context) {
 					}
 
 					api.logger.Send("info", fmt.Sprintf("a response was received to a request for sensor information for an object with rootId:'%s'", incomingData.RootId))
-
 					api.chFromModule <- SettingsChanOutput{
 						SubjectType: "sensor information",
 						Data:        res.Data,

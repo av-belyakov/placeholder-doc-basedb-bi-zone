@@ -14,6 +14,11 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
+// TestAddBiZoneAlerts использовать только в тестах
+func (dbs *DatabaseStorage) TestAddBiZoneAlerts(ctx context.Context, a any) {
+	dbs.addBiZoneAlerts(ctx, a)
+}
+
 // addBiZoneAlerts добавление объекта типа 'alerts'
 func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 	t := time.Now()
@@ -217,9 +222,4 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 		))
 
 	return nil
-}
-
-// TestAddBiZoneAlerts использовать только в тестах
-func (dbs *DatabaseStorage) TestAddBiZoneAlerts(ctx context.Context, a any) {
-	dbs.addBiZoneAlerts(ctx, a)
 }
