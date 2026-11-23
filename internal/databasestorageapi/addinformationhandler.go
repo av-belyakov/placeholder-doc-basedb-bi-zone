@@ -30,8 +30,6 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) erro
 		return err
 	}
 
-	fmt.Println("***=== DatabaseStorage.addGeoIPInformation, 111.1")
-
 	var newDocument response.ResponseGeoIpInformation
 	if err := json.Unmarshal(newData, &newDocument); err != nil {
 		err := supportingfunctions.CustomError(err)
@@ -39,8 +37,6 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) erro
 
 		return err
 	}
-
-	fmt.Println("***=== DatabaseStorage.addGeoIPInformation, 111.2")
 
 	dbs.logger.Send("info", fmt.Sprintf("section:'information handling', command:'add geoip information', accepted object:'%#v'", newDocument))
 
@@ -52,8 +48,6 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) erro
 
 		return err
 	}
-
-	fmt.Println("***=== DatabaseStorage.addGeoIPInformation, 111.3")
 
 	//получаем наименование хранилища
 	// так как id для выполяемой задачи по поиску информации о месторасположении ip адресов
@@ -93,9 +87,6 @@ func (dbs *DatabaseStorage) addGeoIPInformation(ctx context.Context, a any) erro
 			CountryCode: ipAddress.Code,
 		})
 	}
-
-	fmt.Println("***=== DatabaseStorage.addGeoIPInformation, 111.4")
-	fmt.Printf("\t'%+v'\n", ipInfoList)
 
 	//обновляемый список не должен быть пустым, а то получается что полу пустой
 	//список в котором есть хотя бы ip адреса затирается вообще пустым списком
@@ -208,8 +199,6 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) err
 
 	currentIndex, specialUUID := tmp[0], tmp[1]
 
-	fmt.Printf("\t---DatabaseStorage.addSensorInformation elasticsearch index:'%s', UUID:'%s'\n", currentIndex, specialUUID)
-
 	//добавляем небольшую задержку что бы СУБД успела добавить индекс
 	//***************************************************************
 	time.Sleep(3 * time.Second)
@@ -223,8 +212,6 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) err
 
 		return err
 	}
-
-	fmt.Printf("\t---DatabaseStorage.addSensorInformation в базе данных был найден объект с underlineId:'%+v'\n", underlineIds)
 
 	//формируется список с информацией по сенсорам
 	var sensorInfoList []datamodels.SensorInformation
@@ -264,8 +251,6 @@ func (dbs *DatabaseStorage) addSensorInformation(ctx context.Context, a any) err
 
 	//обновление информации в БД
 	bodyUpdate := strings.NewReader(fmt.Sprintf("{\"doc\": %s}", string(request)))
-
-	//fmt.Printf("\t---DatabaseStorage.addSensorInformation обновление информации о сенсорах, готовый объект:'%s'\n", fmt.Sprintf("{\"doc\": %s}", string(request)))
 
 	for _, underlineId := range underlineIds {
 		res, err := dbs.client.Update(currentIndex, underlineId, bodyUpdate)

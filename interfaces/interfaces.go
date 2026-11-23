@@ -2,7 +2,13 @@ package interfaces
 
 import (
 	"context"
+
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 )
+
+type SpecialAdditionalInformation interface {
+	GetAdditionalInformation() *datamodels.AdditionalInformation
+}
 
 //**************** счётчик *****************
 

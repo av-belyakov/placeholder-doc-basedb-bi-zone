@@ -179,7 +179,7 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 	}
 
 	// выполняем обновление нового объекта данными полученными от IRP
-	replasedField := updateVerified.ReplacingOldIRPIncident(*newDocument.Get())
+	replasedFields := updateVerified.ReplacingOldIRPIncident(*newDocument.Get())
 
 	// готовим обновлённый объект к загрузке в базу данных
 	nvbyte, err := json.Marshal(updateVerified)
@@ -204,13 +204,13 @@ func (dbs *DatabaseStorage) addIRPIncident(ctx context.Context, a any) error {
 		fmt.Sprintf(
 			"database storage - note for type 'incident', update document, count delete documents '%d', count replacing fields '%d' for object with key (id) '%s', status code '%d'",
 			countDel,
-			len(replasedField),
+			len(replasedFields),
 			newDocument.GetKey(),
 			statusCode,
 		))
 
-	for _, v := range replasedField {
-		dbs.logger.Send("info", fmt.Sprintf("database storage - update field '%s' to document 'incident' with key (id) '%s'", v, newDocument.GetKey()))
+	for _, field := range replasedFields {
+		dbs.logger.Send("info", fmt.Sprintf("database storage - update field '%s' to document 'incident' with key (id) '%s'", field, newDocument.GetKey()))
 	}
 
 	idAddInfo = fmt.Sprintf("%s:%s", currentIndex, updateVerified.GetAdditionalInformation().SpecialUUID)

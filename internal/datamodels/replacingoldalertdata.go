@@ -7,8 +7,8 @@ import (
 )
 
 // ReplacingOldBiZoneData заменяет старые значения типа BiZoneIRPAlertData новыми
-func (d *BiZoneIRPAlertData) ReplacingOldBiZoneData(incomingType BiZoneIRPAlertData) int {
-	var countReplacingFields int
+func (d *BiZoneIRPAlertData) ReplacingOldBiZoneData(incomingType BiZoneIRPAlertData) []string {
+	var replacingFields []string
 
 	currentStruct := reflect.ValueOf(d).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
@@ -27,7 +27,7 @@ func (d *BiZoneIRPAlertData) ReplacingOldBiZoneData(incomingType BiZoneIRPAlertD
 				typeOfCurrentStruct.Field(i).Name == "UnmappedHomeEndpointArray" {
 				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
-					countReplacingFields++
+					replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 				}
 
 				continue
@@ -37,7 +37,7 @@ func (d *BiZoneIRPAlertData) ReplacingOldBiZoneData(incomingType BiZoneIRPAlertD
 				typeOfCurrentStruct.Field(i).Name == "UnmappedAgentArray" {
 				if list, ok := supportingfunctions.ReplacingSlice[uint64](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
-					countReplacingFields++
+					replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 				}
 
 				continue
@@ -60,10 +60,10 @@ func (d *BiZoneIRPAlertData) ReplacingOldBiZoneData(incomingType BiZoneIRPAlertD
 				}
 
 				currentStruct.Field(i).Set(newStruct.Field(j))
-				countReplacingFields++
+				replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 			}
 		}
 	}
 
-	return countReplacingFields
+	return replacingFields
 }

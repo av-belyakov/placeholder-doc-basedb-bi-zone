@@ -1,14 +1,15 @@
 package datamodels
 
 import (
+	"fmt"
 	"reflect"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 // ReplacingOldBiZOneSnapshot заменяет старые значения типа BiZoneSnapshot новыми
-func (s *BiZoneIRPSnapshot) ReplacingOldBiZOneSnapshot(incomingType BiZoneIRPSnapshot) int {
-	var countReplacingFields int
+func (s *BiZoneIRPSnapshot) ReplacingOldBiZOneSnapshot(incomingType BiZoneIRPSnapshot) []string {
+	var replacingFields []string
 
 	currentStruct := reflect.ValueOf(s).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
@@ -29,7 +30,7 @@ func (s *BiZoneIRPSnapshot) ReplacingOldBiZOneSnapshot(incomingType BiZoneIRPSna
 
 				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
-					countReplacingFields++
+					replacingFields = append(replacingFields, fmt.Sprintf("added new ip_address to snapshots with cmdb_id '%s'", incomingType.CmdbId))
 				}
 
 				continue
@@ -42,7 +43,7 @@ func (s *BiZoneIRPSnapshot) ReplacingOldBiZOneSnapshot(incomingType BiZoneIRPSna
 
 				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
-					countReplacingFields++
+					replacingFields = append(replacingFields, fmt.Sprintf("added new mac_address to snapshots with cmdb_id '%s'", incomingType.CmdbId))
 				}
 
 				continue
@@ -61,10 +62,10 @@ func (s *BiZoneIRPSnapshot) ReplacingOldBiZOneSnapshot(incomingType BiZoneIRPSna
 				}
 
 				currentStruct.Field(i).Set(newStruct.Field(j))
-				countReplacingFields++
+				replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 			}
 		}
 	}
 
-	return countReplacingFields
+	return replacingFields
 }

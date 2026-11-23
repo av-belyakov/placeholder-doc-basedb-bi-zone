@@ -8,8 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
@@ -60,8 +58,6 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 	//формируем наименование индекса
 	currentIndex := fmt.Sprintf("%s_%d_%d", indexName, t.Year(), int(t.Month()))
 
-	fmt.Printf("===== DatabaseStorage.addBiZoneAlerts, CREATE current index name:'%s'\n", currentIndex)
-
 	//будет выполнятся поиск по индексам только в текущем году так как при
 	//накоплении большого количества индексов, поиск по всем серьезно замедлит работу
 	indexesOnlyCurrentYear := []string(nil)
@@ -71,29 +67,36 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 		}
 	}
 
-	defer func(document *datamodels.VerifiedBiZoneIRPAlert, getChan func() chan SettingsChanOutput, logger interfaces.Logger) {
-		id := fmt.Sprintf("%s:%s", currentIndex, newDocument.GetSpecialUUID())
+	/*
+		defer func(document *datamodels.VerifiedBiZoneIRPAlert, getChan func() chan SettingsChanOutput, logger interfaces.Logger) {
+			id := fmt.Sprintf("%s:%s", currentIndex, newDocument.GetSpecialUUID())
 
-		//обогащение кейса дополнительной информацией о локальном место положении ip адресов
-		listIp := documentgenerator.GetListIPAddr(document.GetAdditionalInformation().GetIpAddressesInformation())
-		ok, err := sendGeoIpRequest(id, listIp, getChan)
-		if err != nil {
-			logger.Send("error", supportingfunctions.CustomError(err).Error())
-		}
-		if ok {
-			logger.Send("info", fmt.Sprintf("database storage - note for type 'alert', we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
-		}
+			//обогащение кейса дополнительной информацией о локальном место положении ip адресов
+			listIp := documentgenerator.GetListIPAddr(document.GetAdditionalInformation().GetIpAddressesInformation())
+			ok, err := sendGeoIpRequest(id, listIp, getChan)
+			if err != nil {
+				logger.Send("error", supportingfunctions.CustomError(err).Error())
+			}
+			if ok {
+				logger.Send("info", fmt.Sprintf("database storage - note for type 'alert', we are sending a request to search for information on the following list of ip addresses: %#v", listIp))
+			}
 
-		//обогащение кейса дополнительной информацией по расположению сенсоров
-		listSensor := documentgenerator.GetListSensorId(newDocument.GetAdditionalInformation().GetSensorsInformation())
-		ok, err = sendSensorInformationRequest(id, listSensor, getChan)
-		if err != nil {
-			logger.Send("error", supportingfunctions.CustomError(err).Error())
-		}
-		if ok {
-			logger.Send("info", fmt.Sprintf("database storage - note for type 'alert', we are sending a request to search for information on the following list of sensors: %#v", listSensor))
-		}
-	}(newDocument, dbs.GetChannelFromModule, dbs.logger)
+			//обогащение кейса дополнительной информацией по расположению сенсоров
+			listSensor := documentgenerator.GetListSensorId(newDocument.GetAdditionalInformation().GetSensorsInformation())
+			ok, err = sendSensorInformationRequest(id, listSensor, getChan)
+			if err != nil {
+				logger.Send("error", supportingfunctions.CustomError(err).Error())
+			}
+			if ok {
+				logger.Send("info", fmt.Sprintf("database storage - note for type 'alert', we are sending a request to search for information on the following list of sensors: %#v", listSensor))
+			}
+		}(newDocument, dbs.GetChannelFromModule, dbs.logger)
+	*/
+
+	// создаём уникальный идентификатор дополнительной информации для поиска инцидентов по нему в БД
+	// однако, вновь созданный идентификатор можно использовать только в том случае если инцидента
+	// ещё нет в БД, если инциденто уже загружен в БД нужно брать уже сущетсвующий id
+	idAddInfo := fmt.Sprintf("%s:%s", currentIndex, newDocument.GetSpecialUUID())
 
 	// если похожих индексов нет
 	if len(indexesOnlyCurrentYear) == 0 {
@@ -117,6 +120,9 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 		}
 
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'alert', insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
+
+		// запрос на обогащение документа дополнительной информацией
+		go sendAdditionalInformationRequest(idAddInfo, newDocument, dbs.GetChannelFromModule, dbs.logger)
 
 		return err
 	}
@@ -167,6 +173,9 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 
 		dbs.logger.Send("info", fmt.Sprintf("database storage - note for type 'alert', insert new document to alerts id:'%d', uuid:'%s', status code:'%d'", newDocument.GetID(), newDocument.GetUUID(), statusCode))
 
+		// запрос на обогащение документа дополнительной информацией
+		go sendAdditionalInformationRequest(idAddInfo, newDocument, dbs.GetChannelFromModule, dbs.logger)
+
 		//*******************************************
 		//*** здесь установка тегов, под вопросом ***
 		//*******************************************
@@ -191,7 +200,7 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 	}
 
 	//выполняем обновление нового объекта данными полученными от брокера сообщений
-	countReplasedField := updateVerified.ReplacingOldBiZoneAlert(*newDocument.Get())
+	replasedFields := updateVerified.ReplacingOldBiZoneAlert(*newDocument.Get())
 
 	//готовим обновлённый объект к загрузке в базу данных
 	nvbyte, err := json.Marshal(updateVerified)
@@ -216,10 +225,19 @@ func (dbs *DatabaseStorage) addBiZoneAlerts(ctx context.Context, a any) error {
 		fmt.Sprintf(
 			"database storage - note for type 'alert', count delete:'%d', count replacing fields:'%d' for alerts with uuid:'%s', status code:'%d'",
 			countDel,
-			countReplasedField,
+			len(replasedFields),
 			newDocument.GetUUID(),
 			statusCode,
 		))
+
+	for _, field := range replasedFields {
+		dbs.logger.Send("info", fmt.Sprintf("database storage - update field '%s' to document 'alert' with uuid '%s'", field, newDocument.GetUUID()))
+	}
+
+	idAddInfo = fmt.Sprintf("%s:%s", currentIndex, updateVerified.GetAdditionalInformation().SpecialUUID)
+
+	// запрос на обогащение документа дополнительной информацией
+	go sendAdditionalInformationRequest(idAddInfo, newDocument, dbs.GetChannelFromModule, dbs.logger)
 
 	return nil
 }

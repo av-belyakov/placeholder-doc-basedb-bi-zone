@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"sync"
 	"syscall"
 	"testing"
@@ -25,7 +26,7 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supporting"
 )
 
-const Count_Incident_Id = 3
+const Count_Incident_Id = 10
 
 func TestAppWithOutKafka(t *testing.T) {
 	if err := godotenv.Load("../../.env"); err != nil {
@@ -93,25 +94,25 @@ func TestAppWithOutKafka(t *testing.T) {
 		for {
 			select {
 			case <-chDoneLog:
-				log.Println("placeholder_doc-basedb-bi-zone login module is Stop")
+				log.Println("\tfile test - placeholder_doc-basedb-bi-zone login module is Stop")
 
 				return
 
 			case msg := <-logger.GetChan():
-				fmt.Printf("LOG: %s %s\n", msg.GetType(), msg.GetMessage())
+				fmt.Printf("LOG: %s - %s\n", strings.ToUpper(msg.GetType()), msg.GetMessage())
 
 			}
 		}
 
 	}()
 	go func() {
-		fmt.Println("==== start гороутина обработки данных приходящих через каналы")
-		defer fmt.Println("==== end гороутина обработки данных приходящих через каналы")
+		fmt.Println("==== START гороутина обработки данных приходящих через каналы")
+		defer fmt.Println("==== END гороутина обработки данных приходящих через каналы")
 
 		for {
 			select {
 			case <-chDoneRoute:
-				log.Println("placeholder_doc-basedb-bi-zone login module is Stop")
+				log.Println("\tfile test - placeholder_doc-basedb-bi-zone login module is Stop")
 
 				return
 
@@ -123,7 +124,7 @@ func TestAppWithOutKafka(t *testing.T) {
 					Data:    msg.Data,
 				}
 
-				fmt.Printf("* получено сообщение от БД, command:'%s', id:'%s', data:'%s'\n", msg.Command, msg.Id, string(msg.Data))
+				fmt.Printf("\tfile test - получено сообщение от БД, command:'%s', id:'%s', data:'%s'\n", msg.Command, msg.Id, string(msg.Data))
 
 			case msg := <-apiNats.GetChannelFromModule():
 				switch msg.SubjectType {
@@ -135,12 +136,12 @@ func TestAppWithOutKafka(t *testing.T) {
 
 				case "sensor information":
 					// местоположении и принадлежности сенсоров
-					/*if err := apiDBS.AddSensorInformation_Test(ctx, msg.Data); err != nil {
+					if err := apiDBS.AddSensorInformation_Test(ctx, msg.Data); err != nil {
 						fmt.Println("sensor information", err.Error())
-					}*/
+					}
 
 				default:
-					fmt.Println("/// undefined subscription type")
+					fmt.Println("\tfile test - Undefined subscription type")
 				}
 
 				wg.Done()
@@ -173,15 +174,15 @@ func TestAppWithOutKafka(t *testing.T) {
 	chDoneLog <- struct{}{}
 	chDoneRoute <- struct{}{}
 
-	fmt.Println("Number incidents handled:", numberIncidentsHandled)
+	fmt.Printf("\tfile test - Number incidents handled: %d\n", numberIncidentsHandled)
 
 	/****************************************
 
 		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	для инцидентов успешно обнавляется поле GeoIP, информация о сенсарах не обнавляется
+	для инцидентов успешно обновляется поле GeoIP, информация о сенсарах не обновляется
 	возможно нет инфы по сенсорам, надо проверить
 
-	в обработчике алертов таже ошибка с формированием id запроса @special_uuid что и в инцидентах
+	в обработчике алертов так же ошибка с формированием id запроса @special_uuid что и в инцидентах
 	и надо убрать defer и использовать гороутину
 		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -207,15 +208,15 @@ func handlerIncidentId(
 	for {
 		select {
 		case <-ctx.Done():
-			fmt.Println("+++ context done count incident:", count)
+			//fmt.Println("+++ context done count incident:", count)
 
 			return count
 
 		case id, ok := <-ch:
-			fmt.Printf("=== status chan:'%t'\n", ok)
+			//fmt.Printf("=== status chan:'%t'\n", ok)
 
 			if !ok {
-				fmt.Println("+++ close channel count incident:", count)
+				//fmt.Println("+++ close channel count incident:", count)
 
 				return count
 			}
@@ -223,12 +224,12 @@ func handlerIncidentId(
 			time.Sleep(time.Second)
 
 			if ctx.Err() != nil {
-				fmt.Println("+++ ctx.Err count incident:", count)
+				//fmt.Println("+++ ctx.Err count incident:", count)
 
 				return count
 			}
 
-			fmt.Printf("получаем полную информацию по инциденту '%s'\n", id)
+			//fmt.Printf("получаем полную информацию по инциденту '%s'\n", id)
 			response, statusCode, err := apiIrp.GetIncident(ctx, id)
 			if err != nil {
 				fmt.Println(err)
@@ -237,12 +238,12 @@ func handlerIncidentId(
 			}
 
 			if statusCode != http.StatusOK {
-				fmt.Printf("принят код статуса %d %s\n", statusCode, string(response))
+				//fmt.Printf("принят код статуса %d %s\n", statusCode, string(response))
 
 				continue
 			}
 
-			fmt.Printf("генерируем проверенную структуру для инцидента '%s'\n", id)
+			//fmt.Printf("генерируем проверенную структуру для инцидента '%s'\n", id)
 			_, verifiedBiZoneIncident, _, err := documentgenerator.GeneratingVerifiedDocumentFromIncident(decoder.Start(response))
 			if err != nil {
 				fmt.Println("ERROR", err)
@@ -250,10 +251,10 @@ func handlerIncidentId(
 				continue
 			}
 
-			fmt.Printf("загрузка инцидента '%s' в базу данных\n", id)
+			//fmt.Printf("загрузка инцидента '%s' в базу данных\n", id)
 			err = apiDBS.TestAddIRPIncident(ctx, verifiedBiZoneIncident)
 			if err != nil {
-				fmt.Println("ERROR", err)
+				fmt.Println("загрузка инцидента", err)
 			}
 
 			count++
@@ -281,8 +282,6 @@ func getIncidentsId(ctx context.Context, file string, count int, ch chan<- strin
 		for {
 			select {
 			case <-ctx.Done():
-				fmt.Println(4111)
-
 				return
 
 			default:

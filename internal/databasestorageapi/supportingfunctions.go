@@ -8,17 +8,12 @@ import (
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/cmd/documentgenerator"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
-	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/request"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
 // sendAdditionalInformationRequest
-func sendAdditionalInformationRequest(
-	id string,
-	doc *datamodels.VerifiedBiZoneIRPIncident,
-	getChan func() chan SettingsChanOutput,
-	logger interfaces.Logger) {
+func sendAdditionalInformationRequest(id string, doc interfaces.SpecialAdditionalInformation, getChan func() chan SettingsChanOutput, logger interfaces.Logger) {
 	// обогащение кейса дополнительной информацией о локальном место положении ip адресов
 	listIp := documentgenerator.GetListIPAddr(doc.GetAdditionalInformation().GetIpAddressesInformation())
 	ok, err := sendGeoIpRequest(id, listIp, getChan)

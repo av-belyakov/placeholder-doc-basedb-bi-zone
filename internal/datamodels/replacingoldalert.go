@@ -7,8 +7,8 @@ import (
 )
 
 // ReplacingOldBiZoneAlert заменяет старые значения типа VerifiedBiZoneAlert новыми
-func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlert(incomingType VerifiedBiZoneIRPAlert) int {
-	var countReplacingFields int
+func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlert(incomingType VerifiedBiZoneIRPAlert) []string {
+	var replacingFields []string
 
 	currentStruct := reflect.ValueOf(va).Elem()
 	typeOfCurrentStruct := currentStruct.Type()
@@ -24,7 +24,7 @@ func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlert(incomingType VerifiedB
 
 			if typeOfCurrentStruct.Field(i).Name == "Snapshots" {
 				if snapshots, ok := newStruct.Field(j).Interface().([]BiZoneIRPSnapshot); ok {
-					countReplacingFields += va.ReplacingOldBiZoneSnapshots(snapshots)
+					replacingFields = append(replacingFields, va.ReplacingOldBiZoneSnapshots(snapshots)...)
 				}
 
 				continue
@@ -32,7 +32,7 @@ func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlert(incomingType VerifiedB
 
 			if typeOfCurrentStruct.Field(i).Name == "Tags" {
 				if tags, ok := newStruct.Field(j).Interface().([]IRPTagType); ok {
-					countReplacingFields += va.ReplacingOldBiZoneAlertTags(tags)
+					replacingFields = append(replacingFields, va.ReplacingOldTags(tags)...)
 				}
 
 				continue
@@ -42,7 +42,7 @@ func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlert(incomingType VerifiedB
 				//if data, ok := newStruct.Field(j).Interface().([]string); ok {
 				if list, ok := supportingfunctions.ReplacingSlice[string](currentStruct.Field(i), newStruct.Field(j)); ok {
 					currentStruct.Field(i).Set(list)
-					countReplacingFields++
+					replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 				}
 				//}
 
@@ -51,7 +51,7 @@ func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlert(incomingType VerifiedB
 
 			if typeOfCurrentStruct.Field(i).Name == "Data" {
 				if data, ok := newStruct.Field(j).Interface().(BiZoneIRPAlertData); ok {
-					countReplacingFields += va.Data.ReplacingOldBiZoneData(data)
+					replacingFields = append(replacingFields, va.Data.ReplacingOldBiZoneData(data)...)
 				}
 
 				continue
@@ -62,13 +62,6 @@ func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlert(incomingType VerifiedB
 			if typeOfCurrentStruct.Field(i).Name == "AdditionalInformation" {
 				continue
 			}
-
-			/*
-				fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert field name:'%s'\n", typeOfNewStruct.Field(i).Name)
-				fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert type element from database:'%v'\n", typeOfNewStruct.Field(i).Type)
-				fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert value element from database:'%v'\n", typeOfNewStruct.Field(i))
-				fmt.Printf("--- VerifiedBiZoneIRPAlert.RepalcingOldBiZoneAlert comparation currentStruct.Field(i):'%+v' && newStruct.Field(j):'%+v'\n", currentStruct.Field(i), newStruct.Field(j))
-			*/
 
 			if !currentStruct.Field(i).Equal(newStruct.Field(j)) {
 				if !currentStruct.Field(i).CanSet() {
@@ -83,10 +76,15 @@ func (va *VerifiedBiZoneIRPAlert) ReplacingOldBiZoneAlert(incomingType VerifiedB
 				}
 
 				currentStruct.Field(i).Set(newStruct.Field(j))
-				countReplacingFields++
+				replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
 			}
 		}
 	}
 
-	return countReplacingFields
+	return replacingFields
 }
+
+/*
+		replacingFields = append(replacingFields, fmt.Sprintf("added new mac_address to snapshots with cmdb_id '%s'", incomingType.CmdbId))
+	replacingFields = append(replacingFields, typeOfCurrentStruct.Field(i).Name)
+*/
