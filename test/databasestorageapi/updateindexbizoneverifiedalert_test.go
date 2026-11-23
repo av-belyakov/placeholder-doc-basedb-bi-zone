@@ -148,12 +148,12 @@ func TestUpdateIndexBiZoneVerifiedAlert(t *testing.T) {
 		assert.Greater(t, len(response.Options.Hits), 0)
 
 		//выполняем замену искомого документа
-		var countReplacingFields int
+		var replacingFields []string
 		listDeleting := []databasestorageapi.ServiseOption(nil)
 		updateVerified := datamodels.NewVerifiedBiZoneIRPAlert()
 		//заполняем новый объект информацией из базы данных
 		for _, v := range response.Options.Hits {
-			countReplacingFields += updateVerified.ReplacingOldBiZoneAlert(*v.Source.Get())
+			replacingFields = append(replacingFields, updateVerified.ReplacingOldBiZoneAlert(*v.Source.Get())...)
 			listDeleting = append(listDeleting, databasestorageapi.ServiseOption{
 				ID:    v.ID,
 				Index: v.Index,

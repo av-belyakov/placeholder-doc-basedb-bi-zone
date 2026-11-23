@@ -72,7 +72,8 @@ func (api *kafkaApiModule) StartConsumer(ctx context.Context) error {
 	kafkaReaderCfg := kafka.ReaderConfig{
 		Brokers: []string{fmt.Sprintf("%s:%d", api.settings.host, api.settings.port)},
 		//GroupID: api.settings.groupId,
-		GroupID:     fmt.Sprintf("placeholder-test-group-%s", uuid.New().String()), // параметр 'StartOffset' не работает, для тестов лучше менять GroupId на произвольный
+		// параметр 'StartOffset' не работает, для тестов лучше менять GroupId на произвольный
+		GroupID:     fmt.Sprintf("placeholder-test-group-%s", uuid.New().String()),
 		GroupTopics: topics,
 		Dialer:      dialer,
 		// ниже параметр только для тестов, он сообщает Kafka что потребитель готов принимать

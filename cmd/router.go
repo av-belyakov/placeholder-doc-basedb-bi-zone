@@ -83,34 +83,25 @@ func (r *ApplicationRouter) Start(ctx context.Context) error {
 			case msg := <-chFromKafka:
 				switch msg.SubjectType {
 				case "alerts":
-					/*
-							!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-							Обработка алертов пока выключена
+					go func() {
+						id, verifedBiZoneAlert, listRawFields, err := documentgenerator.BiZoneAlertsGenerator(decoder.Start(msg.Data))
+						if err != nil {
+							logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("generating a document of type irp bizone alert - %w", err)).Error())
+						}
 
-						go func() {
-							id, verifedBiZoneAlert, listRawFields, err := documentgenerator.BiZoneAlertsGenerator(decoder.Start(msg.Data))
-							if err != nil {
-								logger.Send("error", supportingfunctions.CustomError(fmt.Errorf("generating a document of type irp bizone alert - %w", err)).Error())
-							}
+						logger.Send("info", fmt.Sprintf("an 'ALERT' document has been generated, and the document has been transferred to the database (uuid document '%s')", id))
 
-							logger.Send("info", fmt.Sprintf("an 'ALERT' document has been generated, and the document has been transferred to the database (uuid document '%s')", id))
+						if len(listRawFields) > 0 {
+							logger.Send("alert_raw_fields", supportingfunctions.JoinRawFieldsToString(listRawFields, "id", id))
+						}
 
-							if len(listRawFields) > 0 {
-								logger.Send("alert_raw_fields", supportingfunctions.JoinRawFieldsToString(listRawFields, "id", id))
-							}
-
-							// передача объекта в модуль взаимодействия с базой данных для дальнейшей загрузки данных в базу
-							chToDB <- databasestorageapi.SettingsChanInput{
-								Section: "handling bizone alerts",
-								Command: "add alerts",
-								Data:    verifedBiZoneAlert,
-							}
-						}()
-
-						241 105 - 21 (775.9) = 65175
-						244 90 - 37 (804.7) = 42649
-											107876
-					*/
+						// передача объекта в модуль взаимодействия с базой данных для дальнейшей загрузки данных в базу
+						chToDB <- databasestorageapi.SettingsChanInput{
+							Section: "handling bizone alerts",
+							Command: "add alerts",
+							Data:    verifedBiZoneAlert,
+						}
+					}()
 
 				case "incidents":
 					data, err := handlers.UnmarshalIncidentDocument(msg.Data)
