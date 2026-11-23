@@ -284,40 +284,24 @@ func TestConfigFileHandler(t *testing.T) {
 	testOptions.function()
 	listTesting = append(listTesting, testOptions)
 
-	// --- Настройки DEBUGSERVER ---
+	// --- Настройки SERVICEMONITOR ---
 	testOptions = TestOptions{
-		name: "Настройки DEBUGSERVER (чтение файла config_test.yml)",
+		name: "Настройки SERVICEMONITOR (чтение файла config_test.yml)",
 		function: func() {
 			cfg, err = confighandler.New(constants.Root_Dir)
 			testOptions.err = err
 			testOptions.items = []TestParametrs{
 				{
-					inputParameters:    TestTypeElements{valueBool: cfg.GetDebugServer().Enable},
+					inputParameters:    TestTypeElements{valueBool: cfg.GetServiceMonitor().Enable},
 					expectedParameters: TestTypeElements{valueBool: true},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetDebugServer().Host},
+					inputParameters:    TestTypeElements{valueString: cfg.GetServiceMonitor().Host},
 					expectedParameters: TestTypeElements{valueString: "localhost"},
 				},
 				{
-					inputParameters:    TestTypeElements{valueInt: cfg.GetDebugServer().Port},
+					inputParameters:    TestTypeElements{valueInt: cfg.GetServiceMonitor().Port},
 					expectedParameters: TestTypeElements{valueInt: 6565},
-				},
-			}
-		}}
-	testOptions.function()
-	listTesting = append(listTesting, testOptions)
-
-	// --- Настройки COLLECTINGMETRICS ---
-	testOptions = TestOptions{
-		name: "Настройки COLLECTINGMETRICS (чтение файла config_test.yml)",
-		function: func() {
-			cfg, err = confighandler.New(constants.Root_Dir)
-			testOptions.err = err
-			testOptions.items = []TestParametrs{
-				{
-					inputParameters:    TestTypeElements{valueBool: cfg.GetCollectingMetrics().Enable},
-					expectedParameters: TestTypeElements{valueBool: true},
 				},
 			}
 		}}

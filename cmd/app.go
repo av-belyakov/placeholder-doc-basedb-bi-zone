@@ -6,10 +6,16 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"net/http/pprof"
 	_ "net/http/pprof"
+	"regexp"
 	"strings"
 
 	"golang.org/x/sync/errgroup"
+
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/collectors"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/dicontainer"
@@ -40,9 +46,9 @@ func (app *App) Start(ctx context.Context) {
 	// инициализация внутреннего роутера
 	app.appRouter = NewRouter(app.diContainer)
 
-	// запуск сервера отладки
-	if app.diContainer.Configer().GetDebugServer().Enable {
-		go app.startDebugServer(ctx)
+	// запуск сервера сервисного монитора
+	if app.diContainer.Configer().GetServiceMonitor().Enable {
+		go app.startServiceMonitor(ctx)
 	}
 
 	// вывод информационного сообщения при старте приложения
@@ -56,38 +62,60 @@ func (app *App) Start(ctx context.Context) {
 	<-ctx.Done()
 }
 
-func (app *App) startDebugServer(ctx context.Context) {
-	httpServer := &http.Server{
+func (app *App) startServiceMonitor(ctx context.Context) {
+	reg := prometheus.NewRegistry()
+	reg.MustRegister(
+		collectors.NewGoCollector(
+			collectors.WithGoCollectorRuntimeMetrics(
+				collectors.GoRuntimeMetricsRule{Matcher: regexp.MustCompile("/sched/latencies:seconds")},
+			),
+		),
+		collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}),
+	)
+
+	mux := http.NewServeMux()
+	mux.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{
+		EnableOpenMetrics: true,
+	}))
+	mux.HandleFunc("/debug/pprof/", pprof.Index)
+	mux.HandleFunc("/debug/pprof/heap", pprof.Handler("heap").ServeHTTP)
+	mux.HandleFunc("/debug/pprof/goroutine", pprof.Handler("goroutine").ServeHTTP)
+	mux.HandleFunc("/debug/pprof/trace", pprof.Trace)
+	mux.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+	mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
+
+	server := &http.Server{
 		Addr: fmt.Sprintf(
 			"%s:%d",
-			app.diContainer.Configer().GetDebugServer().Host,
-			app.diContainer.Configer().GetDebugServer().Port,
+			app.diContainer.Configer().GetServiceMonitor().Host,
+			app.diContainer.Configer().GetServiceMonitor().Port,
 		),
 		BaseContext: func(_ net.Listener) context.Context {
 			return ctx
 		},
+		Handler: mux,
 	}
 
 	g, gCtx := errgroup.WithContext(ctx)
 	g.Go(func() error {
-		return httpServer.ListenAndServe()
+		return server.ListenAndServe()
 	})
 	g.Go(func() error {
 		<-gCtx.Done()
-		log.Printf("%vthe debugging server is stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
+		log.Printf("%vthe service monitor server server is stopped%v\n", constants.Ansi_Dark_Red, constants.Ansi_Reset)
 
-		return httpServer.Shutdown(context.Background())
+		return server.Shutdown(context.Background())
 	})
 
 	app.diContainer.Logger(ctx).Send(
 		"info",
 		fmt.Sprintf(
-			"start debug server with address '%s' port '%d'",
-			app.diContainer.Configer().GetDebugServer().Host,
-			app.diContainer.Configer().GetDebugServer().Port,
+			"start service monitor server with address '%s' port '%d'",
+			app.diContainer.Configer().GetServiceMonitor().Host,
+			app.diContainer.Configer().GetServiceMonitor().Port,
 		))
 
 	if err := g.Wait(); err != nil {
-		app.diContainer.Logger(ctx).Send("error", fmt.Sprintf("start debug server - '%s'", err.Error()))
+		app.diContainer.Logger(ctx).Send("error", fmt.Sprintf("start service monitor server - '%s'", err.Error()))
 	}
 }

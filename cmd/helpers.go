@@ -19,7 +19,7 @@ func getInformationMessage(cfg confighandler.Config) string {
 		log.Println(err)
 	}
 
-	var profiling string
+	var profiling, metrics string
 	appStatus := fmt.Sprintf("%vproduction%v", constants.Ansi_Bright_Blue, constants.Ansi_Reset)
 	envValue, ok := os.LookupEnv("GO_PHDOCBASEDBBZ_MAIN")
 	if ok && (envValue == "development" || envValue == "test") {
@@ -40,15 +40,23 @@ func getInformationMessage(cfg confighandler.Config) string {
 		subscriptions = append(subscriptions, v)
 	}
 
-	debugServerStatus := fmt.Sprintf("%vdisable%v", constants.Ansi_Bright_Red, constants.Ansi_Reset)
-	if cfg.GetDebugServer().Enable {
-		debugServerStatus = fmt.Sprintf("%venable%v", constants.Ansi_Bright_Red, constants.Ansi_Reset)
+	serviceMonitorStatus := fmt.Sprintf("%vdisable%v", constants.Ansi_Bright_Red, constants.Ansi_Reset)
+	if cfg.GetServiceMonitor().Enable {
+		serviceMonitorStatus = fmt.Sprintf("%venable%v", constants.Ansi_Bright_Red, constants.Ansi_Reset)
 		profiling = fmt.Sprintf(
-			"%vProfiling is available on %v%s:%d/debug/pprof%v\n",
+			"\t%v- profiling is available on %v%s:%d/debug/pprof%v\n",
 			constants.Ansi_Bright_Green,
 			constants.Ansi_Dark_Gray,
-			cfg.GetDebugServer().Host,
-			cfg.GetDebugServer().Port,
+			cfg.GetServiceMonitor().Host,
+			cfg.GetServiceMonitor().Port,
+			constants.Ansi_Reset,
+		)
+		metrics = fmt.Sprintf(
+			"\t%v- metrics is available on %v%s:%d/metrics%v\n",
+			constants.Ansi_Bright_Green,
+			constants.Ansi_Dark_Gray,
+			cfg.GetServiceMonitor().Host,
+			cfg.GetServiceMonitor().Port,
 			constants.Ansi_Reset,
 		)
 	}
@@ -96,13 +104,14 @@ func getInformationMessage(cfg confighandler.Config) string {
 		constants.Ansi_Reset,
 	)
 	fmt.Printf(
-		"%vDebug server is %v%s%v\n",
+		"%vService monitor server is %v%s%v:\n",
 		constants.Ansi_Bright_Green,
 		constants.Ansi_Reset,
-		debugServerStatus,
-		constants.Ansi_Reset,
+		serviceMonitorStatus,
+		constants.Ansi_Bright_Green,
 	)
-	fmt.Println(profiling)
+	fmt.Print(profiling)
+	fmt.Print(metrics)
 
 	return msg
 }

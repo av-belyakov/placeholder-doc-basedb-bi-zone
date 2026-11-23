@@ -210,20 +210,15 @@ func New(rootDir string) (*Config, error) {
 			cfg.LogDB.StorageNameDB = viper.GetString("DATABASEWRITELOG.storage_name_db")
 		}
 
-		// настройки для отладочного сервера
-		if viper.IsSet("DEBUGSERVER.enable") {
-			cfg.DebugServer.Enable = viper.GetBool("DEBUGSERVER.enable")
+		// настройки для сервис монитор сервера
+		if viper.IsSet("SERVICEMONITOR.enable") {
+			cfg.ServiceMonitor.Enable = viper.GetBool("SERVICEMONITOR.enable")
 		}
-		if viper.IsSet("DEBUGSERVER.host") {
-			cfg.DebugServer.Host = viper.GetString("DEBUGSERVER.host")
+		if viper.IsSet("SERVICEMONITOR.host") {
+			cfg.ServiceMonitor.Host = viper.GetString("SERVICEMONITOR.host")
 		}
-		if viper.IsSet("DEBUGSERVER.port") {
-			cfg.DebugServer.Port = viper.GetInt("DEBUGSERVER.port")
-		}
-
-		//настройки сбора метрик
-		if viper.IsSet("COLLECTINGMETRICS.enable") {
-			cfg.CollectingMetrics.Enable = viper.GetBool("COLLECTINGMETRICS.enable")
+		if viper.IsSet("SERVICEMONITOR.port") {
+			cfg.ServiceMonitor.Port = viper.GetInt("SERVICEMONITOR.port")
 		}
 
 		// настройки временного хранилища

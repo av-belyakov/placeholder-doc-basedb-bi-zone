@@ -34,7 +34,7 @@ type Configer interface {
 	GetListLogs() []*confighandler.LogSet
 	GetStorageDB() confighandler.CfgStorageDB
 	GetLogDB() confighandler.CfgWriteLogDB
-	GetDebugServer() confighandler.CfgDebugServer
+	GetServiceMonitor() confighandler.CfgServiceMonitor
 	GetTemporaryStorage() confighandler.CfgTemporaryStorage
 }
 

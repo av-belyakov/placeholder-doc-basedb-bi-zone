@@ -46,14 +46,9 @@ func (c *Config) GetListLogs() []*LogSet {
 	return c.Common.Logs
 }
 
-// GetDebugServer настройки доступа к БД для логирования данных
-func (cfg *Config) GetDebugServer() CfgDebugServer {
-	return cfg.DebugServer
-}
-
-// GetCollectingMetrics настройки сбора метрик
-func (cfg *Config) GetCollectingMetrics() CfgCollectingMetrics {
-	return cfg.CollectingMetrics
+// GetServiceMonitor настройки сервисного монитора
+func (cfg *Config) GetServiceMonitor() CfgServiceMonitor {
+	return cfg.ServiceMonitor
 }
 
 // SetNameMessageType наименование типа логирования
