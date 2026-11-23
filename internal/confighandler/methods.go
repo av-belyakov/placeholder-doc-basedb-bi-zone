@@ -51,6 +51,11 @@ func (cfg *Config) GetDebugServer() CfgDebugServer {
 	return cfg.DebugServer
 }
 
+// GetCollectingMetrics настройки сбора метрик
+func (cfg *Config) GetCollectingMetrics() CfgCollectingMetrics {
+	return cfg.CollectingMetrics
+}
+
 // SetNameMessageType наименование типа логирования
 func (l *LogSet) SetNameMessageType(v string) error {
 	if v == "" {

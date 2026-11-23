@@ -47,6 +47,8 @@ DATABASEWRITELOG:
   user: placeholder-docbasedb-bizone-log
   namedb:
   storage_name_db: db-placeholder_docbasedb-bizone_log
+COLLECTINGMETRICS:
+  enable: true
 DEBUGSERVER:
   enable: true
   host: localhost

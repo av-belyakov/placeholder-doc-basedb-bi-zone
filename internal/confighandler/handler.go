@@ -221,6 +221,11 @@ func New(rootDir string) (*Config, error) {
 			cfg.DebugServer.Port = viper.GetInt("DEBUGSERVER.port")
 		}
 
+		//настройки сбора метрик
+		if viper.IsSet("COLLECTINGMETRICS.enable") {
+			cfg.CollectingMetrics.Enable = viper.GetBool("COLLECTINGMETRICS.enable")
+		}
+
 		// настройки временного хранилища
 		if viper.IsSet("TEMPORARYSTORAGE.storage_object_ttl") {
 			cfg.TemporaryStorage.StorageObjectTTL = viper.GetInt("TEMPORARYSTORAGE.storage_object_ttl")

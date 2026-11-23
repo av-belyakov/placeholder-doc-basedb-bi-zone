@@ -158,10 +158,6 @@ func TestConfigFileHandler(t *testing.T) {
 					expectedParameters: TestTypeElements{valueInt: 3600},
 				},
 				{
-					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().GroupId},
-					expectedParameters: TestTypeElements{valueString: "spring.kafka.bootstrap.servers"},
-				},
-				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().Topics["alerts"]},
 					expectedParameters: TestTypeElements{valueString: "alertmgr-alerts"},
 				},
@@ -171,11 +167,11 @@ func TestConfigFileHandler(t *testing.T) {
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().GroupId},
-					expectedParameters: TestTypeElements{valueString: "spring.kafka.bootstrap.servers"},
+					expectedParameters: TestTypeElements{valueString: "placeholder-doc-basedb-bizone.group"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().ClientId},
-					expectedParameters: TestTypeElements{valueString: "placeholder-doc-basedb-bizone.test"},
+					expectedParameters: TestTypeElements{valueString: "placeholder-doc-basedb-bizone.client"},
 				},
 				{
 					inputParameters:    TestTypeElements{valueString: cfg.GetKafka().SASLMechanism},
@@ -306,6 +302,22 @@ func TestConfigFileHandler(t *testing.T) {
 				{
 					inputParameters:    TestTypeElements{valueInt: cfg.GetDebugServer().Port},
 					expectedParameters: TestTypeElements{valueInt: 6565},
+				},
+			}
+		}}
+	testOptions.function()
+	listTesting = append(listTesting, testOptions)
+
+	// --- Настройки COLLECTINGMETRICS ---
+	testOptions = TestOptions{
+		name: "Настройки COLLECTINGMETRICS (чтение файла config_test.yml)",
+		function: func() {
+			cfg, err = confighandler.New(constants.Root_Dir)
+			testOptions.err = err
+			testOptions.items = []TestParametrs{
+				{
+					inputParameters:    TestTypeElements{valueBool: cfg.GetCollectingMetrics().Enable},
+					expectedParameters: TestTypeElements{valueBool: true},
 				},
 			}
 		}}

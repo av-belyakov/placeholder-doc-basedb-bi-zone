@@ -47,6 +47,8 @@ DATABASEWRITELOG: # хранилище логов работы модуля
   user: log_writer
   namedb:
   storage_name_db: module_placeholderdb_bizone
+COLLECTINGMETRICS:
+  enable: true
 DEBUGSERVER:
   enable: false
   host: localhost

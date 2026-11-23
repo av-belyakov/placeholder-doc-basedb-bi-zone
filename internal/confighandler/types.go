@@ -1,14 +1,15 @@
 package confighandler
 
 type Config struct {
-	Common           Common
-	IRP              CfgIRP
-	NATS             CfgNats
-	Kafka            CfgKafka
-	LogDB            CfgWriteLogDB
-	StorageDB        CfgStorageDB
-	DebugServer      CfgDebugServer
-	TemporaryStorage CfgTemporaryStorage
+	Common            Common
+	IRP               CfgIRP
+	NATS              CfgNats
+	Kafka             CfgKafka
+	LogDB             CfgWriteLogDB
+	StorageDB         CfgStorageDB
+	DebugServer       CfgDebugServer
+	TemporaryStorage  CfgTemporaryStorage
+	CollectingMetrics CfgCollectingMetrics
 }
 
 type Common struct {
@@ -94,6 +95,10 @@ type CfgDebugServer struct {
 	Host   string `yaml:"host"`
 	Port   int    `validate:"gt=0,lte=65535" yaml:"port"`
 	Enable bool   `yaml:"enabled"`
+}
+
+type CfgCollectingMetrics struct {
+	Enable bool `yaml:"enabled"`
 }
 
 type CfgTemporaryStorage struct {
