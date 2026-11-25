@@ -8,7 +8,7 @@ require (
 	github.com/brianvoe/gofakeit/v7 v7.17.1
 	github.com/confluentinc/confluent-kafka-go/v2 v2.15.1
 	github.com/elastic/elastic-transport-go/v8 v8.11.0
-	github.com/elastic/go-elasticsearch/v9 v9.5.2
+	github.com/elastic/go-elasticsearch/v9 v9.5.3
 	github.com/go-playground/validator/v10 v10.30.5
 	github.com/goforj/godump v1.9.1
 	github.com/gojuno/minimock/v3 v3.4.7

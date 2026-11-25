@@ -14,6 +14,7 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/kafkaapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/logginghandler"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/natsapi"
+	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/prometheusapi"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
 
@@ -100,7 +101,7 @@ func (d *DiContainer) DbLogger() DbLogger {
 // DbConnecter подключение к основной БД
 func (d *DiContainer) DbConnecter(ctx context.Context) DBConnecter {
 	if d.dbConnecter == nil {
-		apiDBS, err := databasestorageapi.New(
+		api, err := databasestorageapi.New(
 			d.Logger(ctx),
 			databasestorageapi.WithHost(d.Configer().GetStorageDB().Host),
 			databasestorageapi.WithPort(d.Configer().GetStorageDB().Port),
@@ -113,11 +114,11 @@ func (d *DiContainer) DbConnecter(ctx context.Context) DBConnecter {
 			log.Fatal("initialization module 'db' ", err)
 		}
 
-		if err := apiDBS.Start(ctx); err != nil {
+		if err := api.Start(ctx); err != nil {
 			log.Fatal("start module 'db' ", err)
 		}
 
-		d.dbConnecter = apiDBS
+		d.dbConnecter = api
 	}
 
 	return d.dbConnecter
@@ -126,7 +127,7 @@ func (d *DiContainer) DbConnecter(ctx context.Context) DBConnecter {
 // NatsConnecter подключение к NATS
 func (d *DiContainer) NatsConnecter(ctx context.Context) NatsConnecter {
 	if d.natsConnecter == nil {
-		apiNats, err := natsapi.New(
+		api, err := natsapi.New(
 			d.Logger(ctx),
 			natsapi.WithHost(d.Configer().GetNATS().Host),
 			natsapi.WithPort(d.Configer().GetNATS().Port),
@@ -139,11 +140,11 @@ func (d *DiContainer) NatsConnecter(ctx context.Context) NatsConnecter {
 			log.Fatal("initialization module 'natsapi' ", err)
 		}
 
-		if err = apiNats.Start(ctx); err != nil {
+		if err = api.Start(ctx); err != nil {
 			log.Fatal("start module 'natsapi' ", err)
 		}
 
-		d.natsConnecter = apiNats
+		d.natsConnecter = api
 	}
 
 	return d.natsConnecter
@@ -152,7 +153,7 @@ func (d *DiContainer) NatsConnecter(ctx context.Context) NatsConnecter {
 // KafkaConnecter подключение к Kafka
 func (d *DiContainer) KafkaConnecter(ctx context.Context) KafkaConnecter {
 	if d.kafkaConnecter == nil {
-		apiKafka, err := kafkaapi.New(
+		api, err := kafkaapi.New(
 			d.Logger(ctx),
 			kafkaapi.WithHost(d.Configer().GetKafka().Host),
 			kafkaapi.WithPort(d.Configer().GetKafka().Port),
@@ -172,11 +173,11 @@ func (d *DiContainer) KafkaConnecter(ctx context.Context) KafkaConnecter {
 			log.Fatal("initialization module 'kafkaapi' ", err)
 		}
 
-		if err = apiKafka.StartConsumer(ctx); err != nil {
+		if err = api.StartConsumer(ctx); err != nil {
 			log.Fatal("start module 'kafkaapi' ", err)
 		}
 
-		d.kafkaConnecter = apiKafka
+		d.kafkaConnecter = api
 	}
 
 	return d.kafkaConnecter
@@ -185,7 +186,7 @@ func (d *DiContainer) KafkaConnecter(ctx context.Context) KafkaConnecter {
 // IRPConnecter получение доступа к IRP
 func (d *DiContainer) IRPConnecter() IRPConnecter {
 	if d.irpConnecter == nil {
-		apiIrp, err := irpapi.New(
+		api, err := irpapi.New(
 			irpapi.WithAPIKey(d.Configer().GetIRP().ApiToken),
 			irpapi.WithHost(d.Configer().GetIRP().Host),
 			irpapi.WithPort(d.Configer().GetIRP().Port),
@@ -195,8 +196,22 @@ func (d *DiContainer) IRPConnecter() IRPConnecter {
 			log.Fatal("initialization module 'irpapi' ", err)
 		}
 
-		d.irpConnecter = apiIrp
+		d.irpConnecter = api
 	}
 
 	return d.irpConnecter
+}
+
+// PrometheusConnecter инициализация модуля взаимодействия с Prometheus
+func (d *DiContainer) PrometheusConnecter() PrometheusConnecter {
+	if d.prometheusConnecter == nil {
+		api, err := prometheusapi.New()
+		if err != nil {
+			log.Fatal("initialization module 'prometheusapi' ", err)
+		}
+
+		d.prometheusConnecter = api
+	}
+
+	return d.prometheusConnecter
 }

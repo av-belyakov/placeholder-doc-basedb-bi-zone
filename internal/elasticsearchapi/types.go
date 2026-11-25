@@ -1,6 +1,13 @@
 package elasticsearchapi
 
-import "github.com/elastic/go-elasticsearch/v9"
+import (
+	"github.com/elastic/go-elasticsearch/v9"
+)
+
+type ElasticsearchDB struct {
+	client   *elasticsearch.Client
+	settings Settings
+}
 
 type Settings struct {
 	NameRegionalObject string
@@ -9,9 +16,4 @@ type Settings struct {
 	Passwd             string
 	IndexDB            string
 	Port               int
-}
-
-type ElasticsearchDB struct {
-	client   *elasticsearch.Client
-	settings Settings
 }

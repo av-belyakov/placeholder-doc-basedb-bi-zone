@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/av-belyakov/simplelogger/v2"
+	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/confighandler"
@@ -59,4 +60,8 @@ type DbLogger interface {
 
 type IRPConnecter interface {
 	GetIncident(ctx context.Context, incidentId string) ([]byte, int, error)
+}
+
+type PrometheusConnecter interface {
+	GetRegistry() *prometheus.Registry
 }

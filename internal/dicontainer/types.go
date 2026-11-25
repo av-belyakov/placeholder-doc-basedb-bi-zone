@@ -6,11 +6,12 @@ type DiContainer struct {
 	configer     Configer
 	simpleLogger SimpleLogger
 
-	dbLogger       DbLogger
-	dbConnecter    DBConnecter
-	irpConnecter   IRPConnecter
-	natsConnecter  NatsConnecter
-	kafkaConnecter KafkaConnecter
+	dbLogger            DbLogger
+	dbConnecter         DBConnecter
+	irpConnecter        IRPConnecter
+	natsConnecter       NatsConnecter
+	kafkaConnecter      KafkaConnecter
+	prometheusConnecter PrometheusConnecter
 
 	rootDir string
 }

@@ -8,13 +8,10 @@ import (
 	"net/http"
 	"net/http/pprof"
 	_ "net/http/pprof"
-	"regexp"
 	"strings"
 
 	"golang.org/x/sync/errgroup"
 
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/constants"
@@ -63,18 +60,8 @@ func (app *App) Start(ctx context.Context) {
 }
 
 func (app *App) startServiceMonitor(ctx context.Context) {
-	reg := prometheus.NewRegistry()
-	reg.MustRegister(
-		collectors.NewGoCollector(
-			collectors.WithGoCollectorRuntimeMetrics(
-				collectors.GoRuntimeMetricsRule{Matcher: regexp.MustCompile("/sched/latencies:seconds")},
-			),
-		),
-		collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}),
-	)
-
 	mux := http.NewServeMux()
-	mux.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{
+	mux.Handle("/metrics", promhttp.HandlerFor(app.diContainer.PrometheusConnecter().GetRegistry(), promhttp.HandlerOpts{
 		EnableOpenMetrics: true,
 	}))
 	mux.HandleFunc("/debug/pprof/", pprof.Index)

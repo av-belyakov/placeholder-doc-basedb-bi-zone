@@ -1,8 +1,11 @@
 package databasestorageapi
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"regexp"
+	"strings"
 
 	"github.com/elastic/go-elasticsearch/v9/esapi"
 
@@ -11,6 +14,8 @@ import (
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/request"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/supportingfunctions"
 )
+
+var idLike = regexp.MustCompile(`^\d+$|^[0-9a-f]{8}-[0-9a-f]{4}|^[A-Za-z0-9+/]{20,}`)
 
 // sendAdditionalInformationRequest
 func sendAdditionalInformationRequest(id string, doc interfaces.SpecialAdditionalInformation, getChan func() chan SettingsChanOutput, logger interfaces.Logger) {
@@ -91,3 +96,86 @@ func bodyClose(res *esapi.Response) {
 
 	res.Body.Close()
 }
+
+func normalizePath(p string) string {
+	if p == "" {
+		return "/"
+	}
+
+	segs := splitPath(p)
+	for i, s := range segs {
+		if s == "" || (len(s) > 0 && s[0] == '_') {
+			continue
+		}
+		if idLike.MatchString(s) {
+			segs[i] = "<id>"
+		}
+	}
+
+	return "/" + joinPath(segs)
+}
+
+func splitPath(path string) []string {
+	var out []string
+	for _, p := range bytes.Split([]byte(path), []byte("/")) {
+		if len(p) > 0 {
+			out = append(out, string(p))
+		}
+	}
+
+	return out
+}
+
+func joinPath(segs []string) string {
+	if len(segs) == 0 {
+		return "/"
+	}
+
+	var result strings.Builder
+
+	// Если первый сегмент пустой — значит, путь был абсолютным (начинался с '/')
+	isAbsolute := len(segs) > 0 && segs[0] == ""
+	if isAbsolute {
+		result.WriteByte('/')
+		// Начинаем со второго элемента, потому что первый — это маркер абсолютности
+		segs = segs[1:]
+	}
+
+	for i, seg := range segs {
+		if seg == "" {
+			// Пропускаем пустые сегменты (они возникают, если было //)
+			continue
+		}
+		if i > 0 || isAbsolute {
+			// Добавляем слэш перед сегментом, если:
+			// - это не самый первый сегмент в относительном пути,
+			// - или путь абсолютный (тогда мы уже написали начальный '/')
+			result.WriteByte('/')
+		}
+		result.WriteString(seg)
+	}
+
+	// Если после пропуска пустых сегментов ничего не осталось — возвращаем "/"
+	if result.Len() == 0 {
+		return "/"
+	}
+
+	return result.String()
+}
+
+/*
+func indexFromPath(path string) string {
+	// путь вида /{index}/_search или /{index}/_doc/{id}
+	parts := splitPath(path)
+	if len(parts) > 0 && parts[0] != "" && parts[0][0] != '_' {
+		return parts[0]
+	}
+
+	return "cluster"
+}
+
+func indexFromOpName(op string) string {
+	// op в bulk-ответе: "index", "create", "update", "delete"
+	return op
+}
+*/

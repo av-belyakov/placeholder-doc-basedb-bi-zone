@@ -1,7 +1,10 @@
 package databasestorageapi
 
 import (
+	"net/http"
+
 	"github.com/elastic/go-elasticsearch/v9"
+	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/interfaces"
 	"github.com/av-belyakov/placeholder_doc-basedb_bi.zone/internal/datamodels"
@@ -41,6 +44,20 @@ type SettingsChanOutput struct {
 }
 
 type DatabaseStorageOptions func(*DatabaseStorage) error
+
+type esTransport struct {
+	metrics metrics
+	base    http.RoundTripper
+}
+
+type metrics struct {
+	inFlight         prometheus.Gauge
+	requests         *prometheus.CounterVec
+	hitsTotal        *prometheus.CounterVec
+	emptyResults     *prometheus.CounterVec
+	queryDuration    *prometheus.HistogramVec
+	documentsIndexed *prometheus.CounterVec
+}
 
 //****** для объектов типа VerifiedBiZoneAlerts *******
 
